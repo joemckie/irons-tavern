@@ -38,10 +38,10 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
 }
 
 async function getLatestMemberList() {
-  const blobList = await list({
-    limit: 1,
-  });
-  const { url } = blobList.blobs[0];
+  const blobList = await list();
+  const [{ url }] = blobList.blobs.sort(
+    (a, b) => +b.uploadedAt - +a.uploadedAt,
+  );
 
   const response = await fetch(url);
   const data: ClanMember[] = await response.json();
