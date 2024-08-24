@@ -1,6 +1,9 @@
 import constants from '@/config/constants.json';
 import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
+import { list } from '@vercel/blob';
+import Image from 'next/image';
+import { ClanMember } from './api/update-member-list/route';
 
 interface MemberInfo {
   player: string;
@@ -34,8 +37,30 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   return response.json();
 }
 
+async function getLatestMemberList() {
+  const blobList = await list({
+    limit: 1,
+  });
+  const { url } = blobList.blobs[0];
+
+  const response = await fetch(url);
+  const data: ClanMember[] = await response.json();
+
+  return data.reduce(
+    (acc, member) => {
+      acc[member.rsn.toLowerCase()] = member;
+
+      return acc;
+    },
+    {} as Record<string, ClanMember>,
+  );
+}
+
 export default async function Home() {
   const groupMemberInfo = await getGroupMemberInfo();
+  const memberList = await getLatestMemberList();
+
+  console.log(memberList);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-800 ">
@@ -43,6 +68,8 @@ export default async function Home() {
         <thead>
           <tr className="text-left">
             <th className="p-4">RSN</th>
+            <th>Rank</th>
+            <th>Join date</th>
             <th className="p-4">Last checked</th>
             <th className="p-4">Estimated inactivity</th>
             <th className="p-4">On hiscores?</th>
@@ -74,6 +101,9 @@ export default async function Home() {
                   return null;
                 }
 
+                const { rank, joinedDate } =
+                  memberList[rsn.toLowerCase()] ?? {};
+
                 return (
                   <tr key={rsn}>
                     <td className="border-b border-slate-700 p-4 text-slate-500">
@@ -84,6 +114,19 @@ export default async function Home() {
                       >
                         {rsn}
                       </a>
+                    </td>
+                    <td className="border-b border-slate-700 p-4 text-slate-500">
+                      {rank && (
+                        <Image
+                          alt={`${rank} icon`}
+                          src={`/icons/${rank.toLowerCase()}.png`}
+                          height={24}
+                          width={24}
+                        />
+                      )}
+                    </td>
+                    <td className="border-b border-slate-700 p-4 text-slate-500">
+                      {joinedDate ?? 'Unknown'}
                     </td>
                     <td className="border-b border-slate-700 p-4 text-slate-500">
                       {lastChecked}
