@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { throttleAll } from 'promise-throttle-all';
 import { templeBaseUrl, groupId } from '@/config/constants.json';
+import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,6 +35,8 @@ export async function GET() {
       () => sleep(6000),
     ]),
   );
+
+  revalidatePath('/');
 
   return NextResponse.json({ success: true });
 }
