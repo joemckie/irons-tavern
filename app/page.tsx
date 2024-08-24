@@ -1,8 +1,6 @@
+import { groupId, templeBaseUrl } from '@/config/constants.json';
 import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
-
-const groupId = '1061';
-const baseUrl = 'https://templeosrs.com';
 
 interface MemberInfo {
   player: string;
@@ -30,7 +28,7 @@ interface GroupMemberInfoResponse {
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
-    `${baseUrl}/api/group_member_info.php?id=${groupId}`,
+    `${templeBaseUrl}/api/group_member_info.php?id=${groupId}`,
   );
 
   return response.json();
@@ -38,8 +36,6 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
 
 export default async function Home() {
   const groupMemberInfo = await getGroupMemberInfo();
-
-  // Object.keys(groupMemberInfo.data.memberlist).forEach(updatePlayer);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-800 ">
