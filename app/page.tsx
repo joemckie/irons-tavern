@@ -1,4 +1,4 @@
-import { groupId, templeBaseUrl } from '@/config/constants.json';
+import constants from '@/config/constants.json';
 import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 
@@ -28,7 +28,7 @@ interface GroupMemberInfoResponse {
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
-    `${templeBaseUrl}/api/group_member_info.php?id=${groupId}`,
+    `${constants.templeBaseUrl}/api/group_member_info.php?id=${constants.groupId}`,
   );
 
   return response.json();
