@@ -36,14 +36,6 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   return response.json();
 }
 
-async function updatePlayer(rsn: string) {
-  const response = await fetch(
-    `${baseUrl}/php/add_datapoint.php?player=${rsn}`,
-  );
-
-  console.log(response);
-}
-
 export default async function Home() {
   const groupMemberInfo = await getGroupMemberInfo();
 
@@ -91,7 +83,7 @@ export default async function Home() {
                     <td className="border-b border-slate-700 p-4 text-slate-500">
                       <a
                         className="underline"
-                        href={`https://templeosrs.com/player/overview.php?player=${rsn}`}
+                        href={`https://templeosrs.com/player/overview.php?player=${rsn}&duration=alltime`}
                         target="_blank"
                       >
                         {rsn}
