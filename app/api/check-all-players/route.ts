@@ -15,7 +15,7 @@ export async function POST() {
 
   players.forEach((player) => {
     fetch(
-      `https://zeplo.to/${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}?token=${constants.zeploApiKey}&delay=${delay}`,
+      `https://zeplo.to/${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}&_token=${constants.zeploApiKey}&delay=${delay}`,
     );
 
     delay += 6;
