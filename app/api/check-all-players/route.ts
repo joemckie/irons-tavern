@@ -21,7 +21,7 @@ export async function POST() {
   // The last sleep is ignored as there will be no subsequent requests
   await throttleAll<unknown>(
     1,
-    [members[0]]
+    members
       .flatMap((member) => [
         async () => {
           await fetch(`${constants.publicUrl}/api/check-player`, {
