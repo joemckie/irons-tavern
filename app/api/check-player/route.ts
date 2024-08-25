@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import constants from '@/config/constants.json';
+import { constants } from '@/config/constants';
 
 export const dynamic = 'force-dynamic';
 
@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const response = await fetch(
-      `${constants.templeBaseUrl}/php/add_datapoint.php?player=${rsn}`,
+      `${constants.temple.baseUrl}/php/add_datapoint.php?player=${rsn}`,
     );
 
     console.log(await response.json());

@@ -3,10 +3,11 @@
     "airbnb",
     "airbnb/hooks",
     "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@stylistic"],
+  "plugins": ["@stylistic", "@typescript-eslint"],
   "rules": {
     "@stylistic/type-annotation-spacing": [
       "warn",
@@ -19,6 +20,8 @@
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "import/prefer-default-export": "off",
-    "implicit-arrow-linebreak": "off"
+    "import/extensions": ["error", "never"],
+    "implicit-arrow-linebreak": "off",
+    "operator-linebreak": "off"
   }
 }

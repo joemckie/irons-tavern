@@ -1,4 +1,4 @@
-import constants from '@/config/constants.json';
+import { constants } from '@/config/constants';
 import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
@@ -31,7 +31,7 @@ interface GroupMemberInfoResponse {
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
-    `${constants.templeBaseUrl}/api/group_member_info.php?id=${constants.groupId}`,
+    `${constants.temple.baseUrl}/api/group_member_info.php?id=${constants.temple.groupId}`,
   );
 
   return response.json();
@@ -59,8 +59,6 @@ async function getLatestMemberList() {
 export default async function Home() {
   const groupMemberInfo = await getGroupMemberInfo();
   const memberList = await getLatestMemberList();
-
-  console.log(memberList);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-800 ">
