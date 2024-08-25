@@ -2306,7 +2306,6 @@ __metadata:
     pluralize: "npm:^8.0.0"
     postcss: "npm:^8"
     prettier: "npm:^3.3.3"
-    promise-throttle-all: "npm:^1.1.1"
     react: "npm:^18"
     react-dom: "npm:^18"
     tailwindcss: "npm:^3.4.1"
@@ -3541,13 +3540,6 @@ __metadata:
     err-code: "npm:^2.0.2"
     retry: "npm:^0.12.0"
   checksum: 10c0/9c7045a1a2928094b5b9b15336dcd2a7b1c052f674550df63cc3f36cd44028e5080448175b6f6ca32b642de81150f5e7b1a98b728f15cb069f2dd60ac2616b96
-  languageName: node
-  linkType: hard
-
-"promise-throttle-all@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "promise-throttle-all@npm:1.1.1"
-  checksum: 10c0/91037c662ec169a210dd71208c39545ec65a02f0be7439592150cf91b6064dc78e2da28ba00fb5d2788700f3aa326678c65b57dc2bf5123ed811ef69a27529ee
   languageName: node
   linkType: hard
 

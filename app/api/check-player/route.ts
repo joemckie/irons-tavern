@@ -4,8 +4,15 @@ import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
+function sleep(duration: number) {
+  return new Promise<void>((resolve) => {
+    setTimeout(resolve, duration);
+  });
+}
+
 export async function POST(request: NextRequest) {
-  const { player } = await request.json();
+  const { players }: { players: string[] } = await request.json();
+  const player = players.shift();
 
   console.log(`Checking ${player}`);
 
@@ -13,6 +20,17 @@ export async function POST(request: NextRequest) {
     await fetch(
       `${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
     );
+
+    if (players.length) {
+      await sleep(6000);
+
+      fetch(`${constants.publicUrl}/api/check-player`, {
+        method: 'POST',
+        body: JSON.stringify({
+          players,
+        }),
+      });
+    }
 
     // Purge the cache to display the latest member data
     revalidatePath('/');
