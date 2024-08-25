@@ -2,7 +2,7 @@ import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 import { constants } from '@/config/constants';
 import { Rank } from '@/config/enums';
-import { revalidatePath } from 'next/cache';
+import { GroupUpdateRequest } from '@/types/temple-api';
 
 export interface ClanMember {
   rsn: string;
@@ -13,17 +13,6 @@ export interface ClanMember {
 interface ClanExport {
   clanName: string;
   clanMemberMaps: ClanMember[];
-}
-
-interface TempleGroupUpdateRequest {
-  clan: '100';
-  'clan-checkbox': 'on';
-  'private-group-checkbox'?: 'on';
-  name: string;
-  members: string;
-  leaders: string;
-  id: string;
-  key: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -65,7 +54,7 @@ export async function POST(request: NextRequest) {
     leaders: leaders.toString(),
     members: members.toString(),
     ...(constants.temple.privateGroup && { 'private-group-checkbox': 'on' }),
-  } satisfies TempleGroupUpdateRequest;
+  } satisfies GroupUpdateRequest;
 
   // Sync our Temple page with the new member list
   await fetch(`${constants.temple.baseUrl}/groups/edit.php`, {
@@ -73,14 +62,14 @@ export async function POST(request: NextRequest) {
     body: new URLSearchParams(templeUpdateData),
   });
 
-  // Check all players in the new member list
-  fetch(`${constants.publicUrl}/api/check-all-players`, {
-    method: 'POST',
-  });
-
   // Save the member list to the Vercel blob store to use later
   await put('members.json', JSON.stringify(body.clanMemberMaps), {
     access: 'public',
+  });
+
+  // Check all players in the new member list
+  await fetch(`${constants.publicUrl}/api/check-all-players`, {
+    method: 'POST',
   });
 
   return NextResponse.json({ success: true });

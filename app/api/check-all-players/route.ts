@@ -1,18 +1,27 @@
 import { NextResponse } from 'next/server';
 import { constants } from '@/config/constants';
+import { GroupMemberInfoResponse } from '@/types/temple-api';
+import { differenceInDays } from 'date-fns';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST() {
   const response = await fetch(
-    `${constants.temple.baseUrl}/api/groupmembers.php?id=${constants.temple.groupId}`,
+    `${constants.temple.baseUrl}/api/group_member_info.php?id=${constants.temple.groupId}`,
   );
-  const players: string[] = await response.json();
+  const players: GroupMemberInfoResponse = await response.json();
 
-  const requests = players.slice(0, 10).map((player, i) => ({
+  // Filter players that have been checked within the last day.
+  // This reduces the amount of requests significantly, due to
+  // players using the XP Updater plugin on RuneLite
+  const filteredPlayers = Object.values(players.data.memberlist).filter(
+    (player) => differenceInDays(Date.now(), player.last_checked) > 1,
+  );
+
+  const requests = filteredPlayers.map((player, i) => ({
     // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
     // so we need to wait for six seconds before checking the next player
-    url: `${constants.temple.baseUrl}/php/add_datapoint.php?player=${encodeURI(player)}&_delay=${i * 6}`,
+    url: `${constants.temple.baseUrl}/php/add_datapoint.php?player=${encodeURI(player.player)}&_delay=${i * 6}`,
     method: 'GET',
   }));
 

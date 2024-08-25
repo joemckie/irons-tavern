@@ -3,31 +3,8 @@ import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
+import { GroupMemberInfoResponse } from '@/types/temple-api';
 import { ClanMember } from './api/update-member-list/route';
-
-interface MemberInfo {
-  player: string;
-  player_name_with_capitalization: string;
-  country: string;
-  game_mode: number;
-  level_3: 1 | 0;
-  free_to_play: number;
-  gim_mode: number | null;
-  leagues_iv_points: number | null;
-  on_hiscores: 1 | 0;
-  last_checked: string;
-  last_checked_unix_time: number;
-  last_changed_xp: string;
-  last_changed_xp_unix_time: number;
-  last_changed_kc: string;
-  last_changed_kc_unix_time: number;
-}
-
-interface GroupMemberInfoResponse {
-  data: {
-    memberlist: Record<string, MemberInfo>;
-  };
-}
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
