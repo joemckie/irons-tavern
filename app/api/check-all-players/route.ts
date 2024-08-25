@@ -9,14 +9,16 @@ export async function POST() {
   );
   const players: string[] = await response.json();
 
-  // Temple rate limits at 10 requests per minute for datapoint endpoints
-  // So we send a request then wait 6 seconds before making another
-  // The last sleep is ignored as there will be no subsequent requests
-  fetch(`${constants.publicUrl}/api/check-player`, {
-    method: 'POST',
-    body: JSON.stringify({
-      players,
-    }),
+  // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
+  // so we need to wait for six seconds before checking the next player
+  let delay = 0;
+
+  players.forEach((player) => {
+    fetch(
+      `https://zeplo.to/${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}?token=${constants.zeploApiKey}&delay=${delay}`,
+    );
+
+    delay += 6;
   });
 
   return NextResponse.json({ success: true });
