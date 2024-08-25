@@ -83,8 +83,5 @@ export async function POST(request: NextRequest) {
     access: 'public',
   });
 
-  // Invalidate the homepage cache to show the new members
-  revalidatePath('/');
-
   return NextResponse.json({ success: true });
 }

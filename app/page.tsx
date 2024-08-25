@@ -62,6 +62,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-800 ">
+      <h1 className="text-xl mb-4">{constants.temple.groupName}</h1>
       <table className="table-auto border-collapse">
         <thead>
           <tr className="text-left">

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { throttleAll } from 'promise-throttle-all';
 import { constants } from '@/config/constants';
-import { revalidatePath } from 'next/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,16 +24,12 @@ export async function POST() {
     [members[0]]
       .flatMap((member) => [
         async () => {
-          console.log(`Checking ${member}`);
-
-          await fetch(
-            `${constants.publicUrl}/api/check-player?player=${member}`,
-            {
-              method: 'POST',
-            },
-          );
-
-          revalidatePath('/');
+          await fetch(`${constants.publicUrl}/api/check-player`, {
+            method: 'POST',
+            body: JSON.stringify({
+              player: member,
+            }),
+          });
 
           return response.ok;
         },
