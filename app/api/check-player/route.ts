@@ -11,7 +11,9 @@ function sleep(duration: number) {
 }
 
 interface PlayerInfo {
-  'Datapoint Cooldown': string | number;
+  data: {
+    'Datapoint Cooldown': string | number;
+  };
 }
 
 export async function POST(request: NextRequest) {
@@ -21,12 +23,13 @@ export async function POST(request: NextRequest) {
     `${constants.temple.baseUrl}/api/player_info.php?player=${player}`,
   );
   const playerInfo: PlayerInfo = await playerInfoRequest.json();
+  const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
 
   try {
     // If the player has a datapoint cooldown (i.e. a number),
     // this means they have been checked very recently,
     // hence we skip these players entirely.
-    if (playerInfo['Datapoint Cooldown'] === '-') {
+    if (shouldCheckPlayer) {
       console.log(`Checking ${player}`);
 
       await fetch(
@@ -35,7 +38,11 @@ export async function POST(request: NextRequest) {
     }
 
     if (players.length) {
-      await sleep(6000);
+      // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
+      // so if we checked a player we need to wait for six seconds before the next check
+      if (shouldCheckPlayer) {
+        await sleep(6000);
+      }
 
       fetch(`${constants.publicUrl}/api/check-player`, {
         method: 'POST',
