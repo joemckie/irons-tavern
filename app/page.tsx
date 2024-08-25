@@ -118,7 +118,7 @@ export default async function Home() {
                       {rank && (
                         <Image
                           alt={`${rank} icon`}
-                          src={`/icons/${rank.toLowerCase()}.png`}
+                          src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
                           height={24}
                           width={24}
                         />
