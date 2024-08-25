@@ -9,17 +9,20 @@ export async function POST() {
   );
   const players: string[] = await response.json();
 
-  // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
-  // so we need to wait for six seconds before checking the next player
-  let delay = 0;
+  const requests = players.slice(0, 10).map((player, i) => ({
+    // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
+    // so we need to wait for six seconds before checking the next player
+    url: `${constants.temple.baseUrl}/php/add_datapoint.php?player=${encodeURI(player)}&_delay=${i * 6}`,
+    method: 'GET',
+  }));
 
-  players.forEach((player) => {
-    fetch(
-      `https://zeplo.to/${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}&_token=${constants.zeploApiKey}&delay=${delay}`,
-    );
+  const queueResponse = await fetch(
+    `${constants.zeplo.url}/bulk?_token=${constants.zeplo.apiKey}`,
+    {
+      method: 'POST',
+      body: JSON.stringify(requests),
+    },
+  );
 
-    delay += 6;
-  });
-
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: queueResponse.ok });
 }

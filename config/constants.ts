@@ -2,7 +2,10 @@ import { Rank } from './enums';
 
 export const constants = {
   publicUrl: process.env.NEXT_PUBLIC_URL,
-  zeploApiKey: process.env.ZEPLO_API_KEY,
+  zeplo: {
+    apiKey: process.env.ZEPLO_API_KEY,
+    url: process.env.ZEPLO_URL,
+  },
   temple: {
     groupName: process.env.TEMPLE_GROUP_NAME,
     groupId: process.env.TEMPLE_GROUP_ID,
