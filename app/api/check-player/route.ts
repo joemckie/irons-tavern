@@ -10,16 +10,29 @@ function sleep(duration: number) {
   });
 }
 
+interface PlayerInfo {
+  'Datapoint Cooldown': string | number;
+}
+
 export async function POST(request: NextRequest) {
   const { players }: { players: string[] } = await request.json();
   const player = players.shift();
-
-  console.log(`Checking ${player}`);
+  const playerInfoRequest = await fetch(
+    `${constants.temple.baseUrl}/api/player_info.php?player=${player}`,
+  );
+  const playerInfo: PlayerInfo = await playerInfoRequest.json();
 
   try {
-    await fetch(
-      `${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
-    );
+    // If the player has a datapoint cooldown (i.e. a number),
+    // this means they have been checked very recently,
+    // hence we skip these players entirely.
+    if (playerInfo['Datapoint Cooldown'] === '-') {
+      console.log(`Checking ${player}`);
+
+      await fetch(
+        `${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+      );
+    }
 
     if (players.length) {
       await sleep(6000);
