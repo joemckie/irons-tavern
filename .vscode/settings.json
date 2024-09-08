@@ -1,3 +1,16 @@
 {
-    "prettier.configPath": ".prettierrc.json"
+  "prettier.configPath": ".prettierrc.json",
+  "cSpell.words": [
+    "Ardougne",
+    "Draynor",
+    "Falador",
+    "Fremennik",
+    "Kandarin",
+    "Karamja",
+    "Kebos",
+    "Kourend",
+    "Lumbridge",
+    "Morytania",
+    "Varrock"
+  ]
 }
