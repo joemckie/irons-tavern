@@ -41,6 +41,7 @@ export default function RankCalculator() {
   const { data: items, isLoading } = useGetItems();
   const methods = useForm<FormData>({
     defaultValues: {
+      playerName: 'cousinofkos',
       items: Object.entries(items ?? {}).reduce(
         (acc, [, items]) => {
           items.forEach((item) => {
@@ -67,9 +68,8 @@ export default function RankCalculator() {
 
     setPlayerDetails(data);
 
-    playerDetails?.items.forEach((item) => {
-      typeof methods.getValues(`items.${item}`) !== 'undefined' &&
-        methods.setValue(`items.${item}`, true);
+    data?.items.forEach((item) => {
+      methods.setValue(`items.${item}`, true);
     });
   }
 
