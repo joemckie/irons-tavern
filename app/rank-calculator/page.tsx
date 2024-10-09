@@ -1,11 +1,24 @@
 'use client';
 
+import '@radix-ui/themes/styles.css';
 import { useState } from 'react';
 import { ItemsResponse, PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { useQuery } from '@tanstack/react-query';
 import { ItemList } from './components/item-list';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Flex,
+  Grid,
+  Section,
+  Skeleton,
+  TextField,
+} from '@radix-ui/themes';
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 
 function useGetItems() {
   return useQuery({
@@ -28,7 +41,6 @@ export default function RankCalculator() {
   const { data: items, isLoading } = useGetItems();
   const methods = useForm<FormData>({
     defaultValues: {
-      playerName: 'cousinofkos',
       items: Object.entries(items ?? {}).reduce(
         (acc, [, items]) => {
           items.forEach((item) => {
@@ -62,25 +74,47 @@ export default function RankCalculator() {
   }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <div>
-          <input
-            className="text-slate-400 bg-slate-600"
-            type="search"
-            {...methods.register('playerName')}
-          />
-          <button onClick={() => handlePlayerSearch()} type="button">
-            Search
-          </button>
-        </div>
-        {isLoading ? (
-          <div>Loading item list...</div>
-        ) : (
-          <ItemList items={items} />
-        )}
-        <button type="submit">Submit</button>
-      </form>
-    </FormProvider>
+    <Container>
+      <Grid
+        areas="'header header header' 'main main sidebar' 'main main sidebar'"
+        columns="1fr 1fr 1fr"
+        gap="4"
+      >
+        <Box gridArea="header" asChild>
+          <header>Header</header>
+        </Box>
+        <FormProvider {...methods}>
+          <Box gridArea="main" asChild>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Section size="1">
+                <Flex gap="2">
+                  <TextField.Root
+                    placeholder="Player name"
+                    type="search"
+                    {...methods.register('playerName')}
+                  >
+                    <TextField.Slot>
+                      <MagnifyingGlassIcon />
+                    </TextField.Slot>
+                  </TextField.Root>
+                  <Button
+                    onClick={handlePlayerSearch}
+                    type="button"
+                    variant="soft"
+                  >
+                    Search
+                  </Button>
+                </Flex>
+              </Section>
+              {isLoading ? <Skeleton /> : <ItemList items={items} />}
+              <Button type="submit">Submit</Button>
+            </form>
+          </Box>
+          <Box gridArea="sidebar" asChild>
+            <Card>Sidebar</Card>
+          </Box>
+        </FormProvider>
+      </Grid>
+    </Container>
   );
 }
