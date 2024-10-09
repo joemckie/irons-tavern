@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ItemsResponse, PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { useQuery } from '@tanstack/react-query';
@@ -47,7 +47,6 @@ export default function RankCalculator() {
   };
 
   async function handlePlayerSearch() {
-    console.log('get payer');
     const player = methods.getValues('playerName');
     const response = await fetch(
       `${constants.publicUrl}/api/get-player-details?player=${player}`,
