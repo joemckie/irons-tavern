@@ -42,6 +42,7 @@ export interface PlayerDataResponse {
 
 export interface Item {
   name: string;
+  points: number;
   requiredItems: {
     clogName: string;
     amount: number;

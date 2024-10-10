@@ -4,23 +4,20 @@ export const itemsResponseFixture: ItemsResponse = {
   'Abyssal Sire': [
     {
       image: '',
-      name: 'Unsired',
+      name: 'Abyssal Bludgeon',
+      points: 60,
       requiredItems: [
         {
           amount: 1,
-          clogName: 'Unsired',
+          clogName: 'Bludgeon axon',
         },
-      ],
-    },
-  ],
-  'Abyssal Sire2': [
-    {
-      image: '',
-      name: 'Unsired2',
-      requiredItems: [
         {
           amount: 1,
-          clogName: 'Unsired',
+          clogName: 'Bludgeon claw',
+        },
+        {
+          amount: 1,
+          clogName: 'Bludgeon spine',
         },
       ],
     },
@@ -41,6 +38,7 @@ export const itemsResponseFixture: ItemsResponse = {
         },
       ],
       image: '',
+      points: 80,
     },
     {
       name: 'Magic Fang',
@@ -51,6 +49,7 @@ export const itemsResponseFixture: ItemsResponse = {
         },
       ],
       image: '',
+      points: 60,
     },
   ],
 };

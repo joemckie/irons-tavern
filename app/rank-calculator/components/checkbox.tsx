@@ -1,17 +1,17 @@
-import { Checkbox } from '@radix-ui/themes';
+import { Checkbox as BaseCheckbox } from '@radix-ui/themes';
 import { ComponentProps, forwardRef } from 'react';
 import { useController } from 'react-hook-form';
 
-type CheckboxFieldProps = {
+type CheckboxProps = {
   name: string;
 } & Omit<ComponentProps<'button'>, 'ref'>;
 
-export const CheckboxField = forwardRef<HTMLButtonElement, CheckboxFieldProps>(
+export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
   ({ name }, forwardedRef) => {
     const { field } = useController({ name });
 
     return (
-      <Checkbox
+      <BaseCheckbox
         onCheckedChange={field.onChange}
         name={name}
         checked={field.value}
