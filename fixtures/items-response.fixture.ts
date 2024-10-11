@@ -1,4 +1,5 @@
 import {
+  BaseItem,
   CollectionLogItem,
   CombatAchievementItem,
   Item,
@@ -7,7 +8,11 @@ import {
   Skill,
 } from '@/types/rank-calculator';
 
-function singleItem({ name, points, image }: Omit<Item, 'requiredItems'>) {
+function singleItem({
+  name,
+  points,
+  image,
+}: Omit<CollectionLogItem, 'requiredItems'>) {
   return {
     image,
     name,
@@ -18,7 +23,7 @@ function singleItem({ name, points, image }: Omit<Item, 'requiredItems'>) {
         clogName: name,
       },
     ],
-  } satisfies Item;
+  } satisfies CollectionLogItem;
 }
 
 function compoundItem({
@@ -65,6 +70,14 @@ function combatAchievementItem({
     points,
     requiredCombatAchievements,
   } satisfies CombatAchievementItem;
+}
+
+function manualItem({ image, name, points }: BaseItem) {
+  return {
+    image,
+    name,
+    points,
+  } satisfies BaseItem;
 }
 
 export const itemsResponseFixture: ItemsResponse = {
@@ -487,6 +500,46 @@ export const itemsResponseFixture: ItemsResponse = {
         name: 'Ancient blood ornament kit',
         points: 2000,
         requiredCombatAchievements: [0],
+      }),
+    ],
+  },
+  'Fortis Colosseum': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Sunfire fanatic helm',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Sunfire fanatic cuirass',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Sunfire fanatic chausses',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Echo crystal',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Tonalztics of ralos',
+        points: 100,
+      }),
+      singleItem({
+        image: '',
+        name: "Dizana's quiver",
+        points: 3500,
+      }),
+      manualItem({
+        image: '',
+        name: "Blessed dizana's quiver",
+        points: 3500,
       }),
     ],
   },

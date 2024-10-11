@@ -86,7 +86,7 @@ export interface CombatAchievementItem extends BaseItem {
   requiredCombatAchievements: NonEmptyArray<number>;
 }
 
-export type Item = CollectionLogItem | CombatAchievementItem;
+export type Item = BaseItem | CollectionLogItem | CombatAchievementItem;
 
 interface Category {
   image: string;
