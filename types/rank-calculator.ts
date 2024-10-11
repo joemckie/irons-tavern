@@ -71,13 +71,22 @@ export interface RequiredItem {
   amount: number;
 }
 
-export interface Item {
+export interface BaseItem {
+  image: string;
   name: string;
   points: number;
+}
+
+export interface CollectionLogItem extends BaseItem {
   requiredLevels?: AtLeastOne<Record<Skill, number>>;
   requiredItems: NonEmptyArray<RequiredItem>;
-  image: string;
 }
+
+export interface CombatAchievementItem extends BaseItem {
+  requiredCombatAchievements: NonEmptyArray<number>;
+}
+
+export type Item = CollectionLogItem | CombatAchievementItem;
 
 interface Category {
   image: string;

@@ -1,4 +1,6 @@
 import {
+  CollectionLogItem,
+  CombatAchievementItem,
   Item,
   ItemsResponse,
   RequiredItem,
@@ -24,18 +26,45 @@ function compoundItem({
   name,
   points,
   requiredItems,
-}: Omit<Item, 'requiredItems'> & {
-  requiredItems: NonEmptyArray<string>;
+  requiredLevels,
+}: Omit<CollectionLogItem, 'requiredItems'> & {
+  requiredItems: NonEmptyArray<string | [string, number]>;
 }) {
   return {
     image,
     name,
     points,
-    requiredItems: requiredItems.map((clogName) => ({
-      amount: 1,
-      clogName,
-    })) as NonEmptyArray<RequiredItem>,
-  } satisfies Item;
+    requiredItems: requiredItems.map<RequiredItem>((item) => {
+      if (Array.isArray(item)) {
+        const [clogName, amount] = item;
+
+        return {
+          amount,
+          clogName,
+        };
+      }
+
+      return {
+        amount: 1,
+        clogName: item,
+      };
+    }) as NonEmptyArray<RequiredItem>,
+    requiredLevels,
+  } satisfies CollectionLogItem;
+}
+
+function combatAchievementItem({
+  image,
+  name,
+  points,
+  requiredCombatAchievements,
+}: CombatAchievementItem) {
+  return {
+    image,
+    name,
+    points,
+    requiredCombatAchievements,
+  } satisfies CombatAchievementItem;
 }
 
 export const itemsResponseFixture: ItemsResponse = {
@@ -306,6 +335,158 @@ export const itemsResponseFixture: ItemsResponse = {
         image: '',
         name: 'Warrior ring',
         points: 10,
+      }),
+    ],
+  },
+  'Demonic Gorillas': {
+    image: '',
+    items: [
+      compoundItem({
+        image: '',
+        name: 'Heavy ballista',
+        points: 50,
+        requiredItems: [
+          'Ballista spring',
+          'Monkey tail',
+          'Heavy frame',
+          'Ballista limbs',
+        ],
+        requiredLevels: {
+          [Skill.Fletching]: 72,
+        },
+      }),
+      ...Array.from({ length: 4 }).map<Item>((_, i) => ({
+        image: '',
+        name: `Zenyte shard (${i + 1})`,
+        points: 50,
+        requiredItems: [
+          {
+            amount: i + 1,
+            clogName: 'Zenyte shard',
+          },
+        ],
+      })),
+    ],
+  },
+  'Desert Treasure 2': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: "Awakener's orb",
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Blood quartz',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Ice quartz',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Shadow quartz',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Smoke quartz',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Chromium ingot',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Virtus mask',
+        points: 80,
+      }),
+      singleItem({
+        image: '',
+        name: 'Virtus robe top',
+        points: 80,
+      }),
+      singleItem({
+        image: '',
+        name: 'Virtus robe bottom',
+        points: 80,
+      }),
+      compoundItem({
+        image: '',
+        name: 'Bellator ring',
+        points: 100,
+        requiredItems: [
+          'Bellator vestige',
+          ['Chromium ingot', 3],
+          'Warrior ring',
+        ],
+        requiredLevels: {
+          [Skill.Magic]: 85,
+          [Skill.Crafting]: 75,
+        },
+      }),
+      compoundItem({
+        image: '',
+        name: 'Magus ring',
+        points: 100,
+        requiredItems: ['Magus vestige', ['Chromium ingot', 3], 'Seers ring'],
+        requiredLevels: {
+          [Skill.Magic]: 85,
+          [Skill.Crafting]: 75,
+        },
+      }),
+      compoundItem({
+        image: '',
+        name: 'Ultor ring',
+        points: 100,
+        requiredItems: [
+          'Ultor vestige',
+          ['Chromium ingot', 3],
+          'Berserker ring',
+        ],
+        requiredLevels: {
+          [Skill.Magic]: 85,
+          [Skill.Crafting]: 75,
+        },
+      }),
+      compoundItem({
+        image: '',
+        name: 'Venator ring',
+        points: 100,
+        requiredItems: [
+          'Venator vestige',
+          ['Chromium ingot', 3],
+          'Archers ring',
+        ],
+        requiredLevels: {
+          [Skill.Magic]: 85,
+          [Skill.Crafting]: 75,
+        },
+      }),
+      compoundItem({
+        image: '',
+        name: 'Soulreaper axe',
+        points: 250,
+        requiredItems: [
+          "Leviathan's lure",
+          "Siren's staff",
+          "Executioner's axe head",
+          'Eye of the duke',
+        ],
+        requiredLevels: {
+          [Skill.Magic]: 75,
+        },
+      }),
+      combatAchievementItem({
+        image: '',
+        name: 'Ancient blood ornament kit',
+        points: 2000,
+        requiredCombatAchievements: [0],
       }),
     ],
   },
