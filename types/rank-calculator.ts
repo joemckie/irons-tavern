@@ -22,6 +22,32 @@ type CombatAchievementTier =
   | 'Master'
   | 'Grandmaster';
 
+export enum Skill {
+  Attack = 'Attack',
+  Strength = 'Strength',
+  Defence = 'Defence',
+  Ranged = 'Ranged',
+  Prayer = 'Prayer',
+  Magic = 'Magic',
+  Runecraft = 'Runecraft',
+  Hitpoints = 'Hitpoints',
+  Crafting = 'Crafting',
+  Mining = 'Mining',
+  Smithing = 'Smithing',
+  Fishing = 'Fishing',
+  Cooking = 'Cooking',
+  Firemaking = 'Firemaking',
+  Woodcutting = 'Woodcutting',
+  Agility = 'Agility',
+  Herblore = 'Herblore',
+  Thieving = 'Thieving',
+  Fletching = 'Fletching',
+  Slayer = 'Slayer',
+  Farming = 'Farming',
+  Construction = 'Construction',
+  Hunter = 'Hunter',
+}
+
 export interface PlayerDataResponse {
   lastChecked: number;
   diaries: Record<DiaryLocation, DiaryTier>;
@@ -40,23 +66,22 @@ export interface PlayerDataResponse {
   clogs: number;
 }
 
+export interface RequiredItem {
+  clogName: string;
+  amount: number;
+}
+
 export interface Item {
   name: string;
   points: number;
-  requiredItems: {
-    clogName: string;
-    amount: number;
-    requiredLevels?: {
-      skill: string;
-      level: number;
-    }[];
-  }[];
+  requiredLevels?: AtLeastOne<Record<Skill, number>>;
+  requiredItems: NonEmptyArray<RequiredItem>;
   image: string;
 }
 
 interface Category {
   image: string;
-  items: Item[];
+  items: NonEmptyArray<Item>;
 }
 
 export type ItemsResponse = Record<string, Category>;

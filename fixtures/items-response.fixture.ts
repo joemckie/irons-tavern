@@ -1,436 +1,332 @@
-import { ItemsResponse } from '@/types/rank-calculator';
+import {
+  Item,
+  ItemsResponse,
+  RequiredItem,
+  Skill,
+} from '@/types/rank-calculator';
+
+function singleItem({ name, points, image }: Omit<Item, 'requiredItems'>) {
+  return {
+    image,
+    name,
+    points,
+    requiredItems: [
+      {
+        amount: 1,
+        clogName: name,
+      },
+    ],
+  } satisfies Item;
+}
+
+function compoundItem({
+  image,
+  name,
+  points,
+  requiredItems,
+}: Omit<Item, 'requiredItems'> & {
+  requiredItems: NonEmptyArray<string>;
+}) {
+  return {
+    image,
+    name,
+    points,
+    requiredItems: requiredItems.map((clogName) => ({
+      amount: 1,
+      clogName,
+    })) as NonEmptyArray<RequiredItem>,
+  } satisfies Item;
+}
 
 export const itemsResponseFixture: ItemsResponse = {
   'Abyssal Sire': {
     image: 'https://oldschool.runescape.wiki/images/Abyssal_Sire.png',
     items: [
-      {
+      compoundItem({
         image:
           'https://oldschool.runescape.wiki/images/Abyssal_bludgeon_detail.png?dd634',
         name: 'Abyssal bludgeon',
         points: 60,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Bludgeon axon',
-          },
-          {
-            amount: 1,
-            clogName: 'Bludgeon claw',
-          },
-          {
-            amount: 1,
-            clogName: 'Bludgeon spine',
-          },
-        ],
-      },
-      {
+        requiredItems: ['Bludgeon axon', 'Bludgeon claw', 'Bludgeon spine'],
+      }),
+      singleItem({
         image: '',
         name: 'Abyssal dagger',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Abyssal dagger',
-          },
-        ],
-      },
+      }),
     ],
   },
   'Alchemical Hydra': {
     image: '',
     items: [
-      {
+      compoundItem({
         image: '',
         name: 'Brimstone ring',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: "Hydra's eye",
-          },
-          {
-            amount: 1,
-            clogName: "Hydra's fang",
-          },
-          {
-            amount: 1,
-            clogName: "Hydra's heart",
-          },
-        ],
-      },
-      {
+        requiredItems: ["Hydra's eye", "Hydra's fang", "Hydra's heart"],
+      }),
+      singleItem({
         image: '',
         name: 'Hydra tail',
         points: 20,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Hydra tail',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Hydra leather',
         points: 60,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Hydra leather',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: "Hydra's claw",
         points: 120,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: "Hydra's claw",
-          },
-        ],
-      },
+      }),
     ],
   },
   Araxxor: {
     image: '',
     items: [
-      {
+      singleItem({
         image: '',
         name: 'Coagulated venom',
         points: 10,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Coagulated venom',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Noxious blade',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Noxious blade',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Noxious point',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Noxious point',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Noxious pommel',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Noxious pommel',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Araxyte fang',
         points: 60,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Araxyte fang',
-          },
-        ],
-      },
-      {
+      }),
+      compoundItem({
         image: '',
         name: 'Amulet of rancour (s)',
         points: 60,
         requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Noxious blade',
-          },
-          {
-            amount: 1,
-            clogName: 'Noxious point',
-          },
-          {
-            amount: 1,
-            clogName: 'Noxious pommel',
-          },
-          {
-            amount: 1,
-            clogName: 'Areana boots',
-          },
-          {
-            amount: 1,
-            clogName: 'Araxyte head',
-          },
-          {
-            amount: 1,
-            clogName: 'Zenyte shard',
-          },
-          {
-            amount: 1,
-            clogName: 'Rax',
-          },
+          'Noxious blade',
+          'Noxious point',
+          'Noxious pommel',
+          'Areana boots',
+          'Araxyte head',
+          'Zenyte shard',
+          'Rax',
         ],
-      },
+      }),
     ],
   },
   Cerberus: {
     image: '',
     items: [
-      {
+      singleItem({
         image: '',
         name: 'Primordial crystal',
         points: 60,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Primordial crystal',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Pegasian crystal',
         points: 40,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Pegasian crystal',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Eternal crystal',
         points: 30,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Eternal crystal',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Smouldering stone',
-        points: 60,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Smouldering stone',
-          },
-        ],
-      },
+        points: 30,
+      }),
     ],
   },
   'Chambers of Xeric': {
     image: '',
     items: [
-      {
+      singleItem({
         image: '',
         name: 'Dexterous prayer scroll',
         points: 80,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Dexterous prayer scroll',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Arcane prayer scroll',
         points: 50,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Arcane prayer scroll',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Twisted buckler',
         points: 80,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Twisted buckler',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Dragon hunter crossbow',
         points: 150,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Dragon hunter crossbow',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: "Dinh's bulwark",
         points: 80,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: "Dinh's bulwark",
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Ancestral hat',
         points: 120,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Ancestral hat',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Ancestral robe top',
         points: 120,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Ancestral robe top',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Ancestral robe bottom',
         points: 120,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Ancestral robe bottom',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Dragon claws',
         points: 150,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Dragon claws',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Elder maul',
         points: 250,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Elder maul',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Kodai insignia',
         points: 300,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Kodai insignia',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Twisted bow',
         points: 400,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Twisted bow',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Twisted ancestral colour kit',
         points: 80,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Twisted ancestral colour kit',
-          },
-        ],
-      },
-      {
+      }),
+      singleItem({
         image: '',
         name: 'Metamorphic dust',
         points: 300,
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Metamorphic dust',
-          },
-        ],
-      },
+      }),
+    ],
+  },
+  'Commander Zilyana': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Saradomin sword',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: "Saradomin's light",
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Armadyl crossbow',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Saradomin hilt',
+        points: 80,
+      }),
+    ],
+  },
+  'Corporeal Beast': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Spirit shield',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Holy elixir',
+        points: 50,
+      }),
+      compoundItem({
+        image: '',
+        name: 'Spectral spirit shield',
+        points: 150,
+        requiredItems: ['Spirit shield', 'Spectral sigil', 'Holy elixir'],
+      }),
+      compoundItem({
+        image: '',
+        name: 'Arcane spirit shield',
+        points: 150,
+        requiredItems: ['Spirit shield', 'Arcane sigil', 'Holy elixir'],
+      }),
+      compoundItem({
+        image: '',
+        name: 'Elysian spirit shield',
+        points: 150,
+        requiredItems: ['Spirit shield', 'Elysian sigil', 'Holy elixir'],
+      }),
+    ],
+  },
+  'Dagannoth Kings': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Archers ring',
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Berserker ring',
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Seers ring',
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Warrior ring',
+        points: 10,
+      }),
     ],
   },
   Zulrah: {
     image:
       'https://oldschool.runescape.wiki/images/Zulrah_%28serpentine%29.png',
     items: [
-      {
-        name: 'Toxic Blowpipe',
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Tanzanite Fang',
-            requiredLevels: [
-              {
-                level: 73,
-                skill: 'Fletching',
-              },
-            ],
-          },
-        ],
-        image:
-          'https://oldschool.runescape.wiki/images/Toxic_blowpipe_detail.png?6a110',
+      compoundItem({
+        image: '',
+        name: 'Toxic blowpipe',
         points: 80,
-      },
-      {
-        name: 'Magic Fang',
-        requiredItems: [
-          {
-            amount: 1,
-            clogName: 'Magic Fang',
-          },
-        ],
-        image:
-          'https://oldschool.runescape.wiki/images/Magic_fang_detail.png?cd4e3',
+        requiredItems: ['Tanzanite fang'],
+        requiredLevels: {
+          [Skill.Fletching]: 73,
+        },
+      }),
+      singleItem({
+        image: '',
+        name: 'Magic fang',
         points: 60,
-      },
+      }),
     ],
   },
 };
