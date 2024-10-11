@@ -20,7 +20,7 @@ interface CategoryProps {
 }
 
 export function Category({ title, items, image }: CategoryProps) {
-  const fields = useWatch({
+  const fields = useWatch<Record<string, true | undefined>>({
     name: items.map(({ name }) => `items.${name}`),
   });
 
@@ -40,8 +40,8 @@ export function Category({ title, items, image }: CategoryProps) {
       <Separator size="4" my="3" />
       <Grid columns={{ initial: '1', sm: '2', lg: '3' }} gap="3">
         {items.map(({ image, name, points }, i) => (
-          <Card size="2" asChild>
-            <Label key={name}>
+          <Card key={name} size="2" asChild>
+            <Label>
               <Flex align="center" direction="row" gap="3">
                 <Avatar
                   alt={`${name} icon`}
