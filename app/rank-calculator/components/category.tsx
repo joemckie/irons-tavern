@@ -4,19 +4,22 @@ import {
   Box,
   Card,
   Flex,
+  Grid,
   Separator,
   Table,
   Text,
 } from '@radix-ui/themes';
 import { Checkbox } from './checkbox';
 import { useWatch } from 'react-hook-form';
+import { Label } from '@radix-ui/react-label';
 
 interface CategoryProps {
   title: string;
+  image: string;
   items: Item[];
 }
 
-export function Category({ title, items }: CategoryProps) {
+export function Category({ title, items, image }: CategoryProps) {
   const fields = useWatch({
     name: items.map(({ name }) => `items.${name}`),
   });
@@ -24,12 +27,7 @@ export function Category({ title, items }: CategoryProps) {
   return (
     <Card>
       <Flex gap="3" align="center">
-        <Avatar
-          size="3"
-          src="https://placehold.co/66x66.png"
-          radius="full"
-          fallback="T"
-        />
+        <Avatar size="3" src={image} radius="full" fallback="T" />
         <Box>
           <Text as="div" size="2" weight="bold">
             {title}
@@ -40,7 +38,33 @@ export function Category({ title, items }: CategoryProps) {
         </Box>
       </Flex>
       <Separator size="4" my="3" />
-      <Table.Root size="1">
+      <Grid columns={{ initial: '1', sm: '2', lg: '3' }} gap="3">
+        {items.map(({ image, name, points }, i) => (
+          <Card size="2" asChild>
+            <Label key={name}>
+              <Flex align="center" direction="row" gap="3">
+                <Avatar
+                  alt={`${name} icon`}
+                  size="2"
+                  src={image}
+                  variant="soft"
+                  fallback="?"
+                />
+                <Flex direction="column" width="100%">
+                  <Text weight="bold" size="2">
+                    {name}
+                  </Text>
+                  <Text size="1">
+                    {fields[i] ? points : 0} / {points} points
+                  </Text>
+                </Flex>
+                <Checkbox name={`items.${name}`} />
+              </Flex>
+            </Label>
+          </Card>
+        ))}
+      </Grid>
+      {/* <Table.Root size="1">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
@@ -72,7 +96,7 @@ export function Category({ title, items }: CategoryProps) {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table.Root>
+      </Table.Root> */}
     </Card>
   );
 }

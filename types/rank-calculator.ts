@@ -54,4 +54,9 @@ export interface Item {
   image: string;
 }
 
-export type ItemsResponse = Record<string, Item[]>;
+interface Category {
+  image: string;
+  items: Item[];
+}
+
+export type ItemsResponse = Record<string, Category>;

@@ -43,7 +43,7 @@ export default function RankCalculator() {
     defaultValues: {
       playerName: 'cousinofkos',
       items: Object.entries(items ?? {}).reduce(
-        (acc, [, items]) => {
+        (acc, [, { items }]) => {
           items.forEach((item) => {
             acc[item.name] = false;
           });
@@ -107,7 +107,11 @@ export default function RankCalculator() {
                 </Flex>
               </Section>
               {isLoading ? <Skeleton /> : <ItemList items={items} />}
-              <Button type="submit">Submit</Button>
+              <Box mt="4">
+                <Button size="3" type="submit">
+                  Submit
+                </Button>
+              </Box>
             </form>
           </Box>
           <Box gridArea="sidebar" asChild>

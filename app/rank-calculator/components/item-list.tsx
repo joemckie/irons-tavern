@@ -13,8 +13,13 @@ export function ItemList({ items }: ItemListProps) {
 
   return (
     <Flex direction="column" gap="4">
-      {Object.entries(items).map(([title, items]) => (
-        <Category title={title} items={items} key={title} />
+      {Object.entries(items).map(([title, category]) => (
+        <Category
+          title={title}
+          items={category.items}
+          image={category.image}
+          key={title}
+        />
       ))}
     </Flex>
   );
