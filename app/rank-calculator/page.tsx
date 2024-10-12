@@ -45,7 +45,7 @@ export default function RankCalculator() {
       items: Object.entries(items ?? {}).reduce(
         (acc, [, { items }]) => {
           items.forEach((item) => {
-            acc[item.name] = false;
+            acc[item.name.replaceAll("'", '')] = false;
           });
 
           return acc;

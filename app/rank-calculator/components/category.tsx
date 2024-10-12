@@ -21,7 +21,7 @@ interface CategoryProps {
 
 export function Category({ title, items, image }: CategoryProps) {
   const fields = useWatch<Record<string, true | undefined>>({
-    name: items.map(({ name }) => `items.${name}`),
+    name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
   });
 
   return (
@@ -58,7 +58,7 @@ export function Category({ title, items, image }: CategoryProps) {
                     {fields[i] ? points : 0} / {points} points
                   </Text>
                 </Flex>
-                <Checkbox name={`items.${name}`} />
+                <Checkbox name={`items.${name.replaceAll("'", '')}`} />
               </Flex>
             </Label>
           </Card>

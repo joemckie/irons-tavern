@@ -4,16 +4,16 @@ import { useController } from 'react-hook-form';
 
 type CheckboxProps = {
   name: string;
-} & Omit<ComponentProps<'button'>, 'ref'>;
+} & Omit<ComponentProps<'button'>, 'ref' | 'color'>;
 
 export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
-  ({ name }, forwardedRef) => {
-    const { field } = useController({ name });
+  (props, forwardedRef) => {
+    const { field } = useController({ name: props.name });
 
     return (
       <BaseCheckbox
+        {...props}
         onCheckedChange={field.onChange}
-        name={name}
         checked={field.value}
         ref={forwardedRef}
       />
