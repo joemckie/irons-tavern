@@ -1,19 +1,19 @@
-import { ItemsResponse } from '@/types/rank-calculator';
+import { ItemCategory } from '@/types/rank-calculator';
 import { Category } from './category';
 import { Flex } from '@radix-ui/themes';
 
 interface ItemListProps {
-  items: ItemsResponse | undefined;
+  categories: [string, ItemCategory][] | undefined;
 }
 
-export function ItemList({ items }: ItemListProps) {
-  if (!items) {
+export function ItemList({ categories }: ItemListProps) {
+  if (!categories) {
     return null;
   }
 
   return (
     <Flex direction="column" gap="4">
-      {Object.entries(items).map(([title, category]) => (
+      {categories.map(([title, category]) => (
         <Category
           title={title}
           items={category.items}

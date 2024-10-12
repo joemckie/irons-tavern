@@ -7,21 +7,10 @@ import { constants } from '@/config/constants';
 import { useQuery } from '@tanstack/react-query';
 import { ItemList } from './components/item-list';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Card,
-  DataList,
-  Flex,
-  Grid,
-  ScrollArea,
-  Skeleton,
-  Spinner,
-  TextField,
-} from '@radix-ui/themes';
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Flex, Grid, ScrollArea, Spinner } from '@radix-ui/themes';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 function useGetItems() {
   return useQuery({
@@ -41,11 +30,12 @@ interface FormData {
 
 export default function RankCalculator() {
   const [playerDetails, setPlayerDetails] = useState<PlayerDataResponse>();
-  const { data: items, isLoading } = useGetItems();
+  const { data: rawItemCategories, isLoading } = useGetItems();
+  const itemCategories = Object.entries(rawItemCategories ?? {});
   const methods = useForm<FormData>({
     defaultValues: {
       playerName: '',
-      items: Object.entries(items ?? {}).reduce(
+      items: itemCategories.reduce(
         (acc, [, { items }]) => {
           items.forEach((item) => {
             acc[item.name.replaceAll("'", '')] = false;
@@ -92,18 +82,23 @@ export default function RankCalculator() {
       >
         <Navigation ref={navRef} />
         <Sidebar handlePlayerSearch={handlePlayerSearch} />
-        <Flex gridArea="main" asChild align="center" direction="column">
+        <Flex gridArea="main" asChild direction="column">
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             {isLoading ? (
               <Spinner size="3" />
             ) : (
-              <ScrollArea
-                style={{
-                  height: `calc(100vh - ${navHeight}px)`,
-                }}
-              >
-                <ItemList items={items} />
-              </ScrollArea>
+              <AutoSizer>
+                {({ height, width }) => (
+                  <ScrollArea
+                    style={{
+                      height: `${height}px`,
+                      width: `${width}px`,
+                    }}
+                  >
+                    <ItemList categories={itemCategories} />
+                  </ScrollArea>
+                )}
+              </AutoSizer>
             )}
           </form>
         </Flex>

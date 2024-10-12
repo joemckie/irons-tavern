@@ -14,12 +14,14 @@ import { useWatch } from 'react-hook-form';
 import { Label } from '@radix-ui/react-label';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { parseInitials } from '../utils/parse-initials';
+import { CSSProperties } from 'react';
 
 interface CategoryProps {
   title: string;
   image?: string;
   items: Item[];
   layout?: 'table' | 'cards';
+  style?: CSSProperties;
 }
 
 export function Category({

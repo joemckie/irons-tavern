@@ -96,9 +96,9 @@ export type Item =
   | CombatAchievementItem
   | QuestItem;
 
-interface Category {
+export interface ItemCategory {
   image?: string;
   items: NonEmptyArray<Item>;
 }
 
-export type ItemsResponse = Record<string, Category>;
+export type ItemsResponse = Record<string, ItemCategory>;
