@@ -89,7 +89,7 @@ export interface CombatAchievementItem extends BaseItem {
 export type Item = BaseItem | CollectionLogItem | CombatAchievementItem;
 
 interface Category {
-  image: string;
+  image?: string;
   items: NonEmptyArray<Item>;
 }
 

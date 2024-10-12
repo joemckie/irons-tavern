@@ -17,4 +17,7 @@ export const constants = {
     leaders: [Rank.Owner, Rank['Deputy Owner'], Rank.Artisan],
     unranked: Rank.Air,
   },
+  wiki: {
+    baseUrl: 'https://oldschool.runescape.wiki' as const,
+  },
 };

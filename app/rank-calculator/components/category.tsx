@@ -13,6 +13,8 @@ import {
 import { Checkbox } from './checkbox';
 import { useWatch } from 'react-hook-form';
 import { Label } from '@radix-ui/react-label';
+import { formatWikiImageUrl } from '../utils/format-wiki-image-url';
+import { parseInitials } from '../utils/parse-initials';
 
 interface CategoryProps {
   title: string;
@@ -20,7 +22,11 @@ interface CategoryProps {
   items: Item[];
 }
 
-export function Category({ title, items, image }: CategoryProps) {
+export function Category({
+  title,
+  items,
+  image = formatWikiImageUrl(title),
+}: CategoryProps) {
   const fields = useWatch<Record<string, true | undefined>>({
     name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
   });
@@ -28,7 +34,7 @@ export function Category({ title, items, image }: CategoryProps) {
   return (
     <Card>
       <Flex gap="3" align="center">
-        <Avatar size="3" src={image} radius="full" fallback="T" />
+        <Avatar size="3" src={image} fallback={parseInitials(title)} />
         <Box>
           <Text as="div" size="2" weight="bold">
             {title}
