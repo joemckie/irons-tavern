@@ -1,12 +1,5 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import {
-  Box,
-  Button,
-  DataList,
-  Flex,
-  Section,
-  TextField,
-} from '@radix-ui/themes';
+import { Box, Button, DataList, Flex, TextField } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 
 interface SidebarProps {

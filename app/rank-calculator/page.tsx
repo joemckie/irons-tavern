@@ -5,12 +5,11 @@ import { useRef, useState } from 'react';
 import { ItemsResponse, PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { useQuery } from '@tanstack/react-query';
-import { ItemList } from './components/item-list';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, ScrollArea, Spinner } from '@radix-ui/themes';
+import { Flex, Grid, Spinner } from '@radix-ui/themes';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import { ItemList } from './components/item-list';
 
 function useGetItems() {
   return useQuery({
@@ -82,23 +81,19 @@ export default function RankCalculator() {
       >
         <Navigation ref={navRef} />
         <Sidebar handlePlayerSearch={handlePlayerSearch} />
-        <Flex gridArea="main" asChild direction="column">
+        <Flex
+          gridArea="main"
+          asChild
+          direction="column"
+          flexBasis="1"
+          style={{ background: 'red' }}
+          height={`calc(100vh - ${navHeight}px)`}
+        >
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             {isLoading ? (
               <Spinner size="3" />
             ) : (
-              <AutoSizer>
-                {({ height, width }) => (
-                  <ScrollArea
-                    style={{
-                      height: `${height}px`,
-                      width: `${width}px`,
-                    }}
-                  >
-                    <ItemList categories={itemCategories} />
-                  </ScrollArea>
-                )}
-              </AutoSizer>
+              <ItemList categories={itemCategories} />
             )}
           </form>
         </Flex>

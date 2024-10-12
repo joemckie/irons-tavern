@@ -9,32 +9,42 @@ import {
   Table,
   Text,
 } from '@radix-ui/themes';
-import { Checkbox } from './checkbox';
 import { useWatch } from 'react-hook-form';
 import { Label } from '@radix-ui/react-label';
+import { CSSProperties, useEffect, useRef } from 'react';
+import { Checkbox } from './checkbox';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { parseInitials } from '../utils/parse-initials';
-import { CSSProperties } from 'react';
 
 interface CategoryProps {
+  index: number;
   title: string;
   image?: string;
   items: Item[];
   layout?: 'table' | 'cards';
-  style?: CSSProperties;
+  setSize: (index: number, size: number) => void;
 }
 
 export function Category({
+  index,
   title,
   items,
   image = formatWikiImageUrl(title),
   layout = 'table',
+  setSize,
 }: CategoryProps) {
   const fields = useWatch<Record<string, true | undefined>>({
     name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
   });
   const completedCount = fields.filter(Boolean).length;
   const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
+  const categoryRef = useRef<HTMLDivElement>();
+
+  useEffect(() => {
+    if (categoryRef.current) {
+      setSize(index, categoryRef.current.getBoundingClientRect().height);
+    }
+  }, [setSize, index]);
 
   return (
     <Card>
@@ -46,7 +56,10 @@ export function Category({
               {title}
             </Text>
             <Text as="div" size="2" color="gray">
-              {completedCount} / {items.length}
+              {completedCount}
+              {' '}
+              /
+              {items.length}
             </Text>
           </Box>
         </Flex>
@@ -55,7 +68,8 @@ export function Category({
           weight="bold"
           size="4"
         >
-          {percentComplete}%
+          {percentComplete}
+          %
         </Text>
       </Flex>
       <Separator
@@ -81,7 +95,12 @@ export function Category({
                       {name}
                     </Text>
                     <Text size="1">
-                      {fields[i] ? points : 0} / {points} points
+                      {fields[i] ? points : 0}
+                      {' '}
+                      /
+                      {points}
+                      {' '}
+                      points
                     </Text>
                   </Flex>
                   <Checkbox name={`items.${name.replaceAll("'", '')}`} />
@@ -123,7 +142,10 @@ export function Category({
                   <Checkbox name={`items.${name.replaceAll("'", '')}`} />
                 </Table.Cell>
                 <Table.Cell align="right" width="100px">
-                  {fields[i] ? points : 0} / {points}
+                  {fields[i] ? points : 0}
+                  {' '}
+                  /
+                  {points}
                 </Table.Cell>
               </Table.Row>
             ))}
