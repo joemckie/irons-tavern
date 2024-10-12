@@ -16,7 +16,7 @@ export const playerDataFixture: PlayerDataResponse = {
     Varrock: 'Elite',
     Wilderness: 'Elite',
   },
-  items: ['Music Cape', 'Quest Cape', 'Toxic Blowpipe', 'Magic Fang'],
+  items: ['Music Cape', 'Quest Cape', 'Toxic blowpipe', 'Magic fang'],
   lastChecked: 23958235,
   username: 'CousinOfKos',
   clogs: 700,

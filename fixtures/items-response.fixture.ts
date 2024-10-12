@@ -543,6 +543,297 @@ export const itemsResponseFixture: ItemsResponse = {
       }),
     ],
   },
+  'General Graardor': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Bandos chestplate',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Bandos tassets',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Bandos boots',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Bandos hilt',
+        points: 100,
+      }),
+    ],
+  },
+  'Grotesque Guardians': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Granite gloves',
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Granite ring',
+        points: 10,
+      }),
+      singleItem({
+        image: '',
+        name: 'Granite hammer',
+        points: 30,
+      }),
+      compoundItem({
+        image: '',
+        name: 'Guardian boots',
+        points: 50,
+        requiredItems: ['Bandos boots', 'Black tourmaline core'],
+      }),
+    ],
+  },
+  Kraken: {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Trident of the seas (full)',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Kraken tentacle',
+        points: 30,
+      }),
+    ],
+  },
+  "Kree'arra": {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Armadyl helmet',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Armadyl chestplate',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Armadyl chainskirt',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Armadyl hilt',
+        points: 80,
+      }),
+    ],
+  },
+  "K'ril Tsutsaroth": {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Steam battlestaff',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Zamorakian spear',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Staff of the dead',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Zamorak hilt',
+        points: 80,
+      }),
+    ],
+  },
+  Sarachnis: {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Sarachnis cudgel',
+        points: 20,
+      }),
+    ],
+  },
+  'The Gauntlet': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Crystal weapon seed',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Crystal armour seed',
+        points: 20,
+      }),
+      {
+        image: '',
+        name: 'Enhanced crystal weapon seed (1)',
+        points: 150,
+        requiredItems: [
+          {
+            amount: 1,
+            clogName: 'Enhanced crystal weapon seed',
+          },
+        ],
+      },
+      {
+        image: '',
+        name: 'Enhanced crystal weapon seed (2)',
+        points: 150,
+        requiredItems: [
+          {
+            amount: 2,
+            clogName: 'Enhanced crystal weapon seed',
+          },
+        ],
+      },
+    ],
+  },
+  'Theatre of Blood': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Avernic defender hilt',
+        points: 50,
+      }),
+      singleItem({
+        image: '',
+        name: 'Justiciar faceguard',
+        points: 60,
+      }),
+      singleItem({
+        image: '',
+        name: 'Justiciar chestguard',
+        points: 60,
+      }),
+      singleItem({
+        image: '',
+        name: 'Justiciar legguards',
+        points: 60,
+      }),
+      singleItem({
+        image: '',
+        name: 'Ghrazi rapier',
+        points: 100,
+      }),
+      singleItem({
+        image: '',
+        name: 'Sanguinesti staff',
+        points: 100,
+      }),
+      singleItem({
+        image: '',
+        name: 'Scythe of vitur (uncharged)',
+        points: 300,
+      }),
+      singleItem({
+        image: '',
+        name: 'Holy ornament kit',
+        points: 100,
+      }),
+      singleItem({
+        image: '',
+        name: 'Sanguine ornament kit',
+        points: 150,
+      }),
+      singleItem({
+        image: '',
+        name: 'Sanguine dust',
+        points: 300,
+      }),
+    ],
+  },
+  'Thermonuclear Smoke Devil': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Occult necklace',
+        points: 30,
+      }),
+      singleItem({
+        image: '',
+        name: 'Smoke battlestaff',
+        points: 30,
+      }),
+    ],
+  },
+  'Tormented Demons': {
+    image: '',
+    items: [
+      compoundItem({
+        image: '',
+        name: 'Burning claws',
+        points: 100,
+        requiredItems: [['Burning claw', 2]],
+      }),
+      ...Array.from({ length: 3 }).map<Item>((_, i) => ({
+        image: '',
+        name: `Tormented synampse (${i + 1})`,
+        points: 50,
+        requiredItems: [
+          {
+            amount: i + 1,
+            clogName: 'Tormented synampse',
+          },
+        ],
+      })),
+    ],
+  },
+  'TzHaar Challenges': {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: 'Fire cape',
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Infernal cape',
+        points: 7000,
+      }),
+      combatAchievementItem({
+        image: '',
+        name: '6 Jads',
+        points: 100,
+        requiredCombatAchievements: [0],
+      }),
+    ],
+  },
+  Vorkath: {
+    image: '',
+    items: [
+      singleItem({
+        image: '',
+        name: "Vorkath's head",
+        points: 20,
+      }),
+      singleItem({
+        image: '',
+        name: 'Dragonbone necklace',
+        points: 100,
+      }),
+    ],
+  },
   Zulrah: {
     image:
       'https://oldschool.runescape.wiki/images/Zulrah_%28serpentine%29.png',
@@ -559,7 +850,22 @@ export const itemsResponseFixture: ItemsResponse = {
       singleItem({
         image: '',
         name: 'Magic fang',
+        points: 80,
+      }),
+      singleItem({
+        image: '',
+        name: 'Serpentine visage',
         points: 60,
+      }),
+      singleItem({
+        image: '',
+        name: 'Tanzanite mutagen',
+        points: 150,
+      }),
+      singleItem({
+        image: '',
+        name: 'Magma mutagen',
+        points: 150,
       }),
     ],
   },
