@@ -86,7 +86,15 @@ export interface CombatAchievementItem extends BaseItem {
   requiredCombatAchievements: NonEmptyArray<number>;
 }
 
-export type Item = BaseItem | CollectionLogItem | CombatAchievementItem;
+export interface QuestItem extends BaseItem {
+  requiredQuests: NonEmptyArray<string>;
+}
+
+export type Item =
+  | BaseItem
+  | CollectionLogItem
+  | CombatAchievementItem
+  | QuestItem;
 
 interface Category {
   image?: string;

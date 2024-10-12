@@ -5,6 +5,7 @@ import {
   CombatAchievementItem,
   Item,
   ItemsResponse,
+  QuestItem,
   RequiredItem,
   Skill,
 } from '@/types/rank-calculator';
@@ -82,6 +83,20 @@ function combatAchievementItem({
     points,
     requiredCombatAchievements,
   } satisfies CombatAchievementItem;
+}
+
+function questItem({
+  name,
+  image = formatWikiImageUrl(name),
+  points,
+  requiredQuests,
+}: OptionalKeys<QuestItem, 'image'>) {
+  return {
+    image,
+    name,
+    points,
+    requiredQuests,
+  } satisfies QuestItem;
 }
 
 function manualItem({
@@ -801,5 +816,539 @@ export const itemsResponseFixture: ItemsResponse = {
         points: 200,
       }),
     ],
+  },
+  'Tombs of Amascut': {
+    items: [
+      singleItem({
+        name: 'Thread of elidinis',
+        points: 10,
+      }),
+      singleItem({
+        name: 'Eye of the corruptor',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Jewel of the sun',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Breach of the scarab',
+        points: 20,
+      }),
+      singleItem({
+        name: "Osmumten's fang",
+        points: 40,
+      }),
+      singleItem({
+        name: 'Lightbearer',
+        points: 40,
+      }),
+      singleItem({
+        name: "Elidinis' ward",
+        points: 60,
+      }),
+      singleItem({
+        name: 'Masori mask',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Masori body',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Masori chaps',
+        points: 100,
+      }),
+      singleItem({
+        name: "Tumeken's shadow",
+        clogName: "Tumeken's shadow (uncharged)",
+        points: 0,
+      }),
+      singleItem({
+        name: 'Masori crafting kit',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Menaphite ornament kit',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Remnant of akkha',
+        points: 120,
+      }),
+      singleItem({
+        name: 'Remnant of ba-ba',
+        points: 80,
+      }),
+      singleItem({
+        name: 'Remnant of kephri',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Remnant of zebak',
+        points: 80,
+      }),
+      singleItem({
+        name: 'Ancient remnant',
+        points: 80,
+      }),
+      singleItem({
+        name: 'Cursed phalanx',
+        points: 200,
+      }),
+    ],
+  },
+  'Perilous Moons': {
+    items: [
+      singleItem({
+        name: 'Eclipse atlatl',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Eclipse moon helm',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Eclipse moon chestplate',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Eclipse moon tassets',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Dual macuahuitl',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blood moon helm',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blood moon chestplate',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blood moon tassets',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blue moon spear',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blue moon helm',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blue moon chestplate',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Blue moon tassets',
+        points: 20,
+      }),
+    ],
+  },
+  'Phantom Muspah': {
+    items: [
+      singleItem({
+        name: 'Ancient sceptre',
+        points: 30,
+        clogName: 'Ancient icon',
+      }),
+      compoundItem({
+        name: 'Venator bow',
+        points: 80,
+        requiredItems: [['Venator shard', 5]],
+      }),
+      manualItem({
+        name: 'Saturated heart',
+        points: 60,
+      }),
+    ],
+  },
+  'Wilderness items': {
+    items: [
+      questItem({
+        name: 'Mage Arena 2 cape',
+        points: 20,
+        requiredQuests: [''],
+      }),
+      compoundItem({
+        name: 'Odium ward',
+        points: 30,
+        requiredItems: ['Odium shard 1', 'Odium shard 2', 'Odium shard 3'],
+      }),
+      compoundItem({
+        name: 'Malediction ward',
+        points: 30,
+        requiredItems: [
+          'Malediction shard 1',
+          'Malediction shard 2',
+          'Malediction shard 3',
+        ],
+      }),
+      singleItem({
+        name: 'Dragon pickaxe',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Ring of the gods',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Treasonous ring',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Tyrannical ring',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Amulet of eternal glory',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Amulet of avarice',
+        points: 50,
+      }),
+      compoundItem({
+        name: 'Obelisk',
+        image:
+          'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
+        points: 100,
+        requiredItems: [['Ancient crystal', 4]],
+        requiredLevels: {
+          [Skill.Construction]: 72,
+        },
+      }),
+      singleItem({
+        name: "Viggora's chainmace",
+        clogName: "Viggora's chainmace (u)",
+        points: 100,
+      }),
+      singleItem({
+        name: 'Claws of callisto',
+        points: 50,
+      }),
+      singleItem({
+        name: "Craw's bow",
+        clogName: "Craw's bow (u)",
+        points: 100,
+      }),
+      singleItem({
+        name: 'Fangs of venenatis',
+        points: 50,
+      }),
+      singleItem({
+        name: "Thammaron's sceptre",
+        clogName: "Thammaron's sceptre (u)",
+        points: 100,
+      }),
+      singleItem({
+        name: "Skull of vet'ion",
+        points: 50,
+      }),
+      compoundItem({
+        name: 'Voidwaker',
+        points: 150,
+        requiredItems: ['Voidwaker hilt', 'Voidwaker gem', 'Voidwaker blade'],
+      }),
+      singleItem({
+        name: 'Teleport anchoring scroll',
+        points: 100,
+      }),
+    ],
+  },
+  'Major Slayer Items': {
+    items: [
+      manualItem({
+        name: 'Slayer helmet (i)',
+        points: 10,
+      }),
+      singleItem({
+        name: 'Leaf-bladed battleaxe',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Warped sceptre',
+        clogName: 'Warped sceptre (uncharged)',
+        points: 20,
+      }),
+      compoundItem({
+        name: 'Devout boots',
+        points: 20,
+        requiredItems: ["Drake's tooth", 'Holy sandals'],
+      }),
+      singleItem({
+        name: 'Boots of brimstone',
+        clogName: "Drake's claw",
+        points: 0,
+      }),
+      singleItem({
+        name: 'Neitiznot faceguard',
+        clogName: 'Basilisk jaw',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Abyssal whip',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Dark bow',
+        points: 20,
+      }),
+      singleItem({
+        name: 'Mist battlestaff',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Dust battlestaff',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Eternal gem',
+        points: 150,
+      }),
+      singleItem({
+        name: 'Imbued heart',
+        points: 250,
+      }),
+    ],
+  },
+  Visages: {
+    items: [
+      singleItem({
+        name: 'Dragonfire shield',
+        clogName: 'Draconic visage',
+        points: 150,
+      }),
+      singleItem({
+        name: 'Dragonfire ward',
+        clogName: 'Skeletal visage',
+        points: 200,
+      }),
+      singleItem({
+        name: 'Ancient wyvern shield',
+        clogName: 'Wyvern visage',
+        points: 200,
+      }),
+    ],
+  },
+  'Misc Items': {
+    items: [
+      questItem({
+        name: 'Barrows gloves',
+        points: 20,
+        requiredQuests: [''],
+      }),
+      questItem({
+        name: 'Book of the dead',
+        points: 10,
+        requiredQuests: [''],
+      }),
+      singleItem({
+        name: 'Bottomless compost bucket',
+        points: 30,
+      }),
+      singleItem({
+        name: "Bryophyta's essence",
+        points: 50,
+      }),
+      singleItem({
+        name: 'Crystal tool seed',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Dragon warhammer',
+        points: 100,
+      }),
+      compoundItem({
+        name: 'Graceful set',
+        points: 20,
+        requiredItems: [
+          'Graceful hood',
+          'Graceful top',
+          'Graceful legs',
+          'Graceful gloves',
+          'Graceful boots',
+          'Graceful cape',
+        ],
+      }),
+      singleItem({
+        name: 'Ham joint',
+        points: 20,
+      }),
+      manualItem({
+        name: 'Music cape',
+        points: 80,
+      }),
+      questItem({
+        name: 'Quest cape',
+        points: 0,
+        requiredQuests: [''],
+      }),
+      singleItem({
+        name: 'Ranger boots',
+        points: 60,
+      }),
+      singleItem({
+        name: 'Ring of endurance',
+        clogName: 'Ring of endurance (uncharged)',
+        points: 120,
+      }),
+      singleItem({
+        name: 'Swift blade',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Tome of fire',
+        clogName: 'Tome of fire (empty)',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Tome of water',
+        clogName: 'Tome of water (empty)',
+        points: 30,
+      }),
+      singleItem({
+        name: 'Zombie axe',
+        clogName: 'Broken zombie axe',
+        points: 20,
+        requiredLevels: {
+          [Skill.Smithing]: 65,
+        },
+      }),
+    ],
+  },
+  Jars: {
+    items: [
+      singleItem({
+        name: 'Jar of chemicals (Hydra)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of darkness (Skotizo)',
+        points: 150,
+      }),
+      singleItem({
+        name: 'Jar of decay (Vorkath)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of dirt (Kraken)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of dreams (Nightmare)',
+        points: 150,
+      }),
+      singleItem({
+        name: 'Jar of eyes (Sarachnis)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of miasma (Sire)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of sand (Kalphite Queen)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of smoke (Thermy)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of souls (Cerberus)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of spirits (Corp)',
+        points: 150,
+      }),
+      singleItem({
+        name: 'Jar of stone (GGs)',
+        points: 100,
+      }),
+      singleItem({
+        name: 'Jar of swamp (Zulrah)',
+        points: 50,
+      }),
+      singleItem({
+        name: 'Jar of venom (Araxxor)',
+        points: 50,
+      }),
+    ],
+  },
+  Pets: {
+    items: Object.entries({
+      'Abyssal orphan': 100,
+      'Abyssal protector': 150,
+      'Baby chinchompa': 150,
+      'Baby mole': 50,
+      Baron: 110,
+      Beaver: 150,
+      Bloodhound: 400,
+      Butch: 130,
+      'Callisto cub': 80,
+      'Chompy chick': 10,
+      'Giant squirrel': 200,
+      Hellpuppy: 80,
+      Herbi: 120,
+      Heron: 150,
+      'Ikkle hydra': 140,
+      'Jal-nib-rek': 200,
+      'Kalphite princess': 100,
+      "Lil' creator": 100,
+      "Lil'viathan": 140,
+      "Lil' zik": 200,
+      'Little nightmare': 300,
+      Muphin: 80,
+      Nexling: 250,
+      Nid: 70,
+      Noon: 120,
+      Olmlet: 400,
+      'Pet chaos elemental': 20,
+      'Pet dagannoth prime': 100,
+      'Pet dagannoth rex': 100,
+      'Pet dagannoth supreme': 100,
+      'Pet dark core': 400,
+      'Pet general graardor': 150,
+      'Pet kraken': 50,
+      "Pet kree'arra": 200,
+      "Pet k'ril Tsutsaroth": 150,
+      'Pet penance queen': 500,
+      'Pet smoke devil': 60,
+      'Pet snakeling': 120,
+      'Pet zilyana': 200,
+      Phoenix: 150,
+      'Prince black dragon': 80,
+      Quetzin: 150,
+      'Rift guardian': 300,
+      'Rock golem': 200,
+      Rocky: 100,
+      "Scorpia's offspring": 60,
+      Scurry: 50,
+      Skotos: 40,
+      Smolcano: 160,
+      'Smol heredit': 150,
+      Sraracha: 70,
+      Tangleroot: 400,
+      'Tiny tempor': 200,
+      "Tumeken's guardian": 200,
+      'Tzrek-jad': 140,
+      'Venenatis spiderling': 80,
+      "Vet'ion jr.": 100,
+      Vorki: 120,
+      Wisp: 120,
+      Youngllef: 160,
+    }).map<Item>(([name, points]) =>
+      singleItem({
+        name,
+        points,
+      }),
+    ) as NonEmptyArray<Item>,
   },
 };
