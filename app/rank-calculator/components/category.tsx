@@ -5,6 +5,7 @@ import {
   Card,
   Flex,
   Grid,
+  Section,
   Separator,
   Table,
   Text,
@@ -64,7 +65,7 @@ export function Category({ title, items, image }: CategoryProps) {
           </Card>
         ))}
       </Grid>
-      {/* <Table.Root size="1">
+      {/* <Table.Root size="1" variant="surface">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
@@ -90,7 +91,7 @@ export function Category({ title, items, image }: CategoryProps) {
               </Table.Cell>
               <Table.Cell>{points}</Table.Cell>
               <Table.Cell>
-                <Checkbox name={`items.${name}`} />
+                <Checkbox name={`items.${name.replaceAll("'", '')}`} />
               </Table.Cell>
               <Table.Cell>{fields[i] ? points : 0}</Table.Cell>
             </Table.Row>

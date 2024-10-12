@@ -12,7 +12,8 @@ function singleItem({
   name,
   points,
   image,
-}: Omit<CollectionLogItem, 'requiredItems'>) {
+  clogName,
+}: Omit<CollectionLogItem, 'requiredItems'> & { clogName?: string }) {
   return {
     image,
     name,
@@ -20,7 +21,7 @@ function singleItem({
     requiredItems: [
       {
         amount: 1,
-        clogName: name,
+        clogName: clogName ?? name,
       },
     ],
   } satisfies CollectionLogItem;
@@ -838,11 +839,11 @@ export const itemsResponseFixture: ItemsResponse = {
     image:
       'https://oldschool.runescape.wiki/images/Zulrah_%28serpentine%29.png',
     items: [
-      compoundItem({
+      singleItem({
         image: '',
         name: 'Toxic blowpipe',
         points: 80,
-        requiredItems: ['Tanzanite fang'],
+        clogName: 'Tanzanite fang',
         requiredLevels: {
           [Skill.Fletching]: 73,
         },
