@@ -1,7 +1,7 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ItemsResponse, PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { useQuery } from '@tanstack/react-query';
@@ -11,14 +11,17 @@ import {
   Box,
   Button,
   Card,
-  Container,
+  DataList,
   Flex,
   Grid,
-  Section,
+  ScrollArea,
   Skeleton,
+  Spinner,
   TextField,
 } from '@radix-ui/themes';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
+import { Sidebar } from './components/sidebar';
+import { Navigation } from './components/navigation';
 
 function useGetItems() {
   return useQuery({
@@ -55,6 +58,9 @@ export default function RankCalculator() {
     },
   });
 
+  const navRef = useRef<HTMLElement>(null);
+  const navHeight = `${navRef.current?.offsetHeight}`;
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
   };
@@ -74,71 +80,34 @@ export default function RankCalculator() {
   }
 
   return (
-    <Container>
+    <FormProvider {...methods}>
       <Grid
         areas="
-      'header header header header'
-      'sidebar main main main'
-      'sidebar main main main'
-      "
-        columns="repeat(4, 1fr)"
-        gap="4"
+          'nav nav'
+          'sidebar main'
+        "
+        columns="[sidebar] minmax(0, 1fr) [main] minmax(0, 4fr)"
+        rows={`[nav] ${navHeight}px [main] calc(100vh - ${navHeight}px)`}
+        gapX="3"
       >
-        <Box gridArea="header" asChild>
-          <Card asChild>
-            <header>Header</header>
-          </Card>
-        </Box>
-        <FormProvider {...methods}>
-          <Box gridArea="main" asChild>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-              <Section size="1">
-                <Flex gap="2">
-                  <TextField.Root
-                    placeholder="Player name"
-                    type="search"
-                    {...methods.register('playerName')}
-                  >
-                    <TextField.Slot>
-                      <MagnifyingGlassIcon />
-                    </TextField.Slot>
-                  </TextField.Root>
-                  <Button
-                    onClick={handlePlayerSearch}
-                    type="button"
-                    variant="soft"
-                  >
-                    Search
-                  </Button>
-                </Flex>
-              </Section>
-              {isLoading ? (
-                <Grid gap="3">
-                  <Card>
-                    <Skeleton />
-                  </Card>
-                  <Card>
-                    <Skeleton />
-                  </Card>
-                  <Card>
-                    <Skeleton />
-                  </Card>
-                </Grid>
-              ) : (
+        <Navigation ref={navRef} />
+        <Sidebar handlePlayerSearch={handlePlayerSearch} />
+        <Flex gridArea="main" asChild align="center" direction="column">
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
+            {isLoading ? (
+              <Spinner size="3" />
+            ) : (
+              <ScrollArea
+                style={{
+                  height: `calc(100vh - ${navHeight}px)`,
+                }}
+              >
                 <ItemList items={items} />
-              )}
-              <Box mt="4">
-                <Button size="3" type="submit">
-                  Submit
-                </Button>
-              </Box>
-            </form>
-          </Box>
-          <Box gridArea="sidebar" asChild>
-            <Card>Sidebar</Card>
-          </Box>
-        </FormProvider>
+              </ScrollArea>
+            )}
+          </form>
+        </Flex>
       </Grid>
-    </Container>
+    </FormProvider>
   );
 }
