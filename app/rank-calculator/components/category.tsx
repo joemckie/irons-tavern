@@ -5,7 +5,6 @@ import {
   Card,
   Flex,
   Grid,
-  Section,
   Separator,
   Table,
   Text,
@@ -18,14 +17,16 @@ import { parseInitials } from '../utils/parse-initials';
 
 interface CategoryProps {
   title: string;
-  image: string;
+  image?: string;
   items: Item[];
+  layout?: 'table' | 'cards';
 }
 
 export function Category({
   title,
   items,
   image = formatWikiImageUrl(title),
+  layout = 'table',
 }: CategoryProps) {
   const fields = useWatch<Record<string, true | undefined>>({
     name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
@@ -44,47 +45,17 @@ export function Category({
           </Text>
         </Box>
       </Flex>
-      <Separator size="4" my="3" />
-      <Grid columns={{ initial: '1', sm: '2', lg: '3' }} gap="3">
-        {items.map(({ image, name, points }, i) => (
-          <Card key={name} size="2" asChild>
-            <Label>
-              <Flex align="center" direction="row" gap="3">
-                <Avatar
-                  alt={`${name} icon`}
-                  size="2"
-                  src={image}
-                  variant="soft"
-                  fallback="?"
-                />
-                <Flex direction="column" width="100%">
-                  <Text weight="bold" size="2">
-                    {name}
-                  </Text>
-                  <Text size="1">
-                    {fields[i] ? points : 0} / {points} points
-                  </Text>
-                </Flex>
-                <Checkbox name={`items.${name.replaceAll("'", '')}`} />
-              </Flex>
-            </Label>
-          </Card>
-        ))}
-      </Grid>
-      {/* <Table.Root size="1" variant="surface">
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Points Available</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Acquired?</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Points Awarded</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
+      <Separator
+        size="4"
+        my="3"
+        style={{ backgroundColor: 'var(--accent-a4)' }}
+      />
+      {layout === 'cards' && (
+        <Grid columns={{ initial: '1', sm: '2', lg: '4' }} gap="3">
           {items.map(({ image, name, points }, i) => (
-            <Table.Row key={name} align="center">
-              <Table.Cell>
-                <Flex align="center" gap="2">
+            <Card key={name} size="2" asChild>
+              <Label>
+                <Flex align="center" direction="row" gap="3">
                   <Avatar
                     alt={`${name} icon`}
                     size="2"
@@ -92,18 +63,60 @@ export function Category({
                     variant="soft"
                     fallback="?"
                   />
-                  <Text>{name}</Text>
+                  <Flex direction="column" width="100%">
+                    <Text weight="bold" size="2">
+                      {name}
+                    </Text>
+                    <Text size="1">
+                      {fields[i] ? points : 0} / {points} points
+                    </Text>
+                  </Flex>
+                  <Checkbox name={`items.${name.replaceAll("'", '')}`} />
                 </Flex>
-              </Table.Cell>
-              <Table.Cell>{points}</Table.Cell>
-              <Table.Cell>
-                <Checkbox name={`items.${name.replaceAll("'", '')}`} />
-              </Table.Cell>
-              <Table.Cell>{fields[i] ? points : 0}</Table.Cell>
-            </Table.Row>
+              </Label>
+            </Card>
           ))}
-        </Table.Body>
-      </Table.Root> */}
+        </Grid>
+      )}
+      {layout === 'table' && (
+        <Table.Root size="1">
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell align="right">
+                Acquired?
+              </Table.ColumnHeaderCell>
+              <Table.ColumnHeaderCell width="100px" align="right">
+                Points
+              </Table.ColumnHeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {items.map(({ image, name, points }, i) => (
+              <Table.Row key={name} align="center">
+                <Table.Cell>
+                  <Flex align="center" gap="2">
+                    <Avatar
+                      alt={`${name} icon`}
+                      size="2"
+                      src={image}
+                      variant="soft"
+                      fallback="?"
+                    />
+                    <Text>{name}</Text>
+                  </Flex>
+                </Table.Cell>
+                <Table.Cell align="right">
+                  <Checkbox name={`items.${name.replaceAll("'", '')}`} />
+                </Table.Cell>
+                <Table.Cell align="right">
+                  {fields[i] ? points : 0} / {points}
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
+        </Table.Root>
+      )}
     </Card>
   );
 }

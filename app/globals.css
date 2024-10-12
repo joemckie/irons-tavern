@@ -32,6 +32,11 @@ body {
   }
 }
 
-.rt-AvatarImage {
-  object-fit: contain !important;
+img.rt-AvatarImage {
+  object-fit: contain;
+}
+
+.rt-TableRow:last-child td.rt-TableCell {
+  box-shadow: none;
+  padding-bottom: 0;
 }
