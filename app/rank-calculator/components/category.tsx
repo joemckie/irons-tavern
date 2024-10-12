@@ -12,7 +12,7 @@ import {
 import { Checkbox } from './checkbox';
 import { useWatch } from 'react-hook-form';
 import { Label } from '@radix-ui/react-label';
-import { formatWikiImageUrl } from '../utils/format-wiki-image-url';
+import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { parseInitials } from '../utils/parse-initials';
 
 interface CategoryProps {
@@ -31,19 +31,30 @@ export function Category({
   const fields = useWatch<Record<string, true | undefined>>({
     name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
   });
+  const completedCount = fields.filter(Boolean).length;
+  const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
 
   return (
     <Card>
-      <Flex gap="3" align="center">
-        <Avatar size="3" src={image} fallback={parseInitials(title)} />
-        <Box>
-          <Text as="div" size="2" weight="bold">
-            {title}
-          </Text>
-          <Text as="div" size="2" color="gray">
-            {fields.filter(Boolean).length} / {items.length}
-          </Text>
-        </Box>
+      <Flex justify="between" align="center">
+        <Flex gap="3">
+          <Avatar size="3" src={image} fallback={parseInitials(title)} />
+          <Box>
+            <Text as="div" size="2" weight="bold">
+              {title}
+            </Text>
+            <Text as="div" size="2" color="gray">
+              {completedCount} / {items.length}
+            </Text>
+          </Box>
+        </Flex>
+        <Text
+          color={percentComplete === '100' ? 'green' : undefined}
+          weight="bold"
+          size="4"
+        >
+          {percentComplete}%
+        </Text>
       </Flex>
       <Separator
         size="4"
@@ -109,7 +120,7 @@ export function Category({
                 <Table.Cell align="right">
                   <Checkbox name={`items.${name.replaceAll("'", '')}`} />
                 </Table.Cell>
-                <Table.Cell align="right">
+                <Table.Cell align="right" width="100px">
                   {fields[i] ? points : 0} / {points}
                 </Table.Cell>
               </Table.Row>

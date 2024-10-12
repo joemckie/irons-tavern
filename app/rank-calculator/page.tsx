@@ -11,6 +11,7 @@ import {
   Box,
   Button,
   Card,
+  Container,
   Flex,
   Grid,
   Section,
@@ -73,68 +74,71 @@ export default function RankCalculator() {
   }
 
   return (
-    <Grid
-      areas="
+    <Container>
+      <Grid
+        areas="
       'header header header header'
       'sidebar main main main'
       'sidebar main main main'
       "
-      columns="repeat(4, 1fr)"
-    >
-      <Box gridArea="header" asChild>
-        <Card asChild>
-          <header>Header</header>
-        </Card>
-      </Box>
-      <FormProvider {...methods}>
-        <Box gridArea="main" asChild p="3">
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Section size="1">
-              <Flex gap="2">
-                <TextField.Root
-                  placeholder="Player name"
-                  type="search"
-                  {...methods.register('playerName')}
-                >
-                  <TextField.Slot>
-                    <MagnifyingGlassIcon />
-                  </TextField.Slot>
-                </TextField.Root>
-                <Button
-                  onClick={handlePlayerSearch}
-                  type="button"
-                  variant="soft"
-                >
-                  Search
+        columns="repeat(4, 1fr)"
+        gap="4"
+      >
+        <Box gridArea="header" asChild>
+          <Card asChild>
+            <header>Header</header>
+          </Card>
+        </Box>
+        <FormProvider {...methods}>
+          <Box gridArea="main" asChild>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
+              <Section size="1">
+                <Flex gap="2">
+                  <TextField.Root
+                    placeholder="Player name"
+                    type="search"
+                    {...methods.register('playerName')}
+                  >
+                    <TextField.Slot>
+                      <MagnifyingGlassIcon />
+                    </TextField.Slot>
+                  </TextField.Root>
+                  <Button
+                    onClick={handlePlayerSearch}
+                    type="button"
+                    variant="soft"
+                  >
+                    Search
+                  </Button>
+                </Flex>
+              </Section>
+              {isLoading ? (
+                <Grid gap="3">
+                  <Card>
+                    <Skeleton />
+                  </Card>
+                  <Card>
+                    <Skeleton />
+                  </Card>
+                  <Card>
+                    <Skeleton />
+                  </Card>
+                </Grid>
+              ) : (
+                <ItemList items={items} />
+              )}
+              <Box mt="4">
+                <Button size="3" type="submit">
+                  Submit
                 </Button>
-              </Flex>
-            </Section>
-            {isLoading ? (
-              <Grid gap="3">
-                <Card>
-                  <Skeleton />
-                </Card>
-                <Card>
-                  <Skeleton />
-                </Card>
-                <Card>
-                  <Skeleton />
-                </Card>
-              </Grid>
-            ) : (
-              <ItemList items={items} />
-            )}
-            <Box mt="4">
-              <Button size="3" type="submit">
-                Submit
-              </Button>
-            </Box>
-          </form>
-        </Box>
-        <Box gridArea="sidebar" asChild>
-          <Card>Sidebar</Card>
-        </Box>
-      </FormProvider>
-    </Grid>
+              </Box>
+            </form>
+          </Box>
+          <Box gridArea="sidebar" asChild>
+            <Card>Sidebar</Card>
+          </Box>
+        </FormProvider>
+      </Grid>
+    </Container>
   );
 }
