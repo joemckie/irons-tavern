@@ -1,18 +1,18 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import { ItemsResponse, PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, Spinner } from '@radix-ui/themes';
+import { Flex, Grid, Spinner, Text } from '@radix-ui/themes';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';
 
 function useGetItems() {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
       const response = await fetch(`${constants.publicUrl}/api/get-items`);
@@ -48,7 +48,8 @@ export default function RankCalculator() {
   });
 
   const navRef = useRef<HTMLElement>(null);
-  const navHeight = `${navRef.current?.offsetHeight}`;
+  console.log(navRef);
+  const navHeight = navRef.current?.offsetHeight;
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -85,16 +86,12 @@ export default function RankCalculator() {
           gridArea="main"
           asChild
           direction="column"
-          flexBasis="1"
-          style={{ background: 'red' }}
           height={`calc(100vh - ${navHeight}px)`}
         >
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            {isLoading ? (
-              <Spinner size="3" />
-            ) : (
+            <Suspense fallback={<Text>Loading</Text>}>
               <ItemList categories={itemCategories} />
-            )}
+            </Suspense>
           </form>
         </Flex>
       </Grid>

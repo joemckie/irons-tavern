@@ -1,86 +1,46 @@
 import { ItemCategory } from '@/types/rank-calculator';
-import { Box, Flex } from '@radix-ui/themes';
-import {
-  VariableSizeList,
-  ListChildComponentProps,
-  areEqual,
-} from 'react-window';
-import { memo, useRef } from 'react';
+import { VariableSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Category } from './category';
-
-const MemoisedCategory = memo(
-  ({
-    style,
-    index,
-    data,
-  }: ListChildComponentProps<[string, ItemCategory][]>) => {
-    const [title, category] = data[index];
-
-    console.log(style);
-
-    return (
-      <Box style={style} asChild>
-        <Category
-          index={index}
-          title={title}
-          items={category.items}
-          image={category.image}
-          key={title}
-          setSize={(index, size) => {
-            categoryHeightsRef.current[index] = size;
-          }}
-        />
-      </Box>
-    );
-  },
-  areEqual,
-);
+import { MemoisedCategory } from './category';
+import { useDynamicItemSize } from '../hooks/use-dynamic-item-size';
+import { Box } from '@radix-ui/themes';
 
 interface ItemListProps {
   categories: [string, ItemCategory][] | undefined;
 }
 
 export function ItemList({ categories }: ItemListProps) {
-  const categoryHeightsRef = useRef<(number | undefined)[]>([]);
+  const { getSize, listRef, resetAfterIndex, setSize } = useDynamicItemSize();
 
   if (!categories) {
     return null;
   }
 
   return (
-    <AutoSizer>
+    <AutoSizer
+      onResize={() => {
+        resetAfterIndex(0, true);
+      }}
+    >
       {({ height, width }) => (
         <VariableSizeList
+          ref={listRef}
           itemData={categories}
           itemCount={categories.length}
           height={height}
           width={width}
-          itemSize={(index) => {
-            console.log(
-              index,
-              categoryHeightsRef,
-              categoryHeightsRef.current[index] ?? 0,
-            );
-            return categoryHeightsRef.current[index] ?? 0;
-          }}
+          itemSize={getSize}
         >
-          {MemoisedCategory}
+          {({ data, index, style }) => (
+            <MemoisedCategory
+              data={data}
+              index={index}
+              style={style}
+              setSize={setSize}
+            />
+          )}
         </VariableSizeList>
       )}
     </AutoSizer>
   );
-
-  // return (
-  //   <Flex direction="column" gap="4">
-  //     {categories.map(([title, category]) => (
-  //       <Category
-  //         title={title}
-  //         items={category.items}
-  //         image={category.image}
-  //         key={title}
-  //       />
-  //     ))}
-  //   </Flex>
-  // );
 }
