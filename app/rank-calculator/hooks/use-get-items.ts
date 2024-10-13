@@ -7,8 +7,9 @@ export function useGetItems() {
     queryKey: ['items'],
     async queryFn() {
       const response = await fetch(`${constants.publicUrl}/api/get-items`);
+      const data = (await response.json()) as ItemsResponse;
 
-      return response.json() as Promise<ItemsResponse>;
+      return Object.entries(data);
     },
   });
 }

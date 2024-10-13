@@ -1,8 +1,7 @@
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import {
-  Box, Button, DataList, Flex, TextField,
-} from '@radix-ui/themes';
+import { Box, Button, DataList, Flex, TextField } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
+import { ItemStatistics } from './item-statistics';
 
 interface SidebarProps {
   handlePlayerSearch: () => void;
@@ -31,28 +30,7 @@ export function Sidebar({ handlePlayerSearch }: SidebarProps) {
               Search
             </Button>
           </Flex>
-          <DataList.Root>
-            <DataList.Item>
-              <DataList.Label>Total item points</DataList.Label>
-              <DataList.Value>{5000}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label>Items collected</DataList.Label>
-              <DataList.Value>{100}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label>Total items available</DataList.Label>
-              <DataList.Value>{200}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label>Items collected (%)</DataList.Label>
-              <DataList.Value>{20}</DataList.Value>
-            </DataList.Item>
-            <DataList.Item>
-              <DataList.Label>Points achieved (%)</DataList.Label>
-              <DataList.Value>{10}</DataList.Value>
-            </DataList.Item>
-          </DataList.Root>
+          <ItemStatistics />
         </Flex>
       </aside>
     </Box>

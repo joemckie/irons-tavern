@@ -10,14 +10,18 @@ import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';
 
-interface FormData {
+export interface FormData {
   playerName: string;
   items: Record<string, boolean>;
 }
 
 export default function RankCalculator() {
   const [playerDetails, setPlayerDetails] = useState<PlayerDataResponse>();
-  const methods = useForm<FormData>();
+  const methods = useForm<FormData>({
+    defaultValues: {
+      items: {},
+    },
+  });
 
   const navRef = useRef<HTMLElement>(null);
   const [navHeight, setNavHeight] = useState<number>();
@@ -54,7 +58,7 @@ export default function RankCalculator() {
           'nav nav'
           'sidebar main'
         "
-          columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 2fr)"
+          columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
           rows={`[nav] ${navHeight}px [main] calc(100vh - ${navHeight}px)`}
           gapX="3"
         >

@@ -7,8 +7,7 @@ import { Box } from '@radix-ui/themes';
 
 export function ItemList() {
   const { getSize, listRef, resetAfterIndex, setSize } = useDynamicItemSize();
-  const { data } = useGetItems();
-  const categories = Object.entries(data);
+  const { data: categories } = useGetItems();
 
   return (
     <Box height="100%" width="100%">
