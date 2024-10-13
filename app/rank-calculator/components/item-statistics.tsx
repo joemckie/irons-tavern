@@ -1,27 +1,23 @@
 import { DataList } from '@radix-ui/themes';
-import { useGetItems } from '../hooks/use-get-items';
 import { useWatch } from 'react-hook-form';
-import { FormData } from '../page';
+import { useGetItems } from '../hooks/use-get-items';
 
 export function ItemStatistics() {
   const { data } = useGetItems();
-  const itemFields = useWatch<Pick<FormData, 'items'>>({
+  const itemFields = useWatch<Record<string, boolean>>({
     name: 'items',
   });
 
   const { totalItems, itemPoints, totalPoints } = data.reduce(
     (acc, [, { items }]) => {
-      const totalItems = acc.totalItems + items.length;
       const { categoryItemPointMap, categoryTotalPoints } = items.reduce(
-        (acc, val) => {
-          return {
-            categoryItemPointMap: {
-              ...acc.categoryItemPointMap,
-              [val.name.replaceAll("'", '')]: val.points,
-            },
-            categoryTotalPoints: acc.categoryTotalPoints + val.points,
-          };
-        },
+        (categoryAcc, val) => ({
+          categoryItemPointMap: {
+            ...categoryAcc.categoryItemPointMap,
+            [val.name.replaceAll("'", '')]: val.points,
+          },
+          categoryTotalPoints: categoryAcc.categoryTotalPoints + val.points,
+        }),
         {
           categoryItemPointMap: {},
           categoryTotalPoints: 0,
@@ -30,7 +26,7 @@ export function ItemStatistics() {
 
       return {
         totalPoints: acc.totalPoints + categoryTotalPoints,
-        totalItems,
+        totalItems: acc.totalItems + items.length,
         itemPoints: {
           ...acc.itemPoints,
           ...categoryItemPointMap,
@@ -71,11 +67,17 @@ export function ItemStatistics() {
       </DataList.Item>
       <DataList.Item>
         <DataList.Label>Items collected</DataList.Label>
-        <DataList.Value>{percentageCollected.toFixed(2)}%</DataList.Value>
+        <DataList.Value>
+          {percentageCollected.toFixed(2)}
+          %
+        </DataList.Value>
       </DataList.Item>
       <DataList.Item>
         <DataList.Label>Points achieved (%)</DataList.Label>
-        <DataList.Value>{percentagePointsAchieved.toFixed(2)}%</DataList.Value>
+        <DataList.Value>
+          {percentagePointsAchieved.toFixed(2)}
+          %
+        </DataList.Value>
       </DataList.Item>
     </DataList.Root>
   );

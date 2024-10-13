@@ -1,12 +1,14 @@
 import { VariableSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import { Box } from '@radix-ui/themes';
 import { MemoisedCategory } from './category';
 import { useDynamicItemSize } from '../hooks/use-dynamic-item-size';
 import { useGetItems } from '../hooks/use-get-items';
-import { Box } from '@radix-ui/themes';
 
 export function ItemList() {
-  const { getSize, listRef, resetAfterIndex, setSize } = useDynamicItemSize();
+  const {
+    getSize, listRef, resetAfterIndex, setSize,
+  } = useDynamicItemSize();
   const { data: categories } = useGetItems();
 
   return (

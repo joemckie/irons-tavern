@@ -22,6 +22,8 @@
     "import/prefer-default-export": "off",
     "import/extensions": ["error", "never"],
     "implicit-arrow-linebreak": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "react/display-name": "warn",
+    "react/jsx-props-no-spreading": "off"
   }
 }

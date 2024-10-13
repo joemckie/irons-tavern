@@ -1,22 +1,26 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import {
+  Suspense, useEffect, useRef, useState,
+} from 'react';
 import { PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, Spinner, Text } from '@radix-ui/themes';
+import {
+  Flex, Grid, Spinner, Text,
+} from '@radix-ui/themes';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';
 
-export interface FormData {
+interface FormData {
   playerName: string;
   items: Record<string, boolean>;
 }
 
 export default function RankCalculator() {
-  const [playerDetails, setPlayerDetails] = useState<PlayerDataResponse>();
+  const [, setPlayerDetails] = useState<PlayerDataResponse>();
   const methods = useForm<FormData>({
     defaultValues: {
       items: {},
@@ -71,7 +75,7 @@ export default function RankCalculator() {
             height={`calc(100vh - ${navHeight}px)`}
           >
             <Suspense
-              fallback={
+              fallback={(
                 <Flex
                   align="center"
                   justify="center"
@@ -81,7 +85,7 @@ export default function RankCalculator() {
                   <Spinner size="3" />
                   <Text color="gray">Loading item list</Text>
                 </Flex>
-              }
+              )}
             >
               <ItemList />
             </Suspense>

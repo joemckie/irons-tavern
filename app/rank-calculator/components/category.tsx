@@ -4,14 +4,16 @@ import {
   Box,
   Card,
   Flex,
-  Grid,
+  // Grid,
   Separator,
   Table,
   Text,
 } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { Label } from '@radix-ui/react-label';
-import { forwardRef, memo, useEffect, useRef } from 'react';
+// import { Label } from '@radix-ui/react-label';
+import {
+  forwardRef, memo, useEffect, useRef,
+} from 'react';
 import { areEqual, ListChildComponentProps } from 'react-window';
 import { parseInitials } from '../utils/parse-initials';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
@@ -26,7 +28,9 @@ interface CategoryProps {
 
 export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
   (
-    { title, items, image = formatWikiImageUrl(title), layout = 'table' },
+    {
+      title, items, image = formatWikiImageUrl(title), layout = 'table',
+    },
     ref,
   ) => {
     const fields = useWatch<Record<string, true | undefined>>({
@@ -45,7 +49,10 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
                 {title}
               </Text>
               <Text as="div" size="2" color="gray">
-                {completedCount} / {items.length}
+                {completedCount}
+                {' '}
+                /
+                {items.length}
               </Text>
             </Box>
           </Flex>
@@ -54,7 +61,8 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
             weight="bold"
             size="4"
           >
-            {percentComplete}%
+            {percentComplete}
+            %
           </Text>
         </Flex>
         <Separator
@@ -62,7 +70,7 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
           my="3"
           style={{ backgroundColor: 'var(--accent-a4)' }}
         />
-        {layout === 'cards' && (
+        {/* {layout === 'cards' && (
           <Grid columns={{ initial: '1', sm: '2', lg: '4' }} gap="3">
             {items.map(({ image, name, points }, i) => (
               <Card key={name} size="2" asChild>
@@ -80,7 +88,12 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
                         {name}
                       </Text>
                       <Text size="1">
-                        {fields[i] ? points : 0} / {points} points
+                        {fields[i] ? points : 0}
+                        {' '}
+                        /
+                        {points}
+                        {' '}
+                        points
                       </Text>
                     </Flex>
                     <Checkbox name={`items.${name.replaceAll("'", '')}`} />
@@ -89,7 +102,7 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
               </Card>
             ))}
           </Grid>
-        )}
+        )} */}
         {layout === 'table' && (
           <Table.Root size="1">
             <Table.Header>
@@ -104,14 +117,14 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {items.map(({ image, name, points }, i) => (
+              {items.map(({ image: itemImage, name, points }, i) => (
                 <Table.Row key={name} align="center">
                   <Table.Cell>
                     <Flex align="center" gap="2">
                       <Avatar
                         alt={`${name} icon`}
                         size="2"
-                        src={image}
+                        src={itemImage}
                         variant="soft"
                         fallback="?"
                       />
@@ -122,7 +135,10 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
                     <Checkbox name={`items.${name.replaceAll("'", '')}`} />
                   </Table.Cell>
                   <Table.Cell align="right" width="100px">
-                    {fields[i] ? points : 0} / {points}
+                    {fields[i] ? points : 0}
+                    {' '}
+                    /
+                    {points}
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -134,15 +150,15 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
   },
 );
 
+interface MemoisedCategoryProps
+  extends ListChildComponentProps<[string, ItemCategory][]> {
+  setSize: (index: number, size: number) => void;
+}
+
 export const MemoisedCategory = memo(
   ({
-    style,
-    index,
-    data,
-    setSize,
-  }: ListChildComponentProps<[string, ItemCategory][]> & {
-    setSize: (index: number, size: number) => void;
-  }) => {
+    style, index, data, setSize,
+  }: MemoisedCategoryProps) => {
     const [title, category] = data[index];
     const elementRef = useRef<HTMLDivElement>(null);
 
