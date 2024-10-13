@@ -9,14 +9,13 @@ import {
   Table,
   Text,
 } from '@radix-ui/themes';
-import { Checkbox } from './checkbox';
 import { useWatch } from 'react-hook-form';
 import { Label } from '@radix-ui/react-label';
-import { formatWikiImageUrl } from '../utils/format-wiki-url';
-import { parseInitials } from '../utils/parse-initials';
 import { forwardRef, memo, useEffect, useRef } from 'react';
 import { areEqual, ListChildComponentProps } from 'react-window';
-import { flexPropDefs } from '@radix-ui/themes/props';
+import { parseInitials } from '../utils/parse-initials';
+import { formatWikiImageUrl } from '../utils/format-wiki-url';
+import { Checkbox } from './checkbox';
 
 interface CategoryProps {
   title: string;
@@ -26,15 +25,10 @@ interface CategoryProps {
 }
 
 export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
-  function Category(
-    {
-      title,
-      items,
-      image = formatWikiImageUrl(title),
-      layout = 'table',
-    }: CategoryProps,
+  (
+    { title, items, image = formatWikiImageUrl(title), layout = 'table' },
     ref,
-  ) {
+  ) => {
     const fields = useWatch<Record<string, true | undefined>>({
       name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
     });
@@ -165,7 +159,7 @@ export const MemoisedCategory = memo(
 
         setSize(index, size);
       }
-    }, [setSize]);
+    }, [setSize, index]);
 
     return (
       <Box style={style}>
