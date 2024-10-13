@@ -8,22 +8,51 @@ export function ItemStatistics() {
   const itemFields = useWatch<Pick<FormData, 'items'>>({
     name: 'items',
   });
-  const pointsMap = Object.fromEntries(
-    data.flatMap(([, { items }]) =>
-      items.map((item) => [item.name.replaceAll("'", ''), item.points]),
-    ),
-  );
-  const totalItems = data.reduce((acc, [, { items }]) => acc + items.length, 0);
-  const totalPoints = Object.values(pointsMap).reduce(
-    (acc, val) => acc + val,
-    0,
+
+  const { totalItems, itemPoints, totalPoints } = data.reduce(
+    (acc, [, { items }]) => {
+      const totalItems = acc.totalItems + items.length;
+      const { categoryItemPointMap, categoryTotalPoints } = items.reduce(
+        (acc, val) => {
+          return {
+            categoryItemPointMap: {
+              ...acc.categoryItemPointMap,
+              [val.name.replaceAll("'", '')]: val.points,
+            },
+            categoryTotalPoints: acc.categoryTotalPoints + val.points,
+          };
+        },
+        {
+          categoryItemPointMap: {},
+          categoryTotalPoints: 0,
+        },
+      );
+
+      return {
+        totalPoints: acc.totalPoints + categoryTotalPoints,
+        totalItems,
+        itemPoints: {
+          ...acc.itemPoints,
+          ...categoryItemPointMap,
+        },
+      };
+    },
+    {
+      totalPoints: 0,
+      totalItems: 0,
+      itemPoints: {} as Record<string, number>,
+    },
   );
 
-  const itemsCollected = Object.values(itemFields).filter(Boolean).length;
+  const filteredItemFields = Object.entries(itemFields).filter(
+    ([, value]) => !!value,
+  );
+  const itemsCollected = filteredItemFields.length;
   const percentageCollected = (itemsCollected / totalItems) * 100;
-  const pointsAwarded = Object.entries(itemFields)
-    .filter(([, val]) => !!val)
-    .reduce((acc, [item]) => acc + pointsMap[item], 0);
+  const pointsAwarded = filteredItemFields.reduce(
+    (acc, [item]) => acc + itemPoints[item],
+    0,
+  );
   const percentagePointsAchieved = (pointsAwarded / totalPoints) * 100;
 
   return (
