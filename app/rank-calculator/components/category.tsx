@@ -30,70 +30,72 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
     const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
 
     return (
-      <Card ref={ref} mb="3">
-        <Flex justify="between" align="center">
-          <Flex gap="3">
-            <Avatar size="3" src={image} fallback={parseInitials(title)} />
-            <Box>
-              <Text as="div" size="2" weight="bold">
-                {title}
-              </Text>
-              <Text as="div" size="2" color="gray">
-                {completedCount} / {items.length}
-              </Text>
-            </Box>
+      <Box maxWidth="40rem" asChild>
+        <Card ref={ref} mb="3">
+          <Flex justify="between" align="center">
+            <Flex gap="3">
+              <Avatar size="3" src={image} fallback={parseInitials(title)} />
+              <Box>
+                <Text as="div" size="2" weight="bold">
+                  {title}
+                </Text>
+                <Text as="div" size="2" color="gray">
+                  {completedCount} / {items.length}
+                </Text>
+              </Box>
+            </Flex>
+            <Text
+              color={percentComplete === '100' ? 'green' : undefined}
+              weight="bold"
+              size="4"
+            >
+              {percentComplete}%
+            </Text>
           </Flex>
-          <Text
-            color={percentComplete === '100' ? 'green' : undefined}
-            weight="bold"
+          <Separator
             size="4"
-          >
-            {percentComplete}%
-          </Text>
-        </Flex>
-        <Separator
-          size="4"
-          my="3"
-          style={{ backgroundColor: 'var(--accent-a4)' }}
-        />
-        <Table.Root size="1">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell align="right">
-                Acquired?
-              </Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell width="100px" align="right">
-                Points
-              </Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {items.map(({ image: itemImage, name, points }, i) => (
-              <Table.Row key={name} align="center">
-                <Table.Cell>
-                  <Flex align="center" gap="2">
-                    <Avatar
-                      alt={`${name} icon`}
-                      size="2"
-                      src={itemImage}
-                      variant="soft"
-                      fallback="?"
-                    />
-                    <Text>{name}</Text>
-                  </Flex>
-                </Table.Cell>
-                <Table.Cell align="right">
-                  <Checkbox name={`items.${name.replaceAll("'", '')}`} />
-                </Table.Cell>
-                <Table.Cell align="right" width="100px">
-                  {fields[i] ? points : 0} / {points}
-                </Table.Cell>
+            my="3"
+            style={{ backgroundColor: 'var(--accent-a4)' }}
+          />
+          <Table.Root size="1">
+            <Table.Header>
+              <Table.Row>
+                <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell align="right">
+                  Acquired?
+                </Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell width="100px" align="right">
+                  Points
+                </Table.ColumnHeaderCell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table.Root>
-      </Card>
+            </Table.Header>
+            <Table.Body>
+              {items.map(({ image: itemImage, name, points }, i) => (
+                <Table.Row key={name} align="center">
+                  <Table.Cell>
+                    <Flex align="center" gap="2">
+                      <Avatar
+                        alt={`${name} icon`}
+                        size="2"
+                        src={itemImage}
+                        variant="soft"
+                        fallback="?"
+                      />
+                      <Text>{name}</Text>
+                    </Flex>
+                  </Table.Cell>
+                  <Table.Cell align="right">
+                    <Checkbox name={`items.${name.replaceAll("'", '')}`} />
+                  </Table.Cell>
+                  <Table.Cell align="right" width="100px">
+                    {fields[i] ? points : 0} / {points}
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table.Root>
+        </Card>
+      </Box>
     );
   },
 );
@@ -126,7 +128,12 @@ export const MemoisedCategory = memo(
     }, [setSize, index]);
 
     return (
-      <Box style={style}>
+      <Box
+        style={{
+          ...style,
+          top: `calc(${Number(style?.top ?? 0)}px + var(--space-3))`,
+        }}
+      >
         <Category
           ref={elementRef}
           title={title}
