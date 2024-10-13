@@ -11,7 +11,7 @@ export const Navigation = forwardRef<HTMLElement>((_props, ref) => (
     }}
   >
     <nav ref={ref}>
-      <Flex justify="between">
+      <Flex align="center" justify="between">
         <Text weight="bold">Irons Tavern rank calculator</Text>
         <Button variant="surface">Submit</Button>
       </Flex>
