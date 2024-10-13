@@ -1,13 +1,9 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import {
-  Suspense, useEffect, useRef, useState,
-} from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Flex, Grid, Spinner, Text,
-} from '@radix-ui/themes';
+import { Flex, Grid, Spinner, Text } from '@radix-ui/themes';
 import { PlayerDataResponse } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import { Sidebar } from './components/sidebar';
@@ -28,7 +24,8 @@ export default function RankCalculator() {
   });
 
   const navRef = useRef<HTMLElement>(null);
-  const [navHeight, setNavHeight] = useState<number>();
+  const [navHeight, setNavHeight] = useState<number>(54);
+  const pageHeightCss = navHeight ? `calc(100vh - ${navHeight}px)` : '100vh';
 
   useEffect(() => {
     if (navRef.current) {
@@ -63,19 +60,14 @@ export default function RankCalculator() {
           'sidebar main'
         "
           columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
-          rows={`[nav] ${navHeight}px [main] calc(100vh - ${navHeight}px)`}
+          rows={`[nav] ${navHeight}px [main] ${pageHeightCss}`}
           gapX="3"
         >
           <Navigation ref={navRef} />
           <Sidebar handlePlayerSearch={handlePlayerSearch} />
-          <Flex
-            gridArea="main"
-            asChild
-            direction="column"
-            height={`calc(100vh - ${navHeight}px)`}
-          >
+          <Flex gridArea="main" direction="column" height={pageHeightCss}>
             <Suspense
-              fallback={(
+              fallback={
                 <Flex
                   align="center"
                   justify="center"
@@ -85,7 +77,7 @@ export default function RankCalculator() {
                   <Spinner size="3" />
                   <Text color="gray">Loading item list</Text>
                 </Flex>
-              )}
+              }
             >
               <ItemList />
             </Suspense>
