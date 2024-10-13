@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { constants } from '@/config/constants';
 import { revalidatePath } from 'next/cache';
+import { constants } from '@/config/constants';
 import { PlayerInfoResponse } from '@/types/temple-api';
 
 export const dynamic = 'force-dynamic';
@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     // this means they have been checked very recently,
     // hence we skip these players entirely to avoid triggering rate limits.
     if (shouldCheckPlayer) {
+      // eslint-disable-next-line no-console
       console.log(`Checking ${player}`);
 
       await fetch(
@@ -30,6 +31,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e);
 
     return NextResponse.json({ success: false });

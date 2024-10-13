@@ -1,8 +1,8 @@
-import { constants } from '@/config/constants';
 import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
+import { constants } from '@/config/constants';
 import { GroupMemberInfoResponse } from '@/types/temple-api';
 import { ClanMember } from './api/update-member-list/route';
 
@@ -87,6 +87,7 @@ export default async function Home() {
                         className="underline"
                         href={`https://templeosrs.com/player/overview.php?player=${rsn}&duration=alltime`}
                         target="_blank"
+                        rel="noreferrer"
                       >
                         {rsn}
                       </a>

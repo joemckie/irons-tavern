@@ -4,12 +4,12 @@ import '@radix-ui/themes/styles.css';
 import {
   Suspense, useEffect, useRef, useState,
 } from 'react';
-import { PlayerDataResponse } from '@/types/rank-calculator';
-import { constants } from '@/config/constants';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
   Flex, Grid, Spinner, Text,
 } from '@radix-ui/themes';
+import { PlayerDataResponse } from '@/types/rank-calculator';
+import { constants } from '@/config/constants';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';

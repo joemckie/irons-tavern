@@ -67,17 +67,11 @@ export function ItemStatistics() {
       </DataList.Item>
       <DataList.Item>
         <DataList.Label>Items collected</DataList.Label>
-        <DataList.Value>
-          {percentageCollected.toFixed(2)}
-          %
-        </DataList.Value>
+        <DataList.Value>{percentageCollected.toFixed(2)}%</DataList.Value>
       </DataList.Item>
       <DataList.Item>
-        <DataList.Label>Points achieved (%)</DataList.Label>
-        <DataList.Value>
-          {percentagePointsAchieved.toFixed(2)}
-          %
-        </DataList.Value>
+        <DataList.Label>Points achieved</DataList.Label>
+        <DataList.Value>{percentagePointsAchieved.toFixed(2)}%</DataList.Value>
       </DataList.Item>
     </DataList.Root>
   );

@@ -1,15 +1,11 @@
-import { constants } from '@/config/constants';
-import { ItemsResponse } from '@/types/rank-calculator';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
 
 export function useGetItems() {
   return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
-      const response = await fetch(`${constants.publicUrl}/api/get-items`);
-      const data = (await response.json()) as ItemsResponse;
-
-      return Object.entries(data);
+      return Object.entries(itemsResponseFixture);
     },
   });
 }

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
+import { differenceInDays } from 'date-fns';
 import { constants } from '@/config/constants';
 import { GroupMemberInfoResponse } from '@/types/temple-api';
-import { differenceInDays } from 'date-fns';
 
 export const dynamic = 'force-dynamic';
 
