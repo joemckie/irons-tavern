@@ -1,26 +1,36 @@
-// type DiaryLocation =
-//   | 'Ardougne'
-//   | 'Desert'
-//   | 'Falador'
-//   | 'Fremennik'
-//   | 'Kandarin'
-//   | 'Karamja'
-//   | 'Kourend & Kebos'
-//   | 'Lumbridge & Draynor'
-//   | 'Morytania'
-//   | 'Varrock'
-//   | 'Western Provinces'
-//   | 'Wilderness';
+export type DiaryLocation =
+  | 'Ardougne'
+  | 'Desert'
+  | 'Falador'
+  | 'Fremennik'
+  | 'Kandarin'
+  | 'Karamja'
+  | 'Kourend & Kebos'
+  | 'Lumbridge & Draynor'
+  | 'Morytania'
+  | 'Varrock'
+  | 'Western Provinces'
+  | 'Wilderness';
 
-// type DiaryTier = 'Easy' | 'Medium' | 'Hard' | 'Elite';
+export enum DiaryTier {
+  Easy = 'Easy',
+  Medium = 'Medium',
+  Hard = 'Hard',
+  Elite = 'Elite',
+}
 
-// type CombatAchievementTier =
-//   | 'Easy'
-//   | 'Medium'
-//   | 'Hard'
-//   | 'Elite'
-//   | 'Master'
-//   | 'Grandmaster';
+export interface DiaryTierData {
+  complete: boolean;
+  tasks: boolean[];
+}
+
+export type CombatAchievementTier =
+  | 'Easy'
+  | 'Medium'
+  | 'Hard'
+  | 'Elite'
+  | 'Master'
+  | 'Grandmaster';
 
 export enum Skill {
   Attack = 'Attack',
@@ -255,6 +265,11 @@ export enum QuestStatus {
   NotStarted,
   Started,
   Completed,
+}
+
+export interface WikiSyncResponse {
+  achievement_diaries: Record<DiaryLocation, Record<DiaryTier, DiaryTierData>>;
+  quests: Record<Quest | MiniQuest, QuestStatus>;
 }
 
 export interface PlayerData {

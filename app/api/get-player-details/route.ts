@@ -4,6 +4,12 @@ import wikiSyncDataFixture from '@/fixtures/wikisync.fixture.json';
 import { get } from 'get-wild';
 import { CollectionLogResponseItem } from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
+import {
+  DiaryLocation,
+  DiaryTier,
+  DiaryTierData,
+  WikiSyncResponse,
+} from '@/types/rank-calculator';
 import { isItemAcquired } from './utils/is-item-acquired';
 
 export async function GET(request: NextRequest) {
@@ -17,7 +23,7 @@ export async function GET(request: NextRequest) {
   //   `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
   // );
   // const wikiSyncData = await wikiSyncResponse.json() as typeof wikiSyncDataFixture;
-  const wikiSyncData = wikiSyncDataFixture;
+  const wikiSyncData: WikiSyncResponse = wikiSyncDataFixture;
 
   // const collectionLogResponse = await fetch(
   //   `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
@@ -48,7 +54,42 @@ export async function GET(request: NextRequest) {
     )
     .map(({ name }) => name);
 
+  const achievementDiaries = Object.entries(
+    wikiSyncData.achievement_diaries,
+  ).reduce(
+    (acc, [diaryLocation, diaryTiers]) => {
+      const orderedTiers = [
+        [DiaryTier.Easy, diaryTiers.Easy],
+        [DiaryTier.Medium, diaryTiers.Medium],
+        [DiaryTier.Hard, diaryTiers.Hard],
+        [DiaryTier.Elite, diaryTiers.Elite],
+      ] satisfies [DiaryTier, DiaryTierData][];
+
+      orderedTiers.forEach(([tierName, tierData]) => {
+        if (tierData.complete) {
+          acc[diaryLocation as DiaryLocation] = tierName;
+        }
+      });
+
+      return acc;
+    },
+    {
+      Ardougne: 'None',
+      Desert: 'None',
+      Falador: 'None',
+      Fremennik: 'None',
+      Kandarin: 'None',
+      Karamja: 'None',
+      'Kourend & Kebos': 'None',
+      'Lumbridge & Draynor': 'None',
+      Morytania: 'None',
+      Varrock: 'None',
+      'Western Provinces': 'None',
+    } as Record<DiaryLocation, DiaryTier | 'None'>,
+  );
+
   return NextResponse.json({
     acquiredItems,
+    achievementDiaries,
   });
 }
