@@ -4,11 +4,13 @@ import { Box, Button, Flex, TextField } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { PlayerData } from '@/types/rank-calculator';
+import { merge } from 'lodash';
 import { ItemStatistics } from './item-statistics';
 import { PlayerDataContext } from '../contexts/player-data-context';
+import { stripEntityName } from '../utils/strip-entity-name';
 
 export function Sidebar() {
-  const { register, getValues } = useFormContext();
+  const { register, getValues, setValue } = useFormContext();
   const { setPlayerData } = useContext(PlayerDataContext);
 
   const handlePlayerSearch = async () => {
@@ -19,6 +21,13 @@ export function Sidebar() {
     const data = (await response.json()) as PlayerData;
 
     setPlayerData(data);
+
+    const acquiredItems = data.acquiredItems.reduce(
+      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
+      {},
+    );
+
+    setValue('items', merge(getValues('items'), acquiredItems));
   };
 
   return (

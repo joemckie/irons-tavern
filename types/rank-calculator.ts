@@ -1,26 +1,26 @@
-type DiaryLocation =
-  | 'Ardougne'
-  | 'Desert'
-  | 'Falador'
-  | 'Fremennik'
-  | 'Kandarin'
-  | 'Karamja'
-  | 'Kourend & Kebos'
-  | 'Lumbridge & Draynor'
-  | 'Morytania'
-  | 'Varrock'
-  | 'Western Provinces'
-  | 'Wilderness';
+// type DiaryLocation =
+//   | 'Ardougne'
+//   | 'Desert'
+//   | 'Falador'
+//   | 'Fremennik'
+//   | 'Kandarin'
+//   | 'Karamja'
+//   | 'Kourend & Kebos'
+//   | 'Lumbridge & Draynor'
+//   | 'Morytania'
+//   | 'Varrock'
+//   | 'Western Provinces'
+//   | 'Wilderness';
 
-type DiaryTier = 'Easy' | 'Medium' | 'Hard' | 'Elite';
+// type DiaryTier = 'Easy' | 'Medium' | 'Hard' | 'Elite';
 
-type CombatAchievementTier =
-  | 'Easy'
-  | 'Medium'
-  | 'Hard'
-  | 'Elite'
-  | 'Master'
-  | 'Grandmaster';
+// type CombatAchievementTier =
+//   | 'Easy'
+//   | 'Medium'
+//   | 'Hard'
+//   | 'Elite'
+//   | 'Master'
+//   | 'Grandmaster';
 
 export enum Skill {
   Attack = 'Attack',
@@ -49,7 +49,7 @@ export enum Skill {
 }
 
 export interface PlayerData {
-  collectionLogItems: Record<string, number>;
+  acquiredItems: string[];
 }
 
 export interface RequiredItem {

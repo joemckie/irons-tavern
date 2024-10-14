@@ -8,15 +8,13 @@ import {
   Text,
 } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { forwardRef, memo, useContext, useEffect, useRef } from 'react';
+import { forwardRef, memo, useEffect, useRef } from 'react';
 import { areEqual, ListChildComponentProps } from 'react-window';
 import { Item, ItemCategory } from '@/types/rank-calculator';
 import { parseInitials } from '../utils/parse-initials';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';
-import { isItemAcquired } from '../utils/is-item-acquired';
-import { PlayerDataContext } from '../contexts/player-data-context';
 
 interface CategoryProps {
   title: string;
@@ -31,7 +29,6 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
     });
     const completedCount = fields.filter(Boolean).length;
     const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
-    const { playerData } = useContext(PlayerDataContext);
 
     return (
       <Box maxWidth="40rem" asChild>
@@ -74,9 +71,9 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {items.map((item) => (
+              {items.map((item, i) => (
                 <MemoisedItem
-                  acquired={isItemAcquired(item, playerData)}
+                  acquired={!!fields[i]}
                   key={item.name}
                   item={item}
                 />

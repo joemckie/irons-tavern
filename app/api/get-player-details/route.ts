@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import collectionLogDataFixture from '@/fixtures/collection-log.fixture.json';
 import { get } from 'get-wild';
 import { CollectionLogResponseItem } from '@/types/collection-log';
+import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
+import { isItemAcquired } from './utils/is-item-acquired';
 
 export async function GET(request: NextRequest) {
   const player = request.nextUrl.searchParams.get('player');
@@ -15,7 +17,7 @@ export async function GET(request: NextRequest) {
   // );
   // const collectionLogData = await collectionLogResponse.json();
   const collectionLogData = collectionLogDataFixture;
-  const collectionLogItemMap = get<CollectionLogResponseItem[]>(
+  const collectionLogItems = get<CollectionLogResponseItem[]>(
     collectionLogData,
     'collectionLog.tabs.*.*.items',
   ).reduce(
@@ -29,7 +31,16 @@ export async function GET(request: NextRequest) {
     {},
   );
 
+  const acquiredItems = Object.values(itemsResponseFixture)
+    .flatMap(({ items }) => items)
+    .filter((item) =>
+      isItemAcquired(item, {
+        collectionLogItems,
+      }),
+    )
+    .map(({ name }) => name);
+
   return NextResponse.json({
-    collectionLogItems: collectionLogItemMap,
+    acquiredItems,
   });
 }
