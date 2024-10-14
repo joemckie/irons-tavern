@@ -44,16 +44,6 @@ export async function GET(request: NextRequest) {
     {},
   );
 
-  const acquiredItems = Object.values(itemsResponseFixture)
-    .flatMap(({ items }) => items)
-    .filter((item) =>
-      isItemAcquired(item, {
-        collectionLogItems,
-        quests: wikiSyncData.quests,
-      }),
-    )
-    .map(({ name }) => name);
-
   const achievementDiaries = Object.entries(
     wikiSyncData.achievement_diaries,
   ).reduce(
@@ -74,19 +64,31 @@ export async function GET(request: NextRequest) {
       return acc;
     },
     {
-      Ardougne: 'None',
-      Desert: 'None',
-      Falador: 'None',
-      Fremennik: 'None',
-      Kandarin: 'None',
-      Karamja: 'None',
-      'Kourend & Kebos': 'None',
-      'Lumbridge & Draynor': 'None',
-      Morytania: 'None',
-      Varrock: 'None',
-      'Western Provinces': 'None',
-    } as Record<DiaryLocation, DiaryTier | 'None'>,
+      Ardougne: null,
+      Desert: null,
+      Falador: null,
+      Fremennik: null,
+      Kandarin: null,
+      Karamja: null,
+      'Kourend & Kebos': null,
+      'Lumbridge & Draynor': null,
+      Morytania: null,
+      Varrock: null,
+      'Western Provinces': null,
+    } as Record<DiaryLocation, DiaryTier | null>,
   );
+
+  const acquiredItems = Object.values(itemsResponseFixture)
+    .flatMap(({ items }) => items)
+    .filter((item) =>
+      isItemAcquired(item, {
+        collectionLogItems,
+        quests: wikiSyncData.quests,
+        achievementDiaries,
+        levels: wikiSyncData.levels,
+      }),
+    )
+    .map(({ name }) => name);
 
   return NextResponse.json({
     acquiredItems,

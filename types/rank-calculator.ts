@@ -269,11 +269,13 @@ export enum QuestStatus {
 
 export interface WikiSyncResponse {
   achievement_diaries: Record<DiaryLocation, Record<DiaryTier, DiaryTierData>>;
+  levels: Record<Skill, number>;
   quests: Record<Quest | MiniQuest, QuestStatus>;
 }
 
 export interface PlayerData {
   acquiredItems: string[];
+  achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
 }
 
 export interface RequiredItem {
@@ -300,11 +302,20 @@ export interface QuestItem extends BaseItem {
   requiredQuests: NonEmptyArray<Quest | MiniQuest>;
 }
 
+export interface CustomItem extends BaseItem {
+  isAcquired: (playerData: {
+    achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
+    collectionLogItems: Record<string, number>;
+    levels: Record<Skill, number>;
+  }) => boolean;
+}
+
 export type Item =
   | BaseItem
   | CollectionLogItem
   | CombatAchievementItem
-  | QuestItem;
+  | QuestItem
+  | CustomItem;
 
 export interface ItemCategory {
   image?: string;

@@ -3,6 +3,8 @@ import {
   BaseItem,
   CollectionLogItem,
   CombatAchievementItem,
+  CustomItem,
+  DiaryTier,
   Item,
   ItemsResponse,
   MiniQuest,
@@ -113,7 +115,55 @@ function manualItem({
   } satisfies BaseItem;
 }
 
+function customItem({
+  isAcquired,
+  name,
+  image = formatWikiImageUrl(name),
+  points,
+}: OptionalKeys<CustomItem, 'image'>) {
+  return {
+    image,
+    isAcquired,
+    name,
+    points,
+  } satisfies CustomItem;
+}
+
 export const itemsResponseFixture: ItemsResponse = {
+  'Automatic Items': {
+    items: [
+      customItem({
+        name: 'Achievement Diary Cape',
+        points: 1000,
+        isAcquired({ achievementDiaries }) {
+          return Object.values(achievementDiaries).every(
+            (tier) => tier === DiaryTier.Elite,
+          );
+        },
+      }),
+      customItem({
+        name: 'Max Cape',
+        points: 7000,
+        isAcquired({ levels }) {
+          return Object.values(levels).every((level) => level === 99);
+        },
+      }),
+      customItem({
+        name: 'Infernal Max Cape',
+        points: 2000,
+        isAcquired({ levels, collectionLogItems }) {
+          return (
+            Object.values(levels).every((level) => level === 99) &&
+            collectionLogItems['Infernal cape'] > 0
+          );
+        },
+      }),
+      manualItem({
+        name: "Dizana's Max Cape",
+        points: 2000,
+      }),
+    ],
+  },
   'Abyssal Sire': {
     items: [
       compoundItem({
