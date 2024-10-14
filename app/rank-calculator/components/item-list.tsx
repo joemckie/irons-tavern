@@ -1,8 +1,8 @@
 import { VariableSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { MemoisedCategory } from './category';
 import { useDynamicItemSize } from '../hooks/use-dynamic-item-size';
 import { useGetItems } from '../hooks/use-get-items';
+import { ListItem } from './list-item';
 
 export function ItemList() {
   const { getSize, listRef, resetAfterIndex, setSize } = useDynamicItemSize();
@@ -24,7 +24,7 @@ export function ItemList() {
           itemSize={getSize}
         >
           {({ index, style }) => (
-            <MemoisedCategory
+            <ListItem
               data={categories}
               index={index}
               style={style}
