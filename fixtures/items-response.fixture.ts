@@ -1186,7 +1186,7 @@ export const itemsResponseFixture: ItemsResponse = {
       }),
       questItem({
         name: 'Quest cape',
-        points: 0,
+        points: 80,
         requiredQuests: [''],
       }),
       singleItem({

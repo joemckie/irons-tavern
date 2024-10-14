@@ -8,12 +8,15 @@ import {
   Text,
 } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { forwardRef, memo, useEffect, useRef } from 'react';
+import { forwardRef, memo, useContext, useEffect, useRef } from 'react';
 import { areEqual, ListChildComponentProps } from 'react-window';
 import { Item, ItemCategory } from '@/types/rank-calculator';
 import { parseInitials } from '../utils/parse-initials';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
-import { Checkbox } from './checkbox';
+import { MemoisedItem } from './item';
+import { stripEntityName } from '../utils/strip-entity-name';
+import { isItemAcquired } from '../utils/is-item-acquired';
+import { PlayerDataContext } from '../contexts/player-data-context';
 
 interface CategoryProps {
   title: string;
@@ -24,10 +27,11 @@ interface CategoryProps {
 export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
   ({ title, items, image = formatWikiImageUrl(title) }, ref) => {
     const fields = useWatch<Record<string, true | undefined>>({
-      name: items.map(({ name }) => `items.${name.replaceAll("'", '')}`),
+      name: items.map(({ name }) => `items.${stripEntityName(name)}`),
     });
     const completedCount = fields.filter(Boolean).length;
     const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
+    const { playerData } = useContext(PlayerDataContext);
 
     return (
       <Box maxWidth="40rem" asChild>
@@ -70,27 +74,12 @@ export const Category = forwardRef<HTMLDivElement | null, CategoryProps>(
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {items.map(({ image: itemImage, name, points }, i) => (
-                <Table.Row key={name} align="center">
-                  <Table.Cell>
-                    <Flex align="center" gap="2">
-                      <Avatar
-                        alt={`${name} icon`}
-                        size="2"
-                        src={itemImage}
-                        variant="soft"
-                        fallback="?"
-                      />
-                      <Text>{name}</Text>
-                    </Flex>
-                  </Table.Cell>
-                  <Table.Cell align="right">
-                    <Checkbox name={`items.${name.replaceAll("'", '')}`} />
-                  </Table.Cell>
-                  <Table.Cell align="right" width="100px">
-                    {fields[i] ? points : 0} / {points}
-                  </Table.Cell>
-                </Table.Row>
+              {items.map((item) => (
+                <MemoisedItem
+                  acquired={isItemAcquired(item, playerData)}
+                  key={item.name}
+                  item={item}
+                />
               ))}
             </Table.Body>
           </Table.Root>

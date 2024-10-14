@@ -15,6 +15,8 @@
     "@tanstack/react-query": "^5.52.1",
     "@vercel/blob": "^0.23.4",
     "date-fns": "^3.6.0",
+    "get-wild": "^3.0.2",
+    "lodash": "^4.17.21",
     "next": "^14.2.15",
     "pluralize": "^8.0.0",
     "react": "^18",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.6.4",
+    "@types/lodash": "^4",
     "@types/node": "^20",
     "@types/pluralize": "^0.0.33",
     "@types/react": "^18",

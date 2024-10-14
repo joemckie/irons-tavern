@@ -1,6 +1,7 @@
 import { Rank } from './enums';
 
 export const constants = {
+  collectionLogBaseUrl: 'https://api.collectionlog.net' as const,
   publicUrl: process.env.NEXT_PUBLIC_URL,
   zeplo: {
     apiKey: process.env.ZEPLO_API_KEY,

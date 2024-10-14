@@ -21,7 +21,7 @@
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "import/prefer-default-export": "off",
-    "import/extensions": ["error", "never"],
+    "import/extensions": ["error", "never", { "json": "always" }],
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
     "react/display-name": "warn",

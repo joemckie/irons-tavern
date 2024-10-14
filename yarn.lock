@@ -1594,6 +1594,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4":
+  version: 4.17.10
+  resolution: "@types/lodash@npm:4.17.10"
+  checksum: 10c0/149b2b9fcc277204393423ed14df28894980c2322ec522fc23f2c6f7edef6ee8d876ee09ed4520f45d128adc0a7a6e618bb0017668349716cd99c6ef54a21621
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^20":
   version: 20.16.1
   resolution: "@types/node@npm:20.16.1"
@@ -3336,6 +3343,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"get-wild@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "get-wild@npm:3.0.2"
+  checksum: 10c0/1e708b73c2f9fab86ec4de888b56d09da8115b5414e2ad672732b47b35c17400a4e37eabba85db7754f897eac3ecebd3d920e55a7f54eecc19795aa70885a6f4
+  languageName: node
+  linkType: hard
+
 "glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
@@ -3579,6 +3593,7 @@ __metadata:
     "@radix-ui/themes": "npm:^3.1.4"
     "@stylistic/eslint-plugin": "npm:^2.6.4"
     "@tanstack/react-query": "npm:^5.52.1"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/pluralize": "npm:^0.0.33"
     "@types/react": "npm:^18"
@@ -3593,6 +3608,8 @@ __metadata:
     eslint-config-next: "npm:14.2.6"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-import: "npm:^2.31.0"
+    get-wild: "npm:^3.0.2"
+    lodash: "npm:^4.17.21"
     next: "npm:^14.2.15"
     pluralize: "npm:^8.0.0"
     postcss: "npm:^8"
@@ -4137,6 +4154,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10c0/402fa16a1edd7538de5b5903a90228aa48eb5533986ba7fa26606a49db2572bf414ff73a2c9f5d5fd36b31c46a5d5c7e1527749c07cbcf965ccff5fbdf32c506
+  languageName: node
+  linkType: hard
+
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
   languageName: node
   linkType: hard
 

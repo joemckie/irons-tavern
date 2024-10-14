@@ -48,22 +48,8 @@ export enum Skill {
   Hunter = 'Hunter',
 }
 
-export interface PlayerDataResponse {
-  lastChecked: number;
-  diaries: Record<DiaryLocation, DiaryTier>;
-  username: string;
-  items: string[];
-  combatAchievementTier: CombatAchievementTier;
-  lastKnownRank: {
-    structure: string;
-    name: string;
-  };
-  collectionLogEnabled: boolean;
-  wikiSyncEnabled: boolean;
-  ehb: number;
-  level: number;
-  ehp: number;
-  clogs: number;
+export interface PlayerData {
+  collectionLogItems: Record<string, number>;
 }
 
 export interface RequiredItem {
