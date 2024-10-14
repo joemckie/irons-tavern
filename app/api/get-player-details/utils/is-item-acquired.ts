@@ -2,11 +2,15 @@ import {
   CollectionLogItem,
   CombatAchievementItem,
   Item,
+  MiniQuest,
+  Quest,
   QuestItem,
+  QuestStatus,
 } from '@/types/rank-calculator';
 
 interface IsItemAcquiredData {
   collectionLogItems: Record<string, number>;
+  quests: Record<Quest | MiniQuest, QuestStatus>;
 }
 
 function isCollectionLogItem(item: Item): item is CollectionLogItem {
@@ -25,7 +29,7 @@ function isQuestItem(item: Item): item is QuestItem {
 
 export function isItemAcquired(
   item: Item,
-  { collectionLogItems }: IsItemAcquiredData,
+  { collectionLogItems, quests }: IsItemAcquiredData,
 ) {
   if (isCollectionLogItem(item)) {
     return item.requiredItems.every(
@@ -38,7 +42,9 @@ export function isItemAcquired(
   }
 
   if (isQuestItem(item)) {
-    return false;
+    return item.requiredQuests.every(
+      (quest) => quests[quest] === QuestStatus.Completed,
+    );
   }
 
   return false;

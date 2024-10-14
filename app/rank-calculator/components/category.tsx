@@ -32,8 +32,6 @@ export const Category = memo(
         0,
       );
 
-      console.log('rerendering ', title);
-
       return (
         <Box maxWidth="40rem" asChild>
           <Card ref={ref} mb="3">

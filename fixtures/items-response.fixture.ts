@@ -5,6 +5,8 @@ import {
   CombatAchievementItem,
   Item,
   ItemsResponse,
+  MiniQuest,
+  Quest,
   QuestItem,
   RequiredItem,
   Skill,
@@ -973,7 +975,7 @@ export const itemsResponseFixture: ItemsResponse = {
       questItem({
         name: 'Mage Arena 2 cape',
         points: 20,
-        requiredQuests: [''],
+        requiredQuests: [MiniQuest['Mage Arena II']],
       }),
       compoundItem({
         name: 'Odium ward',
@@ -1141,12 +1143,12 @@ export const itemsResponseFixture: ItemsResponse = {
       questItem({
         name: 'Barrows gloves',
         points: 20,
-        requiredQuests: [''],
+        requiredQuests: [Quest['Recipe for Disaster']],
       }),
       questItem({
         name: 'Book of the dead',
         points: 10,
-        requiredQuests: [''],
+        requiredQuests: [Quest['A Kingdom Divided']],
       }),
       singleItem({
         name: 'Bottomless compost bucket',
@@ -1187,7 +1189,7 @@ export const itemsResponseFixture: ItemsResponse = {
       questItem({
         name: 'Quest cape',
         points: 80,
-        requiredQuests: [''],
+        requiredQuests: Object.values(Quest) as NonEmptyArray<Quest>,
       }),
       singleItem({
         name: 'Ranger boots',

@@ -21,4 +21,7 @@ export const constants = {
   wiki: {
     baseUrl: 'https://oldschool.runescape.wiki' as const,
   },
+  wikiSync: {
+    baseUrl: 'https://sync.runescape.wiki' as const,
+  },
 };
