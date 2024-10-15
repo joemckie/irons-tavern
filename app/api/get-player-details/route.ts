@@ -17,7 +17,9 @@ export async function GET(request: NextRequest) {
   const player = request.nextUrl.searchParams.get('player');
 
   if (!player) {
-    return NextResponse.error();
+    return NextResponse.json('No player provided', {
+      status: 400,
+    });
   }
 
   try {
@@ -25,9 +27,12 @@ export async function GET(request: NextRequest) {
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       {
         method: 'GET',
+        headers: {
+          // User agent is required or the API returns a 400
+          'User-Agent': 'Irons-Tavern-Rank-Calculator',
+        },
       },
     );
-    console.log(wikiSyncResponse);
     const wikiSyncData = (await wikiSyncResponse.json()) as WikiSyncResponse;
     // const wikiSyncData: WikiSyncResponse = wikiSyncDataFixture;
 
@@ -102,8 +107,10 @@ export async function GET(request: NextRequest) {
       achievementDiaries,
     });
   } catch (error) {
-    console.error('error ----------', error);
+    console.error(error);
 
-    return NextResponse.error();
+    return NextResponse.json(null, {
+      status: 500,
+    });
   }
 }
