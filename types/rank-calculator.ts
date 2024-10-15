@@ -1,3 +1,5 @@
+import { CollectionLogItemMap } from './collection-log';
+
 export type DiaryLocation =
   | 'Ardougne'
   | 'Desert'
@@ -23,6 +25,8 @@ export interface DiaryTierData {
   complete: boolean;
   tasks: boolean[];
 }
+
+export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | null>;
 
 export type CombatAchievementTier =
   | 'Easy'
@@ -275,6 +279,11 @@ export interface WikiSyncResponse {
   quests: Record<Quest | MiniQuest, QuestStatus>;
 }
 
+export interface WikiSyncError {
+  code: string;
+  error: string;
+}
+
 export interface PlayerData {
   acquiredItems: string[];
   achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
@@ -306,9 +315,9 @@ export interface QuestItem extends BaseItem {
 
 export interface CustomItem extends BaseItem {
   isAcquired: (playerData: {
-    achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
-    collectionLogItems: Record<string, number>;
-    levels: LevelMap;
+    achievementDiaries: AchievementDiaryMap | null;
+    collectionLogItems: CollectionLogItemMap | null;
+    levels: LevelMap | null;
   }) => boolean;
 }
 

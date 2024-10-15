@@ -1,17 +1,75 @@
 import { NextRequest, NextResponse } from 'next/server';
-import collectionLogDataFixture from '@/fixtures/collection-log.fixture.json';
-import wikiSyncDataFixture from '@/fixtures/wikisync.fixture.json';
 import { get } from 'get-wild';
-import { CollectionLogResponseItem } from '@/types/collection-log';
+import {
+  CollectionLogError,
+  CollectionLogItemMap,
+  CollectionLogResponse,
+  CollectionLogResponseItem,
+} from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
 import {
+  AchievementDiaryMap,
   DiaryLocation,
   DiaryTier,
   DiaryTierData,
+  WikiSyncError,
   WikiSyncResponse,
 } from '@/types/rank-calculator';
-// import { constants } from '@/config/constants';
+import { constants } from '@/config/constants';
 import { isItemAcquired } from './utils/is-item-acquired';
+
+function isWikiSyncError(
+  wikiSyncResponse: WikiSyncResponse | WikiSyncError,
+): wikiSyncResponse is WikiSyncError {
+  return (wikiSyncResponse as WikiSyncError).code !== undefined;
+}
+
+function isCollectionLogError(
+  collectionLogResponse: CollectionLogResponse | CollectionLogError,
+): collectionLogResponse is CollectionLogResponse {
+  return (collectionLogResponse as CollectionLogError).error !== undefined;
+}
+
+function parseAchievementDiaries(
+  diaries: WikiSyncResponse['achievement_diaries'],
+) {
+  return Object.entries(diaries).reduce<AchievementDiaryMap>(
+    (acc, [diaryLocation, diaryTiers]) => {
+      const orderedTiers = [
+        [DiaryTier.Easy, diaryTiers.Easy],
+        [DiaryTier.Medium, diaryTiers.Medium],
+        [DiaryTier.Hard, diaryTiers.Hard],
+        [DiaryTier.Elite, diaryTiers.Elite],
+      ] satisfies [DiaryTier, DiaryTierData][];
+
+      orderedTiers.forEach(([tierName, tierData]) => {
+        if (tierData.complete) {
+          acc[diaryLocation as DiaryLocation] = tierName;
+        }
+      });
+
+      return acc;
+    },
+    {
+      Ardougne: null,
+      Desert: null,
+      Falador: null,
+      Fremennik: null,
+      Kandarin: null,
+      Karamja: null,
+      'Kourend & Kebos': null,
+      'Lumbridge & Draynor': null,
+      Morytania: null,
+      Varrock: null,
+      'Western Provinces': null,
+      Wilderness: null,
+    } satisfies AchievementDiaryMap,
+  );
+}
+
+function parseLevels({ Overall, ...levels }: WikiSyncResponse['levels']) {
+  return levels;
+}
 
 export async function GET(request: NextRequest) {
   const player = request.nextUrl.searchParams.get('player');
@@ -23,82 +81,60 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // const wikiSyncResponse = await fetch(
-    //   `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
-    //   {
-    //     method: 'GET',
-    //     headers: {
-    //       // User agent is required or the API returns a 400
-    //       'User-Agent': 'Irons-Tavern-Rank-Calculator',
-    //     },
-    //   },
-    // );
-    // const wikiSyncData = (await wikiSyncResponse.json()) as WikiSyncResponse;
-    const wikiSyncData: WikiSyncResponse = wikiSyncDataFixture;
-
-    // const collectionLogResponse = await fetch(
-    //   `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
-    // );
-    // const collectionLogData =
-    //   (await collectionLogResponse.json()) as typeof collectionLogDataFixture;
-    const collectionLogData = collectionLogDataFixture;
-    const collectionLogItems = get<CollectionLogResponseItem[]>(
-      collectionLogData,
-      'collectionLog.tabs.*.*.items',
-    ).reduce(
-      (acc, item) =>
-        item.obtained
-          ? {
-              ...acc,
-              [item.name]: item.quantity,
-            }
-          : acc,
-      {},
-    );
-
-    const achievementDiaries = Object.entries(
-      wikiSyncData.achievement_diaries,
-    ).reduce(
-      (acc, [diaryLocation, diaryTiers]) => {
-        const orderedTiers = [
-          [DiaryTier.Easy, diaryTiers.Easy],
-          [DiaryTier.Medium, diaryTiers.Medium],
-          [DiaryTier.Hard, diaryTiers.Hard],
-          [DiaryTier.Elite, diaryTiers.Elite],
-        ] satisfies [DiaryTier, DiaryTierData][];
-
-        orderedTiers.forEach(([tierName, tierData]) => {
-          if (tierData.complete) {
-            acc[diaryLocation as DiaryLocation] = tierName;
-          }
-        });
-
-        return acc;
-      },
+    const wikiSyncResponse = await fetch(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       {
-        Ardougne: null,
-        Desert: null,
-        Falador: null,
-        Fremennik: null,
-        Kandarin: null,
-        Karamja: null,
-        'Kourend & Kebos': null,
-        'Lumbridge & Draynor': null,
-        Morytania: null,
-        Varrock: null,
-        'Western Provinces': null,
-      } as Record<DiaryLocation, DiaryTier | null>,
+        headers: {
+          // User agent is required or the API returns a 400
+          'User-Agent': 'Irons-Tavern-Rank-Calculator',
+        },
+      },
     );
+    const wikiSyncData: WikiSyncResponse | WikiSyncError =
+      await wikiSyncResponse.json();
+
+    const collectionLogResponse = await fetch(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+    );
+    const collectionLogData: CollectionLogResponse =
+      await collectionLogResponse.json();
+
+    const collectionLogItems = !isCollectionLogError(collectionLogData)
+      ? get<CollectionLogResponseItem[]>(
+          collectionLogData,
+          'collectionLog.tabs.*.*.items',
+        ).reduce<CollectionLogItemMap>(
+          (acc, item) =>
+            item.obtained
+              ? {
+                  ...acc,
+                  [item.name]: item.quantity,
+                }
+              : acc,
+          {},
+        )
+      : null;
 
     const {
-      levels: { Overall, ...levels },
-    } = wikiSyncData;
+      achievementDiaries = null,
+      levels = null,
+      quests = null,
+    } = !isWikiSyncError(wikiSyncData)
+      ? {
+          achievementDiaries: parseAchievementDiaries(
+            wikiSyncData.achievement_diaries,
+          ),
+          levels: parseLevels(wikiSyncData.levels),
+          quests: wikiSyncData.quests,
+        }
+      : {};
+
     const acquiredItems = Object.values(itemsResponseFixture)
       .flatMap(({ items }) => items)
       .filter((item) =>
         isItemAcquired(item, {
           collectionLogItems,
-          quests: wikiSyncData.quests,
+          quests,
           achievementDiaries,
           levels,
         }),
@@ -112,8 +148,14 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(null, {
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        acquiredItems: [],
+        achievementDiaries: null,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

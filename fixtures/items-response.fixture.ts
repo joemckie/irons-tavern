@@ -136,26 +136,30 @@ export const itemsResponseFixture: ItemsResponse = {
         name: 'Achievement Diary Cape',
         points: 1000,
         isAcquired({ achievementDiaries }) {
-          return Object.values(achievementDiaries).every(
-            (tier) => tier === DiaryTier.Elite,
-          );
+          return achievementDiaries
+            ? Object.values(achievementDiaries).every(
+                (tier) => tier === DiaryTier.Elite,
+              )
+            : false;
         },
       }),
       customItem({
         name: 'Max Cape',
         points: 7000,
         isAcquired({ levels }) {
-          return Object.values(levels).every((level) => level === 99);
+          return levels
+            ? Object.values(levels).every((level) => level === 99)
+            : false;
         },
       }),
       customItem({
         name: 'Infernal Max Cape',
         points: 2000,
         isAcquired({ levels, collectionLogItems }) {
-          return (
-            Object.values(levels).every((level) => level === 99) &&
-            collectionLogItems['Infernal cape'] > 0
-          );
+          return levels && collectionLogItems
+            ? Object.values(levels).every((level) => level === 99) &&
+                collectionLogItems['Infernal cape'] > 0
+            : false;
         },
       }),
       manualItem({

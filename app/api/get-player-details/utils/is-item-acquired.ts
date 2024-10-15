@@ -1,22 +1,22 @@
+import { CollectionLogItemMap } from '@/types/collection-log';
 import {
   CollectionLogItem,
   CombatAchievementItem,
   CustomItem,
-  DiaryLocation,
-  DiaryTier,
   Item,
   MiniQuest,
   Quest,
   QuestItem,
   QuestStatus,
   LevelMap,
+  AchievementDiaryMap,
 } from '@/types/rank-calculator';
 
 interface IsItemAcquiredData {
-  collectionLogItems: Record<string, number>;
-  quests: Record<Quest | MiniQuest, QuestStatus>;
-  achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
-  levels: LevelMap;
+  collectionLogItems: CollectionLogItemMap | null;
+  quests: Record<Quest | MiniQuest, QuestStatus> | null;
+  achievementDiaries: AchievementDiaryMap | null;
+  levels: LevelMap | null;
 }
 
 function isCollectionLogItem(item: Item): item is CollectionLogItem {
@@ -47,8 +47,12 @@ export function isItemAcquired(
   }: IsItemAcquiredData,
 ) {
   if (isCollectionLogItem(item)) {
-    return item.requiredItems.every(
-      ({ amount, clogName }) => (collectionLogItems?.[clogName] ?? 0) >= amount,
+    return (
+      collectionLogItems &&
+      item.requiredItems.every(
+        ({ amount, clogName }) =>
+          (collectionLogItems?.[clogName] ?? 0) >= amount,
+      )
     );
   }
 
@@ -57,8 +61,11 @@ export function isItemAcquired(
   }
 
   if (isQuestItem(item)) {
-    return item.requiredQuests.every(
-      (quest) => quests[quest] === QuestStatus.Completed,
+    return (
+      quests &&
+      item.requiredQuests.every(
+        (quest) => quests[quest] === QuestStatus.Completed,
+      )
     );
   }
 

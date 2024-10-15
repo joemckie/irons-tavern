@@ -1,5 +1,3 @@
-import collectionLogFixture from '@/fixtures/collection-log.fixture.json';
-
 export interface CollectionLogResponseItem {
   id: number;
   name: string;
@@ -9,4 +7,16 @@ export interface CollectionLogResponseItem {
   sequence: number;
 }
 
-export type CollectionLogResponse = typeof collectionLogFixture;
+export interface CollectionLogError {
+  error: string;
+}
+
+export interface CollectionLogResponse {
+  collectionLogId: string;
+  userId: string;
+  collectionLog: {
+    tabs: Record<string, Record<string, CollectionLogResponseItem>>;
+  };
+}
+
+export type CollectionLogItemMap = Record<string, number>;
