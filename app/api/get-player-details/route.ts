@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import collectionLogDataFixture from '@/fixtures/collection-log.fixture.json';
-// import wikiSyncDataFixture from '@/fixtures/wikisync.fixture.json';
+import wikiSyncDataFixture from '@/fixtures/wikisync.fixture.json';
 import { get } from 'get-wild';
 import { CollectionLogResponseItem } from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
@@ -23,25 +23,25 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const wikiSyncResponse = await fetch(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
-      {
-        method: 'GET',
-        headers: {
-          // User agent is required or the API returns a 400
-          'User-Agent': 'Irons-Tavern-Rank-Calculator',
-        },
-      },
-    );
-    const wikiSyncData = (await wikiSyncResponse.json()) as WikiSyncResponse;
-    // const wikiSyncData: WikiSyncResponse = wikiSyncDataFixture;
+    // const wikiSyncResponse = await fetch(
+    //   `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+    //   {
+    //     method: 'GET',
+    //     headers: {
+    //       // User agent is required or the API returns a 400
+    //       'User-Agent': 'Irons-Tavern-Rank-Calculator',
+    //     },
+    //   },
+    // );
+    // const wikiSyncData = (await wikiSyncResponse.json()) as WikiSyncResponse;
+    const wikiSyncData: WikiSyncResponse = wikiSyncDataFixture;
 
-    const collectionLogResponse = await fetch(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
-    );
-    const collectionLogData =
-      (await collectionLogResponse.json()) as typeof collectionLogDataFixture;
-    // const collectionLogData = collectionLogDataFixture;
+    // const collectionLogResponse = await fetch(
+    //   `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+    // );
+    // const collectionLogData =
+    //   (await collectionLogResponse.json()) as typeof collectionLogDataFixture;
+    const collectionLogData = collectionLogDataFixture;
     const collectionLogItems = get<CollectionLogResponseItem[]>(
       collectionLogData,
       'collectionLog.tabs.*.*.items',
