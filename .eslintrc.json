@@ -25,6 +25,13 @@
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
     "react/display-name": "warn",
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ]
   }
 }
