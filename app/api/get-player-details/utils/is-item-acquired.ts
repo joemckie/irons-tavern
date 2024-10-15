@@ -9,14 +9,14 @@ import {
   Quest,
   QuestItem,
   QuestStatus,
-  Skill,
+  LevelMap,
 } from '@/types/rank-calculator';
 
 interface IsItemAcquiredData {
   collectionLogItems: Record<string, number>;
   quests: Record<Quest | MiniQuest, QuestStatus>;
   achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
-  levels: Record<Skill, number>;
+  levels: LevelMap;
 }
 
 function isCollectionLogItem(item: Item): item is CollectionLogItem {

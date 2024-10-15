@@ -90,6 +90,9 @@ export async function GET(request: NextRequest) {
       } as Record<DiaryLocation, DiaryTier | null>,
     );
 
+    const {
+      levels: { Overall, ...levels },
+    } = wikiSyncData;
     const acquiredItems = Object.values(itemsResponseFixture)
       .flatMap(({ items }) => items)
       .filter((item) =>
@@ -97,7 +100,7 @@ export async function GET(request: NextRequest) {
           collectionLogItems,
           quests: wikiSyncData.quests,
           achievementDiaries,
-          levels: wikiSyncData.levels,
+          levels,
         }),
       )
       .map(({ name }) => name);

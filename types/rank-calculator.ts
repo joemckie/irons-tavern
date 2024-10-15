@@ -267,9 +267,11 @@ export enum QuestStatus {
   Completed,
 }
 
+export type LevelMap = Record<Skill, number>;
+
 export interface WikiSyncResponse {
   achievement_diaries: Record<DiaryLocation, Record<DiaryTier, DiaryTierData>>;
-  levels: Record<Skill, number>;
+  levels: LevelMap & { Overall: number };
   quests: Record<Quest | MiniQuest, QuestStatus>;
 }
 
@@ -290,7 +292,7 @@ export interface BaseItem {
 }
 
 export interface CollectionLogItem extends BaseItem {
-  requiredLevels?: AtLeastOne<Record<Skill, number>>;
+  requiredLevels?: AtLeastOne<LevelMap>;
   requiredItems: NonEmptyArray<RequiredItem>;
 }
 
@@ -306,7 +308,7 @@ export interface CustomItem extends BaseItem {
   isAcquired: (playerData: {
     achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
     collectionLogItems: Record<string, number>;
-    levels: Record<Skill | 'Overall', number>;
+    levels: LevelMap;
   }) => boolean;
 }
 
