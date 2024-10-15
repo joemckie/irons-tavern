@@ -48,3 +48,23 @@ export interface ItemCategory {
 }
 
 export type ItemCategoryMap = Record<string, ItemCategory>;
+
+export function isCollectionLogItem(item: Item): item is CollectionLogItem {
+  return (item as CollectionLogItem).requiredItems !== undefined;
+}
+
+export function isCombatAchievementItem(
+  item: Item,
+): item is CombatAchievementItem {
+  return (
+    (item as CombatAchievementItem).requiredCombatAchievements !== undefined
+  );
+}
+
+export function isQuestItem(item: Item): item is QuestItem {
+  return (item as QuestItem).requiredQuests !== undefined;
+}
+
+export function isCustomItem(item: Item): item is CustomItem {
+  return (item as CustomItem).isAcquired !== undefined;
+}

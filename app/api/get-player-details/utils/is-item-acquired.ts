@@ -1,40 +1,20 @@
 import { CollectionLogItemMap } from '@/types/collection-log';
 import {
-  CollectionLogItem,
-  CombatAchievementItem,
-  CustomItem,
+  isCollectionLogItem,
+  isCombatAchievementItem,
+  isCustomItem,
+  isQuestItem,
   Item,
-  MiniQuest,
-  Quest,
-  QuestItem,
-  QuestStatus,
-  LevelMap,
-  AchievementDiaryMap,
-} from '@/types/rank-calculator';
+} from '@/types/items';
+import { MiniQuest, Quest } from '@/types/osrs';
+import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { LevelMap, QuestStatus } from '@/types/wiki-sync';
 
 interface IsItemAcquiredData {
   collectionLogItems: CollectionLogItemMap | null;
   quests: Record<Quest | MiniQuest, QuestStatus> | null;
   achievementDiaries: AchievementDiaryMap | null;
   levels: LevelMap | null;
-}
-
-function isCollectionLogItem(item: Item): item is CollectionLogItem {
-  return (item as CollectionLogItem).requiredItems !== undefined;
-}
-
-function isCombatAchievementItem(item: Item): item is CombatAchievementItem {
-  return (
-    (item as CombatAchievementItem).requiredCombatAchievements !== undefined
-  );
-}
-
-function isQuestItem(item: Item): item is QuestItem {
-  return (item as QuestItem).requiredQuests !== undefined;
-}
-
-function isCustomItem(item: Item): item is CustomItem {
-  return (item as CustomItem).isAcquired !== undefined;
 }
 
 export function isItemAcquired(
