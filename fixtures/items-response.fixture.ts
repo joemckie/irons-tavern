@@ -144,8 +144,8 @@ export const itemsResponseFixture: ItemsResponse = {
       customItem({
         name: 'Max Cape',
         points: 7000,
-        isAcquired({ levels }) {
-          return Object.values(levels).every((level) => level === 99);
+        isAcquired({ levels: { Overall, ...skillLevels } }) {
+          return Object.values(skillLevels).every((level) => level === 99);
         },
       }),
       customItem({

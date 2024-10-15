@@ -306,7 +306,7 @@ export interface CustomItem extends BaseItem {
   isAcquired: (playerData: {
     achievementDiaries: Record<DiaryLocation, DiaryTier | null>;
     collectionLogItems: Record<string, number>;
-    levels: Record<Skill, number>;
+    levels: Record<Skill | 'Overall', number>;
   }) => boolean;
 }
 
