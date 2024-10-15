@@ -12,5 +12,6 @@
     "Lumbridge",
     "Morytania",
     "Varrock"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
