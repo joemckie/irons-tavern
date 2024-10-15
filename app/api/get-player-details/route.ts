@@ -96,8 +96,22 @@ export async function GET(request: NextRequest) {
     const collectionLogResponse = await fetch(
       `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
     );
-    const collectionLogData: CollectionLogResponse =
+    const collectionLogData: CollectionLogResponse | CollectionLogError =
       await collectionLogResponse.json();
+
+    const hasThirdPartyData =
+      !isWikiSyncError(wikiSyncData) ||
+      !isCollectionLogError(collectionLogData);
+
+    if (!hasThirdPartyData) {
+      return NextResponse.json(
+        {
+          acquiredItems: [],
+          achievementDiaries: null,
+        },
+        { status: 404 },
+      );
+    }
 
     const collectionLogItems = !isCollectionLogError(collectionLogData)
       ? get<CollectionLogResponseItem[]>(
@@ -129,17 +143,20 @@ export async function GET(request: NextRequest) {
         }
       : {};
 
-    const acquiredItems = Object.values(itemsResponseFixture)
-      .flatMap(({ items }) => items)
-      .filter((item) =>
-        isItemAcquired(item, {
-          collectionLogItems,
-          quests,
-          achievementDiaries,
-          levels,
-        }),
-      )
-      .map(({ name }) => name);
+    const acquiredItems =
+      !isWikiSyncError(wikiSyncData) || !isCollectionLogError(collectionLogData)
+        ? Object.values(itemsResponseFixture)
+            .flatMap(({ items }) => items)
+            .filter((item) =>
+              isItemAcquired(item, {
+                collectionLogItems,
+                quests,
+                achievementDiaries,
+                levels,
+              }),
+            )
+            .map(({ name }) => name)
+        : [];
 
     return NextResponse.json({
       acquiredItems,
