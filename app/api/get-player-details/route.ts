@@ -5,30 +5,19 @@ import {
   CollectionLogItemMap,
   CollectionLogResponse,
   CollectionLogResponseItem,
+  isCollectionLogError,
 } from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
+import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { constants } from '@/config/constants';
 import {
-  AchievementDiaryMap,
-  DiaryLocation,
-  DiaryTier,
   DiaryTierData,
+  isWikiSyncError,
   WikiSyncError,
   WikiSyncResponse,
-} from '@/types/rank-calculator';
-import { constants } from '@/config/constants';
+} from '@/types/wiki-sync';
+import { DiaryLocation, DiaryTier } from '@/types/osrs';
 import { isItemAcquired } from './utils/is-item-acquired';
-
-function isWikiSyncError(
-  wikiSyncResponse: WikiSyncResponse | WikiSyncError,
-): wikiSyncResponse is WikiSyncError {
-  return (wikiSyncResponse as WikiSyncError).code !== undefined;
-}
-
-function isCollectionLogError(
-  collectionLogResponse: CollectionLogResponse | CollectionLogError,
-): collectionLogResponse is CollectionLogResponse {
-  return (collectionLogResponse as CollectionLogError).error !== undefined;
-}
 
 function parseAchievementDiaries(
   diaries: WikiSyncResponse['achievement_diaries'],
@@ -99,9 +88,9 @@ export async function GET(request: NextRequest) {
     const collectionLogData: CollectionLogResponse | CollectionLogError =
       await collectionLogResponse.json();
 
-    const hasThirdPartyData =
-      !isWikiSyncError(wikiSyncData) ||
-      !isCollectionLogError(collectionLogData);
+    const hasCollectionLogData = !isCollectionLogError(collectionLogData);
+    const hasWikiSyncData = !isWikiSyncError(wikiSyncData);
+    const hasThirdPartyData = hasWikiSyncData || hasCollectionLogData;
 
     if (!hasThirdPartyData) {
       return NextResponse.json(
@@ -113,7 +102,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const collectionLogItems = !isCollectionLogError(collectionLogData)
+    const collectionLogItems = hasCollectionLogData
       ? get<CollectionLogResponseItem[]>(
           collectionLogData,
           'collectionLog.tabs.*.*.items',
@@ -133,7 +122,7 @@ export async function GET(request: NextRequest) {
       achievementDiaries = null,
       levels = null,
       quests = null,
-    } = !isWikiSyncError(wikiSyncData)
+    } = hasWikiSyncData
       ? {
           achievementDiaries: parseAchievementDiaries(
             wikiSyncData.achievement_diaries,
@@ -144,7 +133,7 @@ export async function GET(request: NextRequest) {
       : {};
 
     const acquiredItems =
-      !isWikiSyncError(wikiSyncData) || !isCollectionLogError(collectionLogData)
+      hasWikiSyncData || !isCollectionLogError(collectionLogData)
         ? Object.values(itemsResponseFixture)
             .flatMap(({ items }) => items)
             .filter((item) =>

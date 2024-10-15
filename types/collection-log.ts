@@ -20,3 +20,9 @@ export interface CollectionLogResponse {
 }
 
 export type CollectionLogItemMap = Record<string, number>;
+
+export function isCollectionLogError(
+  collectionLogResponse: CollectionLogResponse | CollectionLogError,
+): collectionLogResponse is CollectionLogResponse {
+  return (collectionLogResponse as CollectionLogError).error !== undefined;
+}

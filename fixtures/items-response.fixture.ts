@@ -4,15 +4,12 @@ import {
   CollectionLogItem,
   CombatAchievementItem,
   CustomItem,
-  DiaryTier,
   Item,
-  ItemsResponse,
-  MiniQuest,
-  Quest,
+  ItemCategoryMap,
   QuestItem,
   RequiredItem,
-  Skill,
-} from '@/types/rank-calculator';
+} from '@/types/items';
+import { DiaryTier, MiniQuest, Quest, Skill } from '@/types/osrs';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,
@@ -129,7 +126,7 @@ function customItem({
   } satisfies CustomItem;
 }
 
-export const itemsResponseFixture: ItemsResponse = {
+export const itemsResponseFixture: ItemCategoryMap = {
   'Automatic Items': {
     items: [
       customItem({
