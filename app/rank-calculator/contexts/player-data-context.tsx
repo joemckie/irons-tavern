@@ -8,6 +8,20 @@ interface PlayerDataContextProps {
 
 export const PlayerDataContext = createContext<PlayerDataContextProps>({
   playerData: {
+    achievementDiaries: {
+      'Kourend & Kebos': null,
+      'Lumbridge & Draynor': null,
+      'Western Provinces': null,
+      Ardougne: null,
+      Desert: null,
+      Falador: null,
+      Fremennik: null,
+      Kandarin: null,
+      Karamja: null,
+      Morytania: null,
+      Varrock: null,
+      Wilderness: null,
+    },
     acquiredItems: [],
   },
   setPlayerData() {},
