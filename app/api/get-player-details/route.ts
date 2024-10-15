@@ -10,7 +10,7 @@ import {
   DiaryTierData,
   WikiSyncResponse,
 } from '@/types/rank-calculator';
-import { constants } from '@/config/constants';
+// import { constants } from '@/config/constants';
 import { isItemAcquired } from './utils/is-item-acquired';
 
 export async function GET(request: NextRequest) {
