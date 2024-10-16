@@ -4,11 +4,11 @@ import {
   CollectionLogError,
   CollectionLogItemMap,
   CollectionLogResponse,
-  CollectionLogResponseItem,
+  CollectionLogItem,
   isCollectionLogError,
 } from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { constants } from '@/config/constants';
 import {
   DiaryTierData,
@@ -17,7 +17,9 @@ import {
   WikiSyncResponse,
 } from '@/types/wiki-sync';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import { list } from '@vercel/blob';
 import { isItemAcquired } from './utils/is-item-acquired';
+import { ClanMember } from '../update-member-list/route';
 
 function parseAchievementDiaries(
   diaries: WikiSyncResponse['achievement_diaries'],
@@ -60,11 +62,34 @@ function parseLevels({ Overall, ...levels }: WikiSyncResponse['levels']) {
   return levels;
 }
 
-export async function GET(request: NextRequest) {
+const emptyResponse = {
+  achievementDiaries: null,
+  acquiredItems: null,
+  joinDate: null,
+} satisfies PlayerData;
+
+async function getJoinedDate(player: string) {
+  const blobList = await list();
+  const [{ url }] = blobList.blobs.sort(
+    (a, b) => +b.uploadedAt - +a.uploadedAt,
+  );
+
+  const response = await fetch(url);
+  const data: ClanMember[] = await response.json();
+
+  return (
+    data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
+      ?.joinedDate ?? null
+  );
+}
+
+export async function GET(
+  request: NextRequest,
+): Promise<NextResponse<PlayerData>> {
   const player = request.nextUrl.searchParams.get('player');
 
   if (!player) {
-    return NextResponse.json('No player provided', {
+    return NextResponse.json(emptyResponse, {
       status: 400,
     });
   }
@@ -93,17 +118,11 @@ export async function GET(request: NextRequest) {
     const hasThirdPartyData = hasWikiSyncData || hasCollectionLogData;
 
     if (!hasThirdPartyData) {
-      return NextResponse.json(
-        {
-          acquiredItems: [],
-          achievementDiaries: null,
-        },
-        { status: 404 },
-      );
+      return NextResponse.json(emptyResponse, { status: 404 });
     }
 
     const collectionLogItems = hasCollectionLogData
-      ? get<CollectionLogResponseItem[]>(
+      ? get<CollectionLogItem[]>(
           collectionLogData,
           'collectionLog.tabs.*.*.items',
         ).reduce<CollectionLogItemMap>(
@@ -147,21 +166,18 @@ export async function GET(request: NextRequest) {
             .map(({ name }) => name)
         : [];
 
+    const joinDate = await getJoinedDate(player);
+
     return NextResponse.json({
       acquiredItems,
       achievementDiaries,
+      joinDate,
     });
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(
-      {
-        acquiredItems: [],
-        achievementDiaries: null,
-      },
-      {
-        status: 500,
-      },
-    );
+    return NextResponse.json(emptyResponse, {
+      status: 500,
+    });
   }
 }

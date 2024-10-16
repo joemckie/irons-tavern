@@ -1,3 +1,4 @@
+import { forwardRef, memo } from 'react';
 import {
   Avatar,
   Box,
@@ -8,8 +9,7 @@ import {
   Text,
 } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { forwardRef, memo } from 'react';
-import { Item } from '@/types/rank-calculator';
+import { Item } from '@/types/items';
 import { parseInitials } from '../utils/parse-initials';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';

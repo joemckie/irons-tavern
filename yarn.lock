@@ -1566,6 +1566,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-input/core@npm:^1.0.18":
+  version: 1.0.18
+  resolution: "@react-input/core@npm:1.0.18"
+  peerDependencies:
+    "@types/react": ">=16.8"
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/6c847da235942d20600502b460c6eca789064897654152af119d91e3e09aa1aaf69cab84b8d8e422a6337020d3f6b2e00f4fe92010db8fb1530b4e2c3bd95e2e
+  languageName: node
+  linkType: hard
+
+"@react-input/mask@npm:^1.2.11":
+  version: 1.2.11
+  resolution: "@react-input/mask@npm:1.2.11"
+  dependencies:
+    "@react-input/core": "npm:^1.0.18"
+  peerDependencies:
+    "@types/react": ">=16.8"
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10c0/dde83910946fc2ea1e6dedc06fee73ca0f71733ad0f901f432cb2f4b02c8c3811e0f41e8d0ab95c0a87c511665a3f8c15391a7eb9b8d5529d21f6a6ab1116e81
+  languageName: node
+  linkType: hard
+
 "@rtsao/scc@npm:^1.1.0":
   version: 1.1.0
   resolution: "@rtsao/scc@npm:1.1.0"
@@ -3820,6 +3850,7 @@ __metadata:
     "@radix-ui/react-icons": "npm:^1.3.0"
     "@radix-ui/react-label": "npm:^2.1.0"
     "@radix-ui/themes": "npm:^3.1.4"
+    "@react-input/mask": "npm:^1.2.11"
     "@stylistic/eslint-plugin": "npm:^2.6.4"
     "@tanstack/react-query": "npm:^5.52.1"
     "@types/lodash": "npm:^4"

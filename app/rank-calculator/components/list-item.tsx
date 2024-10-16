@@ -1,7 +1,7 @@
-import { ItemCategory } from '@/types/rank-calculator';
 import { Box } from '@radix-ui/themes';
 import { memo, useEffect, useRef } from 'react';
 import { areEqual, ListChildComponentProps } from 'react-window';
+import { ItemCategory } from '@/types/items';
 import { Category } from './category';
 
 interface MemoisedCategoryProps

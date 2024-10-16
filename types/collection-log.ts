@@ -1,4 +1,4 @@
-export interface CollectionLogResponseItem {
+export interface CollectionLogItem {
   id: number;
   name: string;
   quantity: number;
@@ -11,11 +11,17 @@ export interface CollectionLogError {
   error: string;
 }
 
+interface CollectionLogPage {
+  items: CollectionLogItem[];
+}
+
+type CollectionLogTab = Record<string, CollectionLogPage>;
+
 export interface CollectionLogResponse {
   collectionLogId: string;
   userId: string;
   collectionLog: {
-    tabs: Record<string, Record<string, CollectionLogResponseItem>>;
+    tabs: Record<string, CollectionLogTab>;
   };
 }
 

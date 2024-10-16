@@ -1,6 +1,6 @@
-import { Item } from '@/types/rank-calculator';
-import { Avatar, Flex, Table, Text } from '@radix-ui/themes';
 import { memo } from 'react';
+import { Avatar, Flex, Table, Text } from '@radix-ui/themes';
+import { Item } from '@/types/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 

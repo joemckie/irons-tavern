@@ -1,22 +1,16 @@
 import { useContext } from 'react';
-import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import {
-  Box,
-  Button,
-  DataList,
-  Flex,
-  Separator,
-  TextField,
-} from '@radix-ui/themes';
+import { Box, DataList, Flex, Separator } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { PlayerData } from '@/types/rank-calculator';
 import { merge } from 'lodash';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import { InputMask } from '@react-input/mask';
 import { ItemStatistics } from './item-statistics';
 import { PlayerDataContext } from '../contexts/player-data-context';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { Select } from './select';
+import { Input } from './input';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
@@ -24,6 +18,11 @@ export function Sidebar() {
 
   const handlePlayerSearch = async () => {
     const player = getValues('playerName');
+
+    if (!player) {
+      return;
+    }
+
     const response = await fetch(
       `${constants.publicUrl}/api/get-player-details?player=${player}`,
     );
@@ -31,16 +30,18 @@ export function Sidebar() {
 
     setPlayerData(data);
 
-    const acquiredItems = data.acquiredItems.reduce(
-      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-      {},
-    );
+    const acquiredItems =
+      data.acquiredItems?.reduce<Record<string, boolean>>(
+        (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
+        {},
+      ) ?? {};
 
     setValue('items', merge(getValues('items'), acquiredItems));
     setValue(
       'achievementDiaries',
       merge(getValues('achievementDiaries'), data.achievementDiaries),
     );
+    setValue('joinDate', data.joinDate);
   };
 
   return (
@@ -56,19 +57,26 @@ export function Sidebar() {
         <Flex gap="4" direction="column">
           <Flex gap="2" justify="between">
             <Flex asChild flexGrow="1">
-              <TextField.Root
-                placeholder="Player name"
-                type="search"
-                {...register('playerName')}
-              >
-                <TextField.Slot>
-                  <MagnifyingGlassIcon />
-                </TextField.Slot>
-              </TextField.Root>
+              <>
+                <Input
+                  placeholder="Player name"
+                  {...register('playerName', {
+                    onBlur: handlePlayerSearch,
+                    required: true,
+                  })}
+                />
+                <InputMask
+                  component={Input}
+                  mask="__/__/____"
+                  replacement={{ _: /[0-9]/ }}
+                  placeholder="Join date"
+                  {...register('joinDate', {
+                    required: true,
+                    valueAsDate: true,
+                  })}
+                />
+              </>
             </Flex>
-            <Button onClick={handlePlayerSearch} type="button" variant="soft">
-              Search
-            </Button>
           </Flex>
           <ItemStatistics />
           <Separator size="4" />
