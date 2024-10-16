@@ -1,5 +1,12 @@
 import { useContext } from 'react';
-import { Box, DataList, Flex, Separator } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  DataList,
+  Dialog,
+  Flex,
+  Separator,
+} from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { PlayerData } from '@/types/rank-calculator';
@@ -14,7 +21,7 @@ import { Input } from './input';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
-  const { setPlayerData } = useContext(PlayerDataContext);
+  const { playerData, setPlayerData } = useContext(PlayerDataContext);
 
   const handlePlayerSearch = async () => {
     const player = getValues('playerName');
@@ -80,24 +87,54 @@ export function Sidebar() {
             </Flex>
           </Flex>
           <Separator size="4" />
+          <DataList.Root>
+            <DataList.Item>
+              <DataList.Label>Collection log</DataList.Label>
+              <DataList.Value>
+                {playerData?.collectionLogCount ?? 0}
+              </DataList.Value>
+            </DataList.Item>
+          </DataList.Root>
+          <Separator size="4" />
           <ItemStatistics />
           <Separator size="4" />
-          <DataList.Root>
-            {Object.keys(DiaryLocation).map((diaryLocation) => (
-              <DataList.Item key={diaryLocation}>
-                <DataList.Label>{diaryLocation}</DataList.Label>
-                <DataList.Value>
-                  <Select
-                    name={`achievementDiaries.${diaryLocation}`}
-                    options={Object.keys(DiaryTier).map((tier) => ({
-                      label: tier,
-                      value: tier,
-                    }))}
-                  />
-                </DataList.Value>
-              </DataList.Item>
-            ))}
-          </DataList.Root>
+          <Dialog.Root>
+            <Dialog.Trigger>
+              <Button>Achievement diaries</Button>
+            </Dialog.Trigger>
+
+            <Dialog.Content maxWidth="450px">
+              <Dialog.Title>Edit profile</Dialog.Title>
+              <Dialog.Description size="2" mb="4">
+                Make changes to your profile.
+              </Dialog.Description>
+
+              <DataList.Root>
+                {Object.keys(DiaryLocation).map((diaryLocation) => (
+                  <DataList.Item key={diaryLocation} align="center">
+                    <DataList.Label>{diaryLocation}</DataList.Label>
+                    <DataList.Value>
+                      <Select
+                        name={`achievementDiaries.${diaryLocation}`}
+                        options={Object.keys(DiaryTier).map((tier) => ({
+                          label: tier,
+                          value: tier,
+                        }))}
+                      />
+                    </DataList.Value>
+                  </DataList.Item>
+                ))}
+              </DataList.Root>
+
+              <Flex gap="3" mt="4" justify="end">
+                <Dialog.Close>
+                  <Button variant="soft" color="gray">
+                    Close
+                  </Button>
+                </Dialog.Close>
+              </Flex>
+            </Dialog.Content>
+          </Dialog.Root>
         </Flex>
       </aside>
     </Box>

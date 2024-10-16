@@ -18,7 +18,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         onValueChange={(value) => {
           setValue(props.name, value);
         }}
-        size="1"
+        size="2"
         value={field.value}
       >
         <BaseSelect.Trigger ref={forwardedRef} placeholder="Select a diary" />

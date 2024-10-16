@@ -75,7 +75,7 @@ export default function RankCalculator() {
                 <TabNav.Link href="#">Achievement Diaries</TabNav.Link>
               </TabNav.Root>
             </Flex>
-            <Flex gridArea="main" px="3" height={pageHeightCss}>
+            <Flex gridArea="main" pl="3" height={pageHeightCss}>
               <ItemList />
             </Flex>
           </Grid>

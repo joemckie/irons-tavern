@@ -66,6 +66,8 @@ const emptyResponse = {
   achievementDiaries: null,
   acquiredItems: null,
   joinDate: null,
+  collectionLogCount: null,
+  collectionLogTotal: null,
 } satisfies PlayerData;
 
 async function getJoinedDate(player: string) {
@@ -137,6 +139,14 @@ export async function GET(
         )
       : null;
 
+    const collectionLogCount = hasCollectionLogData
+      ? collectionLogData.collectionLog.uniqueObtained
+      : null;
+
+    const collectionLogTotal = hasCollectionLogData
+      ? collectionLogData.collectionLog.uniqueItems
+      : null;
+
     const {
       achievementDiaries = null,
       levels = null,
@@ -174,6 +184,8 @@ export async function GET(
     return NextResponse.json({
       acquiredItems,
       achievementDiaries,
+      collectionLogCount,
+      collectionLogTotal,
       joinDate,
     });
   } catch (error) {

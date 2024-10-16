@@ -11,6 +11,8 @@ export const PlayerDataContext = createContext<PlayerDataContextProps>({
     achievementDiaries: null,
     acquiredItems: [],
     joinDate: null,
+    collectionLogCount: null,
+    collectionLogTotal: null,
   },
   setPlayerData() {},
 });

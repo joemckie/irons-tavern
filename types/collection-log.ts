@@ -22,6 +22,12 @@ export interface CollectionLogResponse {
   userId: string;
   collectionLog: {
     tabs: Record<string, CollectionLogTab>;
+    username: string;
+    accountType: string;
+    totalObtained: number;
+    totalItems: number;
+    uniqueObtained: number;
+    uniqueItems: number;
   };
 }
 
@@ -29,6 +35,6 @@ export type CollectionLogItemMap = Record<string, number>;
 
 export function isCollectionLogError(
   collectionLogResponse: CollectionLogResponse | CollectionLogError,
-): collectionLogResponse is CollectionLogResponse {
+): collectionLogResponse is CollectionLogError {
   return (collectionLogResponse as CollectionLogError).error !== undefined;
 }

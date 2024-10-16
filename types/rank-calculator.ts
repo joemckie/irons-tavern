@@ -6,4 +6,6 @@ export interface PlayerData {
   acquiredItems: string[] | null;
   achievementDiaries: AchievementDiaryMap | null;
   joinDate: string | null;
+  collectionLogCount: number | null;
+  collectionLogTotal: number | null;
 }
