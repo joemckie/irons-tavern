@@ -54,21 +54,7 @@ export default function RankCalculator() {
             <Navigation ref={navRef} />
             <Sidebar />
             <Flex gridArea="main" direction="column" height={pageHeightCss}>
-              <Suspense
-                fallback={
-                  <Flex
-                    align="center"
-                    justify="center"
-                    direction="column"
-                    gap="3"
-                  >
-                    <Spinner size="3" />
-                    <Text color="gray">Loading item list</Text>
-                  </Flex>
-                }
-              >
-                <ItemList />
-              </Suspense>
+              <ItemList />
             </Flex>
           </Grid>
         </form>
