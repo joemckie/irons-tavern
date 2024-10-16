@@ -141,6 +141,7 @@ export async function GET(
       achievementDiaries = null,
       levels = null,
       quests = null,
+      musicTracks = null,
     } = hasWikiSyncData
       ? {
           achievementDiaries: parseAchievementDiaries(
@@ -148,6 +149,7 @@ export async function GET(
           ),
           levels: parseLevels(wikiSyncData.levels),
           quests: wikiSyncData.quests,
+          musicTracks: wikiSyncData.music_tracks,
         }
       : {};
 
@@ -161,6 +163,7 @@ export async function GET(
                 quests,
                 achievementDiaries,
                 levels,
+                musicTracks,
               }),
             )
             .map(({ name }) => name)

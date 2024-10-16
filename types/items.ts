@@ -32,6 +32,7 @@ export interface CustomItem extends BaseItem {
     achievementDiaries: AchievementDiaryMap | null;
     collectionLogItems: CollectionLogItemMap | null;
     levels: LevelMap | null;
+    musicTracks: Record<string, boolean> | null;
   }) => boolean;
 }
 

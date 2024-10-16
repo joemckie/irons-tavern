@@ -10,6 +10,7 @@ import {
   RequiredItem,
 } from '@/types/items';
 import { DiaryTier, MiniQuest, Quest, Skill } from '@/types/osrs';
+import { HolidayTrack } from '@/types/wiki-sync';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,
@@ -1233,9 +1234,21 @@ export const itemsResponseFixture: ItemCategoryMap = {
         name: 'Ham joint',
         points: 20,
       }),
-      manualItem({
+      customItem({
         name: 'Music cape',
         points: 80,
+        isAcquired({ musicTracks }) {
+          return musicTracks
+            ? Object.entries(musicTracks)
+                .filter(
+                  ([track]) =>
+                    !Object.values(HolidayTrack).includes(
+                      track as HolidayTrack,
+                    ),
+                )
+                .every(([, unlocked]) => unlocked)
+            : false;
+        },
       }),
       questItem({
         name: 'Quest cape',

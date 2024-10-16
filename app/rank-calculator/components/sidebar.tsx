@@ -49,6 +49,7 @@ export function Sidebar() {
       asChild
       p="3"
       gridArea="sidebar"
+      gridRow="span 2"
       style={{
         borderRight: '1px solid var(--gray-5)',
       }}
@@ -78,6 +79,7 @@ export function Sidebar() {
               </>
             </Flex>
           </Flex>
+          <Separator size="4" />
           <ItemStatistics />
           <Separator size="4" />
           <DataList.Root>

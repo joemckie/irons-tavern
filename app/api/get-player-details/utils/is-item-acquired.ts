@@ -15,6 +15,7 @@ interface IsItemAcquiredData {
   quests: Record<Quest | MiniQuest, QuestStatus> | null;
   achievementDiaries: AchievementDiaryMap | null;
   levels: LevelMap | null;
+  musicTracks: Record<string, boolean> | null;
 }
 
 export function isItemAcquired(
@@ -24,6 +25,7 @@ export function isItemAcquired(
     quests,
     achievementDiaries,
     levels,
+    musicTracks,
   }: IsItemAcquiredData,
 ) {
   if (isCollectionLogItem(item)) {
@@ -54,6 +56,7 @@ export function isItemAcquired(
       achievementDiaries,
       collectionLogItems,
       levels,
+      musicTracks,
     });
   }
 
