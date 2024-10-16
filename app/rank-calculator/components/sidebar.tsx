@@ -67,7 +67,7 @@ export function Sidebar() {
                 />
                 <InputMask
                   component={Input}
-                  mask="__/__/____"
+                  mask="__-__-____"
                   replacement={{ _: /[0-9]/ }}
                   placeholder="Join date"
                   {...register('joinDate', {
