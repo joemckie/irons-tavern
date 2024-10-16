@@ -1,9 +1,9 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, Spinner, Text } from '@radix-ui/themes';
+import { Flex, Grid } from '@radix-ui/themes';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
