@@ -4,12 +4,14 @@ import '@radix-ui/themes/styles.css';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Flex, Grid, Spinner, Text } from '@radix-ui/themes';
+import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';
 import { PlayerDataProvider } from './contexts/player-data-context';
 
 interface FormData {
+  achievementDiaries: AchievementDiaryMap;
   playerName: string;
   items: Record<string, boolean>;
 }
@@ -17,6 +19,7 @@ interface FormData {
 export default function RankCalculator() {
   const methods = useForm<FormData>({
     defaultValues: {
+      achievementDiaries: {},
       items: {},
     },
   });

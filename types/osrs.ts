@@ -227,19 +227,20 @@ export enum MiniQuest {
   'Skippy and the Mogres' = 'Skippy and the Mogres',
 }
 
-export type DiaryLocation =
-  | 'Ardougne'
-  | 'Desert'
-  | 'Falador'
-  | 'Fremennik'
-  | 'Kandarin'
-  | 'Karamja'
-  | 'Kourend & Kebos'
-  | 'Lumbridge & Draynor'
-  | 'Morytania'
-  | 'Varrock'
-  | 'Western Provinces'
-  | 'Wilderness';
+export enum DiaryLocation {
+  'Ardougne' = 'Ardougne',
+  'Desert' = 'Desert',
+  'Falador' = 'Falador',
+  'Fremennik' = 'Fremennik',
+  'Kandarin' = 'Kandarin',
+  'Karamja' = 'Karamja',
+  'Kourend & Kebos' = 'Kourend & Kebos',
+  'Lumbridge & Draynor' = 'Lumbridge & Draynor',
+  'Morytania' = 'Morytania',
+  'Varrock' = 'Varrock',
+  'Western Provinces' = 'Western Provinces',
+  'Wilderness' = 'Wilderness',
+}
 
 export enum DiaryTier {
   Easy = 'Easy',

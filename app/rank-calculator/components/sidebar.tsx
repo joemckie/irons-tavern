@@ -1,13 +1,22 @@
 import { useContext } from 'react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import { Box, Button, Flex, TextField } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  DataList,
+  Flex,
+  Separator,
+  TextField,
+} from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { PlayerData } from '@/types/rank-calculator';
 import { merge } from 'lodash';
+import { DiaryLocation, DiaryTier } from '@/types/osrs';
 import { ItemStatistics } from './item-statistics';
 import { PlayerDataContext } from '../contexts/player-data-context';
 import { stripEntityName } from '../utils/strip-entity-name';
+import { Select } from './select';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
@@ -28,6 +37,10 @@ export function Sidebar() {
     );
 
     setValue('items', merge(getValues('items'), acquiredItems));
+    setValue(
+      'achievementDiaries',
+      merge(getValues('achievementDiaries'), data.achievementDiaries),
+    );
   };
 
   return (
@@ -58,6 +71,23 @@ export function Sidebar() {
             </Button>
           </Flex>
           <ItemStatistics />
+          <Separator size="4" />
+          <DataList.Root>
+            {Object.keys(DiaryLocation).map((diaryLocation) => (
+              <DataList.Item key={diaryLocation}>
+                <DataList.Label>{diaryLocation}</DataList.Label>
+                <DataList.Value>
+                  <Select
+                    name={`achievementDiaries.${diaryLocation}`}
+                    options={Object.keys(DiaryTier).map((tier) => ({
+                      label: tier,
+                      value: tier,
+                    }))}
+                  />
+                </DataList.Value>
+              </DataList.Item>
+            ))}
+          </DataList.Root>
         </Flex>
       </aside>
     </Box>
