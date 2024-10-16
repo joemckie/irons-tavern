@@ -3,8 +3,10 @@
 import '@radix-ui/themes/styles.css';
 import { useEffect, useRef, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, TabNav } from '@radix-ui/themes';
+import { Flex, Grid, TabNav, Text } from '@radix-ui/themes';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { ItemList } from './components/item-list';
@@ -24,6 +26,7 @@ export default function RankCalculator() {
     },
   });
 
+  const params = useSearchParams();
   const navRef = useRef<HTMLElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState<number>(54);
@@ -31,6 +34,7 @@ export default function RankCalculator() {
   const pageHeightCss = navHeight
     ? `calc(100vh - ${navHeight}px - ${tabsHeight}px)`
     : '100vh';
+  const currentTab = params.get('tab');
 
   useEffect(() => {
     if (navRef.current) {
@@ -69,14 +73,21 @@ export default function RankCalculator() {
               ref={tabsRef}
             >
               <TabNav.Root>
-                <TabNav.Link href="#" active>
-                  Notable items
+                <TabNav.Link active={currentTab === 'overview'} asChild>
+                  <Link href="?tab=overview" shallow>
+                    Overview
+                  </Link>
                 </TabNav.Link>
-                <TabNav.Link href="#">Achievement Diaries</TabNav.Link>
+                <TabNav.Link active={currentTab === 'notable-items'} asChild>
+                  <Link href="?tab=notable-items" shallow>
+                    Notable items
+                  </Link>
+                </TabNav.Link>
               </TabNav.Root>
             </Flex>
             <Flex gridArea="main" pl="3" height={pageHeightCss}>
-              <ItemList />
+              {currentTab === 'overview' && <Text>Overview</Text>}
+              {currentTab === 'notable-items' && <ItemList />}
             </Flex>
           </Grid>
         </form>
