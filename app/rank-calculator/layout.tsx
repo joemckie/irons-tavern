@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
-import { PlayerDataProvider } from './contexts/player-data-context';
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
@@ -60,44 +59,42 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
       scaling="95%"
     >
       <FormProvider {...methods}>
-        <PlayerDataProvider>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Grid
-              areas="
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <Grid
+            areas="
               'nav nav'
               'sidebar tabs'
               '. main'
             "
-              columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
+            columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
+          >
+            <Navigation ref={navRef} />
+            <Sidebar />
+            <Flex
+              justify="center"
+              gridArea="tabs"
+              direction="column"
+              ref={tabsRef}
             >
-              <Navigation ref={navRef} />
-              <Sidebar />
-              <Flex
-                justify="center"
-                gridArea="tabs"
-                direction="column"
-                ref={tabsRef}
-              >
-                <TabNav.Root>
-                  <TabNav.Link active={pathname === '/rank-calculator'} asChild>
-                    <Link href="/rank-calculator">Overview</Link>
-                  </TabNav.Link>
-                  <TabNav.Link
-                    active={pathname === '/rank-calculator/notable-items'}
-                    asChild
-                  >
-                    <Link href="/rank-calculator/notable-items">
-                      Notable items
-                    </Link>
-                  </TabNav.Link>
-                </TabNav.Root>
-              </Flex>
-              <Flex gridArea="main" pl="3" height={pageHeightCss}>
-                {children}
-              </Flex>
-            </Grid>
-          </form>
-        </PlayerDataProvider>
+              <TabNav.Root>
+                <TabNav.Link active={pathname === '/rank-calculator'} asChild>
+                  <Link href="/rank-calculator">Overview</Link>
+                </TabNav.Link>
+                <TabNav.Link
+                  active={pathname === '/rank-calculator/notable-items'}
+                  asChild
+                >
+                  <Link href="/rank-calculator/notable-items">
+                    Notable items
+                  </Link>
+                </TabNav.Link>
+              </TabNav.Root>
+            </Flex>
+            <Flex gridArea="main" height={pageHeightCss}>
+              {children}
+            </Flex>
+          </Grid>
+        </form>
       </FormProvider>
       <ThemePanel defaultOpen={false} />
     </Theme>

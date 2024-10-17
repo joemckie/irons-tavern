@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   Box,
   Button,
@@ -14,15 +13,14 @@ import { merge } from 'lodash';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
 import { InputMask } from '@react-input/mask';
 import { ItemStatistics } from './item-statistics';
-import { PlayerDataContext } from '../contexts/player-data-context';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { Select } from './select';
 import { Input } from './input';
 import { EditableText } from './editable-text';
+import { RankProgressCard } from './rank-progress-card';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
-  const { setPlayerData } = useContext(PlayerDataContext);
 
   const handlePlayerSearch = async () => {
     const player = getValues('playerName');
@@ -35,8 +33,6 @@ export function Sidebar() {
       `${constants.publicUrl}/api/get-player-details?player=${player}`,
     );
     const data = (await response.json()) as PlayerData;
-
-    setPlayerData(data);
 
     const acquiredItems =
       data.acquiredItems?.reduce<Record<string, boolean>>(
@@ -65,6 +61,7 @@ export function Sidebar() {
     >
       <aside>
         <Flex gap="4" direction="column">
+          <RankProgressCard />
           <Flex gap="2" justify="between">
             <Flex asChild flexGrow="1">
               <>
