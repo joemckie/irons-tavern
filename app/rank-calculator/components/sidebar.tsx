@@ -18,10 +18,11 @@ import { PlayerDataContext } from '../contexts/player-data-context';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { Select } from './select';
 import { Input } from './input';
+import { EditableText } from './editable-text';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
-  const { playerData, setPlayerData } = useContext(PlayerDataContext);
+  const { setPlayerData } = useContext(PlayerDataContext);
 
   const handlePlayerSearch = async () => {
     const player = getValues('playerName');
@@ -49,6 +50,7 @@ export function Sidebar() {
       merge(getValues('achievementDiaries'), data.achievementDiaries),
     );
     setValue('joinDate', data.joinDate);
+    setValue('collectionLogCount', data.collectionLogCount);
   };
 
   return (
@@ -88,10 +90,10 @@ export function Sidebar() {
           </Flex>
           <Separator size="4" />
           <DataList.Root>
-            <DataList.Item>
+            <DataList.Item align="center">
               <DataList.Label>Collection log</DataList.Label>
               <DataList.Value>
-                {playerData?.collectionLogCount ?? 0}
+                <EditableText name="collectionLogCount" type="number" />
               </DataList.Value>
             </DataList.Item>
           </DataList.Root>
@@ -104,9 +106,9 @@ export function Sidebar() {
             </Dialog.Trigger>
 
             <Dialog.Content maxWidth="450px">
-              <Dialog.Title>Edit profile</Dialog.Title>
+              <Dialog.Title>Achievement Diaries</Dialog.Title>
               <Dialog.Description size="2" mb="4">
-                Make changes to your profile.
+                Mark your achievement diary progress
               </Dialog.Description>
 
               <DataList.Root>

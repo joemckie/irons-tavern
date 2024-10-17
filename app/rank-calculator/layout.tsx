@@ -13,6 +13,7 @@ import { PlayerDataProvider } from './contexts/player-data-context';
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
+  collectionLogCount: number;
   playerName: string;
   items: Record<string, boolean>;
 }
@@ -21,6 +22,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
   const methods = useForm<FormData>({
     defaultValues: {
       achievementDiaries: {},
+      collectionLogCount: 0,
       items: {},
     },
   });
