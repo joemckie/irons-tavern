@@ -95,7 +95,7 @@ export function Sidebar() {
               </Flex>
               <Flex justify="between" align="center">
                 <Flex flexBasis="33%" asChild>
-                  <Text color="gray">CA Tier</Text>
+                  <Text color="gray">Combat Tier</Text>
                 </Flex>
                 <Flex flexBasis="33%" justify="center" asChild>
                   <Select
@@ -111,6 +111,52 @@ export function Sidebar() {
                 </Flex>
                 <Flex flexBasis="33%" justify="end" asChild>
                   <Text color="gray">20000</Text>
+                </Flex>
+              </Flex>
+              <Flex justify="between">
+                <Flex flexBasis="33%" asChild>
+                  <Text color="gray" size="2">
+                    Progress
+                  </Text>
+                </Flex>
+                <Flex flexBasis="33%" justify="center" asChild>
+                  <Text size="2">40%</Text>
+                </Flex>
+                <Flex flexBasis="33%" justify="end" asChild>
+                  <Text color="gray" size="2">
+                    (30000)
+                  </Text>
+                </Flex>
+              </Flex>
+              <Progress size="2" value={40} />
+            </Flex>
+          </Card>
+          <Card>
+            <Flex direction="column" gap="3">
+              <Flex justify="between" align="end">
+                <Flex flexBasis="33%" asChild>
+                  <Text color="gray">Category</Text>
+                </Flex>
+                <Flex flexBasis="33%" justify="center" asChild>
+                  <Text align="center" weight="bold">
+                    Coll. Log
+                  </Text>
+                </Flex>
+                <Flex flexBasis="33%" justify="end" asChild>
+                  <Text align="right" color="gray">
+                    Points
+                  </Text>
+                </Flex>
+              </Flex>
+              <Flex justify="between">
+                <Flex flexBasis="33%" asChild>
+                  <Text color="gray">Slots</Text>
+                </Flex>
+                <Flex flexGrow="0" justify="center">
+                  <EditableText name="collectionLogCount" type="number" />
+                </Flex>
+                <Flex flexBasis="33%" justify="end" asChild>
+                  <Text color="gray">11440</Text>
                 </Flex>
               </Flex>
               <Flex justify="between">
