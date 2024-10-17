@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import { useController, useForm } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 interface EditableTextProps extends TextField.RootProps {
   name: string;
