@@ -248,3 +248,12 @@ export enum DiaryTier {
   Hard = 'Hard',
   Elite = 'Elite',
 }
+
+export enum CombatAchievementTier {
+  Easy = 'Easy',
+  Medium = 'Medium',
+  Hard = 'Hard',
+  Elite = 'Elite',
+  Master = 'Master',
+  Grandmaster = 'Grandmaster',
+}

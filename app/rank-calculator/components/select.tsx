@@ -4,11 +4,12 @@ import { useController, useFormContext } from 'react-hook-form';
 
 type SelectProps = {
   name: string;
+  placeholder?: string;
   options: { label: string; value: string }[];
 };
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  ({ options, ...props }, forwardedRef) => {
+  ({ options, placeholder, ...props }, forwardedRef) => {
     const { field } = useController({ name: props.name });
     const { setValue } = useFormContext();
 
@@ -21,7 +22,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         size="2"
         value={field.value}
       >
-        <BaseSelect.Trigger ref={forwardedRef} placeholder="Select a diary" />
+        <BaseSelect.Trigger ref={forwardedRef} placeholder={placeholder} />
         <BaseSelect.Content>
           <BaseSelect.Group>
             {options.map((option) => (
