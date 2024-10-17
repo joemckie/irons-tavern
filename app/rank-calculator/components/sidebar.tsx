@@ -113,7 +113,6 @@ export function Sidebar() {
                   <Text color="gray">20000</Text>
                 </Flex>
               </Flex>
-              <Progress size="2" value={40} />
               <Flex justify="between">
                 <Flex flexBasis="33%" asChild>
                   <Text color="gray" size="2">
@@ -129,6 +128,7 @@ export function Sidebar() {
                   </Text>
                 </Flex>
               </Flex>
+              <Progress size="2" value={40} />
             </Flex>
           </Card>
           <Flex gap="2" justify="between">
