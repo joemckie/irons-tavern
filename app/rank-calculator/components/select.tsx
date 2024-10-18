@@ -2,11 +2,11 @@ import { Select as BaseSelect } from '@radix-ui/themes';
 import { forwardRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
-type SelectProps = {
+interface SelectProps extends BaseSelect.RootProps {
   name: string;
   placeholder?: string;
   options: { label: string; value: string }[];
-};
+}
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
   ({ options, placeholder, ...props }, forwardedRef) => {
@@ -19,7 +19,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
         onValueChange={(value) => {
           setValue(props.name, value);
         }}
-        size="2"
         value={field.value}
       >
         <BaseSelect.Trigger ref={forwardedRef} placeholder={placeholder} />

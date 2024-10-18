@@ -1,7 +1,5 @@
 import { PropsWithChildren, ReactNode } from 'react';
-import { Card, Flex, Progress, Text } from '@radix-ui/themes';
-import { CombatAchievementTier } from '@/types/osrs';
-import { Select } from './select';
+import { Card, Flex } from '@radix-ui/themes';
 
 interface DataCardRowProps {
   center: ReactNode;

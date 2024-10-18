@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Card,
   DataList,
   Dialog,
   Flex,
@@ -19,7 +18,6 @@ import { ItemStatistics } from './item-statistics';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { Select } from './select';
 import { Input } from './input';
-import { EditableText } from './editable-text';
 import { RankProgressCard } from './rank-progress-card';
 import { DataCard } from './data-card';
 
@@ -74,7 +72,7 @@ export function Sidebar() {
                 </Text>
               }
               center={
-                <Text align="center" weight="bold">
+                <Text align="center" weight="bold" size="2">
                   Combat
                 </Text>
               }
@@ -90,7 +88,7 @@ export function Sidebar() {
                   EHB
                 </Text>
               }
-              center={<Text>524</Text>}
+              center={<Text size="2">524</Text>}
               right={
                 <Text color="gray" size="2">
                   5240
@@ -107,6 +105,7 @@ export function Sidebar() {
                 <Select
                   name="caTier"
                   placeholder="Choose a tier"
+                  size="1"
                   options={Object.values(CombatAchievementTier).map((tier) => ({
                     label: tier,
                     value: tier,
@@ -142,7 +141,7 @@ export function Sidebar() {
                 </Text>
               }
               center={
-                <Text align="center" weight="bold">
+                <Text align="center" weight="bold" size="2">
                   Clogging
                 </Text>
               }
@@ -158,7 +157,15 @@ export function Sidebar() {
                   Slots
                 </Text>
               }
-              center={<EditableText name="collectionLogCount" type="number" />}
+              center={
+                <Input
+                  type="number"
+                  size="1"
+                  {...register('collectionLogCount', {
+                    required: true,
+                  })}
+                />
+              }
               right={
                 <Text color="gray" size="2">
                   11440
@@ -224,6 +231,7 @@ export function Sidebar() {
                     <DataList.Value>
                       <Select
                         name={`achievementDiaries.${diaryLocation}`}
+                        size="2"
                         options={Object.keys(DiaryTier).map((tier) => ({
                           label: tier,
                           value: tier,

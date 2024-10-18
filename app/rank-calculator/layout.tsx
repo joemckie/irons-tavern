@@ -56,7 +56,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
       accentColor="iris"
       appearance="dark"
       panelBackground="solid"
-      scaling="95%"
+      // scaling="95%"
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
