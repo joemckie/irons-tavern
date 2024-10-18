@@ -3,13 +3,12 @@
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, TabNav, Theme, ThemePanel } from '@radix-ui/themes';
+import { Flex, Grid, Theme, ThemePanel } from '@radix-ui/themes';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { RightSidebar } from './components/right-sidebar';
+import { ItemTabs } from './components/item-tabs';
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
@@ -27,7 +26,6 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
     },
   });
 
-  const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
   const tabsRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState<number>(54);
@@ -73,27 +71,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
             <Navigation ref={navRef} />
             <Sidebar />
             <RightSidebar />
-            <Flex
-              justify="center"
-              gridArea="tabs"
-              direction="column"
-              ref={tabsRef}
-              style={{ zIndex: '1' }}
-            >
-              <TabNav.Root>
-                <TabNav.Link active={pathname === '/rank-calculator'} asChild>
-                  <Link href="/rank-calculator">Overview</Link>
-                </TabNav.Link>
-                <TabNav.Link
-                  active={pathname === '/rank-calculator/notable-items'}
-                  asChild
-                >
-                  <Link href="/rank-calculator/notable-items">
-                    Notable items
-                  </Link>
-                </TabNav.Link>
-              </TabNav.Root>
-            </Flex>
+            <ItemTabs />
             <Flex gridArea="main" height={pageHeightCss}>
               {children}
             </Flex>

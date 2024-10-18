@@ -1,5 +1,5 @@
 import { Box, Flex } from '@radix-ui/themes';
-import { ItemStatistics } from './item-statistics';
+import { SkillingCard } from './cards/skilling-card';
 
 export function RightSidebar() {
   return (
@@ -14,7 +14,7 @@ export function RightSidebar() {
     >
       <aside>
         <Flex gap="4" direction="column">
-          <ItemStatistics />
+          <SkillingCard />
         </Flex>
       </aside>
     </Box>
