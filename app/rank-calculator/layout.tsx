@@ -1,7 +1,7 @@
 'use client';
 
 import '@radix-ui/themes/styles.css';
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Flex, Grid, Theme, ThemePanel } from '@radix-ui/themes';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
@@ -9,6 +9,7 @@ import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { RightSidebar } from './components/right-sidebar';
 import { ItemTabs } from './components/item-tabs';
+import { usePageLayout } from './hooks/use-page-layout';
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
@@ -26,26 +27,8 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
     },
   });
 
-  const navRef = useRef<HTMLElement>(null);
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const [navHeight, setNavHeight] = useState<number>(54);
-  const [tabsHeight, setTabsHeight] = useState<number>(38);
-  const pageHeightCss =
-    navHeight && tabsHeight
-      ? `calc(100vh - ${navHeight}px - ${tabsHeight}px)`
-      : '100vh';
-
-  useEffect(() => {
-    if (navRef.current) {
-      setNavHeight(navRef.current.offsetHeight);
-    }
-  }, [navRef]);
-
-  useEffect(() => {
-    if (tabsRef.current) {
-      setTabsHeight(tabsRef.current.offsetHeight);
-    }
-  }, [tabsRef]);
+  const { navHeight, tabsHeight, navRef, tabsRef, mainHeightCss } =
+    usePageLayout();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -71,8 +54,8 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
             <Navigation ref={navRef} />
             <Sidebar />
             <RightSidebar />
-            <ItemTabs />
-            <Flex gridArea="main" height={pageHeightCss}>
+            <ItemTabs ref={tabsRef} />
+            <Flex gridArea="main" height={mainHeightCss}>
               {children}
             </Flex>
           </Grid>

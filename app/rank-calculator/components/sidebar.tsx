@@ -1,4 +1,4 @@
-import { Box, Flex, Separator } from '@radix-ui/themes';
+import { Box, Flex, ScrollArea, Separator } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { PlayerData } from '@/types/rank-calculator';
@@ -10,9 +10,11 @@ import { RankProgressCard } from './cards/rank-progress-card';
 import { CombatCard } from './cards/combat-card';
 import { CollectionLogCard } from './cards/collection-log-card';
 import { ItemStatistics } from './item-statistics';
+import { usePageLayout } from '../hooks/use-page-layout';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
+  const { sidebarHeightCss } = usePageLayout();
 
   const handlePlayerSearch = async () => {
     const player = getValues('playerName');
@@ -51,38 +53,40 @@ export function Sidebar() {
         borderRight: '1px solid var(--gray-5)',
       }}
     >
-      <aside>
-        <Flex gap="4" direction="column">
-          <RankProgressCard />
-          <Separator size="4" />
-          <CombatCard />
-          <CollectionLogCard />
-          <ItemStatistics />
-          <Flex gap="2" justify="between">
-            <Flex asChild flexGrow="1">
-              <>
-                <Input
-                  placeholder="Player name"
-                  {...register('playerName', {
-                    onBlur: handlePlayerSearch,
-                    required: true,
-                  })}
-                />
-                <InputMask
-                  component={Input}
-                  mask="__-__-____"
-                  replacement={{ _: /[0-9]/ }}
-                  placeholder="Join date"
-                  {...register('joinDate', {
-                    required: true,
-                    valueAsDate: true,
-                  })}
-                />
-              </>
+      <ScrollArea style={{ height: sidebarHeightCss }}>
+        <aside>
+          <Flex gap="4" direction="column">
+            <RankProgressCard />
+            <Separator size="4" />
+            <CombatCard />
+            <CollectionLogCard />
+            <ItemStatistics />
+            <Flex gap="2" justify="between">
+              <Flex asChild flexGrow="1">
+                <>
+                  <Input
+                    placeholder="Player name"
+                    {...register('playerName', {
+                      onBlur: handlePlayerSearch,
+                      required: true,
+                    })}
+                  />
+                  <InputMask
+                    component={Input}
+                    mask="__-__-____"
+                    replacement={{ _: /[0-9]/ }}
+                    placeholder="Join date"
+                    {...register('joinDate', {
+                      required: true,
+                      valueAsDate: true,
+                    })}
+                  />
+                </>
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
-      </aside>
+        </aside>
+      </ScrollArea>
     </Box>
   );
 }
