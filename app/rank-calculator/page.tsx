@@ -1,7 +1,11 @@
 'use client';
 
-import { Text } from '@radix-ui/themes';
+import { Box, Text } from '@radix-ui/themes';
 
 export default function RankCalculatorOverview() {
-  return <Text>Overview</Text>;
+  return (
+    <Box pl="3" width="100%">
+      <Text>Overview</Text>
+    </Box>
+  );
 }

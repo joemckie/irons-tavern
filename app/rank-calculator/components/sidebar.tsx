@@ -21,6 +21,7 @@ import { Select } from './select';
 import { Input } from './input';
 import { EditableText } from './editable-text';
 import { RankProgressCard } from './rank-progress-card';
+import { DataCard } from './data-card';
 
 export function Sidebar() {
   const { register, getValues, setValue } = useFormContext();
@@ -65,118 +66,120 @@ export function Sidebar() {
       <aside>
         <Flex gap="4" direction="column">
           <RankProgressCard />
-          <Card>
-            <Flex direction="column" gap="3">
-              <Flex justify="between" align="end">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray">Category</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Text align="center" weight="bold">
-                    Combat
-                  </Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text align="right" color="gray">
-                    Points
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex justify="between">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray">EHB</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Text>524</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text color="gray">5240</Text>
-                </Flex>
-              </Flex>
-              <Flex justify="between" align="center">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray">Combat Tier</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Select
-                    name="caTier"
-                    placeholder="Choose a tier"
-                    options={Object.values(CombatAchievementTier).map(
-                      (tier) => ({
-                        label: tier,
-                        value: tier,
-                      }),
-                    )}
-                  />
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text color="gray">20000</Text>
-                </Flex>
-              </Flex>
-              <Flex justify="between">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray" size="2">
-                    Progress
-                  </Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Text size="2">40%</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text color="gray" size="2">
-                    (30000)
-                  </Text>
-                </Flex>
-              </Flex>
-              <Progress size="2" value={40} />
-            </Flex>
-          </Card>
-          <Card>
-            <Flex direction="column" gap="3">
-              <Flex justify="between" align="end">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray">Category</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Text align="center" weight="bold">
-                    Coll. Log
-                  </Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text align="right" color="gray">
-                    Points
-                  </Text>
-                </Flex>
-              </Flex>
-              <Flex justify="between">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray">Slots</Text>
-                </Flex>
-                <Flex flexGrow="0" justify="center">
-                  <EditableText name="collectionLogCount" type="number" />
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text color="gray">11440</Text>
-                </Flex>
-              </Flex>
-              <Flex justify="between">
-                <Flex flexBasis="33%" asChild>
-                  <Text color="gray" size="2">
-                    Progress
-                  </Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="center" asChild>
-                  <Text size="2">40%</Text>
-                </Flex>
-                <Flex flexBasis="33%" justify="end" asChild>
-                  <Text color="gray" size="2">
-                    (30000)
-                  </Text>
-                </Flex>
-              </Flex>
-              <Progress size="2" value={40} />
-            </Flex>
-          </Card>
+          <DataCard.Root>
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  Category
+                </Text>
+              }
+              center={
+                <Text align="center" weight="bold">
+                  Combat
+                </Text>
+              }
+              right={
+                <Text align="right" color="gray" size="2">
+                  Points
+                </Text>
+              }
+            />
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  EHB
+                </Text>
+              }
+              center={<Text>524</Text>}
+              right={
+                <Text color="gray" size="2">
+                  5240
+                </Text>
+              }
+            />
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  CA Tier
+                </Text>
+              }
+              center={
+                <Select
+                  name="caTier"
+                  placeholder="Choose a tier"
+                  options={Object.values(CombatAchievementTier).map((tier) => ({
+                    label: tier,
+                    value: tier,
+                  }))}
+                />
+              }
+              right={
+                <Text color="gray" size="2">
+                  20000
+                </Text>
+              }
+            />
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  Progress
+                </Text>
+              }
+              center={<Text size="2">40%</Text>}
+              right={
+                <Text color="gray" size="2">
+                  (30000)
+                </Text>
+              }
+            />
+            <Progress size="2" value={40} />
+          </DataCard.Root>
+          <DataCard.Root>
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  Category
+                </Text>
+              }
+              center={
+                <Text align="center" weight="bold">
+                  Clogging
+                </Text>
+              }
+              right={
+                <Text align="right" color="gray" size="2">
+                  Points
+                </Text>
+              }
+            />
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  Slots
+                </Text>
+              }
+              center={<EditableText name="collectionLogCount" type="number" />}
+              right={
+                <Text color="gray" size="2">
+                  11440
+                </Text>
+              }
+            />
+            <DataCard.Row
+              left={
+                <Text color="gray" size="2">
+                  Progress
+                </Text>
+              }
+              center={<Text size="2">40%</Text>}
+              right={
+                <Text color="gray" size="2">
+                  (30000)
+                </Text>
+              }
+            />
+            <Progress size="2" value={40} />
+          </DataCard.Root>
           <Flex gap="2" justify="between">
             <Flex asChild flexGrow="1">
               <>
@@ -200,15 +203,6 @@ export function Sidebar() {
               </>
             </Flex>
           </Flex>
-          <Separator size="4" />
-          <DataList.Root>
-            <DataList.Item align="center">
-              <DataList.Label>Collection log</DataList.Label>
-              <DataList.Value>
-                <EditableText name="collectionLogCount" type="number" />
-              </DataList.Value>
-            </DataList.Item>
-          </DataList.Root>
           <Separator size="4" />
           <ItemStatistics />
           <Separator size="4" />

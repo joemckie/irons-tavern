@@ -67,6 +67,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
               '. main'
             "
             columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
+            rows={`${navHeight}px ${tabsHeight}px 1fr`}
           >
             <Navigation ref={navRef} />
             <Sidebar />
