@@ -63,6 +63,7 @@ export function Sidebar() {
       <aside>
         <Flex gap="4" direction="column">
           <RankProgressCard />
+          <Separator size="4" />
           <DataCard.Root>
             <DataCard.Row
               left={
@@ -126,26 +127,22 @@ export function Sidebar() {
                 </Text>
               }
             />
-            <Progress size="2" value={40} />
+            <Progress size="3" value={40} />
           </DataCard.Root>
           <DataCard.Root>
             <DataCard.Row
               left={
-                <Text color="gray" size="2">
-                  Category
-                </Text>
-              }
-              center={
-                <Text align="center" weight="bold" size="2">
-                  Clogging
+                <Text weight="bold" size="2">
+                  Collection Log
                 </Text>
               }
               right={
-                <Text align="right" color="gray" size="2">
-                  Points
+                <Text weight="bold" size="2">
+                  11440
                 </Text>
               }
             />
+            <Separator size="4" />
             <DataCard.Row
               left={
                 <Text color="gray" size="2">
@@ -180,7 +177,7 @@ export function Sidebar() {
                 </Text>
               }
             />
-            <Progress size="2" value={40} />
+            <Progress size="3" value={40} />
           </DataCard.Root>
           <Flex gap="2" justify="between">
             <Flex asChild flexGrow="1">

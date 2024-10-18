@@ -54,7 +54,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
   };
 
   return (
-    <Theme accentColor="iris" appearance="dark" panelBackground="solid">
+    <Theme accentColor="iris" appearance="dark">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid

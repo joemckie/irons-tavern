@@ -20,7 +20,7 @@ export function RankProgressCard() {
               </Text>
             }
           />
-          <Progress size="2" value={75} />
+          <Progress size="3" value={75} />
           <Flex justify="between">
             <Flex gap="2">
               <Text color="gray" size="2">
