@@ -1,6 +1,6 @@
 import { Box, Card, Flex, Progress, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { DataCard } from './data-card';
+import { DataCard } from '../data-card';
 
 export function RankProgressCard() {
   return (
