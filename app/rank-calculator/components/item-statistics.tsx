@@ -41,9 +41,9 @@ export function ItemStatistics() {
     },
   );
 
-  const filteredItemFields = Object.entries(itemFields).filter(
-    ([, value]) => !!value,
-  );
+  const filteredItemFields = itemFields
+    ? Object.entries(itemFields).filter(([, value]) => !!value)
+    : [];
   const itemsCollected = filteredItemFields.length;
   const percentageCollected = (itemsCollected / totalItems) * 100;
   const pointsAwarded = filteredItemFields.reduce(

@@ -1,47 +1,16 @@
 import { Box, Flex, ScrollArea, Separator } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
-import { constants } from '@/config/constants';
-import { PlayerData } from '@/types/rank-calculator';
-import { merge } from 'lodash';
 import { InputMask } from '@react-input/mask';
-import { stripEntityName } from '../utils/strip-entity-name';
-import { Input } from './input';
+import { useFormContext } from 'react-hook-form';
 import { RankProgressCard } from './cards/rank-progress-card';
 import { CombatCard } from './cards/combat-card';
 import { CollectionLogCard } from './cards/collection-log-card';
 import { ItemStatistics } from './item-statistics';
 import { usePageLayout } from '../hooks/use-page-layout';
+import { Input } from './input';
 
 export function Sidebar() {
-  const { register, getValues, setValue } = useFormContext();
   const { sidebarHeightCss } = usePageLayout();
-
-  const handlePlayerSearch = async () => {
-    const player = getValues('playerName');
-
-    if (!player) {
-      return;
-    }
-
-    const response = await fetch(
-      `${constants.publicUrl}/api/get-player-details?player=${player}`,
-    );
-    const data = (await response.json()) as PlayerData;
-
-    const acquiredItems =
-      data.acquiredItems?.reduce<Record<string, boolean>>(
-        (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-        {},
-      ) ?? {};
-
-    setValue('items', merge(getValues('items'), acquiredItems));
-    setValue(
-      'achievementDiaries',
-      merge(getValues('achievementDiaries'), data.achievementDiaries),
-    );
-    setValue('joinDate', data.joinDate);
-    setValue('collectionLogCount', data.collectionLogCount);
-  };
+  const { register } = useFormContext();
 
   return (
     <Box
@@ -56,34 +25,25 @@ export function Sidebar() {
       <ScrollArea style={{ height: sidebarHeightCss }}>
         <aside>
           <Flex gap="4" direction="column">
+            <Flex gap="2" justify="between">
+              <Flex asChild flexGrow="1">
+                <InputMask
+                  component={Input}
+                  mask="__-__-____"
+                  replacement={{ _: /[0-9]/ }}
+                  placeholder="Join date"
+                  {...register('joinDate', {
+                    required: true,
+                    valueAsDate: true,
+                  })}
+                />
+              </Flex>
+            </Flex>
             <RankProgressCard />
             <Separator size="4" />
             <CombatCard />
             <CollectionLogCard />
             <ItemStatistics />
-            <Flex gap="2" justify="between">
-              <Flex asChild flexGrow="1">
-                <>
-                  <Input
-                    placeholder="Player name"
-                    {...register('playerName', {
-                      onBlur: handlePlayerSearch,
-                      required: true,
-                    })}
-                  />
-                  <InputMask
-                    component={Input}
-                    mask="__-__-____"
-                    replacement={{ _: /[0-9]/ }}
-                    placeholder="Join date"
-                    {...register('joinDate', {
-                      required: true,
-                      valueAsDate: true,
-                    })}
-                  />
-                </>
-              </Flex>
-            </Flex>
           </Flex>
         </aside>
       </ScrollArea>

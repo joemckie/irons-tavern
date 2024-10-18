@@ -55,7 +55,7 @@ export function SkillingCard() {
           }
           center={
             <Select
-              name={`achievementDiary.${location}`}
+              name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
               size="1"
               options={Object.values(DiaryTier).map((tier) => ({
