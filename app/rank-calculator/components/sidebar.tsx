@@ -14,7 +14,6 @@ import { PlayerData } from '@/types/rank-calculator';
 import { merge } from 'lodash';
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from '@/types/osrs';
 import { InputMask } from '@react-input/mask';
-import { ItemStatistics } from './item-statistics';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { Select } from './select';
 import { Input } from './input';
@@ -211,8 +210,6 @@ export function Sidebar() {
             </Flex>
           </Flex>
           <Separator size="4" />
-          <ItemStatistics />
-          <Separator size="4" />
           <Dialog.Root>
             <Dialog.Trigger>
               <Button>Achievement diaries</Button>
@@ -232,6 +229,7 @@ export function Sidebar() {
                       <Select
                         name={`achievementDiaries.${diaryLocation}`}
                         size="2"
+                        placeholder="Choose a tier"
                         options={Object.keys(DiaryTier).map((tier) => ({
                           label: tier,
                           value: tier,

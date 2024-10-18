@@ -31,6 +31,7 @@ export const ListItem = memo(
 
     return (
       <Box
+        px="3"
         style={{
           ...style,
           top: `calc(${Number(style?.top ?? 0)}px + var(--space-3))`,

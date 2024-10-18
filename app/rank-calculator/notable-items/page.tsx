@@ -12,7 +12,7 @@ export default function RankCalculatorNotableItems() {
   const { data: categories } = useGetItems();
 
   return (
-    <Box pl="3" width="100%">
+    <Box width="100%">
       <AutoSizer
         onResize={() => {
           resetAfterIndex(0, true);

@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
+import { RightSidebar } from './components/right-sidebar';
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
@@ -31,9 +32,10 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
   const tabsRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState<number>(54);
   const [tabsHeight, setTabsHeight] = useState<number>(38);
-  const pageHeightCss = navHeight
-    ? `calc(100vh - ${navHeight}px - ${tabsHeight}px)`
-    : '100vh';
+  const pageHeightCss =
+    navHeight && tabsHeight
+      ? `calc(100vh - ${navHeight}px - ${tabsHeight}px)`
+      : '100vh';
 
   useEffect(() => {
     if (navRef.current) {
@@ -52,30 +54,31 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
   };
 
   return (
-    <Theme
-      accentColor="iris"
-      appearance="dark"
-      panelBackground="solid"
-      // scaling="95%"
-    >
+    <Theme accentColor="iris" appearance="dark" panelBackground="solid">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Grid
             areas="
-              'nav nav'
-              'sidebar tabs'
-              '. main'
+              'nav nav nav'
+              'sidebar tabs right-sidebar'
+              '. main .'
             "
-            columns="[sidebar] minmax(200px, 1fr) [main] minmax(0, 3fr)"
+            columns="
+              [sidebar] minmax(200px, 1fr)
+              [main] minmax(0, 2fr)
+              [right-sidebar] minmax(200px, 1fr)
+            "
             rows={`${navHeight}px ${tabsHeight}px 1fr`}
           >
             <Navigation ref={navRef} />
             <Sidebar />
+            <RightSidebar />
             <Flex
               justify="center"
               gridArea="tabs"
               direction="column"
               ref={tabsRef}
+              style={{ zIndex: '1' }}
             >
               <TabNav.Root>
                 <TabNav.Link active={pathname === '/rank-calculator'} asChild>

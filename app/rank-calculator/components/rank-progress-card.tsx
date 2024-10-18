@@ -13,7 +13,7 @@ export function RankProgressCard() {
                 175000
               </Text>
             }
-            center={<Text weight="bold">Total points</Text>}
+            center={<Text weight="bold">Rank</Text>}
             right={
               <Text color="gray" size="2">
                 (25000)
