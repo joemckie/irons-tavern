@@ -26,6 +26,7 @@
     "operator-linebreak": "off",
     "react/display-name": "warn",
     "react/jsx-props-no-spreading": "off",
+    "react/require-default-props": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

@@ -2,19 +2,27 @@ import { PropsWithChildren, ReactNode } from 'react';
 import { Card, Flex } from '@radix-ui/themes';
 
 interface DataCardRowProps {
-  center: ReactNode;
+  center?: ReactNode;
   left: ReactNode;
   right: ReactNode;
 }
 
-function DataCardRow({ center, left, right }: DataCardRowProps) {
+function DataCardRow({
+  center = null,
+  left,
+  right,
+}: DataCardRowProps): JSX.Element {
+  const width = center ? '33%' : '50%';
+
   return (
     <Flex align="center" justify="between">
-      <Flex flexBasis="33%">{left}</Flex>
-      <Flex flexBasis="33%" justify="center">
-        {center}
-      </Flex>
-      <Flex flexBasis="33%" justify="end">
+      <Flex flexBasis={width}>{left}</Flex>
+      {center && (
+        <Flex flexBasis={width} justify="center">
+          {center}
+        </Flex>
+      )}
+      <Flex flexBasis={width} justify="end">
         {right}
       </Flex>
     </Flex>

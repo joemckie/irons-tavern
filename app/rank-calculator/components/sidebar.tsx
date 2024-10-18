@@ -66,21 +66,17 @@ export function Sidebar() {
           <DataCard.Root>
             <DataCard.Row
               left={
-                <Text color="gray" size="2">
-                  Category
-                </Text>
-              }
-              center={
-                <Text align="center" weight="bold" size="2">
+                <Text weight="bold" size="2">
                   Combat
                 </Text>
               }
               right={
-                <Text align="right" color="gray" size="2">
-                  Points
+                <Text weight="bold" size="2">
+                  25240
                 </Text>
               }
             />
+            <Separator size="4" />
             <DataCard.Row
               left={
                 <Text color="gray" size="2">
