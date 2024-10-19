@@ -1,8 +1,9 @@
 import { memo } from 'react';
-import { Avatar, Flex, Table, Text } from '@radix-ui/themes';
+import { Flex, Table, Text } from '@radix-ui/themes';
 import { Item } from '@/types/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
+import { EntityImage } from './entity-image';
 
 interface ItemProps {
   acquired: boolean;
@@ -13,13 +14,7 @@ export const MemoisedItem = memo(({ item, acquired }: ItemProps) => (
   <Table.Row key={item.name} align="center">
     <Table.Cell>
       <Flex align="center" gap="2">
-        <Avatar
-          alt={`${item.name} icon`}
-          size="2"
-          src={item.image}
-          variant="soft"
-          fallback="?"
-        />
+        <EntityImage alt={`${item.name} icon`} src={item.image} />
         <Text>{item.name}</Text>
       </Flex>
     </Table.Cell>

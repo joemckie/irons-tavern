@@ -1,19 +1,11 @@
 import { memo } from 'react';
-import {
-  Avatar,
-  Box,
-  Card,
-  Flex,
-  Separator,
-  Table,
-  Text,
-} from '@radix-ui/themes';
+import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
 import { Item } from '@/types/items';
-import { parseInitials } from '../utils/parse-initials';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';
+import { EntityImage } from './entity-image';
 
 interface CategoryProps {
   title: string;
@@ -33,7 +25,7 @@ export const Category = memo(
       <Card my="3">
         <Flex justify="between" align="center">
           <Flex gap="3">
-            <Avatar size="3" src={image} fallback={parseInitials(title)} />
+            <EntityImage alt={`${title} icon`} src={image} size="3" />
             <Box>
               <Text as="div" size="2" weight="bold">
                 {title}

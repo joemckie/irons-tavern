@@ -659,11 +659,15 @@ export const itemsResponseFixture: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (1)',
+        image:
+          'https://oldschool.runescape.wiki/images/Enhanced_crystal_weapon_seed.png',
         clogName: 'Enhanced crystal weapon seed',
         points: 150,
       }),
       compoundItem({
         name: 'Enhanced crystal weapon seed (2)',
+        image:
+          'https://oldschool.runescape.wiki/images/Enhanced_crystal_weapon_seed.png',
         points: 150,
         requiredItems: [['Enhanced crystal weapon seed', 2]],
       }),
