@@ -1,18 +1,20 @@
 'use client';
 
+import { lazy, Suspense } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Box, Flex, Grid, ScrollArea } from '@radix-ui/themes';
+import { Box, Flex, Grid, ScrollArea, Spinner, Text } from '@radix-ui/themes';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { useSearchParams } from 'next/navigation';
 import { useGetItems } from './hooks/use-get-items';
-import { Category } from './components/category';
 import { Navigation } from './components/navigation';
 import { Sidebar } from './components/sidebar';
 import { RightSidebar } from './components/right-sidebar';
 import { usePageLayout } from './hooks/use-page-layout';
 import { stripEntityName } from './utils/strip-entity-name';
+
+const Category = lazy(() => import('./components/category'));
 
 interface FormData {
   achievementDiaries: AchievementDiaryMap;
@@ -90,17 +92,32 @@ export default function RankCalculator() {
           <Sidebar />
           <RightSidebar />
           <Flex gridArea="main" height={mainHeightCss}>
-            <AutoSizer>
-              {({ height, width }) => (
-                <ScrollArea style={{ height, width }}>
-                  {categories.map(([title, category]) => (
-                    <Box key={title} pl="3" pr="4">
-                      <Category items={category.items} title={title} />
-                    </Box>
-                  ))}
-                </ScrollArea>
-              )}
-            </AutoSizer>
+            <Suspense
+              fallback={
+                <Flex
+                  direction="column"
+                  align="center"
+                  justify="center"
+                  flexGrow="1"
+                  gap="3"
+                >
+                  <Spinner size="3" />
+                  <Text>Loading...</Text>
+                </Flex>
+              }
+            >
+              <AutoSizer>
+                {({ height, width }) => (
+                  <ScrollArea style={{ height, width }}>
+                    {categories.map(([title, category]) => (
+                      <Box key={title} pl="3" pr="4">
+                        <Category items={category.items} title={title} />
+                      </Box>
+                    ))}
+                  </ScrollArea>
+                )}
+              </AutoSizer>
+            </Suspense>
           </Flex>
         </Grid>
       </form>
