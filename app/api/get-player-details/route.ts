@@ -1,116 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { get } from 'get-wild';
 import {
-  CollectionLogError,
   CollectionLogItemMap,
-  CollectionLogResponse,
   CollectionLogItem,
-  isCollectionLogError,
 } from '@/types/collection-log';
 import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
-import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
-import { constants } from '@/config/constants';
-import {
-  DiaryTierData,
-  isWikiSyncError,
-  WikiSyncError,
-  WikiSyncResponse,
-} from '@/types/wiki';
-import { CombatAchievementTier, DiaryLocation, DiaryTier } from '@/types/osrs';
-import { list } from '@vercel/blob';
+import { PlayerData } from '@/types/rank-calculator';
 import { isItemAcquired } from './utils/is-item-acquired';
-import { ClanMember } from '../update-member-list/route';
-import { getCaIdMap } from './utils/get-ca-id-map';
-import { getCaTierThresholds } from './utils/get-ca-tier-thresholds';
-
-function parseAchievementDiaries(
-  diaries: WikiSyncResponse['achievement_diaries'],
-) {
-  return Object.entries(diaries).reduce<AchievementDiaryMap>(
-    (acc, [diaryLocation, diaryTiers]) => {
-      const orderedTiers = [
-        [DiaryTier.Easy, diaryTiers.Easy],
-        [DiaryTier.Medium, diaryTiers.Medium],
-        [DiaryTier.Hard, diaryTiers.Hard],
-        [DiaryTier.Elite, diaryTiers.Elite],
-      ] satisfies [DiaryTier, DiaryTierData][];
-
-      orderedTiers.forEach(([tierName, tierData]) => {
-        if (tierData.complete) {
-          acc[diaryLocation as DiaryLocation] = tierName;
-        }
-      });
-
-      return acc;
-    },
-    {
-      Ardougne: null,
-      Desert: null,
-      Falador: null,
-      Fremennik: null,
-      Kandarin: null,
-      Karamja: null,
-      'Kourend & Kebos': null,
-      'Lumbridge & Draynor': null,
-      Morytania: null,
-      Varrock: null,
-      'Western Provinces': null,
-      Wilderness: null,
-    } satisfies AchievementDiaryMap,
-  );
-}
-
-function parseLevels({ Overall, ...levels }: WikiSyncResponse['levels']) {
-  return levels;
-}
-
-const emptyResponse = {
-  achievementDiaries: null,
-  acquiredItems: null,
-  joinDate: null,
-  collectionLogCount: null,
-  collectionLogTotal: null,
-  combatAchievementTier: null,
-} satisfies PlayerData;
-
-async function getJoinedDate(player: string) {
-  const blobList = await list();
-  const [{ url }] = blobList.blobs.sort(
-    (a, b) => +b.uploadedAt - +a.uploadedAt,
-  );
-
-  const response = await fetch(url);
-  const data: ClanMember[] = await response.json();
-
-  return (
-    data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
-      ?.joinedDate ?? null
-  );
-}
-
-async function calculateCombatAchievementTier(combatAchievements: number[]) {
-  try {
-    const caIdMap = await getCaIdMap();
-    const caTierThresholds = await getCaTierThresholds();
-    const totalCaPoints = combatAchievements.reduce(
-      (acc, val) => acc + caIdMap[val],
-      0,
-    );
-    const caTier = (
-      Object.entries(caTierThresholds) as [CombatAchievementTier, number][]
-    ).reduceRight<CombatAchievementTier | null>((acc, [tier, threshold]) => {
-      if (!acc && totalCaPoints >= threshold) {
-        return tier;
-      }
-
-      return acc;
-    }, null);
-
-    return caTier;
-  } catch {
-    return null;
-  }
-}
+import { getWikiSyncData } from './utils/get-wikisync-data';
+import { getCollectionLog } from './utils/get-collection-log';
+import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
+import {
+  emptyAchievementDiaryList,
+  parseAchievementDiaries,
+} from './utils/parse-achievement-diaries';
+import { getJoinedDate } from './utils/get-joined-date';
+import { parseLevels } from './utils/parse-levels';
 
 export async function GET(
   request: NextRequest,
@@ -118,43 +23,26 @@ export async function GET(
   const player = request.nextUrl.searchParams.get('player');
 
   if (!player) {
-    return NextResponse.json(emptyResponse, {
+    return NextResponse.json(emptyAchievementDiaryList, {
       status: 400,
     });
   }
 
   try {
-    const wikiSyncResponse = await fetch(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
-      {
-        headers: {
-          // User agent is required or the API returns a 400
-          'User-Agent': 'Irons-Tavern-Rank-Calculator',
-        },
-      },
-    );
-    const wikiSyncData: WikiSyncResponse | WikiSyncError =
-      await wikiSyncResponse.json();
+    const wikiSyncData = await getWikiSyncData(player);
+    const collectionLogData = await getCollectionLog(player);
 
-    const collectionLogResponse = await fetch(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
-    );
-    const collectionLogData: CollectionLogResponse | CollectionLogError =
-      await collectionLogResponse.json();
-
-    const hasCollectionLogData = !isCollectionLogError(collectionLogData);
-    const hasWikiSyncData = !isWikiSyncError(wikiSyncData);
-    const hasThirdPartyData = hasWikiSyncData || hasCollectionLogData;
+    const hasThirdPartyData = wikiSyncData || collectionLogData;
 
     if (!hasThirdPartyData) {
-      return NextResponse.json(emptyResponse, { status: 404 });
+      return NextResponse.json(emptyAchievementDiaryList, { status: 404 });
     }
 
-    const combatAchievementTier = hasWikiSyncData
+    const combatAchievementTier = wikiSyncData
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    const collectionLogItems = hasCollectionLogData
+    const collectionLogItems = collectionLogData
       ? get<CollectionLogItem[]>(
           collectionLogData,
           'collectionLog.tabs.*.*.items',
@@ -170,20 +58,17 @@ export async function GET(
         )
       : null;
 
-    const collectionLogCount = hasCollectionLogData
-      ? collectionLogData.collectionLog.uniqueObtained
-      : null;
-
-    const collectionLogTotal = hasCollectionLogData
-      ? collectionLogData.collectionLog.uniqueItems
-      : null;
+    const collectionLogCount =
+      collectionLogData?.collectionLog.uniqueObtained ?? null;
+    const collectionLogTotal =
+      collectionLogData?.collectionLog.uniqueItems ?? null;
 
     const {
       achievementDiaries = null,
       levels = null,
       quests = null,
       musicTracks = null,
-    } = hasWikiSyncData
+    } = wikiSyncData
       ? {
           achievementDiaries: parseAchievementDiaries(
             wikiSyncData.achievement_diaries,
@@ -195,7 +80,7 @@ export async function GET(
       : {};
 
     const acquiredItems =
-      hasWikiSyncData || !isCollectionLogError(collectionLogData)
+      wikiSyncData || collectionLogData
         ? Object.values(itemsResponseFixture)
             .flatMap(({ items }) => items)
             .filter((item) =>
@@ -223,7 +108,7 @@ export async function GET(
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(emptyResponse, {
+    return NextResponse.json(emptyAchievementDiaryList, {
       status: 500,
     });
   }
