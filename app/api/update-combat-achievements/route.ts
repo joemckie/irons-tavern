@@ -37,7 +37,7 @@ export async function GET() {
       }
 
       const { id, tier }: CombatAchievementJson = JSON.parse(
-        val.printouts['Combat Achievement JSON'][0],
+        combatAchievementJson,
       );
 
       return {
