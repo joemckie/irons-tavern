@@ -2,10 +2,10 @@ import { constants } from '@/config/constants';
 import { http, HttpResponse } from 'msw';
 import collectionLogFixture from '@/fixtures/collection-log.fixture.json';
 import wikiSyncFixture from '@/fixtures/wikisync.fixture.json';
+import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { Rank } from '@/config/enums';
 import { CollectionLogResponse } from '@/types/collection-log';
-import { WikiSyncResponse } from '@/types/wiki-sync';
 
 export const handlers = [
   http.get(
