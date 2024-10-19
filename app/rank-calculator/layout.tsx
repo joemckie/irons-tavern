@@ -3,14 +3,13 @@
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, Theme, ThemePanel } from '@radix-ui/themes';
+import { Flex, Grid, Theme, ThemePanel, Avatar } from '@radix-ui/themes';
 import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { useSearchParams } from 'next/navigation';
 import { constants } from '@/config/constants';
 import { Sidebar } from './components/sidebar';
 import { Navigation } from './components/navigation';
 import { RightSidebar } from './components/right-sidebar';
-import { ItemTabs } from './components/item-tabs';
 import { usePageLayout } from './hooks/use-page-layout';
 import { stripEntityName } from './utils/strip-entity-name';
 
@@ -65,8 +64,7 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
     },
   });
 
-  const { navHeight, tabsHeight, navRef, tabsRef, mainHeightCss } =
-    usePageLayout();
+  const { navHeight, navRef, mainHeightCss } = usePageLayout();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -79,20 +77,18 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
           <Grid
             areas="
               'nav nav nav'
-              'sidebar tabs right-sidebar'
-              '. main .'
+              'sidebar main right-sidebar'
             "
             columns="
               [sidebar] minmax(200px, 1fr)
               [main] minmax(0, 2fr)
               [right-sidebar] minmax(200px, 1fr)
             "
-            rows={`${navHeight}px ${tabsHeight}px 1fr`}
+            rows={`${navHeight}px 1fr`}
           >
             <Navigation ref={navRef} />
             <Sidebar />
             <RightSidebar />
-            <ItemTabs ref={tabsRef} />
             <Flex gridArea="main" height={mainHeightCss}>
               {children}
             </Flex>

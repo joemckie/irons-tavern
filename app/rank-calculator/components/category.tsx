@@ -6,6 +6,7 @@ import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
+import { parseInitials } from '../utils/parse-initials';
 
 interface CategoryProps {
   title: string;
@@ -25,7 +26,12 @@ export const Category = memo(
       <Card my="3">
         <Flex justify="between" align="center">
           <Flex gap="3">
-            <EntityImage alt={`${title} icon`} src={image} size="3" />
+            <EntityImage
+              alt={`${title} icon`}
+              src={image}
+              size="3"
+              fallback={parseInitials(title)}
+            />
             <Box>
               <Text as="div" size="2" weight="bold">
                 {title}

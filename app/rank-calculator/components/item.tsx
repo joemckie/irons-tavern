@@ -14,7 +14,7 @@ export const MemoisedItem = memo(({ item, acquired }: ItemProps) => (
   <Table.Row key={item.name} align="center">
     <Table.Cell>
       <Flex align="center" gap="2">
-        <EntityImage alt={`${item.name} icon`} src={item.image} />
+        <EntityImage alt={`${item.name} icon`} src={item.image} fallback="?" />
         <Text>{item.name}</Text>
       </Flex>
     </Table.Cell>

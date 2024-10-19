@@ -33,7 +33,7 @@ body {
 }
 
 img.rt-AvatarImage {
-  object-fit: contain;
+  object-fit: scale-down;
 }
 
 .rt-TableRow:last-child td.rt-TableCell {

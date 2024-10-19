@@ -9,7 +9,7 @@ import { usePageLayout } from '../hooks/use-page-layout';
 import { Input } from './input';
 
 export function Sidebar() {
-  const { sidebarHeightCss } = usePageLayout();
+  const { mainHeightCss } = usePageLayout();
   const { register } = useFormContext();
 
   return (
@@ -17,12 +17,11 @@ export function Sidebar() {
       asChild
       p="3"
       gridArea="sidebar"
-      gridRow="span 2"
       style={{
         borderRight: '1px solid var(--gray-5)',
       }}
     >
-      <ScrollArea style={{ height: sidebarHeightCss }}>
+      <ScrollArea style={{ height: mainHeightCss }}>
         <aside>
           <Flex gap="4" direction="column">
             <Flex gap="2" justify="between">
