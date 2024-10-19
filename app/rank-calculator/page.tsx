@@ -1,43 +1,24 @@
 'use client';
 
-import { VariableSizeList } from 'react-window';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Box } from '@radix-ui/themes';
-import { useDynamicItemSize } from './hooks/use-dynamic-item-size';
+import { Box, ScrollArea } from '@radix-ui/themes';
 import { useGetItems } from './hooks/use-get-items';
-import { ListItem } from './components/list-item';
+import { Category } from './components/category';
 
 export default function RankCalculatorNotableItems() {
-  const { getSize, listRef, resetAfterIndex, setSize } = useDynamicItemSize();
   const { data: categories } = useGetItems();
 
   return (
-    <Box width="100%">
-      <AutoSizer
-        onResize={() => {
-          resetAfterIndex(0, true);
-        }}
-      >
-        {({ height, width }) => (
-          <VariableSizeList
-            ref={listRef}
-            itemData={categories}
-            itemCount={categories.length}
-            height={height}
-            width={width}
-            itemSize={getSize}
-          >
-            {({ index, style }) => (
-              <ListItem
-                data={categories}
-                index={index}
-                style={style}
-                setSize={setSize}
-              />
-            )}
-          </VariableSizeList>
-        )}
-      </AutoSizer>
-    </Box>
+    <AutoSizer>
+      {({ height, width }) => (
+        <ScrollArea style={{ height, width }}>
+          {categories.map(([title, category]) => (
+            <Box key={title} pl="3" pr="4">
+              <Category items={category.items} title={title} />
+            </Box>
+          ))}
+        </ScrollArea>
+      )}
+    </AutoSizer>
   );
 }
