@@ -257,3 +257,12 @@ export enum CombatAchievementTier {
   Master = 'Master',
   Grandmaster = 'Grandmaster',
 }
+
+export const combatAchievementTierPoints = {
+  [CombatAchievementTier.Easy]: 1,
+  [CombatAchievementTier.Medium]: 2,
+  [CombatAchievementTier.Hard]: 3,
+  [CombatAchievementTier.Elite]: 4,
+  [CombatAchievementTier.Master]: 5,
+  [CombatAchievementTier.Grandmaster]: 6,
+} as const;

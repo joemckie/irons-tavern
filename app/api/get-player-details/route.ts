@@ -15,7 +15,7 @@ import {
   isWikiSyncError,
   WikiSyncError,
   WikiSyncResponse,
-} from '@/types/wiki-sync';
+} from '@/types/wiki';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
 import { list } from '@vercel/blob';
 import { isItemAcquired } from './utils/is-item-acquired';

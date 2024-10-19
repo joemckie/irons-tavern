@@ -10,7 +10,7 @@ import {
   RequiredItem,
 } from '@/types/items';
 import { DiaryTier, MiniQuest, Quest, Skill } from '@/types/osrs';
-import { HolidayTrack } from '@/types/wiki-sync';
+import { HolidayTrack } from '@/types/wiki';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,

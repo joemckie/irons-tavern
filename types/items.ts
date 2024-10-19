@@ -1,7 +1,7 @@
 import { CollectionLogItemMap } from './collection-log';
 import { MiniQuest, Quest } from './osrs';
 import { AchievementDiaryMap } from './rank-calculator';
-import { LevelMap } from './wiki-sync';
+import { LevelMap } from './wiki';
 
 export interface RequiredItem {
   clogName: string;

@@ -1,4 +1,11 @@
-import { DiaryLocation, DiaryTier, MiniQuest, Quest, Skill } from './osrs';
+import {
+  CombatAchievementTier,
+  DiaryLocation,
+  DiaryTier,
+  MiniQuest,
+  Quest,
+  Skill,
+} from './osrs';
 
 export interface DiaryTierData {
   complete: boolean;
@@ -51,4 +58,28 @@ export function isWikiSyncError(
   wikiSyncResponse: WikiSyncResponse | WikiSyncError,
 ): wikiSyncResponse is WikiSyncError {
   return (wikiSyncResponse as WikiSyncError).code !== undefined;
+}
+
+export interface CombatAchievementListResponse {
+  query: {
+    results: Record<
+      string,
+      {
+        printouts: {
+          'Combat Achievement JSON': [string];
+        };
+        fulltext: string;
+        fullurl: string;
+      }
+    >;
+  };
+}
+
+export interface CombatAchievementJson {
+  monster: string;
+  type: string;
+  name: string;
+  tier: CombatAchievementTier;
+  id: string;
+  task: string;
 }

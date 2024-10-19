@@ -8,7 +8,7 @@ import {
 } from '@/types/items';
 import { MiniQuest, Quest } from '@/types/osrs';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
-import { LevelMap, QuestStatus } from '@/types/wiki-sync';
+import { LevelMap, QuestStatus } from '@/types/wiki';
 
 interface IsItemAcquiredData {
   collectionLogItems: CollectionLogItemMap | null;
