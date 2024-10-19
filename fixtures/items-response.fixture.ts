@@ -15,13 +15,14 @@ import { HolidayTrack } from '@/types/wiki-sync';
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,
   'requiredItems'
-> & { clogName?: string };
+> & { clogName?: string; requiredAmount?: number };
 
 function singleItem({
   name,
   points,
   clogName,
-  image = formatWikiImageUrl(name),
+  image = formatWikiImageUrl(clogName ?? name),
+  requiredAmount = 1,
 }: SingleItemOptions) {
   return {
     image,
@@ -29,7 +30,7 @@ function singleItem({
     points,
     requiredItems: [
       {
-        amount: 1,
+        amount: requiredAmount,
         clogName: clogName ?? name,
       },
     ],
@@ -400,10 +401,11 @@ export const itemsResponseFixture: ItemCategoryMap = {
         },
       }),
       ...Array.from({ length: 4 }).map<Item>((_, i) =>
-        compoundItem({
+        singleItem({
           name: `Zenyte shard (${i + 1})`,
+          clogName: 'Zenyte shard',
           points: 50,
-          requiredItems: [['Zenyte shard', i + 1]],
+          requiredAmount: i + 1,
         }),
       ),
     ],
@@ -659,17 +661,15 @@ export const itemsResponseFixture: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (1)',
-        image:
-          'https://oldschool.runescape.wiki/images/Enhanced_crystal_weapon_seed.png',
         clogName: 'Enhanced crystal weapon seed',
         points: 150,
+        requiredAmount: 1,
       }),
-      compoundItem({
+      singleItem({
         name: 'Enhanced crystal weapon seed (2)',
-        image:
-          'https://oldschool.runescape.wiki/images/Enhanced_crystal_weapon_seed.png',
+        clogName: 'Enhanced crystal weapon seed',
         points: 150,
-        requiredItems: [['Enhanced crystal weapon seed', 2]],
+        requiredAmount: 2,
       }),
     ],
   },
@@ -739,10 +739,11 @@ export const itemsResponseFixture: ItemCategoryMap = {
         requiredItems: [['Burning claw', 2]],
       }),
       ...Array.from({ length: 3 }).map((_, i) =>
-        compoundItem({
+        singleItem({
           name: `Tormented synapse (${i + 1})`,
           points: 50,
-          requiredItems: [['Tormented synapse', i + 1]],
+          clogName: 'Tormented synapse',
+          requiredAmount: i + 1,
         }),
       ),
     ],
