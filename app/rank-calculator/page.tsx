@@ -7,6 +7,7 @@ import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { constants } from '@/config/constants';
 import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { useSearchParams } from 'next/navigation';
+import { CombatAchievementTier } from '@/types/osrs';
 import { useGetItems } from './hooks/use-get-items';
 import { Navigation } from './components/navigation';
 import { Sidebar } from './components/sidebar';
@@ -21,6 +22,7 @@ interface FormData {
   collectionLogCount: number;
   playerName: string;
   items: Record<string, boolean>;
+  caTier: CombatAchievementTier | null;
 }
 
 export default function RankCalculator() {
@@ -65,6 +67,7 @@ export default function RankCalculator() {
         joinDate: data.joinDate,
         collectionLogCount: data.collectionLogCount ?? 0,
         playerName: player,
+        caTier: data.combatAchievementTier,
       };
     },
   });

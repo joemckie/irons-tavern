@@ -16,10 +16,12 @@ import {
   WikiSyncError,
   WikiSyncResponse,
 } from '@/types/wiki';
-import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import { CombatAchievementTier, DiaryLocation, DiaryTier } from '@/types/osrs';
 import { list } from '@vercel/blob';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { ClanMember } from '../update-member-list/route';
+import { getCaIdMap } from './utils/get-ca-id-map';
+import { getCaTierThresholds } from './utils/get-ca-tier-thresholds';
 
 function parseAchievementDiaries(
   diaries: WikiSyncResponse['achievement_diaries'],
@@ -68,6 +70,7 @@ const emptyResponse = {
   joinDate: null,
   collectionLogCount: null,
   collectionLogTotal: null,
+  combatAchievementTier: null,
 } satisfies PlayerData;
 
 async function getJoinedDate(player: string) {
@@ -83,6 +86,30 @@ async function getJoinedDate(player: string) {
     data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
       ?.joinedDate ?? null
   );
+}
+
+async function calculateCombatAchievementTier(combatAchievements: number[]) {
+  try {
+    const caIdMap = await getCaIdMap();
+    const caTierThresholds = await getCaTierThresholds();
+    const totalCaPoints = combatAchievements.reduce(
+      (acc, val) => acc + caIdMap[val],
+      0,
+    );
+    const caTier = (
+      Object.entries(caTierThresholds) as [CombatAchievementTier, number][]
+    ).reduceRight<CombatAchievementTier | null>((acc, [tier, threshold]) => {
+      if (!acc && totalCaPoints >= threshold) {
+        return tier;
+      }
+
+      return acc;
+    }, null);
+
+    return caTier;
+  } catch {
+    return null;
+  }
 }
 
 export async function GET(
@@ -122,6 +149,10 @@ export async function GET(
     if (!hasThirdPartyData) {
       return NextResponse.json(emptyResponse, { status: 404 });
     }
+
+    const combatAchievementTier = hasWikiSyncData
+      ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
+      : null;
 
     const collectionLogItems = hasCollectionLogData
       ? get<CollectionLogItem[]>(
@@ -184,6 +215,7 @@ export async function GET(
     return NextResponse.json({
       acquiredItems,
       achievementDiaries,
+      combatAchievementTier,
       collectionLogCount,
       collectionLogTotal,
       joinDate,

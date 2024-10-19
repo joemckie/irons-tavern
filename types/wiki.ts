@@ -47,6 +47,7 @@ export interface WikiSyncResponse {
   levels: LevelMap & { Overall: number };
   music_tracks: Record<string, boolean>;
   quests: Record<Quest | MiniQuest, QuestStatus>;
+  combat_achievements: number[];
 }
 
 export interface WikiSyncError {

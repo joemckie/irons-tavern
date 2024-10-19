@@ -1,4 +1,4 @@
-import { DiaryLocation, DiaryTier } from './osrs';
+import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
 export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | null>;
 
@@ -8,4 +8,5 @@ export interface PlayerData {
   joinDate: string | null;
   collectionLogCount: number | null;
   collectionLogTotal: number | null;
+  combatAchievementTier: CombatAchievementTier | null;
 }
