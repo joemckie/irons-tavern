@@ -1296,58 +1296,72 @@ export const itemsResponseFixture: ItemCategoryMap = {
     items: [
       singleItem({
         name: 'Jar of chemicals (Hydra)',
+        clogName: 'Jar of chemicals',
         points: 50,
       }),
       singleItem({
         name: 'Jar of darkness (Skotizo)',
+        clogName: 'Jar of darkness',
         points: 150,
       }),
       singleItem({
         name: 'Jar of decay (Vorkath)',
+        clogName: 'Jar of decay',
         points: 50,
       }),
       singleItem({
         name: 'Jar of dirt (Kraken)',
+        clogName: 'Jar of dirt',
         points: 50,
       }),
       singleItem({
         name: 'Jar of dreams (Nightmare)',
+        clogName: 'Jar of dreams',
         points: 150,
       }),
       singleItem({
         name: 'Jar of eyes (Sarachnis)',
+        clogName: 'Jar of eyes',
         points: 50,
       }),
       singleItem({
         name: 'Jar of miasma (Sire)',
+        clogName: 'Jar of miasma',
         points: 50,
       }),
       singleItem({
         name: 'Jar of sand (Kalphite Queen)',
+        clogName: 'Jar of sand',
         points: 50,
       }),
       singleItem({
         name: 'Jar of smoke (Thermy)',
+        clogName: 'Jar of smoke',
         points: 50,
       }),
       singleItem({
         name: 'Jar of souls (Cerberus)',
+        clogName: 'Jar of souls',
         points: 50,
       }),
       singleItem({
         name: 'Jar of spirits (Corp)',
+        clogName: 'Jar of spirits',
         points: 150,
       }),
       singleItem({
         name: 'Jar of stone (GGs)',
+        clogName: 'Jar of stone',
         points: 100,
       }),
       singleItem({
         name: 'Jar of swamp (Zulrah)',
+        clogName: 'Jar of swamp',
         points: 50,
       }),
       singleItem({
         name: 'Jar of venom (Araxxor)',
+        clogName: 'Jar of venom',
         points: 50,
       }),
     ],
