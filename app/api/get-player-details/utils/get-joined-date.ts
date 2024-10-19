@@ -7,11 +7,17 @@ export async function getJoinedDate(player: string) {
     (a, b) => +b.uploadedAt - +a.uploadedAt,
   );
 
-  const response = await fetch(url);
-  const data: ClanMember[] = await response.json();
+  try {
+    const response = await fetch(url);
+    const data: ClanMember[] = await response.json();
 
-  return (
-    data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
-      ?.joinedDate ?? null
-  );
+    return (
+      data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
+        ?.joinedDate ?? null
+    );
+  } catch (e) {
+    console.error(e);
+
+    return null;
+  }
 }

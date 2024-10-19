@@ -16,6 +16,7 @@ import {
 } from './utils/parse-achievement-diaries';
 import { getJoinedDate } from './utils/get-joined-date';
 import { parseLevels } from './utils/parse-levels';
+import { getTempleData } from './utils/get-temple-data';
 
 export async function GET(
   request: NextRequest,
@@ -29,10 +30,15 @@ export async function GET(
   }
 
   try {
-    const wikiSyncData = await getWikiSyncData(player);
-    const collectionLogData = await getCollectionLog(player);
+    const [wikiSyncData, collectionLogData, templeData] = await Promise.all([
+      getWikiSyncData(player),
+      getCollectionLog(player),
+      getTempleData(player),
+    ]);
 
-    const hasThirdPartyData = wikiSyncData || collectionLogData;
+    const hasThirdPartyData = Boolean(
+      wikiSyncData || collectionLogData || templeData,
+    );
 
     if (!hasThirdPartyData) {
       return NextResponse.json(emptyAchievementDiaryList, { status: 404 });
@@ -104,6 +110,8 @@ export async function GET(
       collectionLogCount,
       collectionLogTotal,
       joinDate,
+      ehb: templeData?.Im_ehb ?? null,
+      ehp: templeData?.Im_ehp ?? null,
     });
   } catch (error) {
     console.error(error);
