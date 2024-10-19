@@ -921,7 +921,7 @@ export const itemsResponseFixture: ItemCategoryMap = {
       singleItem({
         name: "Tumeken's shadow",
         clogName: "Tumeken's shadow (uncharged)",
-        points: 0,
+        points: 300,
       }),
       singleItem({
         name: 'Masori crafting kit',
@@ -1143,7 +1143,7 @@ export const itemsResponseFixture: ItemCategoryMap = {
       singleItem({
         name: 'Boots of brimstone',
         clogName: "Drake's claw",
-        points: 0,
+        points: 20,
       }),
       singleItem({
         name: 'Neitiznot faceguard',
