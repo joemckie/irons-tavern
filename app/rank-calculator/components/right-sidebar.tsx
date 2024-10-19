@@ -3,7 +3,7 @@ import { SkillingCard } from './cards/skilling-card';
 import { usePageLayout } from '../hooks/use-page-layout';
 
 export function RightSidebar() {
-  const { sidebarHeightCss } = usePageLayout();
+  const { mainHeightCss } = usePageLayout();
 
   return (
     <Box
@@ -15,7 +15,7 @@ export function RightSidebar() {
         borderLeft: '1px solid var(--gray-5)',
       }}
     >
-      <ScrollArea style={{ height: sidebarHeightCss }}>
+      <ScrollArea style={{ height: mainHeightCss }}>
         <aside>
           <Flex gap="4" direction="column">
             <SkillingCard />
