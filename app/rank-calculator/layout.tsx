@@ -3,7 +3,7 @@
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { Flex, Grid, Theme, ThemePanel, Avatar } from '@radix-ui/themes';
+import { Flex, Grid, Theme, ThemePanel } from '@radix-ui/themes';
 import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { useSearchParams } from 'next/navigation';
 import { constants } from '@/config/constants';
