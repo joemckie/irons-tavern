@@ -360,7 +360,7 @@ export const itemsResponseFixture: ItemCategoryMap = {
       }),
       compoundItem({
         name: 'Elysian spirit shield',
-        points: 150,
+        points: 500,
         requiredItems: ['Spirit shield', 'Elysian sigil', 'Holy elixir'],
       }),
     ],
@@ -404,7 +404,7 @@ export const itemsResponseFixture: ItemCategoryMap = {
         singleItem({
           name: `Zenyte shard (${i + 1})`,
           clogName: 'Zenyte shard',
-          points: 50,
+          points: 45,
           requiredAmount: i + 1,
         }),
       ),
