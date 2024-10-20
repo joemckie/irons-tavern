@@ -10,3 +10,13 @@ export interface PlayerData {
   collectionLogTotal: number | null;
   combatAchievementTier: CombatAchievementTier | null;
 }
+
+export interface FormData {
+  achievementDiaries: AchievementDiaryMap;
+  collectionLogCount: number;
+  playerName: string;
+  items: Record<string, boolean>;
+  caTier: CombatAchievementTier | null;
+  ehb: number;
+  ehp: number;
+}

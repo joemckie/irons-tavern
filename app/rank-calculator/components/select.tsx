@@ -1,6 +1,6 @@
 import { Select as BaseSelect, Button } from '@radix-ui/themes';
-import { useController } from 'react-hook-form';
 import * as Ariakit from '@ariakit/react';
+import { useController } from 'react-hook-form';
 
 interface SelectProps extends BaseSelect.RootProps {
   name: string;

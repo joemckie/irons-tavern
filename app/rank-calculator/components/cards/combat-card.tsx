@@ -1,9 +1,9 @@
 import { Progress, Separator, Text } from '@radix-ui/themes';
 import { CombatAchievementTier } from '@/types/osrs';
+import { FormData } from '@/types/rank-calculator';
 import { useWatch } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
-import { FormData } from '../../page';
 
 export function CombatCard() {
   const ehb = useWatch<Pick<FormData, 'ehb'>>({ name: 'ehb' });

@@ -2,25 +2,14 @@
 
 import { Grid } from '@radix-ui/themes';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { useSearchParams } from 'next/navigation';
-import { CombatAchievementTier } from '@/types/osrs';
+import { FormData } from '@/types/rank-calculator';
 import { Navigation } from './components/navigation';
 import { Sidebar } from './components/sidebar';
 import { RightSidebar } from './components/right-sidebar';
 import { usePageLayout } from './hooks/use-page-layout';
 import { ItemList } from './components/item-list';
 import { usePlayerDetails } from './hooks/use-player-details';
-
-export interface FormData {
-  achievementDiaries: AchievementDiaryMap;
-  collectionLogCount: number;
-  playerName: string;
-  items: Record<string, boolean>;
-  caTier: CombatAchievementTier | null;
-  ehb: number;
-  ehp: number;
-}
 
 export default function RankCalculator() {
   const params = useSearchParams();
