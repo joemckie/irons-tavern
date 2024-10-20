@@ -12,12 +12,14 @@ import { usePageLayout } from './hooks/use-page-layout';
 import { ItemList } from './components/item-list';
 import { usePlayerDetails } from './hooks/use-player-details';
 
-interface FormData {
+export interface FormData {
   achievementDiaries: AchievementDiaryMap;
   collectionLogCount: number;
   playerName: string;
   items: Record<string, boolean>;
   caTier: CombatAchievementTier | null;
+  ehb: number;
+  ehp: number;
 }
 
 export default function RankCalculator() {

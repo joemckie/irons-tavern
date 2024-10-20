@@ -1,9 +1,14 @@
 import { Progress, Separator, Text } from '@radix-ui/themes';
 import { CombatAchievementTier } from '@/types/osrs';
+import { useWatch } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
+import { FormData } from '../../page';
 
 export function CombatCard() {
+  const ehb = useWatch<Pick<FormData, 'ehb'>>({ name: 'ehb' });
+  const caTier = useWatch<Pick<FormData, 'caTier'>>({ name: 'caTier' });
+
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -28,7 +33,7 @@ export function CombatCard() {
         center={<Text size="2">524</Text>}
         right={
           <Text color="gray" size="2">
-            5240
+            {ehb}
           </Text>
         }
       />
