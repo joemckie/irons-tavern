@@ -1,4 +1,12 @@
-import { Select as BaseSelect, Button } from '@radix-ui/themes';
+'use client';
+
+import {
+  Select as BaseSelect,
+  Box,
+  Button,
+  Text,
+  ThickCheckIcon,
+} from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
 import { useController } from 'react-hook-form';
 
@@ -18,21 +26,31 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
       </Button>
       <Ariakit.SelectPopover
         gutter={4}
-        // sameWidth
-        className="rt-PopperContent rt-PopoverContent rt-r-size-1"
+        className="rt-PopperContent rt-PopoverContent rt-SelectContent rt-r-size-1"
         portal
         portalElement={document.getElementById('theme-root')}
-        // unmountOnHide
-        style={{
-          fontSize: 'var(--font-size-1)',
-        }}
       >
         {options.map((option) => (
           <Ariakit.SelectItem
             key={option}
-            className="select-item"
+            className="rt-SelectItem"
             value={option}
-          />
+          >
+            <Ariakit.SelectItemCheck
+              render={({ style, ...selectItemCheckProps }) =>
+                field.value === option && (
+                  <Box
+                    {...selectItemCheckProps}
+                    as="span"
+                    className="rt-SelectItemIndicator"
+                  >
+                    <ThickCheckIcon className="rt-SelectItemIndicatorIcon" />
+                  </Box>
+                )
+              }
+            />
+            <Text>{option}</Text>
+          </Ariakit.SelectItem>
         ))}
       </Ariakit.SelectPopover>
     </Ariakit.SelectProvider>
