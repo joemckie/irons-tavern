@@ -11,6 +11,8 @@ export async function getJoinedDate(player: string) {
     const response = await fetch(url);
     const data: ClanMember[] = await response.json();
 
+    console.log({ data });
+
     return (
       data.find(({ rsn }) => rsn.toLowerCase() === player.toLowerCase())
         ?.joinedDate ?? null

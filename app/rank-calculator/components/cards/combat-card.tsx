@@ -7,7 +7,6 @@ import { FormData } from '../../page';
 
 export function CombatCard() {
   const ehb = useWatch<Pick<FormData, 'ehb'>>({ name: 'ehb' });
-  const caTier = useWatch<Pick<FormData, 'caTier'>>({ name: 'caTier' });
 
   return (
     <DataCard.Root>
@@ -48,10 +47,7 @@ export function CombatCard() {
             name="caTier"
             placeholder="Choose a tier"
             size="1"
-            options={Object.values(CombatAchievementTier).map((tier) => ({
-              label: tier,
-              value: tier,
-            }))}
+            options={Object.values(CombatAchievementTier)}
           />
         }
         right={

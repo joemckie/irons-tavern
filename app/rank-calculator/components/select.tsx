@@ -1,39 +1,40 @@
-import { Select as BaseSelect } from '@radix-ui/themes';
-import { forwardRef } from 'react';
-import { useController, useFormContext } from 'react-hook-form';
+import { Select as BaseSelect, Button } from '@radix-ui/themes';
+import { useController } from 'react-hook-form';
+import * as Ariakit from '@ariakit/react';
 
 interface SelectProps extends BaseSelect.RootProps {
   name: string;
   placeholder?: string;
-  options: { label: string; value: string }[];
+  options: string[];
 }
 
-export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  ({ options, placeholder, ...props }, forwardedRef) => {
-    const { field } = useController({ name: props.name });
-    const { setValue } = useFormContext();
+export function Select({ options, placeholder, ...props }: SelectProps) {
+  const { field } = useController({ name: props.name });
 
-    return (
-      <BaseSelect.Root
-        {...props}
-        onValueChange={(value) => {
-          setValue(props.name, value);
+  return (
+    <Ariakit.SelectProvider setValue={field.onChange} value={field.value}>
+      <Button asChild variant="ghost" size="1">
+        <Ariakit.Select {...field} />
+      </Button>
+      <Ariakit.SelectPopover
+        gutter={4}
+        // sameWidth
+        className="rt-PopperContent rt-PopoverContent rt-r-size-1"
+        portal
+        portalElement={document.getElementById('theme-root')}
+        // unmountOnHide
+        style={{
+          fontSize: 'var(--font-size-1)',
         }}
-        value={field.value}
       >
-        <BaseSelect.Trigger ref={forwardedRef} placeholder={placeholder} />
-        <BaseSelect.Content>
-          <BaseSelect.Group>
-            {options.map((option) => (
-              <BaseSelect.Item key={option.value} value={option.value}>
-                {option.label}
-              </BaseSelect.Item>
-            ))}
-          </BaseSelect.Group>
-        </BaseSelect.Content>
-      </BaseSelect.Root>
-    );
-  },
-);
-
-Select.displayName = 'Select';
+        {options.map((option) => (
+          <Ariakit.SelectItem
+            key={option}
+            className="select-item"
+            value={option}
+          />
+        ))}
+      </Ariakit.SelectPopover>
+    </Ariakit.SelectProvider>
+  );
+}

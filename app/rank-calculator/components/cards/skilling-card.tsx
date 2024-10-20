@@ -58,10 +58,7 @@ export function SkillingCard() {
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
               size="1"
-              options={Object.values(DiaryTier).map((tier) => ({
-                label: tier,
-                value: tier,
-              }))}
+              options={Object.values(DiaryTier)}
             />
           }
           right={
