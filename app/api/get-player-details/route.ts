@@ -24,6 +24,7 @@ const emptyResponse = {
   combatAchievementTier: null,
   ehb: null,
   ehp: null,
+  totalLevel: null,
 } satisfies PlayerData;
 
 export async function GET(
@@ -56,7 +57,11 @@ export async function GET(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    const { Im_ehb: ehb = null, Im_ehp: ehp = null } = templeData ?? {};
+    const {
+      Im_ehb: ehb = null,
+      Im_ehp: ehp = null,
+      Overall_level: totalLevel = null,
+    } = templeData ?? {};
 
     const collectionLogItems = collectionLogData
       ? get<CollectionLogItem[]>(
@@ -113,7 +118,7 @@ export async function GET(
 
     const joinDate = await getJoinedDate(player);
 
-    return NextResponse.json({
+    return NextResponse.json<PlayerData>({
       acquiredItems,
       achievementDiaries,
       combatAchievementTier,
@@ -122,6 +127,7 @@ export async function GET(
       joinDate,
       ehb: ehb ? Math.round(ehb) : null,
       ehp: ehp ? Math.round(ehp) : null,
+      totalLevel,
     });
   } catch (error) {
     console.error(error);

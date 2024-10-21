@@ -2,6 +2,7 @@ import { Progress, Separator, Text } from '@radix-ui/themes';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
+import { EditableText } from '../editable-text';
 
 export function SkillingCard() {
   return (
@@ -25,7 +26,7 @@ export function SkillingCard() {
             EHP
           </Text>
         }
-        center={<Text size="2">1144</Text>}
+        center={<EditableText name="ehp" required type="number" />}
         right={
           <Text color="gray" size="2">
             11440
@@ -38,7 +39,7 @@ export function SkillingCard() {
             Total level
           </Text>
         }
-        center={<Text size="2">2174</Text>}
+        center={<EditableText name="totalLevel" required type="number" />}
         right={
           <Text color="gray" size="2">
             42018

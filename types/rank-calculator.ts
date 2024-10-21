@@ -11,6 +11,7 @@ export interface PlayerData {
   combatAchievementTier: CombatAchievementTier | null;
   ehp: number | null;
   ehb: number | null;
+  totalLevel: number | null;
 }
 
 export interface FormData {
@@ -22,4 +23,5 @@ export interface FormData {
   ehb: number;
   ehp: number;
   joinDate: string | null;
+  totalLevel: number;
 }

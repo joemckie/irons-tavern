@@ -40,6 +40,7 @@ export function usePlayerDetails(player: string) {
         caTier: data.combatAchievementTier,
         ehb: data.ehb ?? 0,
         ehp: data.ehp ?? 0,
+        totalLevel: data.totalLevel ?? 0,
       } satisfies FormData;
     },
   });
