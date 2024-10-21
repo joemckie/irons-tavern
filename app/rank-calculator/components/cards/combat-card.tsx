@@ -1,13 +1,10 @@
 import { Progress, Separator, Text } from '@radix-ui/themes';
 import { CombatAchievementTier } from '@/types/osrs';
-import { FormData } from '@/types/rank-calculator';
-import { useWatch } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
+import { EditableText } from '../editable-text';
 
 export function CombatCard() {
-  const ehb = useWatch<Pick<FormData, 'ehb'>>({ name: 'ehb' });
-
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -29,10 +26,10 @@ export function CombatCard() {
             EHB
           </Text>
         }
-        center={<Text size="2">524</Text>}
+        center={<EditableText name="ehb" type="number" />}
         right={
           <Text color="gray" size="2">
-            {ehb}
+            5240
           </Text>
         }
       />

@@ -1,6 +1,6 @@
 import { constants } from '@/config/constants';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { PlayerData } from '@/types/rank-calculator';
+import { FormData, PlayerData } from '@/types/rank-calculator';
 import { stripEntityName } from '../utils/strip-entity-name';
 
 export function usePlayerDetails(player: string) {
@@ -38,7 +38,9 @@ export function usePlayerDetails(player: string) {
         collectionLogCount: data.collectionLogCount ?? 0,
         playerName: player,
         caTier: data.combatAchievementTier,
-      };
+        ehb: data.ehb ?? 0,
+        ehp: data.ehp ?? 0,
+      } satisfies FormData;
     },
   });
 }

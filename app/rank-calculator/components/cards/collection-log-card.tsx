@@ -1,11 +1,8 @@
 import { Progress, Separator, Text } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
 import { DataCard } from '../data-card';
-import { Input } from '../input';
+import { EditableText } from '../editable-text';
 
 export function CollectionLogCard() {
-  const { register } = useFormContext();
-
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -28,13 +25,7 @@ export function CollectionLogCard() {
           </Text>
         }
         center={
-          <Input
-            type="number"
-            size="1"
-            {...register('collectionLogCount', {
-              required: true,
-            })}
-          />
+          <EditableText name="collectionLogCount" type="number" required />
         }
         right={
           <Text color="gray" size="2">

@@ -1,15 +1,6 @@
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
-import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
+import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { DiaryTierData, WikiSyncResponse } from '@/types/wiki';
-
-export const emptyAchievementDiaryList = {
-  achievementDiaries: null,
-  acquiredItems: null,
-  joinDate: null,
-  collectionLogCount: null,
-  collectionLogTotal: null,
-  combatAchievementTier: null,
-} satisfies PlayerData;
 
 export function parseAchievementDiaries(
   diaries: WikiSyncResponse['achievement_diaries'],

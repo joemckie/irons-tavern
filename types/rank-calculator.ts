@@ -9,6 +9,8 @@ export interface PlayerData {
   collectionLogCount: number | null;
   collectionLogTotal: number | null;
   combatAchievementTier: CombatAchievementTier | null;
+  ehp: number | null;
+  ehb: number | null;
 }
 
 export interface FormData {
@@ -19,4 +21,5 @@ export interface FormData {
   caTier: CombatAchievementTier | null;
   ehb: number;
   ehp: number;
+  joinDate: string | null;
 }

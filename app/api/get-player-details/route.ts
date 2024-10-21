@@ -10,13 +10,21 @@ import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
-import {
-  emptyAchievementDiaryList,
-  parseAchievementDiaries,
-} from './utils/parse-achievement-diaries';
+import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
 import { getJoinedDate } from './utils/get-joined-date';
 import { parseLevels } from './utils/parse-levels';
 import { getTempleData } from './utils/get-temple-data';
+
+const emptyResponse = {
+  achievementDiaries: null,
+  acquiredItems: null,
+  joinDate: null,
+  collectionLogCount: null,
+  collectionLogTotal: null,
+  combatAchievementTier: null,
+  ehb: null,
+  ehp: null,
+} satisfies PlayerData;
 
 export async function GET(
   request: NextRequest,
@@ -24,7 +32,7 @@ export async function GET(
   const player = request.nextUrl.searchParams.get('player');
 
   if (!player) {
-    return NextResponse.json(emptyAchievementDiaryList, {
+    return NextResponse.json(emptyResponse, {
       status: 400,
     });
   }
@@ -41,12 +49,14 @@ export async function GET(
     );
 
     if (!hasThirdPartyData) {
-      return NextResponse.json(emptyAchievementDiaryList, { status: 404 });
+      return NextResponse.json(emptyResponse, { status: 404 });
     }
 
     const combatAchievementTier = wikiSyncData
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
+
+    const { Im_ehb: ehb = null, Im_ehp: ehp = null } = templeData ?? {};
 
     const collectionLogItems = collectionLogData
       ? get<CollectionLogItem[]>(
@@ -110,13 +120,13 @@ export async function GET(
       collectionLogCount,
       collectionLogTotal,
       joinDate,
-      ehb: templeData?.Im_ehb ?? null,
-      ehp: templeData?.Im_ehp ?? null,
+      ehb: ehb ? Math.round(ehb) : null,
+      ehp: ehp ? Math.round(ehp) : null,
     });
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(emptyAchievementDiaryList, {
+    return NextResponse.json(emptyResponse, {
       status: 500,
     });
   }

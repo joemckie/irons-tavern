@@ -13,7 +13,7 @@ export function EditableText({ name, ...restProps }: EditableTextProps) {
 
   if (editing) {
     return (
-      <TextField.Root size="2" {...restProps} {...field} autoFocus>
+      <TextField.Root size="1" {...restProps} {...field} autoFocus>
         <TextField.Slot side="right">
           <IconButton
             size="1"
@@ -28,8 +28,8 @@ export function EditableText({ name, ...restProps }: EditableTextProps) {
   }
 
   return (
-    <Flex justify="between" width="100%" align="center">
-      <Text>{field.value}</Text>
+    <Flex justify="center" gap="1" width="100%" align="center">
+      <Text size="2">{field.value}</Text>
       <IconButton onClick={() => setEditing(true)} size="1" variant="ghost">
         <Pencil1Icon />
       </IconButton>
