@@ -21,12 +21,12 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
 
   return (
     <Ariakit.SelectProvider setValue={field.onChange} value={field.value}>
-      <Button asChild variant="ghost" size="1">
+      <Button asChild variant="ghost" size="1" className="rt-SelectTrigger">
         <Ariakit.Select {...field} />
       </Button>
       <Ariakit.SelectPopover
         gutter={4}
-        className="rt-PopperContent rt-PopoverContent rt-SelectContent rt-r-size-1"
+        className="rt-PopoverContent rt-SelectContent rt-r-size-1"
         portal
         portalElement={document.getElementById('theme-root')}
       >
