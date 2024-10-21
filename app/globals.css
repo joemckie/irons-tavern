@@ -52,3 +52,8 @@ img.rt-AvatarImage {
 .rt-SelectItem[data-active-item] {
   background-color: var(--accent-8);
 }
+
+.rt-SelectTrigger:where(.rt-variant-soft),
+.rt-SelectTrigger:where(.rt-variant-ghost) {
+  color: white !important;
+}
