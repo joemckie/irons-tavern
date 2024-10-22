@@ -1,5 +1,6 @@
-import { Progress, Separator, Text } from '@radix-ui/themes';
+import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -9,9 +10,17 @@ export function SkillingCard() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text weight="bold" size="2">
-            Skilling
-          </Text>
+          <Flex gap="2" align="center">
+            <Image
+              alt="Skills icon"
+              src="/icons/skills.png"
+              height={18}
+              width={18}
+            />
+            <Text weight="bold" size="2">
+              Skilling
+            </Text>
+          </Flex>
         }
         right={
           <Text weight="bold" size="2">

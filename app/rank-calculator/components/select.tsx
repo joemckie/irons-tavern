@@ -21,7 +21,7 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
 
   return (
     <Ariakit.SelectProvider setValue={field.onChange} value={field.value}>
-      <Button asChild variant="ghost" size="2" className="rt-SelectTrigger">
+      <Button asChild variant="ghost" className="rt-SelectTrigger">
         <Ariakit.Select {...field} />
       </Button>
       <Ariakit.SelectPopover

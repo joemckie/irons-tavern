@@ -2,7 +2,7 @@ import { Box, Flex, ScrollArea, Separator } from '@radix-ui/themes';
 import { RankProgressCard } from './cards/rank-progress-card';
 import { CombatCard } from './cards/combat-card';
 import { CollectionLogCard } from './cards/collection-log-card';
-import { ItemStatistics } from './item-statistics';
+import { NotableItemsCard } from './cards/notable-items-card';
 import { usePageLayout } from '../hooks/use-page-layout';
 
 export function Sidebar() {
@@ -24,7 +24,7 @@ export function Sidebar() {
             <Separator size="4" />
             <CombatCard />
             <CollectionLogCard />
-            <ItemStatistics />
+            <NotableItemsCard />
           </Flex>
         </aside>
       </ScrollArea>

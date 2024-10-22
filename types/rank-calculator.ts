@@ -25,3 +25,14 @@ export interface FormData {
   joinDate: Date | null;
   totalLevel: number;
 }
+
+export enum RankStructure {
+  Standard = 'Standard',
+  BingoWinner = 'Bingo Winner',
+  Legacy = 'Legacy',
+  Inviter = 'Inviter',
+  Admin = 'Admin',
+  Moderator = 'Moderator',
+  DeputyOwner = 'Deputy Owner',
+  Owner = 'Owner',
+}

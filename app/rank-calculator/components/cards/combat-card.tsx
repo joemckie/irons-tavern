@@ -1,5 +1,6 @@
-import { Progress, Separator, Text } from '@radix-ui/themes';
+import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import { CombatAchievementTier } from '@/types/osrs';
+import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -9,9 +10,17 @@ export function CombatCard() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text weight="bold" size="2">
-            Combat
-          </Text>
+          <Flex gap="2" align="center">
+            <Image
+              alt="Combat icon"
+              src="/icons/combat.png"
+              height={18}
+              width={18}
+            />
+            <Text weight="bold" size="2">
+              Combat
+            </Text>
+          </Flex>
         }
         right={
           <Text weight="bold" size="2">

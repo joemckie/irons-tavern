@@ -1,9 +1,10 @@
-import { Progress, Separator, Text } from '@radix-ui/themes';
+import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { useGetItems } from '../hooks/use-get-items';
-import { DataCard } from './data-card';
+import Image from 'next/image';
+import { useGetItems } from '../../hooks/use-get-items';
+import { DataCard } from '../data-card';
 
-export function ItemStatistics() {
+export function NotableItemsCard() {
   const { data } = useGetItems();
   const itemFields = useWatch<Record<string, boolean>>({
     name: 'items',
@@ -56,9 +57,17 @@ export function ItemStatistics() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text weight="bold" size="2">
-            Notable items
-          </Text>
+          <Flex gap="2" align="center">
+            <Image
+              alt="Inventory icon"
+              src="/icons/inventory.png"
+              height={18}
+              width={18}
+            />
+            <Text weight="bold" size="2">
+              Notable items
+            </Text>
+          </Flex>
         }
         right={
           <Text weight="bold" size="2">

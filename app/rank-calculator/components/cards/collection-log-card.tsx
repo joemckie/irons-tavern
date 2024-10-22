@@ -1,4 +1,5 @@
-import { Progress, Separator, Text } from '@radix-ui/themes';
+import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
+import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
 
@@ -7,9 +8,17 @@ export function CollectionLogCard() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text weight="bold" size="2">
-            Collection Log
-          </Text>
+          <Flex gap="2" align="center">
+            <Image
+              alt="Collection log icon"
+              src="/icons/collection-log.png"
+              height={17}
+              width={18}
+            />
+            <Text weight="bold" size="2">
+              Collection Log
+            </Text>
+          </Flex>
         }
         right={
           <Text weight="bold" size="2">

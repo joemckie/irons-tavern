@@ -1,6 +1,8 @@
-import { Box, Card, Flex, Progress, Text } from '@radix-ui/themes';
+import { Box, Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
+import { RankStructure } from '@/types/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
+import { Select } from '../select';
 
 export function RankProgressCard() {
   return (
@@ -45,6 +47,20 @@ export function RankProgressCard() {
               </Text>
             </Flex>
           </Flex>
+          <Separator size="4" />
+          <DataCard.Row
+            left={
+              <Text color="gray" size="2">
+                Rank structure
+              </Text>
+            }
+            right={
+              <Select
+                name="rankStructure"
+                options={Object.values(RankStructure)}
+              />
+            }
+          />
         </Flex>
       </Card>
     </Box>
