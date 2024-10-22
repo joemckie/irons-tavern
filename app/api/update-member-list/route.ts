@@ -56,23 +56,23 @@ export async function POST(request: NextRequest) {
     ...(constants.temple.privateGroup && { 'private-group-checkbox': 'on' }),
   } satisfies GroupUpdateRequest;
 
-  console.log(templeUpdateData);
+  console.log('Updating member list');
 
-  // Sync our Temple page with the new member list
-  await fetch(`${constants.temple.baseUrl}/groups/edit.php`, {
-    method: 'POST',
-    body: new URLSearchParams(templeUpdateData),
-  });
-
-  // Save the member list to the Vercel blob store to use later
-  await put('members.json', JSON.stringify(body.clanMemberMaps), {
-    access: 'public',
-  });
-
-  // Check all players in the new member list
-  await fetch(`${constants.publicUrl}/api/check-all-players`, {
-    method: 'POST',
-  });
+  await Promise.all([
+    // Sync our Temple page with the new member list
+    fetch(`${constants.temple.baseUrl}/groups/edit.php`, {
+      method: 'POST',
+      body: new URLSearchParams(templeUpdateData),
+    }),
+    // Save the member list to the Vercel blob store to use later
+    put('members.json', JSON.stringify(body.clanMemberMaps), {
+      access: 'public',
+    }),
+    // Check all players in the new member list
+    fetch(`${constants.publicUrl}/api/check-all-players`, {
+      method: 'POST',
+    }),
+  ]);
 
   return NextResponse.json({ success: true });
 }

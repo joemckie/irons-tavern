@@ -5,8 +5,13 @@ import { PlayerInfoResponse } from '@/types/temple-api';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(request: NextRequest) {
-  const { player }: { player: string } = await request.json();
+export async function GET(request: NextRequest) {
+  const player = request.nextUrl.searchParams.get('player');
+
+  if (!player) {
+    throw new Error('No player provided');
+  }
+
   const playerInfoRequest = await fetch(
     `${constants.temple.baseUrl}/api/player_info.php?player=${player}`,
   );

@@ -24,7 +24,7 @@ export async function POST() {
   const requests = filteredPlayers.map((player, i) => ({
     // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
     // so we need to wait for six seconds before checking the next player
-    url: `${constants.temple.baseUrl}/php/add_datapoint.php?player=${encodeURI(player.player)}&_delay=${i * 6}`,
+    url: `${constants.publicUrl}/api/check-player?player=${encodeURI(player.player)}&_delay=${i * 6}`,
     method: 'GET',
   }));
 
@@ -34,7 +34,7 @@ export async function POST() {
     method: 'GET',
   });
 
-  console.log(requests);
+  console.log('Sending requests to Zeplo');
 
   const queueResponse = await fetch(
     `${constants.zeplo.url}/bulk?_token=${constants.zeplo.apiKey}`,
