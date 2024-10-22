@@ -1,6 +1,7 @@
-import { Box, Flex, ScrollArea } from '@radix-ui/themes';
+import { Box, Flex, ScrollArea, Separator } from '@radix-ui/themes';
 import { SkillingCard } from './cards/skilling-card';
 import { usePageLayout } from '../hooks/use-page-layout';
+import { PlayerCard } from './cards/player-card';
 
 export function RightSidebar() {
   const { mainHeightCss } = usePageLayout();
@@ -18,6 +19,8 @@ export function RightSidebar() {
       <ScrollArea style={{ height: mainHeightCss }}>
         <aside>
           <Flex gap="4" direction="column">
+            <PlayerCard />
+            <Separator size="4" />
             <SkillingCard />
           </Flex>
         </aside>
