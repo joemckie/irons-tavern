@@ -34,6 +34,8 @@ export async function POST() {
     method: 'GET',
   });
 
+  console.log(requests);
+
   const queueResponse = await fetch(
     `${constants.zeplo.url}/bulk?_token=${constants.zeplo.apiKey}`,
     {

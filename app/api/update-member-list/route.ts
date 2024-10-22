@@ -56,6 +56,8 @@ export async function POST(request: NextRequest) {
     ...(constants.temple.privateGroup && { 'private-group-checkbox': 'on' }),
   } satisfies GroupUpdateRequest;
 
+  console.log(templeUpdateData);
+
   // Sync our Temple page with the new member list
   await fetch(`${constants.temple.baseUrl}/groups/edit.php`, {
     method: 'POST',
