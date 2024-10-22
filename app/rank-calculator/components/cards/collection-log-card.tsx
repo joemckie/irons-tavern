@@ -2,8 +2,11 @@ import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
+import { usePointCalculator } from '../../hooks/use-point-calculator';
 
 export function CollectionLogCard() {
+  const { collectionLogSlotPoints } = usePointCalculator();
+
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -38,7 +41,7 @@ export function CollectionLogCard() {
         }
         right={
           <Text color="gray" size="2">
-            11440
+            {collectionLogSlotPoints}
           </Text>
         }
       />

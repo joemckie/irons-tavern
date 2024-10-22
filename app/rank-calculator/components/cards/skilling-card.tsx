@@ -4,8 +4,12 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
+import { usePointCalculator } from '../../hooks/use-point-calculator';
 
 export function SkillingCard() {
+  const { ehpPoints, totalLevelPoints, achievementDiariesPoints } =
+    usePointCalculator();
+
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -38,7 +42,7 @@ export function SkillingCard() {
         center={<EditableText name="ehp" required type="number" />}
         right={
           <Text color="gray" size="2">
-            11440
+            {ehpPoints}
           </Text>
         }
       />
@@ -51,7 +55,7 @@ export function SkillingCard() {
         center={<EditableText name="totalLevel" required type="number" />}
         right={
           <Text color="gray" size="2">
-            42018
+            {totalLevelPoints}
           </Text>
         }
       />
@@ -73,7 +77,7 @@ export function SkillingCard() {
           }
           right={
             <Text color="gray" size="2">
-              1000
+              {achievementDiariesPoints[location as DiaryLocation]}
             </Text>
           }
         />

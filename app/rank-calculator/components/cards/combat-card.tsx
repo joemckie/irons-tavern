@@ -4,8 +4,11 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
+import { usePointCalculator } from '../../hooks/use-point-calculator';
 
 export function CombatCard() {
+  const { ehbPoints, caTierPoints } = usePointCalculator();
+
   return (
     <DataCard.Root>
       <DataCard.Row
@@ -38,7 +41,7 @@ export function CombatCard() {
         center={<EditableText name="ehb" type="number" />}
         right={
           <Text color="gray" size="2">
-            5240
+            {ehbPoints}
           </Text>
         }
       />
@@ -58,7 +61,7 @@ export function CombatCard() {
         }
         right={
           <Text color="gray" size="2">
-            20000
+            {caTierPoints}
           </Text>
         }
       />
