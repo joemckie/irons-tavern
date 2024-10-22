@@ -28,7 +28,7 @@ export function EditableText({ name, ...restProps }: EditableTextProps) {
   }
 
   return (
-    <Flex justify="center" gap="1" width="100%" align="center">
+    <Flex justify="center" gap="2" width="100%" align="center">
       <Text size="2">{field.value}</Text>
       <IconButton onClick={() => setEditing(true)} size="1" variant="ghost">
         <Pencil1Icon />

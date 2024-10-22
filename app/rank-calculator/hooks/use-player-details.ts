@@ -34,7 +34,7 @@ export function usePlayerDetails(player: string) {
           Varrock: null,
           Wilderness: null,
         },
-        joinDate: data.joinDate,
+        joinDate: data.joinDate ? new Date(data.joinDate) : null,
         collectionLogCount: data.collectionLogCount ?? 0,
         playerName: player,
         caTier: data.combatAchievementTier,

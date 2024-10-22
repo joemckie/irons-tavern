@@ -5,7 +5,7 @@ export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | null>;
 export interface PlayerData {
   acquiredItems: string[] | null;
   achievementDiaries: AchievementDiaryMap | null;
-  joinDate: string | null;
+  joinDate: Date | null;
   collectionLogCount: number | null;
   collectionLogTotal: number | null;
   combatAchievementTier: CombatAchievementTier | null;
@@ -22,6 +22,6 @@ export interface FormData {
   caTier: CombatAchievementTier | null;
   ehb: number;
   ehp: number;
-  joinDate: string | null;
+  joinDate: Date | null;
   totalLevel: number;
 }
