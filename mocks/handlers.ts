@@ -4,8 +4,8 @@ import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
-import * as maxedPlayerFixture from './maxed-player';
-import * as midPlayerFixture from './mid-player';
+import * as lateGamePlayerFixture from './late-game-player';
+import * as midGamePlayerFixture from './mid-game-player';
 import { memberListFixture } from './misc/member-list';
 
 export const handlers = [
@@ -15,11 +15,13 @@ export const handlers = [
   http.get(
     `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
     () =>
-      HttpResponse.json<WikiSyncResponse>(midPlayerFixture.wikiSyncResponse),
+      HttpResponse.json<WikiSyncResponse>(
+        midGamePlayerFixture.wikiSyncResponse,
+      ),
   ),
   http.get(`${constants.collectionLogBaseUrl}/collectionlog/user/:player`, () =>
     HttpResponse.json<CollectionLogResponse>(
-      midPlayerFixture.collectionLogResponse,
+      midGamePlayerFixture.collectionLogResponse,
     ),
   ),
 
@@ -30,11 +32,11 @@ export const handlers = [
     switch (player?.toLowerCase()) {
       case 'clogging':
         return HttpResponse.json<PlayerStatsResponse>(
-          maxedPlayerFixture.templeStatsResponse,
+          lateGamePlayerFixture.templeStatsResponse,
         );
       default:
         return HttpResponse.json<PlayerStatsResponse>(
-          midPlayerFixture.templeStatsResponse,
+          midGamePlayerFixture.templeStatsResponse,
         );
     }
   }),
@@ -43,13 +45,15 @@ export const handlers = [
   http.get(
     `${constants.wikiSync.baseUrl}/runelite/player/clogging/STANDARD`,
     () =>
-      HttpResponse.json<WikiSyncResponse>(maxedPlayerFixture.wikiSyncResponse),
+      HttpResponse.json<WikiSyncResponse>(
+        lateGamePlayerFixture.wikiSyncResponse,
+      ),
   ),
   http.get(
     `${constants.collectionLogBaseUrl}/collectionlog/user/clogging`,
     () =>
       HttpResponse.json<CollectionLogResponse>(
-        maxedPlayerFixture.collectionLogResponse,
+        lateGamePlayerFixture.collectionLogResponse,
       ),
   ),
 ];
