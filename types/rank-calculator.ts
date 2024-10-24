@@ -1,5 +1,16 @@
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
+export enum RankStructure {
+  Standard = 'Standard',
+  BingoWinner = 'Bingo Winner',
+  Legacy = 'Legacy',
+  Inviter = 'Inviter',
+  Admin = 'Admin',
+  Moderator = 'Moderator',
+  DeputyOwner = 'Deputy Owner',
+  Owner = 'Owner',
+}
+
 export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | 'None'>;
 
 export interface PlayerData {
@@ -13,6 +24,7 @@ export interface PlayerData {
   ehb: number | null;
   totalLevel: number | null;
   playerName: string | null;
+  rankStructure: RankStructure;
 }
 
 export interface FormData {
@@ -25,17 +37,7 @@ export interface FormData {
   ehp: number;
   joinDate: Date | null;
   totalLevel: number;
-}
-
-export enum RankStructure {
-  Standard = 'Standard',
-  BingoWinner = 'Bingo Winner',
-  Legacy = 'Legacy',
-  Inviter = 'Inviter',
-  Admin = 'Admin',
-  Moderator = 'Moderator',
-  DeputyOwner = 'Deputy Owner',
-  Owner = 'Owner',
+  rankStructure: RankStructure;
 }
 
 export interface CategoryPointCalculatorData {

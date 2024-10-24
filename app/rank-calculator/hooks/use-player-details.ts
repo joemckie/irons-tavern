@@ -1,6 +1,6 @@
 import { constants } from '@/config/constants';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { FormData, PlayerData } from '@/types/rank-calculator';
+import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { stripEntityName } from '../utils/strip-entity-name';
 
 export const getPlayerDetails = async (player: string) => {
@@ -38,6 +38,7 @@ export const getPlayerDetails = async (player: string) => {
     ehb: data.ehb ?? 0,
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,
+    rankStructure: RankStructure.Standard,
   } satisfies FormData;
 };
 

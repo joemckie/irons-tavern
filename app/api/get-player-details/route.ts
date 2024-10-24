@@ -4,7 +4,7 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import { PlayerData } from '@/types/rank-calculator';
+import { PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
@@ -26,6 +26,7 @@ const emptyResponse = {
   ehp: null,
   totalLevel: null,
   playerName: null,
+  rankStructure: RankStructure.Standard,
 } satisfies PlayerData;
 
 export async function GET(
@@ -130,6 +131,7 @@ export async function GET(
       ehp: ehp ? Math.round(ehp) : null,
       totalLevel,
       playerName: playerMeta?.rsn ?? player,
+      rankStructure: RankStructure.Standard,
     });
   } catch (error) {
     console.error(error);
