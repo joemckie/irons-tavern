@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
@@ -74,22 +74,6 @@ const wikiSyncHandler = http.get(
   },
 );
 
-const blobsHandler = http.get('https://blob.vercel-storage.com', () => {
-  console.log('blobs handler');
-  return HttpResponse.json({
-    blobs: [
-      {
-        url: 'https://gahwq1fw7eoa8dzl.public.blob.vercel-storage.com/members-2BrFRcNlSvgbg1JpRpo2TBwbkK5XJc.json',
-        downloadUrl:
-          'https://gahwq1fw7eoa8dzl.public.blob.vercel-storage.com/members-2BrFRcNlSvgbg1JpRpo2TBwbkK5XJc.json?download=1',
-        pathname: 'members.json',
-        size: 30631,
-        uploadedAt: '2024-10-22T20:03:24.000Z',
-      },
-    ],
-  });
-});
-
 const wikiApiHandler = http.get(
   `${constants.wiki.baseUrl}/api.php`,
   ({ request }) => {
@@ -112,11 +96,18 @@ const memberListHandler = http.get(
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
 );
 
+const passthroughHandlers = [
+  'https://*.googleapis.com/*',
+  'https://*.gstatic.com/*',
+  `${constants.publicUrl}/api/*`,
+  'https://oldschool.runescape.wiki/images/*',
+].map((url) => http.get(url, () => passthrough()));
+
 export const handlers = [
   collectionLogHandler,
   wikiSyncHandler,
   templePlayerStatsHandler,
   memberListHandler,
-  blobsHandler,
   wikiApiHandler,
+  ...passthroughHandlers,
 ];
