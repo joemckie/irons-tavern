@@ -24,8 +24,8 @@ export const MemoisedItem = memo(({ item, acquired }: ItemProps) => (
         name={`items.${stripEntityName(item.name)}`}
       />
     </Table.Cell>
-    <Table.Cell align="right" width="100px">
-      {acquired ? item.points : 0} / {item.points}
+    <Table.Cell aria-label={`${item.name} points`} align="right" width="100px">
+      {`${acquired ? item.points : 0} / ${item.points}`}
     </Table.Cell>
   </Table.Row>
 ));

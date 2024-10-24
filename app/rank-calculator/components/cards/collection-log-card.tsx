@@ -24,7 +24,7 @@ export function CollectionLogCard() {
           </Flex>
         }
         right={
-          <Text weight="bold" size="2">
+          <Text aria-label="Total collection log points" weight="bold" size="2">
             11440
           </Text>
         }
@@ -40,7 +40,7 @@ export function CollectionLogCard() {
           <EditableText name="collectionLogCount" type="number" required />
         }
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="Collection log slot points" color="gray" size="2">
             {collectionLogSlotPoints}
           </Text>
         }
@@ -51,9 +51,20 @@ export function CollectionLogCard() {
             Progress
           </Text>
         }
-        center={<Text size="2">40%</Text>}
+        center={
+          <Text
+            aria-label="Collection log point completion percentage"
+            size="2"
+          >
+            40%
+          </Text>
+        }
         right={
-          <Text color="gray" size="2">
+          <Text
+            aria-label="Collection log points remaining"
+            color="gray"
+            size="2"
+          >
             (30000)
           </Text>
         }

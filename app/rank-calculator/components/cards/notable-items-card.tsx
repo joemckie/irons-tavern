@@ -70,7 +70,7 @@ export function NotableItemsCard() {
           </Flex>
         }
         right={
-          <Text weight="bold" size="2">
+          <Text aria-label="Notable items total points" weight="bold" size="2">
             {pointsAwarded}
           </Text>
         }
@@ -83,7 +83,7 @@ export function NotableItemsCard() {
           </Text>
         }
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="Notable items collected" color="gray" size="2">
             {itemsCollected}
           </Text>
         }
@@ -95,7 +95,11 @@ export function NotableItemsCard() {
           </Text>
         }
         right={
-          <Text color="gray" size="2">
+          <Text
+            aria-label="Total notable items available"
+            color="gray"
+            size="2"
+          >
             {totalItems}
           </Text>
         }
@@ -107,7 +111,11 @@ export function NotableItemsCard() {
           </Text>
         }
         right={
-          <Text color="gray" size="2">
+          <Text
+            aria-label="Notable items collected percentage"
+            color="gray"
+            size="2"
+          >
             {percentageCollected.toFixed(2)}%
           </Text>
         }
@@ -118,9 +126,17 @@ export function NotableItemsCard() {
             Progress
           </Text>
         }
-        center={<Text size="2">{percentagePointsAchieved.toFixed(2)}%</Text>}
+        center={
+          <Text aria-label="Notable items point completion percentage" size="2">
+            {percentagePointsAchieved.toFixed(2)}%
+          </Text>
+        }
         right={
-          <Text color="gray" size="2">
+          <Text
+            aria-label="Notable items points remaining"
+            color="gray"
+            size="2"
+          >
             ({totalPoints - pointsAwarded})
           </Text>
         }

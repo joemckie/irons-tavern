@@ -27,7 +27,7 @@ export function SkillingCard() {
           </Flex>
         }
         right={
-          <Text weight="bold" size="2">
+          <Text aria-label="Total skilling points" weight="bold" size="2">
             65458
           </Text>
         }
@@ -41,7 +41,7 @@ export function SkillingCard() {
         }
         center={<EditableText name="ehp" required type="number" />}
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="EHP points" color="gray" size="2">
             {ehpPoints}
           </Text>
         }
@@ -54,7 +54,7 @@ export function SkillingCard() {
         }
         center={<EditableText name="totalLevel" required type="number" />}
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="Total level points" color="gray" size="2">
             {totalLevelPoints}
           </Text>
         }
@@ -76,7 +76,7 @@ export function SkillingCard() {
             />
           }
           right={
-            <Text color="gray" size="2">
+            <Text aria-label={`${location} diary points`} color="gray" size="2">
               {achievementDiariesPoints[location as DiaryLocation]}
             </Text>
           }
@@ -88,9 +88,13 @@ export function SkillingCard() {
             Progress
           </Text>
         }
-        center={<Text size="2">40%</Text>}
+        center={
+          <Text aria-label="Skilling point completion percentage" size="2">
+            40%
+          </Text>
+        }
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="Skilling points remaining" color="gray" size="2">
             (30000)
           </Text>
         }

@@ -15,7 +15,7 @@ export function PlayerCard() {
           </Text>
         }
         right={
-          <Text weight="bold" size="2">
+          <Text aria-label="Player name" weight="bold" size="2">
             {playerName}
           </Text>
         }
@@ -29,7 +29,7 @@ export function PlayerCard() {
         }
         center={<DatePicker name="joinDate" placeholderText="dd-mm-yyyy" />}
         right={
-          <Text size="2" color="gray">
+          <Text aria-label="Point scaling" size="2" color="gray">
             100%
           </Text>
         }

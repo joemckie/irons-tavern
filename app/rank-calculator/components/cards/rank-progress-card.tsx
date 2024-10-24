@@ -11,13 +11,13 @@ export function RankProgressCard() {
         <Flex direction="column" gap="3">
           <DataCard.Row
             left={
-              <Text color="gray" size="2">
+              <Text aria-label="Total points" color="gray" size="2">
                 175000
               </Text>
             }
             center={<Text weight="bold">Rank</Text>}
             right={
-              <Text color="gray" size="2">
+              <Text aria-label="Points to next rank" color="gray" size="2">
                 (25000)
               </Text>
             }
@@ -25,7 +25,7 @@ export function RankProgressCard() {
           <Progress size="3" value={75} />
           <Flex justify="between">
             <Flex gap="2">
-              <Text color="gray" size="2">
+              <Text aria-label="Current rank" color="gray" size="2">
                 Warlock
               </Text>
               <Image
@@ -42,7 +42,7 @@ export function RankProgressCard() {
                 height={22}
                 width={22}
               />
-              <Text color="gray" size="2">
+              <Text aria-label="Next rank" color="gray" size="2">
                 Dragonstone
               </Text>
             </Flex>

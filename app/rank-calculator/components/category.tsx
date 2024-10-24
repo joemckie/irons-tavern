@@ -25,7 +25,7 @@ export const Category = memo(
     return (
       <Card my="3">
         <Flex justify="between" align="center">
-          <Flex gap="3">
+          <Flex align="center" gap="3">
             <EntityImage
               alt={`${title} icon`}
               src={image}
@@ -33,15 +33,20 @@ export const Category = memo(
               fallback={parseInitials(title)}
             />
             <Box>
-              <Text as="div" size="2" weight="bold">
-                {title}
-              </Text>
-              <Text as="div" size="2" color="gray">
-                {completedCount} / {items.length}
-              </Text>
+              <Box>
+                <Text size="2" weight="bold">
+                  {title}
+                </Text>
+              </Box>
+              <Box>
+                <Text aria-label={`${title} item count`} size="2" color="gray">
+                  {`${completedCount} / ${items.length}`}
+                </Text>
+              </Box>
             </Box>
           </Flex>
           <Text
+            aria-label={`${title} percentage complete`}
             color={percentComplete === '100' ? 'green' : undefined}
             weight="bold"
             size="4"

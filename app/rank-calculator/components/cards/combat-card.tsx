@@ -26,7 +26,7 @@ export function CombatCard() {
           </Flex>
         }
         right={
-          <Text weight="bold" size="2">
+          <Text aria-label="Total combat points" weight="bold" size="2">
             25240
           </Text>
         }
@@ -40,7 +40,7 @@ export function CombatCard() {
         }
         center={<EditableText name="ehb" type="number" />}
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="EHB points" color="gray" size="2">
             {ehbPoints}
           </Text>
         }
@@ -60,7 +60,7 @@ export function CombatCard() {
           />
         }
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="CA tier points" color="gray" size="2">
             {caTierPoints}
           </Text>
         }
@@ -71,9 +71,13 @@ export function CombatCard() {
             Progress
           </Text>
         }
-        center={<Text size="2">40%</Text>}
+        center={
+          <Text aria-label="Combat point completion percentage" size="2">
+            40%
+          </Text>
+        }
         right={
-          <Text color="gray" size="2">
+          <Text aria-label="Combat points remaining" color="gray" size="2">
             (30000)
           </Text>
         }
