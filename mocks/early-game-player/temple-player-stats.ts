@@ -114,7 +114,7 @@ export const templePlayerStatsResponse = {
     Construction_ehp: 13.183943333333334,
     Ehp: 160.9449,
     Ehp_rank: 100000,
-    Im_ehp: 366.7889,
+    Im_ehp: 367.7889,
     Lvl3_ehp: 0,
     F2p_ehp: 0,
     Uim_ehp: 0,

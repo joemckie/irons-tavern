@@ -3,7 +3,31 @@ describe('New clan joiner', () => {
 });
 
 describe('Early-game player', () => {
-  it.skip('calculates the correct points');
+  it('calculates the correct points', () => {
+    cy.visit('/rank-calculator/riftletics');
+
+    cy.findByLabelText(/^notable items total points$/i).should(
+      'have.text',
+      '520',
+    );
+    cy.findByLabelText(/^notable items collected$/i).should('have.text', '5');
+    cy.findByLabelText(/^total notable items available$/i).should(
+      'have.text',
+      '295',
+    );
+    cy.findByLabelText(/^notable items collected percentage$/i).should(
+      'have.text',
+      '1.69%',
+    );
+    cy.findByLabelText(/^notable items point completion percentage$/i).should(
+      'have.text',
+      '0.95%',
+    );
+    cy.findByLabelText(/^notable items points remaining$/i).should(
+      'have.text',
+      '(54320)',
+    );
+  });
 });
 
 describe('Mid-game player', () => {
