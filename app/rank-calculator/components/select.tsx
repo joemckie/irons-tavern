@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Select as BaseSelect,
   Box,
@@ -18,6 +16,10 @@ interface SelectProps extends BaseSelect.RootProps {
 
 export function Select({ options, placeholder, ...props }: SelectProps) {
   const { field } = useController({ name: props.name });
+  const portalElement =
+    typeof document !== 'undefined'
+      ? document.getElementById('theme-root')
+      : null;
 
   return (
     <Ariakit.SelectProvider setValue={field.onChange} value={field.value}>
@@ -28,7 +30,7 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
         gutter={4}
         className="rt-PopoverContent rt-SelectContent rt-r-size-1"
         portal
-        portalElement={document.getElementById('theme-root')}
+        portalElement={portalElement}
       >
         {options.map((option) => (
           <Ariakit.SelectItem

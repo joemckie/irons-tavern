@@ -1,10 +1,7 @@
-import { lazy, Suspense } from 'react';
-import { Box, Flex, ScrollArea, Spinner, Text } from '@radix-ui/themes';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import { Box, Flex, ScrollArea } from '@radix-ui/themes';
 import { useGetItems } from '../hooks/use-get-items';
 import { usePageLayout } from '../hooks/use-page-layout';
-
-const Category = lazy(() => import('./category'));
+import { Category } from './category';
 
 export function ItemList() {
   const { data: categories } = useGetItems();
@@ -12,32 +9,13 @@ export function ItemList() {
 
   return (
     <Flex gridArea="main" height={mainHeightCss}>
-      <Suspense
-        fallback={
-          <Flex
-            direction="column"
-            align="center"
-            justify="center"
-            flexGrow="1"
-            gap="3"
-          >
-            <Spinner size="3" />
-            <Text>Loading...</Text>
-          </Flex>
-        }
-      >
-        <AutoSizer>
-          {({ height, width }) => (
-            <ScrollArea style={{ height, width }}>
-              {categories.map(([title, category]) => (
-                <Box key={title} pl="3" pr="4">
-                  <Category items={category.items} title={title} />
-                </Box>
-              ))}
-            </ScrollArea>
-          )}
-        </AutoSizer>
-      </Suspense>
+      <ScrollArea>
+        {categories.map(([title, category]) => (
+          <Box key={title} pl="3" pr="4">
+            <Category items={category.items} title={title} />
+          </Box>
+        ))}
+      </ScrollArea>
     </Flex>
   );
 }

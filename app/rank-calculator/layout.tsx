@@ -1,5 +1,3 @@
-'use client';
-
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren, Suspense } from 'react';
 import { Theme, ThemePanel } from '@radix-ui/themes';

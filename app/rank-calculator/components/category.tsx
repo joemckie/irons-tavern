@@ -82,5 +82,3 @@ export const Category = memo(
 );
 
 Category.displayName = 'Category';
-
-export default Category;

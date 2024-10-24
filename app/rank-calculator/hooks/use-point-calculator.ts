@@ -13,15 +13,15 @@ export function usePointCalculator() {
   });
   const caTier = useWatch<FormData, 'caTier'>({ name: 'caTier' });
 
-  console.log({
-    totalLevel,
-    joinDate,
-    items,
-    ehp,
-    ehb,
-    achievementDiaries,
-    caTier,
-  });
+  // console.log({
+  //   totalLevel,
+  //   joinDate,
+  //   items,
+  //   ehp,
+  //   ehb,
+  //   achievementDiaries,
+  //   caTier,
+  // });
 
   return {
     collectionLogSlotPoints: 0,

@@ -11,7 +11,14 @@ export interface CollectionLogError {
   error: string;
 }
 
+interface CollectionLogKillCount {
+  name: string;
+  amount: number;
+  sequence: number;
+}
+
 interface CollectionLogPage {
+  killCount?: CollectionLogKillCount[];
   items: CollectionLogItem[];
 }
 

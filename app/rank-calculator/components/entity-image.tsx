@@ -1,3 +1,5 @@
+'use client';
+
 import * as Avatar from '@radix-ui/react-avatar';
 import { AvatarProps } from '@radix-ui/themes';
 import Image, { ImageProps } from 'next/image';

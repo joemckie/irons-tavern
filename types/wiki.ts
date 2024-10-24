@@ -43,8 +43,11 @@ export enum HolidayTrack {
 }
 
 export interface WikiSyncResponse {
+  username: string;
+  timestamp: string;
+  league_tasks: unknown[];
   achievement_diaries: Record<DiaryLocation, Record<DiaryTier, DiaryTierData>>;
-  levels: LevelMap & { Overall: number };
+  levels: LevelMap & { Overall?: number };
   music_tracks: Record<string, boolean>;
   quests: Record<Quest | MiniQuest, QuestStatus>;
   combat_achievements: number[];
