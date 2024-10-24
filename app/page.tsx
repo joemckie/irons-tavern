@@ -23,6 +23,10 @@ async function getLatestMemberList() {
   const response = await fetch(url);
   const data: ClanMember[] = await response.json();
 
+  if (!data) {
+    return {};
+  }
+
   return data.reduce(
     (acc, member) => {
       acc[member.rsn.toLowerCase()] = member;
