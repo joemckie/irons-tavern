@@ -128,7 +128,7 @@ function customItem({
   } satisfies CustomItem;
 }
 
-export const itemsResponseFixture: ItemCategoryMap = {
+export const itemList: ItemCategoryMap = {
   'Automatic Items': {
     items: [
       customItem({

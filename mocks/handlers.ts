@@ -1,14 +1,12 @@
 import { constants } from '@/config/constants';
 import { http, HttpResponse } from 'msw';
-import collectionLogFixture from '@/fixtures/collection-log.fixture.json';
-import wikiSyncFixture from '@/fixtures/wikisync.fixture.json';
-import templePlayerStats from '@/fixtures/temple-player-stats.fixture.json';
-import memberListFixture from '@/fixtures/member-list.fixture.json';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
 import * as maxedPlayerFixture from './maxed-player';
+import * as midPlayerFixture from './mid-player';
+import { memberListFixture } from './misc/member-list';
 
 export const handlers = [
   http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
@@ -16,10 +14,13 @@ export const handlers = [
   ),
   http.get(
     `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
-    () => HttpResponse.json<WikiSyncResponse>(wikiSyncFixture),
+    () =>
+      HttpResponse.json<WikiSyncResponse>(midPlayerFixture.wikiSyncResponse),
   ),
   http.get(`${constants.collectionLogBaseUrl}/collectionlog/user/:player`, () =>
-    HttpResponse.json<CollectionLogResponse>(collectionLogFixture),
+    HttpResponse.json<CollectionLogResponse>(
+      midPlayerFixture.collectionLogResponse,
+    ),
   ),
 
   http.get('https://templeosrs.com/api/player_stats.php', ({ request }) => {
@@ -32,7 +33,9 @@ export const handlers = [
           maxedPlayerFixture.templeStatsResponse,
         );
       default:
-        return HttpResponse.json<PlayerStatsResponse>(templePlayerStats);
+        return HttpResponse.json<PlayerStatsResponse>(
+          midPlayerFixture.templeStatsResponse,
+        );
     }
   }),
 

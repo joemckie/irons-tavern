@@ -4,8 +4,8 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import { itemsResponseFixture } from '@/fixtures/items-response.fixture';
 import { PlayerData } from '@/types/rank-calculator';
+import { itemList } from '@/data/item-list';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -102,7 +102,7 @@ export async function GET(
 
     const acquiredItems =
       wikiSyncData || collectionLogData
-        ? Object.values(itemsResponseFixture)
+        ? Object.values(itemList)
             .flatMap(({ items }) => items)
             .filter((item) =>
               isItemAcquired(item, {
