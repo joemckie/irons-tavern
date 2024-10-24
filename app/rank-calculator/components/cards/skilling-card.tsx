@@ -105,7 +105,7 @@ export function SkillingCard() {
           </Text>
         }
       />
-      <Progress size="3" value={40} />
+      <Progress size="3" value={pointsAwardedPercentage} />
     </DataCard.Root>
   );
 }
