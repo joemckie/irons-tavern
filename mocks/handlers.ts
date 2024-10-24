@@ -8,6 +8,8 @@ import * as lateGamePlayerFixture from './late-game-player';
 import * as midGamePlayerFixture from './mid-game-player';
 import * as earlyGamePlayerFixture from './early-game-player';
 import { memberListFixture } from './misc/member-list';
+import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
+import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tiers';
 
 const templePlayerStatsHandler = http.get(
   'https://templeosrs.com/api/player_stats.php',
@@ -72,6 +74,39 @@ const wikiSyncHandler = http.get(
   },
 );
 
+const blobsHandler = http.get('https://blob.vercel-storage.com', () => {
+  console.log('blobs handler');
+  return HttpResponse.json({
+    blobs: [
+      {
+        url: 'https://gahwq1fw7eoa8dzl.public.blob.vercel-storage.com/members-2BrFRcNlSvgbg1JpRpo2TBwbkK5XJc.json',
+        downloadUrl:
+          'https://gahwq1fw7eoa8dzl.public.blob.vercel-storage.com/members-2BrFRcNlSvgbg1JpRpo2TBwbkK5XJc.json?download=1',
+        pathname: 'members.json',
+        size: 30631,
+        uploadedAt: '2024-10-22T20:03:24.000Z',
+      },
+    ],
+  });
+});
+
+const wikiApiHandler = http.get(
+  `${constants.wiki.baseUrl}/api.php`,
+  ({ request }) => {
+    if (request.url.includes('Combat+Achievement+JSON')) {
+      return HttpResponse.json(combatAchievementListFixture);
+    }
+
+    if (request.url.includes('ca+easy+points')) {
+      return HttpResponse.json(combatAchievementTierFixture);
+    }
+
+    return HttpResponse.json(`No mock provided for ${request.url}`, {
+      status: 404,
+    });
+  },
+);
+
 const memberListHandler = http.get(
   'https://*.public.blob.vercel-storage.com/members-*.json',
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
@@ -82,4 +117,6 @@ export const handlers = [
   wikiSyncHandler,
   templePlayerStatsHandler,
   memberListHandler,
+  blobsHandler,
+  wikiApiHandler,
 ];

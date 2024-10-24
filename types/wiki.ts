@@ -66,16 +66,23 @@ export function isWikiSyncError(
 
 export interface CombatAchievementListResponse {
   query: {
+    printrequests: unknown;
     results: Record<
       string,
       {
         printouts: {
-          'Combat Achievement JSON': [string];
+          'Combat Achievement JSON': string[];
         };
         fulltext: string;
         fullurl: string;
+        namespace: number;
+        exists: '1';
+        displaytitle: string;
       }
     >;
+    serializer: string;
+    version: number;
+    meta: unknown;
   };
 }
 

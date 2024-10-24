@@ -48,7 +48,9 @@ export async function getCaIdMap() {
       },
       {},
     );
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return {};
   }
 }
