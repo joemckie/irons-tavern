@@ -1,6 +1,6 @@
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
-export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | null>;
+export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | 'None'>;
 
 export interface PlayerData {
   acquiredItems: string[] | null;
@@ -19,7 +19,7 @@ export interface FormData {
   collectionLogCount: number;
   playerName: string;
   items: Record<string, boolean>;
-  caTier: CombatAchievementTier | null;
+  caTier: CombatAchievementTier | 'None';
   ehb: number;
   ehp: number;
   joinDate: Date | null;

@@ -15,7 +15,9 @@ export function parseAchievementDiaries(
       ] satisfies [DiaryTier, DiaryTierData][];
 
       orderedTiers.forEach(([tierName, tierData]) => {
-        if (tierData.complete) {
+        // WikiSync isn't 100% reliable with the "complete" field
+        // Sometimes it's false when all tasks are marked as completed and vice versa
+        if (tierData.complete || tierData.tasks.every(Boolean)) {
           acc[diaryLocation as DiaryLocation] = tierName;
         }
       });
@@ -23,18 +25,18 @@ export function parseAchievementDiaries(
       return acc;
     },
     {
-      Ardougne: null,
-      Desert: null,
-      Falador: null,
-      Fremennik: null,
-      Kandarin: null,
-      Karamja: null,
-      'Kourend & Kebos': null,
-      'Lumbridge & Draynor': null,
-      Morytania: null,
-      Varrock: null,
-      'Western Provinces': null,
-      Wilderness: null,
+      Ardougne: 'None',
+      Desert: 'None',
+      Falador: 'None',
+      Fremennik: 'None',
+      Kandarin: 'None',
+      Karamja: 'None',
+      'Kourend & Kebos': 'None',
+      'Lumbridge & Draynor': 'None',
+      Morytania: 'None',
+      Varrock: 'None',
+      'Western Provinces': 'None',
+      Wilderness: 'None',
     } satisfies AchievementDiaryMap,
   );
 }

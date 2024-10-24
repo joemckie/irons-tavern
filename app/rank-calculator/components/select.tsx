@@ -22,7 +22,7 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
       : null;
 
   return (
-    <Ariakit.SelectProvider setValue={field.onChange} value={field.value}>
+    <Ariakit.SelectProvider setValue={field.onChange} value={field.value ?? ''}>
       <Button asChild variant="ghost" className="rt-SelectTrigger">
         <Ariakit.Select {...field} />
       </Button>
@@ -32,6 +32,11 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
         portal
         portalElement={portalElement}
       >
+        {placeholder && (
+          <Ariakit.SelectItem className="rt-SelectItem" disabled>
+            <Text>{placeholder}</Text>
+          </Ariakit.SelectItem>
+        )}
         {options.map((option) => (
           <Ariakit.SelectItem
             key={option}

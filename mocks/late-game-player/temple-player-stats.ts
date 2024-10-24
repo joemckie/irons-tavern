@@ -1,6 +1,6 @@
 import { PlayerStatsResponse } from '@/types/temple-api';
 
-export const templeStatsResponse = {
+export const templePlayerStatsResponse = {
   data: {
     info: {
       Username: 'Clogging',

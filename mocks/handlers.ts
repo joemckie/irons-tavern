@@ -6,54 +6,80 @@ import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
 import * as lateGamePlayerFixture from './late-game-player';
 import * as midGamePlayerFixture from './mid-game-player';
+import * as earlyGamePlayerFixture from './early-game-player';
 import { memberListFixture } from './misc/member-list';
 
-export const handlers = [
-  http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
-    HttpResponse.json<ClanMember[]>(memberListFixture as ClanMember[]),
-  ),
-  http.get(
-    `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
-    () =>
-      HttpResponse.json<WikiSyncResponse>(
-        midGamePlayerFixture.wikiSyncResponse,
-      ),
-  ),
-  http.get(`${constants.collectionLogBaseUrl}/collectionlog/user/:player`, () =>
-    HttpResponse.json<CollectionLogResponse>(
-      midGamePlayerFixture.collectionLogResponse,
-    ),
-  ),
-
-  http.get('https://templeosrs.com/api/player_stats.php', ({ request }) => {
+const templePlayerStatsHandler = http.get(
+  'https://templeosrs.com/api/player_stats.php',
+  ({ request }) => {
     const url = new URL(request.url);
     const player = url.searchParams.get('player');
 
     switch (player?.toLowerCase()) {
+      case 'riftletics':
+        return HttpResponse.json<PlayerStatsResponse>(
+          earlyGamePlayerFixture.templePlayerStatsResponse,
+        );
       case 'clogging':
         return HttpResponse.json<PlayerStatsResponse>(
-          lateGamePlayerFixture.templeStatsResponse,
+          lateGamePlayerFixture.templePlayerStatsResponse,
         );
       default:
         return HttpResponse.json<PlayerStatsResponse>(
-          midGamePlayerFixture.templeStatsResponse,
+          midGamePlayerFixture.templePlayerStatsResponse,
         );
     }
-  }),
+  },
+);
 
-  // Maxed player fixtures
-  http.get(
-    `${constants.wikiSync.baseUrl}/runelite/player/clogging/STANDARD`,
-    () =>
-      HttpResponse.json<WikiSyncResponse>(
-        lateGamePlayerFixture.wikiSyncResponse,
-      ),
-  ),
-  http.get(
-    `${constants.collectionLogBaseUrl}/collectionlog/user/clogging`,
-    () =>
-      HttpResponse.json<CollectionLogResponse>(
-        lateGamePlayerFixture.collectionLogResponse,
-      ),
-  ),
+const collectionLogHandler = http.get(
+  `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
+  ({ params }: { params: { player: string } }) => {
+    switch (params.player.toLowerCase()) {
+      case 'riftletics':
+        return HttpResponse.json<CollectionLogResponse>(
+          earlyGamePlayerFixture.collectionLogResponse,
+        );
+      case 'clogging':
+        return HttpResponse.json<CollectionLogResponse>(
+          lateGamePlayerFixture.collectionLogResponse,
+        );
+      default:
+        return HttpResponse.json<CollectionLogResponse>(
+          midGamePlayerFixture.collectionLogResponse,
+        );
+    }
+  },
+);
+
+const wikiSyncHandler = http.get(
+  `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
+  ({ params }: { params: { player: string } }) => {
+    switch (params.player.toLowerCase()) {
+      case 'riftletics':
+        return HttpResponse.json<WikiSyncResponse>(
+          earlyGamePlayerFixture.wikiSyncResponse,
+        );
+      case 'clogging':
+        return HttpResponse.json<WikiSyncResponse>(
+          lateGamePlayerFixture.wikiSyncResponse,
+        );
+      default:
+        return HttpResponse.json<WikiSyncResponse>(
+          midGamePlayerFixture.wikiSyncResponse,
+        );
+    }
+  },
+);
+
+const memberListHandler = http.get(
+  'https://*.public.blob.vercel-storage.com/members-*.json',
+  () => HttpResponse.json<ClanMember[]>(memberListFixture),
+);
+
+export const handlers = [
+  collectionLogHandler,
+  wikiSyncHandler,
+  templePlayerStatsHandler,
+  memberListHandler,
 ];

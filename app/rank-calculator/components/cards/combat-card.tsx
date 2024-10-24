@@ -62,7 +62,7 @@ export function CombatCard() {
             name="caTier"
             placeholder="Choose a tier"
             size="1"
-            options={Object.values(CombatAchievementTier)}
+            options={['None', ...Object.values(CombatAchievementTier)]}
           />
         }
         right={
