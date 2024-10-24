@@ -4,11 +4,17 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
-import { usePointCalculator } from '../../hooks/use-point-calculator';
+import { useSkillingPointCalculator } from '../../hooks/point-calculator/use-skilling-point-calculator';
 
 export function SkillingCard() {
-  const { ehpPoints, totalLevelPoints, achievementDiariesPoints } =
-    usePointCalculator();
+  const {
+    availablePoints,
+    pointsAwarded,
+    pointsAwardedPercentage,
+    totalLevelPoints,
+    achievementDiariesPoints,
+    ehpPoints,
+  } = useSkillingPointCalculator();
 
   return (
     <DataCard.Root>
@@ -28,7 +34,7 @@ export function SkillingCard() {
         }
         right={
           <Text aria-label="Total skilling points" weight="bold" size="2">
-            65458
+            {pointsAwarded}
           </Text>
         }
       />
@@ -90,12 +96,12 @@ export function SkillingCard() {
         }
         center={
           <Text aria-label="Skilling point completion percentage" size="2">
-            40%
+            {pointsAwardedPercentage.toFixed(2)}%
           </Text>
         }
         right={
           <Text aria-label="Skilling points remaining" color="gray" size="2">
-            (30000)
+            ({availablePoints - pointsAwarded})
           </Text>
         }
       />

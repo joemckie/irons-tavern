@@ -2,10 +2,15 @@ import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
-import { usePointCalculator } from '../../hooks/use-point-calculator';
+import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/use-collection-log-point-calculator';
 
 export function CollectionLogCard() {
-  const { collectionLogSlotPoints } = usePointCalculator();
+  const {
+    availablePoints,
+    pointsAwarded,
+    pointsAwardedPercentage,
+    collectionLogSlotPoints,
+  } = useCollectionLogPointCalculator();
 
   return (
     <DataCard.Root>
@@ -25,7 +30,7 @@ export function CollectionLogCard() {
         }
         right={
           <Text aria-label="Total collection log points" weight="bold" size="2">
-            11440
+            {pointsAwarded}
           </Text>
         }
       />
@@ -56,7 +61,7 @@ export function CollectionLogCard() {
             aria-label="Collection log point completion percentage"
             size="2"
           >
-            40%
+            {pointsAwardedPercentage.toFixed(2)}%
           </Text>
         }
         right={
@@ -65,11 +70,11 @@ export function CollectionLogCard() {
             color="gray"
             size="2"
           >
-            (30000)
+            ({availablePoints - pointsAwarded})
           </Text>
         }
       />
-      <Progress size="3" value={40} />
+      <Progress size="3" value={pointsAwardedPercentage} />
     </DataCard.Root>
   );
 }

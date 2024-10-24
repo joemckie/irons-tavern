@@ -36,3 +36,10 @@ export enum RankStructure {
   DeputyOwner = 'Deputy Owner',
   Owner = 'Owner',
 }
+
+export interface CategoryPointCalculatorData {
+  [key: string]: unknown;
+  availablePoints: number;
+  pointsAwarded: number;
+  pointsAwardedPercentage: number;
+}

@@ -3,8 +3,17 @@ import { RankStructure } from '@/types/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
+import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calculator';
 
 export function RankProgressCard() {
+  const {
+    availablePoints,
+    pointsAwarded,
+    pointsAwardedPercentage,
+    nextRank,
+    rank,
+  } = useRankCalculator();
+
   return (
     <Box>
       <Card>
@@ -12,38 +21,38 @@ export function RankProgressCard() {
           <DataCard.Row
             left={
               <Text aria-label="Total points" color="gray" size="2">
-                175000
+                {pointsAwarded}
               </Text>
             }
             center={<Text weight="bold">Rank</Text>}
             right={
               <Text aria-label="Points to next rank" color="gray" size="2">
-                (25000)
+                ({availablePoints})
               </Text>
             }
           />
-          <Progress size="3" value={75} />
+          <Progress size="3" value={pointsAwardedPercentage} />
           <Flex justify="between">
             <Flex gap="2">
               <Text aria-label="Current rank" color="gray" size="2">
-                Warlock
+                {rank}
               </Text>
               <Image
-                alt="Warlock icon"
-                src="/icons/warlock.png"
+                alt={`${rank} icon`}
+                src={`/icons/${rank.toLowerCase()}.png`}
                 width={22}
                 height={22}
               />
             </Flex>
             <Flex gap="2">
               <Image
-                alt="Draconic icon"
-                src="/icons/dragonstone.png"
+                alt={`${nextRank} icon`}
+                src={`/icons/${nextRank.toLowerCase()}.png`}
                 height={22}
                 width={22}
               />
               <Text aria-label="Next rank" color="gray" size="2">
-                Dragonstone
+                {nextRank}
               </Text>
             </Flex>
           </Flex>

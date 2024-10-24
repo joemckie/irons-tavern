@@ -4,10 +4,16 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
-import { usePointCalculator } from '../../hooks/use-point-calculator';
+import { useCombatPointCalculator } from '../../hooks/point-calculator/use-combat-point-calculator';
 
 export function CombatCard() {
-  const { ehbPoints, caTierPoints } = usePointCalculator();
+  const {
+    availablePoints,
+    pointsAwarded,
+    pointsAwardedPercentage,
+    caTierPoints,
+    ehbPoints,
+  } = useCombatPointCalculator();
 
   return (
     <DataCard.Root>
@@ -27,7 +33,7 @@ export function CombatCard() {
         }
         right={
           <Text aria-label="Total combat points" weight="bold" size="2">
-            25240
+            {pointsAwarded}
           </Text>
         }
       />
@@ -73,16 +79,16 @@ export function CombatCard() {
         }
         center={
           <Text aria-label="Combat point completion percentage" size="2">
-            40%
+            {pointsAwardedPercentage.toFixed(2)}%
           </Text>
         }
         right={
           <Text aria-label="Combat points remaining" color="gray" size="2">
-            (30000)
+            ({availablePoints - pointsAwarded})
           </Text>
         }
       />
-      <Progress size="3" value={40} />
+      <Progress size="3" value={pointsAwardedPercentage} />
     </DataCard.Root>
   );
 }
