@@ -11,7 +11,7 @@ import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
-import { getJoinedDate } from './utils/get-joined-date';
+import { getPlayerMeta } from './utils/get-player-meta';
 import { parseLevels } from './utils/parse-levels';
 import { getTempleData } from './utils/get-temple-data';
 
@@ -25,6 +25,7 @@ const emptyResponse = {
   ehb: null,
   ehp: null,
   totalLevel: null,
+  playerName: null,
 } satisfies PlayerData;
 
 export async function GET(
@@ -116,7 +117,7 @@ export async function GET(
             .map(({ name }) => name)
         : [];
 
-    const joinDate = await getJoinedDate(player);
+    const playerMeta = await getPlayerMeta(player);
 
     return NextResponse.json<PlayerData>({
       acquiredItems,
@@ -124,10 +125,11 @@ export async function GET(
       combatAchievementTier,
       collectionLogCount,
       collectionLogTotal,
-      joinDate,
+      joinDate: playerMeta?.joinDate ?? null,
       ehb: ehb ? Math.round(ehb) : null,
       ehp: ehp ? Math.round(ehp) : null,
       totalLevel,
+      playerName: playerMeta?.rsn ?? player,
     });
   } catch (error) {
     console.error(error);

@@ -2,7 +2,7 @@ import { list } from '@vercel/blob';
 import { parse } from 'date-fns';
 import { ClanMember } from '../../update-member-list/route';
 
-export async function getJoinedDate(player: string) {
+export async function getPlayerMeta(player: string) {
   const blobList = await list();
   const [{ url }] = blobList.blobs.sort(
     (a, b) => +b.uploadedAt - +a.uploadedAt,
@@ -12,11 +12,18 @@ export async function getJoinedDate(player: string) {
     const response = await fetch(url);
     const data: ClanMember[] = await response.json();
 
-    const joinDate = data?.find(
+    const playerMeta = data?.find(
       ({ rsn }) => rsn.toLowerCase() === player.toLowerCase(),
-    )?.joinedDate;
+    );
 
-    return joinDate ? parse(joinDate, 'dd-MM-yyyy', new Date()) : null;
+    const joinDate = playerMeta?.joinedDate
+      ? parse(playerMeta.joinedDate, 'dd-MMM-yyyy', new Date())
+      : null;
+
+    return {
+      joinDate,
+      rsn: playerMeta?.rsn ?? player,
+    };
   } catch (e) {
     console.error(e);
 

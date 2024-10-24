@@ -12,6 +12,7 @@ export interface PlayerData {
   ehp: number | null;
   ehb: number | null;
   totalLevel: number | null;
+  playerName: string | null;
 }
 
 export interface FormData {
