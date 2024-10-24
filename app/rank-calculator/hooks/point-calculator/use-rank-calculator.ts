@@ -1,3 +1,4 @@
+import { Rank } from '@/config/enums';
 import { CategoryPointCalculatorData } from '@/types/rank-calculator';
 
 export function useRankCalculator() {
@@ -5,7 +6,7 @@ export function useRankCalculator() {
     pointsAwarded: 0,
     pointsAwardedPercentage: 0,
     availablePoints: 0,
-    rank: 'Warlock',
-    nextRank: 'Dragonstone',
+    rank: Rank.Air,
+    nextRank: Rank.Pine,
   } satisfies CategoryPointCalculatorData;
 }
