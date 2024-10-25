@@ -8,9 +8,9 @@ import { useSkillingPointCalculator } from '../../hooks/point-calculator/use-ski
 
 export function SkillingCard() {
   const {
-    availablePoints,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining,
     totalLevelPoints,
     achievementDiariesPoints,
     ehpPoints,
@@ -101,7 +101,7 @@ export function SkillingCard() {
         }
         right={
           <Text aria-label="Skilling points remaining" color="gray" size="2">
-            ({availablePoints - pointsAwarded})
+            ({pointsRemaining})
           </Text>
         }
       />

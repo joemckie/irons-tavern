@@ -5,11 +5,11 @@ import { useNotableItemsPointCalculator } from '../../hooks/point-calculator/use
 
 export function NotableItemsCard() {
   const {
-    percentageCollected,
-    availablePoints,
-    itemsCollected,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining,
+    percentageCollected,
+    itemsCollected,
     totalItems,
   } = useNotableItemsPointCalculator();
 
@@ -97,7 +97,7 @@ export function NotableItemsCard() {
             color="gray"
             size="2"
           >
-            ({availablePoints - pointsAwarded})
+            ({pointsRemaining})
           </Text>
         }
       />

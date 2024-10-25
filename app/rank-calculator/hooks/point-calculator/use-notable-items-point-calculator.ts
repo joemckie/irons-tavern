@@ -52,9 +52,9 @@ export function useNotableItemsPointCalculator() {
   const pointsAwardedPercentage = (pointsAwarded / availablePoints) * 100;
 
   return {
-    availablePoints,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining: availablePoints - pointsAwarded,
     percentageCollected,
     itemsCollected,
     totalItems,

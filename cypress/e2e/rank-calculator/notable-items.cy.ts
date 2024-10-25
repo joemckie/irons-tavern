@@ -1,63 +1,124 @@
-describe('New clan joiner', () => {
-  it.skip('calculates the correct points');
-});
+import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
 
 describe('Early-game player', () => {
-  it('calculates the correct points', () => {
-    cy.visit('/rank-calculator/riftletics');
+  const testCases = [
+    ['100% scaling', notableItemsExpectedValues.earlyGamePlayer.fullScaling],
+  ] as const;
 
-    cy.findByLabelText(/^notable items total points$/i).should(
-      'have.text',
-      '520',
-    );
-    cy.findByLabelText(/^notable items collected$/i).should('have.text', '5');
-    cy.findByLabelText(/^total notable items available$/i).should(
-      'have.text',
-      '295',
-    );
-    cy.findByLabelText(/^notable items collected percentage$/i).should(
-      'have.text',
-      '1.69%',
-    );
-    cy.findByLabelText(/^notable items point completion percentage$/i).should(
-      'have.text',
-      '0.95%',
-    );
-    cy.findByLabelText(/^notable items points remaining$/i).should(
-      'have.text',
-      '(54320)',
-    );
+  testCases.forEach(([label, fixture]) => {
+    it(`calculates the correct points - ${label}`, () => {
+      cy.visit('/rank-calculator/riftletics');
+
+      cy.findByLabelText(/^notable items total points$/i).should(
+        'have.text',
+        `${fixture.pointsAwarded}`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        `${fixture.pointsAwardedPercentage}%`,
+      );
+
+      cy.findByLabelText(/^notable items points remaining$/i).should(
+        'have.text',
+        `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items collected$/i).should('have.text', '5');
+
+      cy.findByLabelText(/^total notable items available$/i).should(
+        'have.text',
+        '295',
+      );
+
+      cy.findByLabelText(/^notable items collected percentage$/i).should(
+        'have.text',
+        '1.69%',
+      );
+    });
   });
 });
 
 describe('Mid-game player', () => {
-  it('calculates the correct points', () => {
-    cy.visit('/rank-calculator/cousinofkos');
+  const testCases = [
+    ['100% scaling', notableItemsExpectedValues.midGamePlayer.fullScaling],
+  ] as const;
 
-    cy.findByLabelText(/^notable items total points$/i).should(
-      'have.text',
-      '5290',
-    );
-    cy.findByLabelText(/^notable items collected$/i).should('have.text', '99');
-    cy.findByLabelText(/^total notable items available$/i).should(
-      'have.text',
-      '295',
-    );
-    cy.findByLabelText(/^notable items collected percentage$/i).should(
-      'have.text',
-      '33.56%',
-    );
-    cy.findByLabelText(/^notable items point completion percentage$/i).should(
-      'have.text',
-      '9.65%',
-    );
-    cy.findByLabelText(/^notable items points remaining$/i).should(
-      'have.text',
-      '(49550)',
-    );
+  testCases.forEach(([label, fixture]) => {
+    it(`calculates the correct points - ${label}`, () => {
+      cy.visit('/rank-calculator/cousinofkos');
+
+      cy.findByLabelText(/^notable items total points$/i).should(
+        'have.text',
+        `${fixture.pointsAwarded}`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        `${fixture.pointsAwardedPercentage}%`,
+      );
+
+      cy.findByLabelText(/^notable items points remaining$/i).should(
+        'have.text',
+        `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items collected$/i).should(
+        'have.text',
+        '99',
+      );
+
+      cy.findByLabelText(/^total notable items available$/i).should(
+        'have.text',
+        '295',
+      );
+
+      cy.findByLabelText(/^notable items collected percentage$/i).should(
+        'have.text',
+        '33.56%',
+      );
+    });
   });
 });
 
 describe('End-game player', () => {
-  it.skip('calculates the correct points');
+  const testCases = [
+    ['100% scaling', notableItemsExpectedValues.endGamePlayer.fullScaling],
+  ] as const;
+
+  testCases.forEach(([label, fixture]) => {
+    it(`calculates the correct points - ${label}`, () => {
+      cy.visit('/rank-calculator/clogging');
+
+      cy.findByLabelText(/^notable items total points$/i).should(
+        'have.text',
+        `${fixture.pointsAwarded}`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        `${fixture.pointsAwardedPercentage}%`,
+      );
+
+      cy.findByLabelText(/^notable items points remaining$/i).should(
+        'have.text',
+        `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items collected$/i).should(
+        'have.text',
+        '212',
+      );
+
+      cy.findByLabelText(/^total notable items available$/i).should(
+        'have.text',
+        '295',
+      );
+
+      cy.findByLabelText(/^notable items collected percentage$/i).should(
+        'have.text',
+        '71.86%',
+      );
+    });
+  });
 });

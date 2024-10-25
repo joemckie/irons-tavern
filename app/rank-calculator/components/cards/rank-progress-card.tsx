@@ -7,9 +7,9 @@ import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calcula
 
 export function RankProgressCard() {
   const {
-    availablePoints,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining,
     nextRank,
     rank,
   } = useRankCalculator();
@@ -27,7 +27,7 @@ export function RankProgressCard() {
             center={<Text weight="bold">Rank</Text>}
             right={
               <Text aria-label="Points to next rank" color="gray" size="2">
-                ({availablePoints})
+                ({pointsRemaining})
               </Text>
             }
           />

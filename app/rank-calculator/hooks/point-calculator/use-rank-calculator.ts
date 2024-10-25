@@ -5,7 +5,7 @@ export function useRankCalculator() {
   return {
     pointsAwarded: 0,
     pointsAwardedPercentage: 0,
-    availablePoints: 0,
+    pointsRemaining: 0,
     rank: Rank.Air,
     nextRank: Rank.Pine,
   } satisfies CategoryPointCalculatorData;

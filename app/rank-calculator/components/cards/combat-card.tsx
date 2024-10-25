@@ -8,9 +8,9 @@ import { useCombatPointCalculator } from '../../hooks/point-calculator/use-comba
 
 export function CombatCard() {
   const {
-    availablePoints,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining,
     caTierPoints,
     ehbPoints,
   } = useCombatPointCalculator();
@@ -84,7 +84,7 @@ export function CombatCard() {
         }
         right={
           <Text aria-label="Combat points remaining" color="gray" size="2">
-            ({availablePoints - pointsAwarded})
+            ({pointsRemaining})
           </Text>
         }
       />

@@ -42,7 +42,7 @@ export interface FormData {
 
 export interface CategoryPointCalculatorData {
   [key: string]: unknown;
-  availablePoints: number;
   pointsAwarded: number;
   pointsAwardedPercentage: number;
+  pointsRemaining: number;
 }

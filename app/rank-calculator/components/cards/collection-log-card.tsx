@@ -6,9 +6,9 @@ import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/us
 
 export function CollectionLogCard() {
   const {
-    availablePoints,
     pointsAwarded,
     pointsAwardedPercentage,
+    pointsRemaining,
     collectionLogSlotPoints,
   } = useCollectionLogPointCalculator();
 
@@ -70,7 +70,7 @@ export function CollectionLogCard() {
             color="gray"
             size="2"
           >
-            ({availablePoints - pointsAwarded})
+            ({pointsRemaining})
           </Text>
         }
       />
