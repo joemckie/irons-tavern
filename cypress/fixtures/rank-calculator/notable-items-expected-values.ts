@@ -7,12 +7,17 @@ export const notableItemsExpectedValues = {
       pointsAwardedPercentage: 0.95,
       pointsRemaining: 54320,
     },
-    halfScaling: {
+    fourMonthScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,
     },
-    quarterScaling: {
+    twoMonthScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    noScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,
@@ -24,12 +29,17 @@ export const notableItemsExpectedValues = {
       pointsAwardedPercentage: 9.65,
       pointsRemaining: 49550,
     },
-    halfScaling: {
+    fourMonthScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,
     },
-    quarterScaling: {
+    twoMonthScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    noScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,
@@ -41,12 +51,17 @@ export const notableItemsExpectedValues = {
       pointsAwardedPercentage: 60.44,
       pointsRemaining: 21695,
     },
-    halfScaling: {
+    fourMonthScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,
     },
-    quarterScaling: {
+    twoMonthScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    noScaling: {
       pointsAwarded: 0,
       pointsAwardedPercentage: 0,
       pointsRemaining: 0,

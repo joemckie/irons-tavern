@@ -1,12 +1,17 @@
 import { CategoryPointCalculatorData } from '@/types/rank-calculator';
 
 type ScalingFixture = Record<
-  'fullScaling' | 'halfScaling' | 'quarterScaling',
+  'fullScaling' | 'fourMonthScaling' | 'twoMonthScaling' | 'noScaling',
   CategoryPointCalculatorData
 >;
 
 export type ScalingTestMap = [
-  '100% scaling' | '50% scaling' | '25% scaling',
+  (
+    | 'Full scaling (100%)'
+    | 'Four month scaling (70%)'
+    | 'Two month scaling (40%)'
+    | 'No scaling (10%)'
+  ),
   CategoryPointCalculatorData,
 ][];
 

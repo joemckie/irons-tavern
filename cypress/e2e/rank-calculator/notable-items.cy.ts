@@ -3,7 +3,10 @@ import { ScalingTestMap } from '@/cypress/support/types';
 
 describe('Early-game player', () => {
   const testCases = [
-    ['100% scaling', notableItemsExpectedValues.earlyGamePlayer.fullScaling],
+    [
+      'Full scaling (100%)',
+      notableItemsExpectedValues.earlyGamePlayer.fullScaling,
+    ],
   ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
@@ -42,7 +45,10 @@ describe('Early-game player', () => {
 
 describe('Mid-game player', () => {
   const testCases = [
-    ['100% scaling', notableItemsExpectedValues.midGamePlayer.fullScaling],
+    [
+      'Full scaling (100%)',
+      notableItemsExpectedValues.midGamePlayer.fullScaling,
+    ],
   ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
@@ -84,7 +90,10 @@ describe('Mid-game player', () => {
 
 describe('End-game player', () => {
   const testCases = [
-    ['100% scaling', notableItemsExpectedValues.endGamePlayer.fullScaling],
+    [
+      'Full scaling (100%)',
+      notableItemsExpectedValues.endGamePlayer.fullScaling,
+    ],
   ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
