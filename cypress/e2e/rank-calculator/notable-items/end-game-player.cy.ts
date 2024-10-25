@@ -18,7 +18,7 @@ describe('Notable items - End-game player', () => {
 
       cy.findByLabelText(/^notable items point completion percentage$/i).should(
         'have.text',
-        '60.44%',
+        `${fixture.pointsAwardedPercentage}%`,
       );
 
       cy.findByLabelText(/^notable items collected$/i).should(

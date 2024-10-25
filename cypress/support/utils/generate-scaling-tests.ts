@@ -1,10 +1,11 @@
 import { sub } from 'date-fns';
-import { ScalingFixture, ScalingFixtureMap } from '../types';
+import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { ScalingFixtureMap } from '../types';
 
 export const generateScalingTests = (
   player: string,
   scalingFixtures: ScalingFixtureMap,
-  assertValues: (fixture: ScalingFixture) => void,
+  assertValues: (fixture: CategoryPointCalculatorData) => void,
 ) => {
   it('Calculates the correct points - Full scaling (100%)', () => {
     cy.visit(`/rank-calculator/${player}`);

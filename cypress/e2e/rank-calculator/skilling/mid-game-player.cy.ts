@@ -1,10 +1,10 @@
 import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
-describe('Notable items - Early-game player', () => {
+describe('Skilling - Mid-game player', () => {
   generateScalingTests(
-    'riftletics',
-    notableItemsExpectedValues.earlyGamePlayer,
+    'cousinofkos',
+    notableItemsExpectedValues.midGamePlayer,
     (fixture) => {
       cy.findByLabelText(/^notable items total points$/i).should(
         'have.text',
@@ -18,10 +18,13 @@ describe('Notable items - Early-game player', () => {
 
       cy.findByLabelText(/^notable items point completion percentage$/i).should(
         'have.text',
-        `${fixture.pointsAwardedPercentage}%`,
+        '9.65%',
       );
 
-      cy.findByLabelText(/^notable items collected$/i).should('have.text', '5');
+      cy.findByLabelText(/^notable items collected$/i).should(
+        'have.text',
+        '99',
+      );
 
       cy.findByLabelText(/^total notable items available$/i).should(
         'have.text',
@@ -30,7 +33,7 @@ describe('Notable items - Early-game player', () => {
 
       cy.findByLabelText(/^notable items collected percentage$/i).should(
         'have.text',
-        '1.69%',
+        '33.56%',
       );
     },
   );
