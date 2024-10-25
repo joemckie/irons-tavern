@@ -1,6 +1,6 @@
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren, Suspense } from 'react';
-import { Theme, ThemePanel } from '@radix-ui/themes';
+import { Flex, Spinner, Text, Theme } from '@radix-ui/themes';
 
 export default function RankCalculatorLayout({ children }: PropsWithChildren) {
   return (
@@ -10,8 +10,22 @@ export default function RankCalculatorLayout({ children }: PropsWithChildren) {
       id="theme-root"
       panelBackground="solid"
     >
-      <Suspense>{children}</Suspense>
-      <ThemePanel defaultOpen={false} />
+      <Suspense
+        fallback={
+          <Flex
+            align="center"
+            justify="center"
+            height="100vh"
+            direction="column"
+            gap="3"
+          >
+            <Spinner size="3" />
+            <Text>Loading...</Text>
+          </Flex>
+        }
+      >
+        {children}
+      </Suspense>
     </Theme>
   );
 }
