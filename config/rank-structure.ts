@@ -1,6 +1,19 @@
 import { RankStructure } from '@/types/rank-calculator';
 import { Rank } from './enums';
 
+type RankStructureConfig = Record<
+  RankStructure,
+  AtLeastOne<
+    Record<
+      Rank,
+      {
+        name: string;
+        threshold: number;
+      }
+    >
+  >
+>;
+
 export const rankStructure = {
   Standard: {
     Air: {
@@ -118,15 +131,4 @@ export const rankStructure = {
       threshold: 0,
     },
   },
-} satisfies Record<
-  RankStructure,
-  AtLeastOne<
-    Record<
-      Rank,
-      {
-        name: string;
-        threshold: number;
-      }
-    >
-  >
->;
+} satisfies RankStructureConfig;
