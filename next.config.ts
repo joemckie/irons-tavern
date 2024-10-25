@@ -1,8 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    instrumentationHook: true,
-  },
+import { NextConfig } from 'next';
+
+export default {
   images: {
     remotePatterns: [
       {
@@ -19,6 +17,12 @@ const nextConfig = {
       },
     ],
   },
-};
-
-export default nextConfig;
+  ...(process.env.NODE_ENV === 'test'
+    ? {
+        logging: false,
+        compiler: {
+          removeConsole: true,
+        },
+      }
+    : {}),
+} satisfies NextConfig;

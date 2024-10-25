@@ -20,21 +20,27 @@ async function getLatestMemberList() {
     (a, b) => +b.uploadedAt - +a.uploadedAt,
   );
 
-  const response = await fetch(url);
-  const data: ClanMember[] = await response.json();
+  try {
+    const response = await fetch(url);
+    const data: ClanMember[] = await response.json();
 
-  if (!data) {
+    if (!data) {
+      return {};
+    }
+
+    return data.reduce(
+      (acc, member) => {
+        acc[member.rsn.toLowerCase()] = member;
+
+        return acc;
+      },
+      {} as Record<string, ClanMember>,
+    );
+  } catch (error) {
+    console.error(error);
+
     return {};
   }
-
-  return data.reduce(
-    (acc, member) => {
-      acc[member.rsn.toLowerCase()] = member;
-
-      return acc;
-    },
-    {} as Record<string, ClanMember>,
-  );
 }
 
 export default async function Home() {

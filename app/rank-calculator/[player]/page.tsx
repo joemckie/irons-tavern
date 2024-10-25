@@ -8,9 +8,10 @@ interface Params {
 export default async function RankCalculatorPage({
   params,
 }: {
-  params: Params;
+  params: Promise<Params>;
 }) {
-  const playerDetails = await getPlayerDetails(params.player);
+  const { player } = await params;
+  const playerDetails = await getPlayerDetails(player);
 
   return <RankCalculator formData={playerDetails} />;
 }
