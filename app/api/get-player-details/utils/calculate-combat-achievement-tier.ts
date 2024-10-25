@@ -8,6 +8,11 @@ export async function calculateCombatAchievementTier(
   try {
     const caIdMap = await getCaIdMap();
     const caTierThresholds = await getCaTierThresholds();
+
+    if (!caIdMap || !caTierThresholds) {
+      return null;
+    }
+
     const totalCaPoints = combatAchievements.reduce(
       (acc, val) => acc + caIdMap[val],
       0,

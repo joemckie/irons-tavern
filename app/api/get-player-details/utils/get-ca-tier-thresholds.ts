@@ -19,27 +19,34 @@ export async function getCaTierThresholds() {
     formatversion: '2',
   }).toString();
 
-  const response = await fetch(
-    `${constants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
-  );
+  try {
+    const response = await fetch(
+      `${constants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
+    );
 
-  const data: { expandtemplates: { wikitext: string } } = await response.json();
+    const data: { expandtemplates: { wikitext: string } } =
+      await response.json();
 
-  const [
-    easyPoints,
-    mediumPoints,
-    hardPoints,
-    elitePoints,
-    masterPoints,
-    gmPoints,
-  ] = data.expandtemplates.wikitext.split('|');
+    const [
+      easyPoints,
+      mediumPoints,
+      hardPoints,
+      elitePoints,
+      masterPoints,
+      gmPoints,
+    ] = data.expandtemplates.wikitext.split('|');
 
-  return {
-    [CombatAchievementTier.Easy]: Number(easyPoints),
-    [CombatAchievementTier.Medium]: Number(mediumPoints),
-    [CombatAchievementTier.Hard]: Number(hardPoints),
-    [CombatAchievementTier.Elite]: Number(elitePoints),
-    [CombatAchievementTier.Master]: Number(masterPoints),
-    [CombatAchievementTier.Grandmaster]: Number(gmPoints),
-  };
+    return {
+      [CombatAchievementTier.Easy]: Number(easyPoints),
+      [CombatAchievementTier.Medium]: Number(mediumPoints),
+      [CombatAchievementTier.Hard]: Number(hardPoints),
+      [CombatAchievementTier.Elite]: Number(elitePoints),
+      [CombatAchievementTier.Master]: Number(masterPoints),
+      [CombatAchievementTier.Grandmaster]: Number(gmPoints),
+    };
+  } catch (error) {
+    console.error(error);
+
+    return null;
+  }
 }

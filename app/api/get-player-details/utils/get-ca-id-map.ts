@@ -51,6 +51,6 @@ export async function getCaIdMap() {
   } catch (error) {
     console.error(error);
 
-    return {};
+    return null;
   }
 }
