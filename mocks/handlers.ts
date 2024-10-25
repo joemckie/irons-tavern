@@ -4,7 +4,7 @@ import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
-import * as lateGamePlayerFixture from './late-game-player';
+import * as endGamePlayerFixture from './end-game-player';
 import * as midGamePlayerFixture from './mid-game-player';
 import * as earlyGamePlayerFixture from './early-game-player';
 import { memberListFixture } from './misc/member-list';
@@ -24,7 +24,7 @@ const templePlayerStatsHandler = http.get(
         );
       case 'clogging':
         return HttpResponse.json<PlayerStatsResponse>(
-          lateGamePlayerFixture.templePlayerStatsResponse,
+          endGamePlayerFixture.templePlayerStatsResponse,
         );
       default:
         return HttpResponse.json<PlayerStatsResponse>(
@@ -44,7 +44,7 @@ const collectionLogHandler = http.get(
         );
       case 'clogging':
         return HttpResponse.json<CollectionLogResponse>(
-          lateGamePlayerFixture.collectionLogResponse,
+          endGamePlayerFixture.collectionLogResponse,
         );
       default:
         return HttpResponse.json<CollectionLogResponse>(
@@ -64,7 +64,7 @@ const wikiSyncHandler = http.get(
         );
       case 'clogging':
         return HttpResponse.json<WikiSyncResponse>(
-          lateGamePlayerFixture.wikiSyncResponse,
+          endGamePlayerFixture.wikiSyncResponse,
         );
       default:
         return HttpResponse.json<WikiSyncResponse>(

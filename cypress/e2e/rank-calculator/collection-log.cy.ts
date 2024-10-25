@@ -10,6 +10,6 @@ describe('Mid-game player', () => {
   it.skip('calculates the correct points');
 });
 
-describe('Late-game player', () => {
+describe('End-game player', () => {
   it.skip('calculates the correct points');
 });
