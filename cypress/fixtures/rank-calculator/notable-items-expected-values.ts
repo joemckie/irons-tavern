@@ -7,6 +7,16 @@ export const notableItemsExpectedValues = {
       pointsAwardedPercentage: 0.95,
       pointsRemaining: 54320,
     },
+    halfScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    quarterScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
   },
   midGamePlayer: {
     fullScaling: {
@@ -14,12 +24,32 @@ export const notableItemsExpectedValues = {
       pointsAwardedPercentage: 9.65,
       pointsRemaining: 49550,
     },
+    halfScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    quarterScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
   },
   endGamePlayer: {
     fullScaling: {
       pointsAwarded: 33145,
       pointsAwardedPercentage: 60.44,
       pointsRemaining: 21695,
+    },
+    halfScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+    },
+    quarterScaling: {
+      pointsAwarded: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
     },
   },
 } satisfies CategoryFixture;

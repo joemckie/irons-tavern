@@ -1,9 +1,10 @@
 import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
+import { ScalingTestMap } from '@/cypress/support/types';
 
 describe('Early-game player', () => {
   const testCases = [
     ['100% scaling', notableItemsExpectedValues.earlyGamePlayer.fullScaling],
-  ] as const;
+  ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
     it(`calculates the correct points - ${label}`, () => {
@@ -42,7 +43,7 @@ describe('Early-game player', () => {
 describe('Mid-game player', () => {
   const testCases = [
     ['100% scaling', notableItemsExpectedValues.midGamePlayer.fullScaling],
-  ] as const;
+  ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
     it(`calculates the correct points - ${label}`, () => {
@@ -84,7 +85,7 @@ describe('Mid-game player', () => {
 describe('End-game player', () => {
   const testCases = [
     ['100% scaling', notableItemsExpectedValues.endGamePlayer.fullScaling],
-  ] as const;
+  ] as ScalingTestMap;
 
   testCases.forEach(([label, fixture]) => {
     it(`calculates the correct points - ${label}`, () => {
