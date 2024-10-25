@@ -6,7 +6,7 @@ describe('Notable items - Early-game player', () => {
     'riftletics',
     notableItemsExpectedValues.earlyGamePlayer,
     (fixture) => {
-      cy.findByLabelText(/^notable items total points$/i).should(
+      cy.findByLabelText(/^total notable items points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
       );

@@ -30,7 +30,7 @@ export function NotableItemsCard() {
           </Flex>
         }
         right={
-          <Text aria-label="Notable items total points" weight="bold" size="2">
+          <Text aria-label="Total notable items points" weight="bold" size="2">
             {pointsAwarded}
           </Text>
         }

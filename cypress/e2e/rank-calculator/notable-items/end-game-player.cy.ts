@@ -6,7 +6,7 @@ describe('Notable items - End-game player', () => {
     'clogging',
     notableItemsExpectedValues.endGamePlayer,
     (fixture) => {
-      cy.findByLabelText(/^notable items total points$/i).should(
+      cy.findByLabelText(/^total notable items points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
       );

@@ -5,7 +5,7 @@ import { ScalingFixtureMap } from '../types';
 export const generateScalingTests = <T extends CommonPointCalculatorData>(
   player: string,
   scalingFixtures: ScalingFixtureMap<T>,
-  assertValues: (fixture: CommonPointCalculatorData) => void,
+  assertValues: (fixture: T) => void,
 ) => {
   it('Calculates the correct points - Full scaling (100%)', () => {
     cy.visit(`/rank-calculator/${player}`);

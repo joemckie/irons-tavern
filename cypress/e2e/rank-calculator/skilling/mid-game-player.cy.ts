@@ -1,39 +1,42 @@
-import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
+import { skillingExpectedValues } from '@/cypress/fixtures/rank-calculator/skilling-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Skilling - Mid-game player', () => {
   generateScalingTests(
     'cousinofkos',
-    notableItemsExpectedValues.midGamePlayer,
+    skillingExpectedValues.midGamePlayer,
     (fixture) => {
-      cy.findByLabelText(/^notable items total points$/i).should(
+      cy.findByLabelText(/^total skilling points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^notable items points remaining$/i).should(
+      cy.findByLabelText(/^ehp points$/i).should(
+        'have.text',
+        `${fixture.ehpPoints}`,
+      );
+
+      cy.findByLabelText(/^total level points$/i).should(
+        'have.text',
+        `${fixture.totalLevelPoints}`,
+      );
+
+      Object.entries(fixture.achievementDiariesPoints).forEach(
+        ([location, points]) => {
+          const matcher = new RegExp(`${location} diary points`, 'i');
+
+          cy.findByLabelText(matcher).should('have.text', `${points}`);
+        },
+      );
+
+      cy.findByLabelText(/^skilling point completion percentage$/i).should(
+        'have.text',
+        fixture.pointsAwardedPercentage,
+      );
+
+      cy.findByLabelText(/^skilling points remaining$/i).should(
         'have.text',
         `(${fixture.pointsRemaining})`,
-      );
-
-      cy.findByLabelText(/^notable items point completion percentage$/i).should(
-        'have.text',
-        '9.65%',
-      );
-
-      cy.findByLabelText(/^notable items collected$/i).should(
-        'have.text',
-        '99',
-      );
-
-      cy.findByLabelText(/^total notable items available$/i).should(
-        'have.text',
-        '295',
-      );
-
-      cy.findByLabelText(/^notable items collected percentage$/i).should(
-        'have.text',
-        '33.56%',
       );
     },
   );
