@@ -1,4 +1,9 @@
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
+
+export interface CollectionLogPointCalculatorData
+  extends CommonPointCalculatorData {
+  collectionLogSlotPoints: number;
+}
 
 export function useCollectionLogPointCalculator() {
   return {
@@ -6,5 +11,5 @@ export function useCollectionLogPointCalculator() {
     pointsAwardedPercentage: 0,
     pointsRemaining: 0,
     collectionLogSlotPoints: 0,
-  } satisfies CategoryPointCalculatorData;
+  } satisfies CollectionLogPointCalculatorData;
 }

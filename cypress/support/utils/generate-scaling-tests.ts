@@ -1,11 +1,11 @@
 import { sub } from 'date-fns';
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import { ScalingFixtureMap } from '../types';
 
-export const generateScalingTests = (
+export const generateScalingTests = <T extends CommonPointCalculatorData>(
   player: string,
-  scalingFixtures: ScalingFixtureMap,
-  assertValues: (fixture: CategoryPointCalculatorData) => void,
+  scalingFixtures: ScalingFixtureMap<T>,
+  assertValues: (fixture: CommonPointCalculatorData) => void,
 ) => {
   it('Calculates the correct points - Full scaling (100%)', () => {
     cy.visit(`/rank-calculator/${player}`);

@@ -1,3 +1,4 @@
+import { NotableItemsPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/use-notable-items-point-calculator';
 import { CategoryFixture } from '@/cypress/support/types';
 
 export const notableItemsExpectedValues = {
@@ -67,4 +68,9 @@ export const notableItemsExpectedValues = {
       pointsRemaining: 2170,
     },
   },
-} satisfies CategoryFixture;
+} satisfies CategoryFixture<
+  Omit<
+    NotableItemsPointCalculatorData,
+    'totalItems' | 'percentageCollected' | 'itemsCollected'
+  >
+>;

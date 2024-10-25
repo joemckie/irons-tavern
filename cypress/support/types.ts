@@ -1,12 +1,12 @@
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
 
-export type ScalingFixtureMap = Record<
+export type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
   'fullScaling' | 'fourMonthScaling' | 'twoMonthScaling' | 'noScaling',
-  CategoryPointCalculatorData
+  T
 >;
 
-export type CategoryFixture = {
-  earlyGamePlayer: ScalingFixtureMap;
-  midGamePlayer: ScalingFixtureMap;
-  endGamePlayer: ScalingFixtureMap;
+export type CategoryFixture<T extends CommonPointCalculatorData> = {
+  earlyGamePlayer: ScalingFixtureMap<T>;
+  midGamePlayer: ScalingFixtureMap<T>;
+  endGamePlayer: ScalingFixtureMap<T>;
 };

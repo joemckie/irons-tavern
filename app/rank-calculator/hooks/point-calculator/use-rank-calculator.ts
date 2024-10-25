@@ -1,5 +1,10 @@
 import { Rank } from '@/config/enums';
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
+
+export interface RankCalculatorData extends CommonPointCalculatorData {
+  rank: Rank;
+  nextRank: Rank;
+}
 
 export function useRankCalculator() {
   return {
@@ -8,5 +13,5 @@ export function useRankCalculator() {
     pointsRemaining: 0,
     rank: Rank.Air,
     nextRank: Rank.Pine,
-  } satisfies CategoryPointCalculatorData;
+  } satisfies RankCalculatorData;
 }

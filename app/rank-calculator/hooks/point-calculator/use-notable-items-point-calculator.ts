@@ -1,6 +1,13 @@
 import { useWatch } from 'react-hook-form';
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import { useGetItems } from '../use-get-items';
+
+export interface NotableItemsPointCalculatorData
+  extends CommonPointCalculatorData {
+  percentageCollected: number;
+  itemsCollected: number;
+  totalItems: number;
+}
 
 export function useNotableItemsPointCalculator() {
   const { data } = useGetItems();
@@ -58,5 +65,5 @@ export function useNotableItemsPointCalculator() {
     percentageCollected,
     itemsCollected,
     totalItems,
-  } satisfies CategoryPointCalculatorData;
+  } satisfies NotableItemsPointCalculatorData;
 }

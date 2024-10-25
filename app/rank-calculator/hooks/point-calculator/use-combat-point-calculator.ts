@@ -1,4 +1,9 @@
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
+
+export interface CombatPointCalculatorData extends CommonPointCalculatorData {
+  caTierPoints: number;
+  ehbPoints: number;
+}
 
 export function useCombatPointCalculator() {
   return {
@@ -7,5 +12,5 @@ export function useCombatPointCalculator() {
     pointsRemaining: 0,
     caTierPoints: 0,
     ehbPoints: 0,
-  } satisfies CategoryPointCalculatorData;
+  } satisfies CombatPointCalculatorData;
 }

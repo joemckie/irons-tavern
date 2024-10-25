@@ -40,8 +40,7 @@ export interface FormData {
   rankStructure: RankStructure;
 }
 
-export interface CategoryPointCalculatorData {
-  [key: string]: unknown;
+export interface CommonPointCalculatorData {
   pointsAwarded: number;
   pointsAwardedPercentage: number;
   pointsRemaining: number;
