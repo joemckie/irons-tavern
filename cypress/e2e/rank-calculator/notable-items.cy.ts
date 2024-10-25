@@ -1,18 +1,11 @@
 import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
-import { ScalingTestMap } from '@/cypress/support/types';
+import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Early-game player', () => {
-  const testCases = [
-    [
-      'Full scaling (100%)',
-      notableItemsExpectedValues.earlyGamePlayer.fullScaling,
-    ],
-  ] as ScalingTestMap;
-
-  testCases.forEach(([label, fixture]) => {
-    it(`calculates the correct points - ${label}`, () => {
-      cy.visit('/rank-calculator/riftletics');
-
+  generateScalingTests(
+    'riftletics',
+    notableItemsExpectedValues.earlyGamePlayer,
+    (fixture) => {
       cy.findByLabelText(/^notable items total points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
@@ -39,22 +32,15 @@ describe('Early-game player', () => {
         'have.text',
         '1.69%',
       );
-    });
-  });
+    },
+  );
 });
 
 describe('Mid-game player', () => {
-  const testCases = [
-    [
-      'Full scaling (100%)',
-      notableItemsExpectedValues.midGamePlayer.fullScaling,
-    ],
-  ] as ScalingTestMap;
-
-  testCases.forEach(([label, fixture]) => {
-    it(`calculates the correct points - ${label}`, () => {
-      cy.visit('/rank-calculator/cousinofkos');
-
+  generateScalingTests(
+    'cousinofkos',
+    notableItemsExpectedValues.midGamePlayer,
+    (fixture) => {
       cy.findByLabelText(/^notable items total points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
@@ -84,22 +70,15 @@ describe('Mid-game player', () => {
         'have.text',
         '33.56%',
       );
-    });
-  });
+    },
+  );
 });
 
 describe('End-game player', () => {
-  const testCases = [
-    [
-      'Full scaling (100%)',
-      notableItemsExpectedValues.endGamePlayer.fullScaling,
-    ],
-  ] as ScalingTestMap;
-
-  testCases.forEach(([label, fixture]) => {
-    it(`calculates the correct points - ${label}`, () => {
-      cy.visit('/rank-calculator/clogging');
-
+  generateScalingTests(
+    'clogging',
+    notableItemsExpectedValues.endGamePlayer,
+    (fixture) => {
       cy.findByLabelText(/^notable items total points$/i).should(
         'have.text',
         `${fixture.pointsAwarded}`,
@@ -129,6 +108,6 @@ describe('End-game player', () => {
         'have.text',
         '71.86%',
       );
-    });
-  });
+    },
+  );
 });

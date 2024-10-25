@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 
 export const Input = forwardRef<HTMLInputElement, TextField.RootProps>(
   ({ children, ...props }, forwardedRef) => (
-    <TextField.Root {...props} ref={forwardedRef}>
+    <TextField.Root {...props} ref={forwardedRef} role="textbox">
       {children}
     </TextField.Root>
   ),

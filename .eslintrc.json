@@ -39,6 +39,12 @@
       {
         "devDependencies": ["cypress.config.ts", "cypress/**"]
       }
+    ],
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "assert": "htmlFor"
+      }
     ]
   }
 }

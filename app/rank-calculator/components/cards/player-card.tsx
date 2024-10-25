@@ -26,10 +26,16 @@ export function PlayerCard() {
       <DataCard.Row
         left={
           <Text color="gray" size="2">
-            Join Date
+            <label htmlFor="join-date">Join Date</label>
           </Text>
         }
-        center={<DatePicker name="joinDate" placeholderText="dd-mm-yyyy" />}
+        center={
+          <DatePicker
+            id="join-date"
+            name="joinDate"
+            placeholderText="dd-mm-yyyy"
+          />
+        }
         right={
           <Text aria-label="Point scaling" size="2" color="gray">
             {scaling.toFixed(2)}%
