@@ -21,8 +21,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "baseUrl": ".",
-    "types": ["cypress", "@testing-library/cypress"]
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",

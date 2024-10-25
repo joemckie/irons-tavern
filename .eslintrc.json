@@ -37,7 +37,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": ["cypress.config.ts", "cypress/**"]
+        "devDependencies": ["cypress.config.ts", "cypress/**", "**/*.spec.ts"]
       }
     ],
     "jsx-a11y/label-has-associated-control": [
