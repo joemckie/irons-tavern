@@ -1,11 +1,10 @@
 import { sub } from 'date-fns';
-import { CategoryPointCalculatorData } from '@/types/rank-calculator';
-import { ScalingFixtureMap } from '../types';
+import { ScalingFixture, ScalingFixtureMap } from '../types';
 
 export const generateScalingTests = (
   player: string,
   scalingFixtures: ScalingFixtureMap,
-  assertValues: (fixture: CategoryPointCalculatorData) => void,
+  assertValues: (fixture: ScalingFixture) => void,
 ) => {
   it('Calculates the correct points - Full scaling (100%)', () => {
     cy.visit(`/rank-calculator/${player}`);
@@ -15,6 +14,7 @@ export const generateScalingTests = (
       }),
       '100.00%',
     );
+
     assertValues(scalingFixtures.fullScaling);
   });
 
@@ -26,6 +26,8 @@ export const generateScalingTests = (
       }),
       '70.00%',
     );
+
+    assertValues(scalingFixtures.fourMonthScaling);
   });
 
   it('Calculates the correct points - Two month scaling (40%)', () => {
@@ -36,10 +38,14 @@ export const generateScalingTests = (
       }),
       '40.00%',
     );
+
+    assertValues(scalingFixtures.twoMonthScaling);
   });
 
   it('Calculates the correct points - No scaling (10%)', () => {
     cy.visit(`/rank-calculator/${player}`);
     cy.setJoinDate(new Date(), '10.00%');
+
+    assertValues(scalingFixtures.noScaling);
   });
 };

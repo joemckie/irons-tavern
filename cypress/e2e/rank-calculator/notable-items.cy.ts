@@ -11,14 +11,14 @@ describe('Early-game player', () => {
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^notable items point completion percentage$/i).should(
-        'have.text',
-        `${fixture.pointsAwardedPercentage}%`,
-      );
-
       cy.findByLabelText(/^notable items points remaining$/i).should(
         'have.text',
         `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        '0.95%',
       );
 
       cy.findByLabelText(/^notable items collected$/i).should('have.text', '5');
@@ -46,14 +46,14 @@ describe('Mid-game player', () => {
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^notable items point completion percentage$/i).should(
-        'have.text',
-        `${fixture.pointsAwardedPercentage}%`,
-      );
-
       cy.findByLabelText(/^notable items points remaining$/i).should(
         'have.text',
         `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        '9.65%',
       );
 
       cy.findByLabelText(/^notable items collected$/i).should(
@@ -84,14 +84,14 @@ describe('End-game player', () => {
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^notable items point completion percentage$/i).should(
-        'have.text',
-        `${fixture.pointsAwardedPercentage}%`,
-      );
-
       cy.findByLabelText(/^notable items points remaining$/i).should(
         'have.text',
         `(${fixture.pointsRemaining})`,
+      );
+
+      cy.findByLabelText(/^notable items point completion percentage$/i).should(
+        'have.text',
+        '60.44%',
       );
 
       cy.findByLabelText(/^notable items collected$/i).should(

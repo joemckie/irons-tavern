@@ -4,67 +4,55 @@ export const notableItemsExpectedValues = {
   earlyGamePlayer: {
     fullScaling: {
       pointsAwarded: 520,
-      pointsAwardedPercentage: 0.95,
       pointsRemaining: 54320,
     },
     fourMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 364,
+      pointsRemaining: 38024,
     },
     twoMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 208,
+      pointsRemaining: 21728,
     },
     noScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 52,
+      pointsRemaining: 5432,
     },
   },
   midGamePlayer: {
     fullScaling: {
       pointsAwarded: 5290,
-      pointsAwardedPercentage: 9.65,
       pointsRemaining: 49550,
     },
     fourMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 3703,
+      pointsRemaining: 34685,
     },
     twoMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 2116,
+      pointsRemaining: 19820,
     },
     noScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 529,
+      pointsRemaining: 4955,
     },
   },
   endGamePlayer: {
     fullScaling: {
       pointsAwarded: 33145,
-      pointsAwardedPercentage: 60.44,
       pointsRemaining: 21695,
     },
     fourMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 23201,
+      pointsRemaining: 15187,
     },
     twoMonthScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 13258,
+      pointsRemaining: 8678,
     },
     noScaling: {
-      pointsAwarded: 0,
-      pointsAwardedPercentage: 0,
-      pointsRemaining: 0,
+      pointsAwarded: 3314,
+      pointsRemaining: 2170,
     },
   },
 } satisfies CategoryFixture;
