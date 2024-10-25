@@ -11,13 +11,35 @@ export const generateScalingTests = (
     cy.visit(`/rank-calculator/${player}`);
     cy.setJoinDate(
       sub(new Date(), {
-        months: 6,
+        days: 180,
       }),
       '100.00%',
     );
     assertValues(scalingFixtures.fullScaling);
   });
-  it.skip('Calculates the correct points - Four month scaling (70%)');
-  it.skip('Calculates the correct points - Two month scaling (40%)');
-  it.skip('Calculates the correct points - No scaling (10%)');
+
+  it('Calculates the correct points - Four month scaling (70%)', () => {
+    cy.visit(`/rank-calculator/${player}`);
+    cy.setJoinDate(
+      sub(new Date(), {
+        days: 120,
+      }),
+      '70.00%',
+    );
+  });
+
+  it('Calculates the correct points - Two month scaling (40%)', () => {
+    cy.visit(`/rank-calculator/${player}`);
+    cy.setJoinDate(
+      sub(new Date(), {
+        days: 60,
+      }),
+      '40.00%',
+    );
+  });
+
+  it('Calculates the correct points - No scaling (10%)', () => {
+    cy.visit(`/rank-calculator/${player}`);
+    cy.setJoinDate(new Date(), '10.00%');
+  });
 };
