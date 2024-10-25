@@ -7,11 +7,7 @@ interface DataCardRowProps {
   right: ReactNode;
 }
 
-function DataCardRow({
-  center = null,
-  left,
-  right,
-}: DataCardRowProps): JSX.Element {
+function DataCardRow({ center = null, left, right }: DataCardRowProps) {
   const width = center ? '33%' : '50%';
 
   return (
