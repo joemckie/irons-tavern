@@ -3,7 +3,7 @@ import { render, screen } from '@/test-utils/testing-library';
 import { earlyGamePlayerFormData } from '@/fixtures/rank-calculator/early-game-player-form-data';
 import { notableItemsExpectedValues } from '@/fixtures/rank-calculator/notable-items-expected-values';
 import { FormProvider, useForm } from 'react-hook-form';
-import { NotableItemsCard } from '../../components/cards/notable-items-card';
+import { NotableItemsCard } from './notable-items-card';
 
 function Wrapper() {
   const form = useForm({
