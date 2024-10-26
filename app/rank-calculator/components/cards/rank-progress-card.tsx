@@ -25,7 +25,7 @@ export function RankProgressCard() {
               </Text>
             }
             center={
-              <Text role="heading" weight="bold">
+              <Text size="2" role="heading" weight="bold">
                 Rank
               </Text>
             }
@@ -69,6 +69,7 @@ export function RankProgressCard() {
             }
             right={
               <Select
+                aria-label="Selected rank structure"
                 name="rankStructure"
                 options={Object.values(RankStructure)}
               />
