@@ -21,7 +21,7 @@ export const MemoisedItem = memo(({ item, acquired }: ItemProps) => (
     <Table.Cell align="right">
       <Checkbox
         defaultChecked={acquired}
-        name={`items.${stripEntityName(item.name)}`}
+        name={`acquiredItems.${stripEntityName(item.name)}`}
       />
     </Table.Cell>
     <Table.Cell aria-label={`${item.name} points`} align="right" width="100px">

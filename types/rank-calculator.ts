@@ -28,15 +28,15 @@ export interface PlayerData {
 }
 
 export interface FormData {
+  acquiredItems: Record<string, boolean>;
   achievementDiaries: AchievementDiaryMap;
+  joinDate: Date | null;
   collectionLogCount: number;
-  playerName: string;
-  items: Record<string, boolean>;
   combatAchievementTier: CombatAchievementTier | 'None';
   ehb: number;
   ehp: number;
-  joinDate: Date | null;
   totalLevel: number;
+  playerName: string;
   rankStructure: RankStructure;
 }
 

@@ -1,5 +1,5 @@
 import { useWatch } from 'react-hook-form';
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
 import { useGetItems } from '../use-get-items';
 
 export interface NotableItemsPointCalculatorData
@@ -11,8 +11,8 @@ export interface NotableItemsPointCalculatorData
 
 export function useNotableItemsPointCalculator() {
   const { data } = useGetItems();
-  const itemFields = useWatch<Record<string, boolean>>({
-    name: 'items',
+  const itemFields = useWatch<FormData, 'acquiredItems'>({
+    name: 'acquiredItems',
   });
 
   const { totalItems, itemPoints, availablePoints } = data.reduce(

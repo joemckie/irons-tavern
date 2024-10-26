@@ -2,7 +2,7 @@ import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { FormData, RankStructure } from '@/types/rank-calculator';
 
 export const earlyGamePlayer = {
-  items: {
+  acquiredItems: {
     'Blood moon tassets': true,
     'Tome of fire': true,
     'Zombie axe': true,
@@ -34,7 +34,7 @@ export const earlyGamePlayer = {
 } satisfies FormData;
 
 export const midGamePlayer = {
-  items: {
+  acquiredItems: {
     'Achievement Diary Cape': true,
     'Abyssal bludgeon': true,
     'Brimstone ring': true,
@@ -160,7 +160,7 @@ export const midGamePlayer = {
 } satisfies FormData;
 
 export const endGamePlayer = {
-  items: {
+  acquiredItems: {
     'Achievement Diary Cape': true,
     'Max Cape': true,
     'Infernal Max Cape': true,

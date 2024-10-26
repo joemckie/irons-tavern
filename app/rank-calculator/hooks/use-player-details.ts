@@ -16,7 +16,7 @@ export const getPlayerDetails = async (player: string) => {
     ) ?? {};
 
   return {
-    items: acquiredItems,
+    acquiredItems,
     achievementDiaries: data.achievementDiaries ?? {
       'Kourend & Kebos': 'None',
       'Lumbridge & Draynor': 'None',
