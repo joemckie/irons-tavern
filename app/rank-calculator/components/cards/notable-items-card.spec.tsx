@@ -1,74 +1,61 @@
 import { it, expect } from '@jest/globals';
 import { render, screen } from '@/test-utils/testing-library';
-import { earlyGamePlayerFormData } from '@/fixtures/rank-calculator/early-game-player-form-data';
+import * as formDataMocks from '@/fixtures/rank-calculator/form-data';
 import { notableItemsExpectedValues } from '@/fixtures/rank-calculator/notable-items-expected-values';
-import { FormProvider, useForm } from 'react-hook-form';
+import { MockFormProvider } from '@/test-utils/mock-form-provider';
+import { generatePlayerTests } from '@/test-utils/generate-player-tests';
 import { NotableItemsCard } from './notable-items-card';
 
-function Wrapper() {
-  const form = useForm({
-    defaultValues: earlyGamePlayerFormData,
-  });
+generatePlayerTests(
+  formDataMocks,
+  notableItemsExpectedValues,
+  (formData, expected) => {
+    beforeEach(async () => {
+      render(
+        <MockFormProvider defaultValues={formData}>
+          <NotableItemsCard />
+        </MockFormProvider>,
+      );
 
-  return (
-    <FormProvider {...form}>
-      <NotableItemsCard />
-    </FormProvider>
-  );
-}
+      await screen.findByText(/notable items/i);
+    });
 
-it('renders the total points', async () => {
-  render(<Wrapper />);
+    it('renders the total points', async () => {
+      expect(
+        screen.getByLabelText(/^total notable items points$/i).textContent,
+      ).toBe(`${expected.pointsAwarded}`);
+    });
 
-  expect(
-    await screen.findByLabelText(/^total notable items points$/i),
-  ).toHaveTextContent(
-    `${notableItemsExpectedValues.earlyGamePlayer.fullScaling.pointsAwarded}`,
-  );
-});
+    it('renders the points remaining', async () => {
+      expect(
+        screen.getByLabelText(/^notable items points remaining$/i).textContent,
+      ).toBe(`(${expected.pointsRemaining})`);
+    });
 
-it('renders the points remaining', async () => {
-  render(<Wrapper />);
+    it('renders the point competion percentage', async () => {
+      expect(
+        screen.getByLabelText(/^notable items point completion percentage$/i)
+          .textContent,
+      ).toBe(`${expected.pointsAwardedPercentage}%`);
+    });
 
-  expect(
-    await screen.findByLabelText(/^notable items points remaining$/i),
-  ).toHaveTextContent(
-    `(${notableItemsExpectedValues.earlyGamePlayer.fullScaling.pointsRemaining})`,
-  );
-});
+    it('renders the items collected', async () => {
+      expect(
+        screen.getByLabelText(/^notable items collected$/i).textContent,
+      ).toBe(`${expected.itemsCollected}`);
+    });
 
-it('renders the point competion percentage', async () => {
-  render(<Wrapper />);
+    it('renders the total items available', async () => {
+      expect(
+        screen.getByLabelText(/^total notable items available$/i).textContent,
+      ).toBe('295');
+    });
 
-  expect(
-    await screen.findByLabelText(
-      /^notable items point completion percentage$/i,
-    ),
-  ).toHaveTextContent(
-    `${notableItemsExpectedValues.earlyGamePlayer.fullScaling.pointsAwardedPercentage}%`,
-  );
-});
-
-it('renders the items collected', async () => {
-  render(<Wrapper />);
-
-  expect(
-    await screen.findByLabelText(/^notable items collected$/i),
-  ).toHaveTextContent('5');
-});
-
-it('renders the total items available', async () => {
-  render(<Wrapper />);
-
-  expect(
-    await screen.findByLabelText(/^total notable items available$/i),
-  ).toHaveTextContent('295');
-});
-
-it('renders the collected items percentage', async () => {
-  render(<Wrapper />);
-
-  expect(
-    await screen.findByLabelText(/^notable items collected percentage$/i),
-  ).toHaveTextContent('1.69%');
-});
+    it('renders the collected items percentage', async () => {
+      expect(
+        screen.getByLabelText(/^notable items collected percentage$/i)
+          .textContent,
+      ).toBe(`${expected.percentageCollected}%`);
+    });
+  },
+);

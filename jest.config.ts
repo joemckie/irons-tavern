@@ -1,7 +1,12 @@
 import { JestConfigWithTsJest, pathsToModuleNameMapper } from 'ts-jest';
+import nextJest from 'next/jest';
 import { compilerOptions } from './tsconfig.json';
 
-export default {
+const createJestConfig = nextJest({
+  dir: './',
+});
+
+const config = {
   testEnvironment: 'jsdom',
   preset: 'ts-jest',
   roots: ['<rootDir>'],
@@ -14,3 +19,5 @@ export default {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 } satisfies JestConfigWithTsJest;
+
+export default createJestConfig(config);
