@@ -4,8 +4,12 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import { PlayerData, RankStructure } from '@/types/rank-calculator';
+import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
+import { RedisKeyNamespace } from '@/config/redis';
+import { Redis } from '@upstash/redis';
+import { merge } from 'lodash';
+import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -14,6 +18,7 @@ import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
 import { getPlayerMeta } from './utils/get-player-meta';
 import { parseLevels } from './utils/parse-levels';
 import { getTempleData } from './utils/get-temple-data';
+import { formatPreviousSubmission } from './utils/format-previous-submission';
 
 const emptyResponse = {
   achievementDiaries: null,
@@ -29,6 +34,8 @@ const emptyResponse = {
   rankStructure: RankStructure.Standard,
 } satisfies PlayerData;
 
+const redis = Redis.fromEnv();
+
 export async function GET(
   request: NextRequest,
 ): Promise<NextResponse<PlayerData>> {
@@ -41,11 +48,13 @@ export async function GET(
   }
 
   try {
-    const [wikiSyncData, collectionLogData, templeData] = await Promise.all([
-      getWikiSyncData(player),
-      getCollectionLog(player),
-      getTempleData(player),
-    ]);
+    const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
+      await Promise.all([
+        getWikiSyncData(player),
+        getCollectionLog(player),
+        getTempleData(player),
+        redis.json.get<FormData>(`${RedisKeyNamespace.Submission}:${player}`),
+      ]);
 
     const hasThirdPartyData = Boolean(
       wikiSyncData || collectionLogData || templeData,
@@ -115,12 +124,11 @@ export async function GET(
                 musicTracks,
               }),
             )
-            .map(({ name }) => name)
+            .map(({ name }) => stripEntityName(name))
         : [];
 
     const playerMeta = await getPlayerMeta(player);
-
-    return NextResponse.json<PlayerData>({
+    const playerDetails = {
       acquiredItems,
       achievementDiaries,
       combatAchievementTier,
@@ -131,8 +139,14 @@ export async function GET(
       ehp: ehp ? Math.round(ehp) : null,
       totalLevel,
       playerName: playerMeta?.rsn ?? player,
-      rankStructure: RankStructure.Standard,
-    });
+      rankStructure: null,
+    };
+    const formattedPreviousSubmission =
+      formatPreviousSubmission(previousSubmission);
+
+    return NextResponse.json<PlayerData>(
+      merge(playerDetails, formattedPreviousSubmission),
+    );
   } catch (error) {
     console.error(error);
 

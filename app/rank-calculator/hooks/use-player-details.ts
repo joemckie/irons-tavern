@@ -1,7 +1,6 @@
 import { constants } from '@/config/constants';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
-import { stripEntityName } from '../utils/strip-entity-name';
 
 export const getPlayerDetails = async (player: string) => {
   const response = await fetch(
@@ -11,7 +10,7 @@ export const getPlayerDetails = async (player: string) => {
 
   const acquiredItems =
     data.acquiredItems?.reduce<Record<string, boolean>>(
-      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
+      (acc, val) => ({ ...acc, [val]: true }),
       {},
     ) ?? {};
 

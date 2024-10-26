@@ -11,8 +11,9 @@ export async function POST(
   const { playerName, ...data }: FormData = await request.json();
 
   try {
-    const result = await redis.set(
+    const result = await redis.json.set(
       `submission:${playerName.toLowerCase()}`,
+      '$',
       data,
     );
 
