@@ -1,4 +1,4 @@
-import { notableItemsExpectedValues } from '@/cypress/fixtures/rank-calculator/notable-items-expected-values';
+import { notableItemsExpectedValues } from '@/fixtures/rank-calculator/notable-items-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Notable items - Mid-game player', () => {

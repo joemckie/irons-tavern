@@ -1,4 +1,4 @@
-import { skillingExpectedValues } from '@/cypress/fixtures/rank-calculator/skilling-expected-values';
+import { skillingExpectedValues } from '@/fixtures/rank-calculator/skilling-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Skilling - End-game player', () => {

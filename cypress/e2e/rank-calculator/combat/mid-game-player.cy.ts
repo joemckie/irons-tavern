@@ -1,4 +1,4 @@
-import { combatExpectedValues } from '@/cypress/fixtures/rank-calculator/combat-expected-values';
+import { combatExpectedValues } from '@/fixtures/rank-calculator/combat-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Combat - Mid-game player', () => {

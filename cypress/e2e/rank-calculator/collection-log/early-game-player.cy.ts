@@ -1,4 +1,4 @@
-import { collectionLogExpectedValues } from '@/cypress/fixtures/rank-calculator/collection-log-expected-values';
+import { collectionLogExpectedValues } from '@/fixtures/rank-calculator/collection-log-expected-values';
 import { generateScalingTests } from '@/cypress/support/utils/generate-scaling-tests';
 
 describe('Collection Log - Early-game player', () => {
