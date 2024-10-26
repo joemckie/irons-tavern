@@ -2,12 +2,12 @@ import { it, expect } from '@jest/globals';
 import { render, screen } from '@/test-utils/testing-library';
 import * as formDataMocks from '@/fixtures/rank-calculator/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
-import { generatePlayerTests } from '@/test-utils/generate-player-tests';
+import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { skillingExpectedValues } from '@/fixtures/rank-calculator/skilling-expected-values';
-import { SkillingCard } from './skilling-card';
 import { DiaryLocation } from '@/types/osrs';
+import { SkillingCard } from './skilling-card';
 
-generatePlayerTests(
+generateScaledPlayerTests(
   formDataMocks,
   skillingExpectedValues,
   (formData, expected) => {

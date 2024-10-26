@@ -1,5 +1,4 @@
-import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
-import { generateScalingTests } from './generate-scaling-tests';
+import { FormData } from '@/types/rank-calculator';
 
 interface FormDataMap {
   earlyGamePlayer: FormData;
@@ -7,43 +6,19 @@ interface FormDataMap {
   endGamePlayer: FormData;
 }
 
-type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
-  'fullScaling' | 'fourMonthScaling' | 'twoMonthScaling' | 'noScaling',
-  T
->;
-
-type CategoryFixture<T extends CommonPointCalculatorData> = {
-  earlyGamePlayer: ScalingFixtureMap<T>;
-  midGamePlayer: ScalingFixtureMap<T>;
-  endGamePlayer: ScalingFixtureMap<T>;
-};
-
-export const generatePlayerTests = <T extends CommonPointCalculatorData>(
+export const generatePlayerTests = (
   formData: FormDataMap,
-  scalingFixtures: CategoryFixture<T>,
-  testRunner: (formFixture: FormData, resultFixture: T) => void,
+  testRunner: (formFixture: FormData) => void,
 ) => {
   describe('Early-game player', () => {
-    generateScalingTests(
-      formData.earlyGamePlayer,
-      scalingFixtures.earlyGamePlayer,
-      testRunner,
-    );
+    testRunner(formData.earlyGamePlayer);
   });
 
   describe('Mid-game player', () => {
-    generateScalingTests(
-      formData.midGamePlayer,
-      scalingFixtures.midGamePlayer,
-      testRunner,
-    );
+    testRunner(formData.midGamePlayer);
   });
 
   describe('Late-game player', () => {
-    generateScalingTests(
-      formData.endGamePlayer,
-      scalingFixtures.endGamePlayer,
-      testRunner,
-    );
+    testRunner(formData.endGamePlayer);
   });
 };

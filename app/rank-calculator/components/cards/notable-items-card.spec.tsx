@@ -3,10 +3,10 @@ import { render, screen } from '@/test-utils/testing-library';
 import * as formDataMocks from '@/fixtures/rank-calculator/form-data';
 import { notableItemsExpectedValues } from '@/fixtures/rank-calculator/notable-items-expected-values';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
-import { generatePlayerTests } from '@/test-utils/generate-player-tests';
+import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { NotableItemsCard } from './notable-items-card';
 
-generatePlayerTests(
+generateScaledPlayerTests(
   formDataMocks,
   notableItemsExpectedValues,
   (formData, expected) => {

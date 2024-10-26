@@ -2,11 +2,11 @@ import { it, expect } from '@jest/globals';
 import { render, screen } from '@/test-utils/testing-library';
 import * as formDataMocks from '@/fixtures/rank-calculator/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
-import { generatePlayerTests } from '@/test-utils/generate-player-tests';
+import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { combatExpectedValues } from '@/fixtures/rank-calculator/combat-expected-values';
 import { CombatCard } from './combat-card';
 
-generatePlayerTests(
+generateScaledPlayerTests(
   formDataMocks,
   combatExpectedValues,
   (formData, expected) => {
