@@ -17,7 +17,7 @@ function Wrapper() {
   );
 }
 
-it('calculates the total points', async () => {
+it('renders the total points', async () => {
   render(<Wrapper />);
 
   expect(
@@ -27,7 +27,7 @@ it('calculates the total points', async () => {
   );
 });
 
-it('calculates the points remaining', async () => {
+it('renders the points remaining', async () => {
   render(<Wrapper />);
 
   expect(
@@ -37,7 +37,7 @@ it('calculates the points remaining', async () => {
   );
 });
 
-it('calculates the point competion percentage', async () => {
+it('renders the point competion percentage', async () => {
   render(<Wrapper />);
 
   expect(
@@ -49,7 +49,7 @@ it('calculates the point competion percentage', async () => {
   );
 });
 
-it('calculates the items collected', async () => {
+it('renders the items collected', async () => {
   render(<Wrapper />);
 
   expect(
@@ -57,7 +57,7 @@ it('calculates the items collected', async () => {
   ).toHaveTextContent('5');
 });
 
-it('calculates the total items available', async () => {
+it('renders the total items available', async () => {
   render(<Wrapper />);
 
   expect(
@@ -65,7 +65,7 @@ it('calculates the total items available', async () => {
   ).toHaveTextContent('295');
 });
 
-it('calculates the collected items percentage', async () => {
+it('renders the collected items percentage', async () => {
   render(<Wrapper />);
 
   expect(
