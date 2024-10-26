@@ -24,7 +24,11 @@ export function RankProgressCard() {
                 {pointsAwarded}
               </Text>
             }
-            center={<Text weight="bold">Rank</Text>}
+            center={
+              <Text role="heading" weight="bold">
+                Rank
+              </Text>
+            }
             right={
               <Text aria-label="Points to next rank" color="gray" size="2">
                 ({pointsRemaining})

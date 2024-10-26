@@ -23,7 +23,7 @@ export function CollectionLogCard() {
               height={17}
               width={18}
             />
-            <Text weight="bold" size="2">
+            <Text role="heading" weight="bold" size="2">
               Collection Log
             </Text>
           </Flex>

@@ -24,7 +24,7 @@ export function NotableItemsCard() {
               height={18}
               width={18}
             />
-            <Text weight="bold" size="2">
+            <Text role="heading" weight="bold" size="2">
               Notable items
             </Text>
           </Flex>

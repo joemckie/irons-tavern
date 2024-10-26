@@ -17,41 +17,41 @@ generatePlayerTests(
         </MockFormProvider>,
       );
 
-      await screen.findByText(/notable items/i);
+      await screen.findByRole('heading', { name: /notable items/i });
     });
 
-    it('renders the total points', async () => {
+    it('renders the total points', () => {
       expect(
         screen.getByLabelText(/^total notable items points$/i).textContent,
       ).toBe(`${expected.pointsAwarded}`);
     });
 
-    it('renders the points remaining', async () => {
+    it('renders the points remaining', () => {
       expect(
         screen.getByLabelText(/^notable items points remaining$/i).textContent,
       ).toBe(`(${expected.pointsRemaining})`);
     });
 
-    it('renders the point competion percentage', async () => {
+    it('renders the point competion percentage', () => {
       expect(
         screen.getByLabelText(/^notable items point completion percentage$/i)
           .textContent,
       ).toBe(`${expected.pointsAwardedPercentage}%`);
     });
 
-    it('renders the items collected', async () => {
+    it('renders the items collected', () => {
       expect(
         screen.getByLabelText(/^notable items collected$/i).textContent,
       ).toBe(`${expected.itemsCollected}`);
     });
 
-    it('renders the total items available', async () => {
+    it('renders the total items available', () => {
       expect(
         screen.getByLabelText(/^total notable items available$/i).textContent,
       ).toBe('295');
     });
 
-    it('renders the collected items percentage', async () => {
+    it('renders the collected items percentage', () => {
       expect(
         screen.getByLabelText(/^notable items collected percentage$/i)
           .textContent,

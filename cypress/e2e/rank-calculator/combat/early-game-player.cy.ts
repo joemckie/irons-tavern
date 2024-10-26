@@ -11,12 +11,12 @@ describe('Combat - Early-game player', () => {
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^ehb points$/i).should(
+      cy.findByLabelText(/^efficient hours bossed points$/i).should(
         'have.text',
         `${fixture.ehbPoints}`,
       );
 
-      cy.findByLabelText(/^ca tier points$/i).should(
+      cy.findByLabelText(/^combat achievement tier points$/i).should(
         'have.text',
         `${fixture.caTierPoints}`,
       );

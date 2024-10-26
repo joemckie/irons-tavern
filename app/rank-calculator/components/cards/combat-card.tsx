@@ -26,7 +26,7 @@ export function CombatCard() {
               height={18}
               width={18}
             />
-            <Text weight="bold" size="2">
+            <Text role="heading" weight="bold" size="2">
               Combat
             </Text>
           </Flex>
@@ -46,7 +46,11 @@ export function CombatCard() {
         }
         center={<EditableText name="ehb" type="number" />}
         right={
-          <Text aria-label="EHB points" color="gray" size="2">
+          <Text
+            aria-label="Efficient hours bossed points"
+            color="gray"
+            size="2"
+          >
             {ehbPoints}
           </Text>
         }
@@ -66,7 +70,11 @@ export function CombatCard() {
           />
         }
         right={
-          <Text aria-label="CA tier points" color="gray" size="2">
+          <Text
+            aria-label="Combat achievement tier points"
+            color="gray"
+            size="2"
+          >
             {caTierPoints}
           </Text>
         }

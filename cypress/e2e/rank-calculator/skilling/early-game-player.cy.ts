@@ -11,7 +11,7 @@ describe('Skilling - Early-game player', () => {
         `${fixture.pointsAwarded}`,
       );
 
-      cy.findByLabelText(/^ehp points$/i).should(
+      cy.findByLabelText(/^efficient hours played points$/i).should(
         'have.text',
         `${fixture.ehpPoints}`,
       );
@@ -22,8 +22,8 @@ describe('Skilling - Early-game player', () => {
       );
 
       Object.entries(fixture.achievementDiariesPoints).forEach(
-        ([location, points]) => {
-          const matcher = new RegExp(`${location} diary points`, 'i');
+        ([diaryLocation, points]) => {
+          const matcher = new RegExp(`${diaryLocation} diary points`, 'i');
 
           cy.findByLabelText(matcher).should('have.text', `${points}`);
         },

@@ -27,7 +27,7 @@ export function SkillingCard() {
               height={18}
               width={18}
             />
-            <Text weight="bold" size="2">
+            <Text role="heading" weight="bold" size="2">
               Skilling
             </Text>
           </Flex>
@@ -47,7 +47,11 @@ export function SkillingCard() {
         }
         center={<EditableText name="ehp" required type="number" />}
         right={
-          <Text aria-label="EHP points" color="gray" size="2">
+          <Text
+            aria-label="Efficient hours played points"
+            color="gray"
+            size="2"
+          >
             {ehpPoints}
           </Text>
         }

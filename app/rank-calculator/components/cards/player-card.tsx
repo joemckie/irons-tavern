@@ -12,7 +12,7 @@ export function PlayerCard() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text weight="bold" size="2">
+          <Text role="heading" weight="bold" size="2">
             Player
           </Text>
         }
