@@ -42,7 +42,12 @@ export function CollectionLogCard() {
           </Text>
         }
         center={
-          <EditableText name="collectionLogCount" type="number" required />
+          <EditableText
+            aria-label="Collection log count"
+            name="collectionLogCount"
+            type="number"
+            required
+          />
         }
         right={
           <Text aria-label="Collection log slot points" color="gray" size="2">

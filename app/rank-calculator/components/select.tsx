@@ -7,15 +7,26 @@ import {
 } from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
 import { useController } from 'react-hook-form';
+import { AriaAttributes } from 'react';
 
-interface SelectProps extends BaseSelect.RootProps {
+interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
   name: string;
   placeholder?: string;
   options: string[];
 }
 
-export function Select({ options, placeholder, ...props }: SelectProps) {
-  const { field } = useController({ name: props.name });
+export function Select({
+  options,
+  placeholder,
+  required,
+  ...props
+}: SelectProps) {
+  const { field } = useController({
+    name: props.name,
+    rules: {
+      required,
+    },
+  });
   const portalElement =
     typeof document !== 'undefined'
       ? document.getElementById('theme-root')
@@ -23,7 +34,7 @@ export function Select({ options, placeholder, ...props }: SelectProps) {
 
   return (
     <Ariakit.SelectProvider setValue={field.onChange} value={field.value ?? ''}>
-      <Button asChild variant="ghost" className="rt-SelectTrigger">
+      <Button {...props} asChild variant="ghost" className="rt-SelectTrigger">
         <Ariakit.Select {...field} />
       </Button>
       <Ariakit.SelectPopover

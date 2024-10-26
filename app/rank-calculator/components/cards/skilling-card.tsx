@@ -45,7 +45,14 @@ export function SkillingCard() {
             EHP
           </Text>
         }
-        center={<EditableText name="ehp" required type="number" />}
+        center={
+          <EditableText
+            aria-label="Efficient hours played value"
+            name="ehp"
+            required
+            type="number"
+          />
+        }
         right={
           <Text
             aria-label="Efficient hours played points"
@@ -62,7 +69,14 @@ export function SkillingCard() {
             Total level
           </Text>
         }
-        center={<EditableText name="totalLevel" required type="number" />}
+        center={
+          <EditableText
+            aria-label="Total level value"
+            name="totalLevel"
+            required
+            type="number"
+          />
+        }
         right={
           <Text aria-label="Total level points" color="gray" size="2">
             {totalLevelPoints}
@@ -79,9 +93,9 @@ export function SkillingCard() {
           }
           center={
             <Select
+              aria-label={`${location} diary value`}
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
-              size="1"
               options={['None', ...Object.values(DiaryTier)]}
             />
           }

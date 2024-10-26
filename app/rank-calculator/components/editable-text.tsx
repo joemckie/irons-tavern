@@ -9,18 +9,36 @@ interface EditableTextProps extends TextField.RootProps {
   name: string;
 }
 
-export function EditableText({ name, ...restProps }: EditableTextProps) {
-  const [editing, setEditing] = useState(false);
-  const { field } = useController({ name });
+export function EditableText({
+  name,
+  'aria-label': ariaLabel,
+  required,
+  ...restProps
+}: EditableTextProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const { field } = useController({
+    name,
+    rules: {
+      required,
+    },
+  });
 
-  if (editing) {
+  if (isEditing) {
     return (
-      <TextField.Root size="1" {...restProps} {...field} autoFocus>
+      <TextField.Root
+        size="1"
+        aria-label={ariaLabel}
+        role="textbox"
+        required={required}
+        {...restProps}
+        {...field}
+        autoFocus
+      >
         <TextField.Slot side="right">
           <IconButton
             size="1"
             variant="ghost"
-            onClick={() => setEditing(false)}
+            onClick={() => setIsEditing(false)}
           >
             <CheckIcon height="14" width="14" />
           </IconButton>
@@ -31,8 +49,10 @@ export function EditableText({ name, ...restProps }: EditableTextProps) {
 
   return (
     <Flex justify="center" gap="2" width="100%" align="center">
-      <Text size="2">{field.value}</Text>
-      <IconButton onClick={() => setEditing(true)} size="1" variant="ghost">
+      <Text aria-label={ariaLabel} size="2">
+        {field.value}
+      </Text>
+      <IconButton onClick={() => setIsEditing(true)} size="1" variant="ghost">
         <Pencil1Icon />
       </IconButton>
     </Flex>

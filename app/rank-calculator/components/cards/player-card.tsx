@@ -34,6 +34,7 @@ export function PlayerCard() {
             id="join-date"
             name="joinDate"
             placeholderText="dd-mm-yyyy"
+            required
           />
         }
         right={

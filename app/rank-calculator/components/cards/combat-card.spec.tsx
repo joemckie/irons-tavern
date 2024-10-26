@@ -50,5 +50,18 @@ generatePlayerTests(
         screen.getByLabelText(/^combat achievement tier points$/i).textContent,
       ).toBe(`${expected.caTierPoints}%`);
     });
+
+    it('renders the EHB value', () => {
+      expect(
+        screen.getByLabelText(/^efficient hours bossed value$/i).textContent,
+      ).toBe(`${formData.ehb}`);
+    });
+
+    it('renders the combat achievement tier value', () => {
+      expect(
+        screen.getByRole('combobox', { name: /combat achievement tier value/i })
+          .textContent,
+      ).toBe(formData.caTier);
+    });
   },
 );

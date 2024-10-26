@@ -22,19 +22,19 @@ generatePlayerTests(
 
     it('renders the total points', () => {
       expect(
-        screen.getByLabelText(/^total skilling points$/i).textContent,
+        screen.getByLabelText(/^total collection log points$/i).textContent,
       ).toBe(`${expected.pointsAwarded}`);
     });
 
     it('renders the points remaining', () => {
       expect(
-        screen.getByLabelText(/^skilling points remaining$/i).textContent,
+        screen.getByLabelText(/^collection log points remaining$/i).textContent,
       ).toBe(`(${expected.pointsRemaining})`);
     });
 
     it('renders the point competion percentage', () => {
       expect(
-        screen.getByLabelText(/^skilling point completion percentage$/i)
+        screen.getByLabelText(/^collection log point completion percentage$/i)
           .textContent,
       ).toBe(`${expected.pointsAwardedPercentage}%`);
     });
@@ -43,6 +43,12 @@ generatePlayerTests(
       expect(
         screen.getByLabelText(/^collection log slot points$/i).textContent,
       ).toBe(`${expected.collectionLogSlotPoints}`);
+    });
+
+    it('renders the collection log slot value', () => {
+      expect(screen.getByLabelText(/^collection log count$/i).textContent).toBe(
+        `${formData.collectionLogCount}`,
+      );
     });
   },
 );

@@ -44,7 +44,14 @@ export function CombatCard() {
             EHB
           </Text>
         }
-        center={<EditableText name="ehb" type="number" />}
+        center={
+          <EditableText
+            aria-label="Efficient hours bossed value"
+            name="ehb"
+            type="number"
+            required
+          />
+        }
         right={
           <Text
             aria-label="Efficient hours bossed points"
@@ -63,9 +70,9 @@ export function CombatCard() {
         }
         center={
           <Select
+            aria-label="Combat achievement tier value"
             name="caTier"
             placeholder="Choose a tier"
-            size="1"
             options={['None', ...Object.values(CombatAchievementTier)]}
           />
         }

@@ -5,6 +5,7 @@ import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generatePlayerTests } from '@/test-utils/generate-player-tests';
 import { skillingExpectedValues } from '@/fixtures/rank-calculator/skilling-expected-values';
 import { SkillingCard } from './skilling-card';
+import { DiaryLocation } from '@/types/osrs';
 
 generatePlayerTests(
   formDataMocks,
@@ -45,9 +46,21 @@ generatePlayerTests(
       ).toBe(`${expected.ehpPoints}`);
     });
 
+    it('renders the EHP value', () => {
+      expect(
+        screen.getByLabelText(/^efficient hours played value$/i).textContent,
+      ).toBe(`${formData.ehp}`);
+    });
+
     it('renders the total level points', () => {
       expect(screen.getByLabelText(/^total level points$/i).textContent).toBe(
         `${expected.totalLevelPoints}`,
+      );
+    });
+
+    it('renders the total level value', () => {
+      expect(screen.getByLabelText(/^total level value$/i).textContent).toBe(
+        `${formData.totalLevel}`,
       );
     });
 
@@ -57,6 +70,20 @@ generatePlayerTests(
           const matcher = new RegExp(`${diaryLocation} diary points`, 'i');
 
           expect(screen.getByLabelText(matcher).textContent).toBe(`${points}`);
+        },
+      );
+    });
+
+    it('renders the achievement diary values', () => {
+      Object.keys(expected.achievementDiariesPoints).forEach(
+        (diaryLocation) => {
+          const matcher = new RegExp(`${diaryLocation} diary value`, 'i');
+
+          expect(
+            screen.getByRole('combobox', { name: matcher }).textContent,
+          ).toBe(
+            `${formData.achievementDiaries[diaryLocation as DiaryLocation]}`,
+          );
         },
       );
     });
