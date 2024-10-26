@@ -44,7 +44,8 @@
           "test-utils/**",
           "cypress/**",
           "**/*.spec.ts",
-          "**/*.spec.tsx"
+          "**/*.spec.tsx",
+          "mocks/**"
         ]
       }
     ],

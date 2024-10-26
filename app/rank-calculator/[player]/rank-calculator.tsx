@@ -8,6 +8,7 @@ import { Navigation } from '../components/navigation';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
+import { useSubmitForm } from '../hooks/use-submit-form';
 
 interface RankCalculatorProps {
   formData: FormData;
@@ -15,13 +16,21 @@ interface RankCalculatorProps {
 
 export function RankCalculator({ formData }: RankCalculatorProps) {
   const { navHeight, navRef } = usePageLayout();
+  const { mutate: saveSubmission } = useSubmitForm();
 
   const methods = useForm<FormData>({
     defaultValues: formData,
   });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+    saveSubmission(data, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess(response) {
+        console.log(response);
+      },
+    });
   };
 
   return (

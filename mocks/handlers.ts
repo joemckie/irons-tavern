@@ -101,6 +101,7 @@ const passthroughHandlers = [
   'https://*.gstatic.com/*',
   `${constants.publicUrl}/api/*`,
   'https://oldschool.runescape.wiki/images/*',
+  `${constants.redisUrl}/*`,
 ].map((url) => http.get(url, () => passthrough()));
 
 export const handlers = [
