@@ -38,7 +38,7 @@ export function PlayerCard() {
         }
         right={
           <Text aria-label="Point scaling" size="2" color="gray">
-            {(scaling * 100).toFixed(2)}%
+            {`${(scaling * 100).toFixed(2)}%`}
           </Text>
         }
       />

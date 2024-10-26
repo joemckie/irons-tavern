@@ -51,7 +51,7 @@ export const Category = memo(
             weight="bold"
             size="4"
           >
-            {percentComplete}%
+            {`${percentComplete}%`}
           </Text>
         </Flex>
         <Separator

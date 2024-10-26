@@ -76,7 +76,7 @@ export function NotableItemsCard() {
             color="gray"
             size="2"
           >
-            {percentageCollected.toFixed(2)}%
+            {`${percentageCollected.toFixed(2)}%`}
           </Text>
         }
       />
@@ -88,7 +88,7 @@ export function NotableItemsCard() {
         }
         center={
           <Text aria-label="Notable items point completion percentage" size="2">
-            {pointsAwardedPercentage.toFixed(2)}%
+            {`${pointsAwardedPercentage.toFixed(2)}%`}
           </Text>
         }
         right={

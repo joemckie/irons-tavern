@@ -61,7 +61,7 @@ export function CollectionLogCard() {
             aria-label="Collection log point completion percentage"
             size="2"
           >
-            {pointsAwardedPercentage.toFixed(2)}%
+            {`${pointsAwardedPercentage.toFixed(2)}%`}
           </Text>
         }
         right={

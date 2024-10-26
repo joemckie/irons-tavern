@@ -87,7 +87,7 @@ export function CombatCard() {
         }
         center={
           <Text aria-label="Combat point completion percentage" size="2">
-            {pointsAwardedPercentage.toFixed(2)}%
+            {`${pointsAwardedPercentage.toFixed(2)}%`}
           </Text>
         }
         right={

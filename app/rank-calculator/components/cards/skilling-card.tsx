@@ -100,7 +100,7 @@ export function SkillingCard() {
         }
         center={
           <Text aria-label="Skilling point completion percentage" size="2">
-            {pointsAwardedPercentage.toFixed(2)}%
+            {`${pointsAwardedPercentage.toFixed(2)}%`}
           </Text>
         }
         right={
