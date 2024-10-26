@@ -1,7 +1,7 @@
 import { CommonPointCalculatorData } from '@/types/rank-calculator';
 
 export interface CombatPointCalculatorData extends CommonPointCalculatorData {
-  caTierPoints: number;
+  combatAchievementTierPoints: number;
   ehbPoints: number;
 }
 
@@ -10,7 +10,7 @@ export function useCombatPointCalculator() {
     pointsAwarded: 0,
     pointsAwardedPercentage: 0,
     pointsRemaining: 0,
-    caTierPoints: 0,
+    combatAchievementTierPoints: 0,
     ehbPoints: 0,
   } satisfies CombatPointCalculatorData;
 }

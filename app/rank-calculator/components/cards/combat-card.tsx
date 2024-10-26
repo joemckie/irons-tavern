@@ -11,7 +11,7 @@ export function CombatCard() {
     pointsAwarded,
     pointsAwardedPercentage,
     pointsRemaining,
-    caTierPoints,
+    combatAchievementTierPoints,
     ehbPoints,
   } = useCombatPointCalculator();
 
@@ -71,7 +71,7 @@ export function CombatCard() {
         center={
           <Select
             aria-label="Combat achievement tier value"
-            name="caTier"
+            name="combatAchievementTier"
             placeholder="Choose a tier"
             options={['None', ...Object.values(CombatAchievementTier)]}
           />
@@ -82,7 +82,7 @@ export function CombatCard() {
             color="gray"
             size="2"
           >
-            {caTierPoints}
+            {combatAchievementTierPoints}
           </Text>
         }
       />

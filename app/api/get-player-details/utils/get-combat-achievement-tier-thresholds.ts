@@ -1,7 +1,7 @@
 import { constants } from '@/config/constants';
 import { CombatAchievementTier } from '@/types/osrs';
 
-export async function getCaTierThresholds() {
+export async function getCombatAchievementTierThresholds() {
   const query = [
     '{{Globals|ca easy points}}',
     '{{Globals|ca medium points}}',

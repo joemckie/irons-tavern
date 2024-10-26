@@ -32,7 +32,7 @@ export interface FormData {
   collectionLogCount: number;
   playerName: string;
   items: Record<string, boolean>;
-  caTier: CombatAchievementTier | 'None';
+  combatAchievementTier: CombatAchievementTier | 'None';
   ehb: number;
   ehp: number;
   joinDate: Date | null;

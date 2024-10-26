@@ -48,7 +48,7 @@ generateScaledPlayerTests(
     it('renders the combat achievement tier points', () => {
       expect(
         screen.getByLabelText(/^combat achievement tier points$/i).textContent,
-      ).toBe(`${expected.caTierPoints}%`);
+      ).toBe(`${expected.combatAchievementTierPoints}%`);
     });
 
     it('renders the EHB value', () => {
@@ -61,7 +61,7 @@ generateScaledPlayerTests(
       expect(
         screen.getByRole('combobox', { name: /combat achievement tier value/i })
           .textContent,
-      ).toBe(formData.caTier);
+      ).toBe(formData.combatAchievementTier);
     });
   },
 );

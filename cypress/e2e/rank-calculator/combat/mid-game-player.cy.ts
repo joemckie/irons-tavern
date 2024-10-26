@@ -18,7 +18,7 @@ describe('Combat - Mid-game player', () => {
 
       cy.findByLabelText(/^combat achievement tier points$/i).should(
         'have.text',
-        `${fixture.caTierPoints}`,
+        `${fixture.combatAchievementTierPoints}`,
       );
 
       cy.findByLabelText(/^combat point completion percentage$/i).should(

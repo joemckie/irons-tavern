@@ -1,15 +1,16 @@
 import { CombatAchievementTier } from '@/types/osrs';
-import { getCaIdMap } from './get-ca-id-map';
-import { getCaTierThresholds } from './get-ca-tier-thresholds';
+import { getCaIdMap } from './get-combat-achievement-id-map';
+import { getCombatAchievementTierThresholds } from './get-combat-achievement-tier-thresholds';
 
 export async function calculateCombatAchievementTier(
   combatAchievements: number[],
 ) {
   try {
     const caIdMap = await getCaIdMap();
-    const caTierThresholds = await getCaTierThresholds();
+    const combatAchievementTierThresholds =
+      await getCombatAchievementTierThresholds();
 
-    if (!caIdMap || !caTierThresholds) {
+    if (!caIdMap || !combatAchievementTierThresholds) {
       return null;
     }
 
@@ -17,8 +18,11 @@ export async function calculateCombatAchievementTier(
       (acc, val) => acc + caIdMap[val],
       0,
     );
-    const caTier = (
-      Object.entries(caTierThresholds) as [CombatAchievementTier, number][]
+    const combatAchievementTier = (
+      Object.entries(combatAchievementTierThresholds) as [
+        CombatAchievementTier,
+        number,
+      ][]
     ).reduceRight<CombatAchievementTier | null>((acc, [tier, threshold]) => {
       if (!acc && totalCaPoints >= threshold) {
         return tier;
@@ -27,7 +31,7 @@ export async function calculateCombatAchievementTier(
       return acc;
     }, null);
 
-    return caTier;
+    return combatAchievementTier;
   } catch {
     return null;
   }
