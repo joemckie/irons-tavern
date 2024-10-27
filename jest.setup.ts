@@ -1,4 +1,7 @@
 import '@testing-library/jest-dom/jest-globals';
-import ResizeObserver from 'resize-observer-polyfill';
+import { afterAll, beforeAll } from '@jest/globals';
+import { server } from './mocks/server';
 
-global.ResizeObserver = ResizeObserver;
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());

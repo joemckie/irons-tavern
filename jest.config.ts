@@ -7,7 +7,7 @@ const createJestConfig = nextJest({
 });
 
 const config = {
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-fixed-jsdom',
   preset: 'ts-jest',
   roots: ['<rootDir>'],
   modulePaths: [compilerOptions.baseUrl],
@@ -17,7 +17,11 @@ const config = {
     }),
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/style-mock.js',
   },
+  setupFiles: ['<rootDir>/jest.setup-env.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  testEnvironmentOptions: {
+    customExportConditions: ['msw'],
+  },
 } satisfies JestConfigWithTsJest;
 
 export default createJestConfig(config);

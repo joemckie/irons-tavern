@@ -7991,6 +7991,7 @@ __metadata:
     get-wild: "npm:^3.0.2"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
+    jest-fixed-jsdom: "npm:^0.0.6"
     lodash: "npm:^4.17.21"
     msw: "npm:^2.5.1"
     next: "npm:15.0.1"
@@ -8724,6 +8725,15 @@ __metadata:
     jest-mock: "npm:^29.7.0"
     jest-util: "npm:^29.7.0"
   checksum: 10c0/61f04fec077f8b1b5c1a633e3612fc0c9aa79a0ab7b05600683428f1e01a4d35346c474bde6f439f9fcc1a4aa9a2861ff852d079a43ab64b02105d1004b2592b
+  languageName: node
+  linkType: hard
+
+"jest-fixed-jsdom@npm:^0.0.6":
+  version: 0.0.6
+  resolution: "jest-fixed-jsdom@npm:0.0.6"
+  peerDependencies:
+    jest-environment-jsdom: ">=28.0.0"
+  checksum: 10c0/dc83c65ba68524e0479785b360a90210c7677ce3afca4d02e0d7125bf38ffec377a31dd1173c82cec3162d27a08553ec7326d1dd249347c5443d92eb2b61dc8c
   languageName: node
   linkType: hard
 

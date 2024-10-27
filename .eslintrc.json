@@ -40,7 +40,7 @@
         "devDependencies": [
           "cypress.config.ts",
           "jest.config.ts",
-          "jest.setup.ts",
+          "jest.setup*.ts",
           "test-utils/**",
           "cypress/**",
           "**/*.spec.ts",
