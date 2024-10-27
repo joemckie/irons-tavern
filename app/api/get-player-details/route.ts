@@ -53,9 +53,7 @@ export async function GET(
         error: 'No player provided',
         success: false,
       },
-      {
-        status: 400,
-      },
+      { status: 400 },
     );
   }
 
