@@ -32,6 +32,7 @@ export async function POST(
     return NextResponse.json({
       success: true,
       error: null,
+      data: null,
     });
   } catch (error) {
     console.error(error);

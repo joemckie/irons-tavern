@@ -17,12 +17,4 @@ export default {
       },
     ],
   },
-  ...(process.env.NODE_ENV === 'test'
-    ? {
-        logging: false,
-        compiler: {
-          removeConsole: true,
-        },
-      }
-    : {}),
 } satisfies NextConfig;

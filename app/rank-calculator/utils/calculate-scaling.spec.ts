@@ -1,4 +1,3 @@
-import { it, expect } from '@jest/globals';
 import { sub } from 'date-fns';
 import { calculateScaling } from './calculate-scaling';
 
