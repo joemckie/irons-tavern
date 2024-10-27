@@ -1,5 +1,9 @@
 import { constants } from '@/config/constants';
-import { PlayerStatsResponse } from '@/types/temple-api';
+import {
+  isPlayerStatsError,
+  PlayerStatsError,
+  PlayerStatsResponse,
+} from '@/types/temple-api';
 
 export async function getTempleData(player: string) {
   try {
@@ -10,10 +14,10 @@ export async function getTempleData(player: string) {
     const playerStatsResponse = await fetch(
       `${constants.temple.baseUrl}/api/player_stats.php?${playerStatsQueryParams}`,
     );
-    const playerStatsData: PlayerStatsResponse =
+    const playerStatsData: PlayerStatsResponse | PlayerStatsError =
       await playerStatsResponse.json();
 
-    return playerStatsData.data;
+    return isPlayerStatsError(playerStatsData) ? null : playerStatsData.data;
   } catch (e) {
     console.error(e);
 

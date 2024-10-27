@@ -5,6 +5,7 @@ import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
 import { RedisKeyNamespace } from '@/config/redis';
+import { FormData } from '@/types/rank-calculator';
 import * as collectionLog from './collection-log';
 import * as wikiSync from './wiki-sync';
 import * as formDataFixture from './misc/form-data';
@@ -98,25 +99,24 @@ const memberListHandler = http.get(
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
 );
 
-const redisHandler = http.post<PathParams, [string, string][]>(
-  `${constants.redisUrl}/pipeline`,
-  async ({ request }) => {
-    const [[, key]] = await request.json();
+const redisHandler = http.post<
+  PathParams,
+  [string, string][],
+  { result: FormData }[]
+>(`${constants.redisUrl}/pipeline`, async ({ request }) => {
+  const [[, key]] = await request.json();
 
-    switch (key) {
-      case `${RedisKeyNamespace.Submission}:riftletics`:
-        return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
-      case `${RedisKeyNamespace.Submission}:cousinofkos`:
-        return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
-      case `${RedisKeyNamespace.Submission}:clogging`:
-        return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
-      default:
-        return HttpResponse.json(`No Redis mock provided for ${key}`, {
-          status: 404,
-        });
-    }
-  },
-);
+  switch (key) {
+    case `${RedisKeyNamespace.Submission}:riftletics`:
+      return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
+    case `${RedisKeyNamespace.Submission}:cousinofkos`:
+      return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
+    case `${RedisKeyNamespace.Submission}:clogging`:
+      return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
+    default:
+      throw new Error(`No redis mock provided for ${key}`);
+  }
+});
 
 const passthroughHandlers = [
   'https://*.googleapis.com/*',

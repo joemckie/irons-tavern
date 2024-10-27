@@ -305,3 +305,9 @@ export interface PlayerStatsError {
     Message: string;
   };
 }
+
+export function isPlayerStatsError(
+  playerStatsResponse: PlayerStatsResponse | PlayerStatsError,
+): playerStatsResponse is PlayerStatsError {
+  return (playerStatsResponse as PlayerStatsError).error !== undefined;
+}

@@ -8003,7 +8003,7 @@ __metadata:
     jest-environment-jsdom: "npm:^29.7.0"
     jest-fixed-jsdom: "npm:^0.0.6"
     lodash: "npm:^4.17.21"
-    msw: "npm:^2.5.1"
+    msw: "npm:^2.5.2"
     next: "npm:15.0.1"
     pluralize: "npm:^8.0.0"
     postcss: "npm:^8"
@@ -9704,9 +9704,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"msw@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "msw@npm:2.5.1"
+"msw@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "msw@npm:2.5.2"
   dependencies:
     "@bundled-es-modules/cookie": "npm:^2.0.0"
     "@bundled-es-modules/statuses": "npm:^1.0.1"
@@ -9732,7 +9732,7 @@ __metadata:
       optional: true
   bin:
     msw: cli/index.js
-  checksum: 10c0/e02fc7b7d718466318906a28d5446561313da726ab656e271b528e2c010c4b20b0104d92742fc91d250990e12859adf06cb06d85fb952c8fb48c97bee8346bbc
+  checksum: 10c0/c0184efd356a037d22d0fde6581a45a75682274810fe96cc4b17ef8b220ce74bbf09926fcb94e101421d54b4ef0a10005ab8c6c1e65715bc06b382c08072e16b
   languageName: node
   linkType: hard
 

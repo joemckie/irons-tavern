@@ -181,7 +181,7 @@ export async function GET(
         ),
         acquiredItems: [
           ...new Set(
-            merge(playerDetails.acquiredItems, previouslyAcquiredItems),
+            playerDetails.acquiredItems.concat(previouslyAcquiredItems),
           ),
         ],
         combatAchievementTier: mergeCombatAchievementTier(

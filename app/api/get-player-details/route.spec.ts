@@ -1,0 +1,207 @@
+/**
+ * @jest-environment node
+ */
+
+import { NextRequest } from 'next/server';
+import { server } from '@/mocks/server';
+import { midGamePlayer } from '@/mocks/misc/form-data';
+import { http, HttpResponse } from 'msw';
+import { constants } from '@/config/constants';
+import { FormData, PlayerData } from '@/types/rank-calculator';
+import { merge } from 'lodash';
+import { DiaryTier } from '@/types/osrs';
+import { WikiSyncResponse } from '@/types/wiki';
+import { CollectionLogResponse } from '@/types/collection-log';
+import * as wikiSync from '@/mocks/wiki-sync';
+import * as collectionLog from '@/mocks/collection-log';
+import * as templePlayerStats from '@/mocks/temple-player-stats';
+import { GET, GetPlayerDetailsResponse } from './route';
+import { ClanMember } from '../update-member-list/route';
+
+function setup() {
+  const player = 'cousinofkos';
+  const request = {
+    nextUrl: {
+      searchParams: new URLSearchParams({
+        player,
+      }),
+    },
+  } as NextRequest;
+
+  // Clear the mocks before running tests to prevent inaccurate results
+  server.use(
+    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
+      HttpResponse.json<ClanMember[]>([]),
+    ),
+    http.post(`${constants.redisUrl}/pipeline`, async () =>
+      HttpResponse.json<{ result: null }[]>([{ result: null }]),
+    ),
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () => HttpResponse.json(wikiSync.emptyResponseFixture),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () => HttpResponse.json(collectionLog.emptyResponseFixture),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json(templePlayerStats.emptyResponseFixture),
+    ),
+  );
+
+  return {
+    request,
+    player,
+  };
+}
+
+it('returns the highest achievement diary values from the previous submission and API data', async () => {
+  const { request, player } = setup();
+
+  const savedSubmission = merge<FormData, DeepPartial<FormData>>(
+    midGamePlayer,
+    {
+      achievementDiaries: {
+        'Kourend & Kebos': DiaryTier.Hard,
+        'Lumbridge & Draynor': DiaryTier.Elite,
+      },
+    },
+  );
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: FormData }[]>([{ result: savedSubmission }]),
+    ),
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () =>
+        HttpResponse.json(
+          merge<WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
+            wikiSync.midGamePlayerFixture,
+            {
+              achievement_diaries: {
+                'Kourend & Kebos': {
+                  Elite: {
+                    complete: true,
+                  },
+                },
+                'Lumbridge & Draynor': {
+                  Elite: {
+                    complete: false,
+                  },
+                },
+              },
+            },
+          ),
+        ),
+    ),
+  );
+
+  const response = await GET(request);
+  const result: GetPlayerDetailsResponse = await response.json();
+  const expected = {
+    achievementDiaries: {
+      'Kourend & Kebos': DiaryTier.Elite,
+      'Lumbridge & Draynor': DiaryTier.Elite,
+    },
+  } satisfies DeepPartial<PlayerData>;
+
+  expect(result.error).toBeNull();
+  expect(result).toMatchObject({
+    data: expected,
+  });
+});
+
+it('merges the acquired items from the previous submission and API data', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify({
+            acquiredItems: {
+              'Bandos hilt': true,
+            },
+          } satisfies DeepPartial<FormData>),
+        },
+      ]),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () =>
+        HttpResponse.json<DeepPartial<CollectionLogResponse>>({
+          collectionLog: {
+            tabs: {
+              Bosses: {
+                'General Graardor': {
+                  items: [
+                    {
+                      name: 'Bandos hilt',
+                      obtained: false,
+                      id: 0,
+                      obtainedAt: null,
+                      quantity: 0,
+                      sequence: 0,
+                    },
+                    {
+                      name: 'Bandos chestplate',
+                      obtained: true,
+                      quantity: 1,
+                      id: 0,
+                      obtainedAt: null,
+                      sequence: 0,
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }),
+    ),
+  );
+  const response = await GET(request);
+  const result: GetPlayerDetailsResponse = await response.json();
+
+  expect(result).toMatchObject({
+    data: {
+      acquiredItems: ['Bandos chestplate', 'Bandos hilt'],
+    },
+  });
+});
+
+it.todo(
+  'returns the highest combat achievement tier from the previous submission and API data',
+);
+
+it.todo(
+  'returns the highest collection log count from the previous submission and API data',
+);
+
+it.todo('returns the highest ehb from the previous submission and API data');
+
+it.todo('returns the highest ehp from the previous submission and API data');
+
+it.todo(
+  'returns the highest total level from the previous submission and API data',
+);
+
+it.todo('returns the collection log total items from the API data');
+
+it.todo('returns the join date from the member list if present');
+
+it.todo(
+  'returns the join date from the previous submission if not found in member list',
+);
+
+it.todo(
+  'returns no join date if not in member list and no previous submission',
+);
+
+it.todo('returns the player name from the member list if present');
+
+it.todo('returns the rank structure from the previous submission if found');
+
+it.todo(
+  'returns the default rank structure if no previous submission is found',
+);
