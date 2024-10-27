@@ -10,6 +10,7 @@ import { RedisKeyNamespace } from '@/config/redis';
 import { Redis } from '@upstash/redis';
 import { merge } from 'lodash';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
+import { ApiResponse } from '@/types/api';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -39,15 +40,23 @@ const redis = Redis.fromEnv({
   keepAlive: false,
 });
 
+export type GetPlayerDetailsResponse = ApiResponse<PlayerData>;
+
 export async function GET(
   request: NextRequest,
-): Promise<NextResponse<PlayerData>> {
+): Promise<NextResponse<GetPlayerDetailsResponse>> {
   const player = request.nextUrl.searchParams.get('player');
 
   if (!player) {
-    return NextResponse.json(emptyResponse, {
-      status: 400,
-    });
+    return NextResponse.json(
+      {
+        error: 'No player provided',
+        success: false,
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   try {
@@ -64,7 +73,14 @@ export async function GET(
     );
 
     if (!hasThirdPartyData) {
-      return NextResponse.json(emptyResponse, { status: 404 });
+      return NextResponse.json(
+        {
+          error: null,
+          success: true,
+          data: emptyResponse,
+        },
+        { status: 404 },
+      );
     }
 
     const combatAchievementTier = wikiSyncData
@@ -146,46 +162,62 @@ export async function GET(
     } satisfies PlayerData;
 
     if (!previousSubmission) {
-      return NextResponse.json<PlayerData>(playerDetails);
+      return NextResponse.json({
+        success: true,
+        data: playerDetails,
+        error: null,
+      });
     }
 
     const previouslyAcquiredItems = Object.keys(
       previousSubmission.acquiredItems,
     ).filter((key) => previousSubmission.acquiredItems[key]);
 
-    return NextResponse.json<NonNullableFields<PlayerData>>({
-      achievementDiaries: mergeAchievementDiaries(
-        playerDetails.achievementDiaries,
-        previousSubmission.achievementDiaries,
-      ),
-      acquiredItems: [
-        ...new Set(merge(playerDetails.acquiredItems, previouslyAcquiredItems)),
-      ],
-      combatAchievementTier: mergeCombatAchievementTier(
-        playerDetails.combatAchievementTier,
-        previousSubmission.combatAchievementTier,
-      ),
-      collectionLogCount: Math.max(
-        previousSubmission.collectionLogCount,
-        playerDetails.collectionLogCount ?? 0,
-      ),
-      ehb: Math.max(previousSubmission.ehb, playerDetails.ehb ?? 0),
-      ehp: Math.max(previousSubmission.ehp, playerDetails.ehp ?? 0),
-      totalLevel: Math.max(
-        previousSubmission.totalLevel,
-        playerDetails.totalLevel ?? 0,
-      ),
-      collectionLogTotal: collectionLogTotal ?? 0,
-      joinDate: playerDetails.joinDate ?? previousSubmission.joinDate,
-      playerName: playerDetails.playerName,
-      rankStructure:
-        previousSubmission.rankStructure ?? playerDetails.rankStructure,
+    return NextResponse.json<ApiResponse<NonNullableFields<PlayerData>>>({
+      success: true,
+      error: null,
+      data: {
+        achievementDiaries: mergeAchievementDiaries(
+          playerDetails.achievementDiaries,
+          previousSubmission.achievementDiaries,
+        ),
+        acquiredItems: [
+          ...new Set(
+            merge(playerDetails.acquiredItems, previouslyAcquiredItems),
+          ),
+        ],
+        combatAchievementTier: mergeCombatAchievementTier(
+          playerDetails.combatAchievementTier,
+          previousSubmission.combatAchievementTier,
+        ),
+        collectionLogCount: Math.max(
+          previousSubmission.collectionLogCount,
+          playerDetails.collectionLogCount ?? 0,
+        ),
+        ehb: Math.max(previousSubmission.ehb, playerDetails.ehb ?? 0),
+        ehp: Math.max(previousSubmission.ehp, playerDetails.ehp ?? 0),
+        totalLevel: Math.max(
+          previousSubmission.totalLevel,
+          playerDetails.totalLevel ?? 0,
+        ),
+        collectionLogTotal: collectionLogTotal ?? 0,
+        joinDate: playerDetails.joinDate ?? previousSubmission.joinDate,
+        playerName: playerDetails.playerName,
+        rankStructure:
+          previousSubmission.rankStructure ?? playerDetails.rankStructure,
+      },
     });
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json(emptyResponse, {
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        error,
+        success: false,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

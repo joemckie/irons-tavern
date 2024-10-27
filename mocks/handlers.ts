@@ -1,9 +1,10 @@
 import { constants } from '@/config/constants';
-import { http, HttpResponse, passthrough } from 'msw';
+import { http, HttpResponse, passthrough, PathParams } from 'msw';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
+import { RedisKeyNamespace } from '@/config/redis';
 import * as endGamePlayerFixture from './end-game-player';
 import * as midGamePlayerFixture from './mid-game-player';
 import * as earlyGamePlayerFixture from './early-game-player';
@@ -97,12 +98,31 @@ const memberListHandler = http.get(
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
 );
 
+const redisHandler = http.post<PathParams, [string, string][]>(
+  `${constants.redisUrl}/pipeline`,
+  async ({ request }) => {
+    const [[, key]] = await request.json();
+
+    switch (key) {
+      case `${RedisKeyNamespace.Submission}:riftletics`:
+        return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
+      case `${RedisKeyNamespace.Submission}:cousinofkos`:
+        return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
+      case `${RedisKeyNamespace.Submission}:clogging`:
+        return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
+      default:
+        return HttpResponse.json(`No Redis mock provided for ${key}`, {
+          status: 404,
+        });
+    }
+  },
+);
+
 const passthroughHandlers = [
   'https://*.googleapis.com/*',
   'https://*.gstatic.com/*',
   `${constants.publicUrl}/api/*`,
   'https://oldschool.runescape.wiki/images/*',
-  `${constants.redisUrl}/*`,
 ].map((url) => http.all(url, () => passthrough()));
 
 export const handlers = [
@@ -111,5 +131,6 @@ export const handlers = [
   templePlayerStatsHandler,
   memberListHandler,
   wikiApiHandler,
+  redisHandler,
   ...passthroughHandlers,
 ];

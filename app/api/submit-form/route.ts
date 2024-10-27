@@ -9,7 +9,7 @@ const redis = Redis.fromEnv({
 
 export async function POST(
   request: NextRequest,
-): Promise<NextResponse<ApiResponse>> {
+): Promise<NextResponse<ApiResponse<void>>> {
   const { playerName, ...data }: FormData = await request.json();
 
   try {
@@ -19,10 +19,29 @@ export async function POST(
       data,
     );
 
-    return NextResponse.json({ success: !!result });
+    if (!result) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Failed to save submission',
+        },
+        { status: 500 },
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      error: null,
+    });
   } catch (error) {
     console.error(error);
 
-    return NextResponse.json({ success: false }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error,
+      },
+      { status: 500 },
+    );
   }
 }
