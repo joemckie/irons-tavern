@@ -1,6 +1,6 @@
 import { it, expect } from '@jest/globals';
 import { render, screen } from '@/test-utils/testing-library';
-import * as formDataMocks from '@/fixtures/rank-calculator/form-data';
+import * as formDataMocks from '@/mocks/misc/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generatePlayerTests } from '@/test-utils/generate-player-tests';
 import { format } from 'date-fns';

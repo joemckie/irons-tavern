@@ -7,6 +7,7 @@ import { PlayerStatsResponse } from '@/types/temple-api';
 import * as endGamePlayerFixture from './end-game-player';
 import * as midGamePlayerFixture from './mid-game-player';
 import * as earlyGamePlayerFixture from './early-game-player';
+import * as formDataFixture from './misc/form-data';
 import { memberListFixture } from './misc/member-list';
 import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
 import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tiers';
