@@ -5,10 +5,10 @@ import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
 import { RedisKeyNamespace } from '@/config/redis';
-import * as endGamePlayerFixture from './end-game-player';
-import * as midGamePlayerFixture from './mid-game-player';
-import * as earlyGamePlayerFixture from './early-game-player';
+import * as collectionLog from './collection-log';
+import * as wikiSync from './wiki-sync';
 import * as formDataFixture from './misc/form-data';
+import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';
 import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
 import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tiers';
@@ -22,15 +22,15 @@ const templePlayerStatsHandler = http.get(
     switch (player?.toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<PlayerStatsResponse>(
-          earlyGamePlayerFixture.templePlayerStatsResponse,
+          templePlayerStats.earlyGamePlayerFixture,
         );
       case 'clogging':
         return HttpResponse.json<PlayerStatsResponse>(
-          endGamePlayerFixture.templePlayerStatsResponse,
+          templePlayerStats.midGamePlayerFixture,
         );
       default:
         return HttpResponse.json<PlayerStatsResponse>(
-          midGamePlayerFixture.templePlayerStatsResponse,
+          templePlayerStats.endGamePlayerFixture,
         );
     }
   },
@@ -42,15 +42,15 @@ const collectionLogHandler = http.get(
     switch (params.player.toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<CollectionLogResponse>(
-          earlyGamePlayerFixture.collectionLogResponse,
+          collectionLog.earlyGamePlayerFixture,
         );
       case 'clogging':
         return HttpResponse.json<CollectionLogResponse>(
-          endGamePlayerFixture.collectionLogResponse,
+          collectionLog.midGamePlayerFixture,
         );
       default:
         return HttpResponse.json<CollectionLogResponse>(
-          midGamePlayerFixture.collectionLogResponse,
+          collectionLog.endGamePlayerFixture,
         );
     }
   },
@@ -62,15 +62,15 @@ const wikiSyncHandler = http.get(
     switch (params.player.toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<WikiSyncResponse>(
-          earlyGamePlayerFixture.wikiSyncResponse,
+          wikiSync.earlyGamePlayerFixture,
         );
       case 'clogging':
         return HttpResponse.json<WikiSyncResponse>(
-          endGamePlayerFixture.wikiSyncResponse,
+          wikiSync.midGamePlayerFixture,
         );
       default:
         return HttpResponse.json<WikiSyncResponse>(
-          midGamePlayerFixture.wikiSyncResponse,
+          wikiSync.endGamePlayerFixture,
         );
     }
   },

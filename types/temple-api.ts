@@ -298,3 +298,10 @@ export interface PlayerStats {
 export interface PlayerStatsResponse {
   data: PlayerStats;
 }
+
+export interface PlayerStatsError {
+  error: {
+    Code: number;
+    Message: string;
+  };
+}
