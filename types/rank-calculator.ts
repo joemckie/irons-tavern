@@ -19,18 +19,18 @@ export interface PlayerData {
   joinDate: Date | null;
   collectionLogCount: number | null;
   collectionLogTotal: number | null;
-  combatAchievementTier: CombatAchievementTier | null;
+  combatAchievementTier: CombatAchievementTier | 'None' | null;
   ehp: number | null;
   ehb: number | null;
   totalLevel: number | null;
   playerName: string | null;
-  rankStructure: RankStructure;
+  rankStructure: RankStructure | null;
 }
 
 export interface FormData {
   acquiredItems: Record<string, boolean>;
   achievementDiaries: AchievementDiaryMap;
-  joinDate: Date | null;
+  joinDate: Date;
   collectionLogCount: number;
   combatAchievementTier: CombatAchievementTier | 'None';
   ehb: number;

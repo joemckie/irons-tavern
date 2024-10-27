@@ -18,7 +18,8 @@ import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
 import { getPlayerMeta } from './utils/get-player-meta';
 import { parseLevels } from './utils/parse-levels';
 import { getTempleData } from './utils/get-temple-data';
-import { formatPreviousSubmission } from './utils/format-previous-submission';
+import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
+import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 
 const emptyResponse = {
   achievementDiaries: null,
@@ -34,7 +35,9 @@ const emptyResponse = {
   rankStructure: RankStructure.Standard,
 } satisfies PlayerData;
 
-const redis = Redis.fromEnv();
+const redis = Redis.fromEnv({
+  keepAlive: false,
+});
 
 export async function GET(
   request: NextRequest,
@@ -139,14 +142,45 @@ export async function GET(
       ehp: ehp ? Math.round(ehp) : null,
       totalLevel,
       playerName: playerMeta?.rsn ?? player,
-      rankStructure: null,
-    };
-    const formattedPreviousSubmission =
-      formatPreviousSubmission(previousSubmission);
+      rankStructure: RankStructure.Standard,
+    } satisfies PlayerData;
 
-    return NextResponse.json<PlayerData>(
-      merge(playerDetails, formattedPreviousSubmission),
-    );
+    if (!previousSubmission) {
+      return NextResponse.json<PlayerData>(playerDetails);
+    }
+
+    const previouslyAcquiredItems = Object.keys(
+      previousSubmission.acquiredItems,
+    ).filter((key) => previousSubmission.acquiredItems[key]);
+
+    return NextResponse.json<NonNullableFields<PlayerData>>({
+      achievementDiaries: mergeAchievementDiaries(
+        playerDetails.achievementDiaries,
+        previousSubmission.achievementDiaries,
+      ),
+      acquiredItems: [
+        ...new Set(merge(playerDetails.acquiredItems, previouslyAcquiredItems)),
+      ],
+      combatAchievementTier: mergeCombatAchievementTier(
+        playerDetails.combatAchievementTier,
+        previousSubmission.combatAchievementTier,
+      ),
+      collectionLogCount: Math.max(
+        previousSubmission.collectionLogCount,
+        playerDetails.collectionLogCount ?? 0,
+      ),
+      ehb: Math.max(previousSubmission.ehb, playerDetails.ehb ?? 0),
+      ehp: Math.max(previousSubmission.ehp, playerDetails.ehp ?? 0),
+      totalLevel: Math.max(
+        previousSubmission.totalLevel,
+        playerDetails.totalLevel ?? 0,
+      ),
+      collectionLogTotal: collectionLogTotal ?? 0,
+      joinDate: playerDetails.joinDate ?? previousSubmission.joinDate,
+      playerName: playerDetails.playerName,
+      rankStructure:
+        previousSubmission.rankStructure ?? playerDetails.rankStructure,
+    });
   } catch (error) {
     console.error(error);
 

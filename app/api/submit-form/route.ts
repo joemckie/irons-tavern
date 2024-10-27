@@ -3,7 +3,9 @@ import { FormData } from '@/types/rank-calculator';
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
 
-const redis = Redis.fromEnv();
+const redis = Redis.fromEnv({
+  keepAlive: false,
+});
 
 export async function POST(
   request: NextRequest,

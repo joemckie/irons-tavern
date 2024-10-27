@@ -30,7 +30,7 @@ export const getPlayerDetails = async (player: string) => {
       Varrock: 'None',
       Wilderness: 'None',
     },
-    joinDate: data.joinDate ? new Date(data.joinDate) : null,
+    joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
     collectionLogCount: data.collectionLogCount ?? 0,
     playerName: data.playerName ?? player,
     combatAchievementTier: data.combatAchievementTier ?? 'None',
