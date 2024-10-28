@@ -4,7 +4,7 @@ import { mergeWith } from 'lodash';
 
 export function mergeAchievementDiaries(
   playerDetails: AchievementDiaryMap | null,
-  previousSubmission: AchievementDiaryMap,
+  previousSubmission: AchievementDiaryMap | null,
 ) {
   const diaryTiers = Object.keys(DiaryTier);
 

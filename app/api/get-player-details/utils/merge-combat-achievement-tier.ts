@@ -2,17 +2,22 @@ import { CombatAchievementTier } from '@/types/osrs';
 
 export function mergeCombatAchievementTier(
   playerDetailsTier: CombatAchievementTier | null,
-  previousSubmissionTier: CombatAchievementTier | 'None',
-): CombatAchievementTier | 'None' {
-  if (!playerDetailsTier) {
+  previousSubmissionTier: CombatAchievementTier | 'None' | null,
+): CombatAchievementTier | 'None' | null {
+  if (!playerDetailsTier && !previousSubmissionTier) {
+    return null;
+  }
+
+  if (!playerDetailsTier && previousSubmissionTier) {
     return previousSubmissionTier;
   }
 
   const combatAchievementTiers = Object.keys(CombatAchievementTier);
-  const playerDetailsTierIndex =
-    combatAchievementTiers.indexOf(playerDetailsTier);
+  const playerDetailsTierIndex = combatAchievementTiers.indexOf(
+    playerDetailsTier ?? '',
+  );
   const previousSubmissionTierIndex = combatAchievementTiers.indexOf(
-    previousSubmissionTier,
+    previousSubmissionTier ?? '',
   );
 
   return playerDetailsTierIndex > previousSubmissionTierIndex

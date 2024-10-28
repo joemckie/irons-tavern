@@ -84,6 +84,7 @@ export async function GET(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
+    // TODO: Implement GIMs
     const {
       Im_ehb: ehb = null,
       Im_ehp: ehp = null,
@@ -144,64 +145,43 @@ export async function GET(
         : [];
 
     const playerMeta = await getPlayerMeta(player);
-    const playerDetails = {
-      acquiredItems,
-      achievementDiaries,
-      combatAchievementTier,
-      collectionLogCount,
-      collectionLogTotal,
-      joinDate: playerMeta?.joinDate ?? null,
-      ehb: ehb ? Math.round(ehb) : null,
-      ehp: ehp ? Math.round(ehp) : null,
-      totalLevel,
-      playerName: playerMeta?.rsn ?? player,
-      rankStructure: RankStructure.Standard,
-    } satisfies PlayerData;
+    const previouslyAcquiredItems = previousSubmission
+      ? Object.keys(previousSubmission.acquiredItems).filter(
+          (key) => previousSubmission.acquiredItems[key],
+        )
+      : [];
 
-    if (!previousSubmission) {
-      return NextResponse.json({
-        success: true,
-        data: playerDetails,
-        error: null,
-      });
-    }
-
-    const previouslyAcquiredItems = Object.keys(
-      previousSubmission.acquiredItems,
-    ).filter((key) => previousSubmission.acquiredItems[key]);
-
-    return NextResponse.json<ApiResponse<NonNullableFields<PlayerData>>>({
+    return NextResponse.json<ApiResponse<PlayerData>>({
       success: true,
       error: null,
       data: {
         achievementDiaries: mergeAchievementDiaries(
-          playerDetails.achievementDiaries,
-          previousSubmission.achievementDiaries,
+          achievementDiaries,
+          previousSubmission?.achievementDiaries ?? null,
         ),
         acquiredItems: [
-          ...new Set(
-            playerDetails.acquiredItems.concat(previouslyAcquiredItems),
-          ),
+          ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
         ],
         combatAchievementTier: mergeCombatAchievementTier(
-          playerDetails.combatAchievementTier,
-          previousSubmission.combatAchievementTier,
+          combatAchievementTier,
+          previousSubmission?.combatAchievementTier ?? null,
         ),
         collectionLogCount: Math.max(
-          previousSubmission.collectionLogCount,
-          playerDetails.collectionLogCount ?? 0,
+          collectionLogCount ?? 0,
+          previousSubmission?.collectionLogCount ?? 0,
         ),
-        ehb: Math.max(previousSubmission.ehb, playerDetails.ehb ?? 0),
-        ehp: Math.max(previousSubmission.ehp, playerDetails.ehp ?? 0),
+        ehb: Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0),
+        ehp: Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0),
         totalLevel: Math.max(
-          previousSubmission.totalLevel,
-          playerDetails.totalLevel ?? 0,
+          totalLevel ?? 0,
+          previousSubmission?.totalLevel ?? 0,
         ),
         collectionLogTotal: collectionLogTotal ?? 0,
-        joinDate: playerDetails.joinDate ?? previousSubmission.joinDate,
-        playerName: playerDetails.playerName,
+        joinDate:
+          playerMeta?.joinDate ?? previousSubmission?.joinDate ?? new Date(),
+        playerName: playerMeta?.rsn ?? player,
         rankStructure:
-          previousSubmission.rankStructure ?? playerDetails.rankStructure,
+          previousSubmission?.rankStructure ?? RankStructure.Standard,
       },
     });
   } catch (error) {
@@ -212,9 +192,7 @@ export async function GET(
         error,
         success: false,
       },
-      {
-        status: 500,
-      },
+      { status: 500 },
     );
   }
 }
