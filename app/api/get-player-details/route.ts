@@ -167,8 +167,8 @@ export async function GET(
           collectionLogCount ?? 0,
           previousSubmission?.collectionLogCount ?? 0,
         ),
-        ehb: Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0),
-        ehp: Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0),
+        ehb: Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0)),
+        ehp: Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0)),
         totalLevel: Math.max(
           totalLevel ?? 0,
           previousSubmission?.totalLevel ?? 0,

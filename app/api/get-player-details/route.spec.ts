@@ -833,3 +833,41 @@ it('returns the correct efficiency values for ironman accounts', async () => {
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(78);
 });
+
+it('rounds the ehb value', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehb: 90.99,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(91);
+});
+
+it('rounds the ehp value', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehp: 13.37,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehp).toEqual(13);
+});
