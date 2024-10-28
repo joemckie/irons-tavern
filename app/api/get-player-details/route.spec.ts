@@ -4,18 +4,24 @@
 
 import { NextRequest } from 'next/server';
 import { server } from '@/mocks/server';
-import { midGamePlayer } from '@/mocks/misc/form-data';
 import { http, HttpResponse } from 'msw';
 import { constants } from '@/config/constants';
-import { FormData, PlayerData } from '@/types/rank-calculator';
+import {
+  AchievementDiaryMap,
+  FormData,
+  PlayerData,
+} from '@/types/rank-calculator';
 import { merge } from 'lodash';
-import { DiaryTier } from '@/types/osrs';
+import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { WikiSyncResponse } from '@/types/wiki';
 import { CollectionLogResponse } from '@/types/collection-log';
+import * as formData from '@/mocks/misc/form-data';
 import * as wikiSync from '@/mocks/wiki-sync';
 import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
-import { GET, GetPlayerDetailsResponse } from './route';
+import { ApiSuccess } from '@/types/api';
+import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
+import { GET } from './route';
 import { ClanMember } from '../update-member-list/route';
 
 function setup() {
@@ -58,8 +64,9 @@ function setup() {
 it('returns the highest achievement diary values from the previous submission and API data', async () => {
   const { request, player } = setup();
 
-  const savedSubmission = merge<FormData, DeepPartial<FormData>>(
-    midGamePlayer,
+  const savedSubmission = merge<unknown, FormData, DeepPartial<FormData>>(
+    {},
+    formData.midGamePlayer,
     {
       achievementDiaries: {
         'Kourend & Kebos': DiaryTier.Hard,
@@ -76,7 +83,8 @@ it('returns the highest achievement diary values from the previous submission an
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       () =>
         HttpResponse.json(
-          merge<WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
+          merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
+            {},
             wikiSync.midGamePlayerFixture,
             {
               achievement_diaries: {
@@ -98,17 +106,14 @@ it('returns the highest achievement diary values from the previous submission an
   );
 
   const response = await GET(request);
-  const result: GetPlayerDetailsResponse = await response.json();
-  const expected = {
-    achievementDiaries: {
-      'Kourend & Kebos': DiaryTier.Elite,
-      'Lumbridge & Draynor': DiaryTier.Elite,
-    },
-  } satisfies DeepPartial<PlayerData>;
+  const result: ApiSuccess<PlayerData> = await response.json();
 
   expect(result.error).toBeNull();
-  expect(result).toMatchObject({
-    data: expected,
+  expect(result.data.achievementDiaries).toMatchObject<
+    Partial<AchievementDiaryMap>
+  >({
+    'Kourend & Kebos': DiaryTier.Elite,
+    'Lumbridge & Draynor': DiaryTier.Elite,
   });
 });
 
@@ -161,21 +166,128 @@ it('merges the acquired items from the previous submission and API data', async 
     ),
   );
   const response = await GET(request);
-  const result: GetPlayerDetailsResponse = await response.json();
+  const result: ApiSuccess<PlayerData> = await response.json();
 
-  expect(result).toMatchObject({
-    data: {
-      acquiredItems: ['Bandos chestplate', 'Bandos hilt'],
-    },
-  });
+  expect(result.data.acquiredItems).toEqual([
+    'Bandos chestplate',
+    'Bandos hilt',
+  ]);
+});
+
+it('returns the combat achievement tier from the API data if it is higher than the previous submission', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { combatAchievementTier: CombatAchievementTier.Grandmaster },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () =>
+        HttpResponse.json(
+          merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
+            {},
+            wikiSync.midGamePlayerFixture,
+            {
+              combat_achievements: Object.values(
+                combatAchievementListFixture.query.results,
+              )
+                .filter(
+                  ({ printouts }) =>
+                    printouts['Combat Achievement JSON'].length,
+                )
+                .map((_, i) => i),
+            },
+          ),
+        ),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.combatAchievementTier).toEqual(
+    CombatAchievementTier.Grandmaster,
+  );
+});
+
+it('returns the combat achievement tier from the previous submission if it is higher than the API data', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { combatAchievementTier: CombatAchievementTier.Hard },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () =>
+        HttpResponse.json({
+          ...wikiSync.midGamePlayerFixture,
+          combat_achievements: [1],
+        }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.combatAchievementTier).toEqual(CombatAchievementTier.Hard);
+});
+
+it('returns the collection log count from the previous submission if it is higher than the API data', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              { ...formData.midGamePlayer },
+              {
+                combatAchievementTier: CombatAchievementTier.Hard,
+              },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () =>
+        HttpResponse.json({
+          ...wikiSync.midGamePlayerFixture,
+          combat_achievements: [1],
+        }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.combatAchievementTier).toEqual(CombatAchievementTier.Hard);
 });
 
 it.todo(
-  'returns the highest combat achievement tier from the previous submission and API data',
-);
-
-it.todo(
-  'returns the highest collection log count from the previous submission and API data',
+  'returns the collection log count from the API data if it is higher than the previous submission',
 );
 
 it.todo('returns the highest ehb from the previous submission and API data');

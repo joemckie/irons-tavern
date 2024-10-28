@@ -8,7 +8,6 @@ import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { RedisKeyNamespace } from '@/config/redis';
 import { Redis } from '@upstash/redis';
-import { merge } from 'lodash';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { isItemAcquired } from './utils/is-item-acquired';

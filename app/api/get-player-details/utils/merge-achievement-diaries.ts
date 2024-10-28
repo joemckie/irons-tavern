@@ -9,6 +9,7 @@ export function mergeAchievementDiaries(
   const diaryTiers = Object.keys(DiaryTier);
 
   return mergeWith(
+    {},
     playerDetails,
     previousSubmission,
     (playerDetailsVal: DiaryTier, previousSubmissionVal: DiaryTier) => {
