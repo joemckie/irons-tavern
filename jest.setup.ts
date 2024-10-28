@@ -15,16 +15,12 @@ if (/\*|msw/.test(process.env.DEBUG ?? '')) {
       response.statusText,
     );
   });
-
-  server.events.on('unhandledException', ({ request, error }) => {
-    console.log(
-      '%s %s errored! See details below.',
-      request.method,
-      request.url,
-    );
-    console.error(error);
-  });
 }
+
+server.events.on('unhandledException', ({ request, error }) => {
+  console.log('%s %s errored! See details below.', request.method, request.url);
+  console.error(error);
+});
 
 beforeAll(() =>
   server.listen({

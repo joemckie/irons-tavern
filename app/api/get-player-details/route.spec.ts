@@ -29,13 +29,9 @@ import { ClanMember } from '../update-member-list/route';
 
 function setup() {
   const player = 'cousinofkos';
-  const request = {
-    nextUrl: {
-      searchParams: new URLSearchParams({
-        player,
-      }),
-    },
-  } as NextRequest;
+  const request = new NextRequest(
+    `${constants.publicUrl}/api/get-player-details?player=${player}`,
+  );
 
   // Clear the mocks before running tests to prevent inaccurate results
   server.use(

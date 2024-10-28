@@ -10,9 +10,8 @@ const redis = Redis.fromEnv({
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<void>>> {
-  const { playerName, ...data }: FormData = await request.json();
-
   try {
+    const { playerName, ...data }: FormData = await request.json();
     const result = await redis.json.set(
       `submission:${playerName.toLowerCase()}`,
       '$',
