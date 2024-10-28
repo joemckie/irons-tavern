@@ -69,7 +69,7 @@ export async function GET(
       wikiSyncData || collectionLogData || templeData,
     );
 
-    if (!hasThirdPartyData) {
+    if (!hasThirdPartyData && !previousSubmission) {
       return NextResponse.json(
         {
           error: null,

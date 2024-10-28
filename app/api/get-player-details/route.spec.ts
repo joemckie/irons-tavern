@@ -10,6 +10,7 @@ import {
   AchievementDiaryMap,
   FormData,
   PlayerData,
+  RankStructure,
 } from '@/types/rank-calculator';
 import { merge } from 'lodash';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
@@ -22,6 +23,7 @@ import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { PlayerStatsResponse } from '@/types/temple-api';
+import { Rank } from '@/config/enums';
 import { GET } from './route';
 import { ClanMember } from '../update-member-list/route';
 
@@ -128,6 +130,7 @@ it('merges the acquired items from the previous submission and API data', async 
           result: JSON.stringify({
             acquiredItems: {
               'Bandos hilt': true,
+              'Bandos boots': false,
             },
           } satisfies DeepPartial<FormData>),
         },
@@ -158,6 +161,14 @@ it('merges the acquired items from the previous submission and API data', async 
                       obtainedAt: null,
                       sequence: 0,
                     },
+                    {
+                      name: 'Bandos boots',
+                      obtained: true,
+                      quantity: 1,
+                      id: 0,
+                      obtainedAt: null,
+                      sequence: 0,
+                    },
                   ],
                 },
               },
@@ -171,6 +182,7 @@ it('merges the acquired items from the previous submission and API data', async 
 
   expect(result.data.acquiredItems).toEqual([
     'Bandos chestplate',
+    'Bandos boots',
     'Bandos hilt',
   ]);
 });
@@ -459,13 +471,69 @@ it('returns the ehp from the previous submission if it is higher than the API da
   expect(result.data.ehp).toEqual(100);
 });
 
-it.todo(
-  'returns the total level from the API data if it is higher than the previous submission',
-);
+it('returns the total level from the API data if it is higher than the previous submission', async () => {
+  const { request } = setup();
 
-it.todo(
-  'returns the total level from the previous submission if it is higher than the API data',
-);
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { totalLevel: 100 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Overall_level: 1000,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.totalLevel).toEqual(1000);
+});
+
+it('returns the total level from the previous submission if it is higher than the API data', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { totalLevel: 1000 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Overall_level: 100,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.totalLevel).toEqual(1000);
+});
 
 it('returns the collection log total items from the API data', async () => {
   const { player, request } = setup();
@@ -493,24 +561,141 @@ it('returns the collection log total items from the API data', async () => {
   expect(result.data.collectionLogTotal).toEqual(1234);
 });
 
-it.todo('returns the join date from the member list if present');
+it('returns the join date from the member list if present', async () => {
+  const { player, request } = setup();
 
-it.todo(
-  'returns the join date from the previous submission if not found in member list',
-);
+  server.use(
+    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
+      HttpResponse.json<ClanMember[]>([
+        {
+          joinedDate: '01-Jan-2020',
+          rank: Rank.Air,
+          rsn: player,
+        },
+      ]),
+    ),
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { joinDate: new Date('2021-01-01') },
+            ),
+          ),
+        },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
 
-it.todo(
-  'returns no join date if not in member list and no previous submission',
-);
+  expect(result.data.joinDate).toEqual(new Date('2020-01-01').toISOString());
+});
 
-it.todo('returns the player name from the member list if present');
+it('returns the join date from the previous submission if not found in member list', async () => {
+  const { request } = setup();
 
-it.todo(
-  'returns the player name from the query parameters if not found in member list',
-);
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { joinDate: new Date('2021-01-01') },
+            ),
+          ),
+        },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
 
-it.todo('returns the rank structure from the previous submission if found');
+  expect(result.data.joinDate).toEqual(new Date('2021-01-01').toISOString());
+});
 
-it.todo(
-  'returns the default rank structure if no previous submission is found',
-);
+it('returns no join date if not in member list and no previous submission is found', async () => {
+  const { request } = setup();
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.joinDate).toBeNull();
+});
+
+it('returns the player name from the member list if present', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        { result: JSON.stringify(formData.midGamePlayer) },
+      ]),
+    ),
+    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
+      HttpResponse.json<ClanMember[]>([
+        {
+          joinedDate: '01-Jan-2020',
+          rank: Rank.Air,
+          rsn: 'CousinOfKos',
+        },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.playerName).toEqual('CousinOfKos');
+});
+
+it('returns the player name from the query parameters if not found in member list', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        { result: JSON.stringify(formData.midGamePlayer) },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.playerName).toEqual(player);
+});
+
+it('returns the rank structure from the previous submission if found', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { rankStructure: RankStructure.Admin },
+            ),
+          ),
+        },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.rankStructure).toEqual(RankStructure.Admin);
+});
+
+it('returns the default rank structure if no previous submission is found', async () => {
+  const { request } = setup();
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.rankStructure).toEqual(RankStructure.Standard);
+});
