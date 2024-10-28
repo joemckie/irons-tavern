@@ -20,11 +20,11 @@ import * as formData from '@/mocks/misc/form-data';
 import * as wikiSync from '@/mocks/wiki-sync';
 import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
-import { ApiSuccess } from '@/types/api';
+import { ApiError, ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { PlayerStatsResponse } from '@/types/temple-api';
 import { Rank } from '@/config/enums';
-import { GET } from './route';
+import { emptyResponse, GET } from './route';
 import { ClanMember } from '../update-member-list/route';
 
 function setup() {
@@ -699,3 +699,31 @@ it('returns the default rank structure if no previous submission is found', asyn
 
   expect(result.data.rankStructure).toEqual(RankStructure.Standard);
 });
+
+it('returns an empty response if no third party data is found', async () => {
+  const { request } = setup();
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(404);
+  expect(result).toMatchObject<ApiSuccess<PlayerData>>({
+    success: true,
+    error: null,
+    data: emptyResponse,
+  });
+});
+
+it('returns an error if no player is provided', async () => {
+  const response = await GET(
+    new NextRequest(`${constants.publicUrl}/api/get-player-details`),
+  );
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(400);
+  expect(result).toMatchObject<ApiError>({
+    error: 'No player provided',
+    success: false,
+  });
+});
+
+it.todo('returns the correct ehp/ehb for GIM accounts');

@@ -21,7 +21,11 @@ import { getTempleData } from './utils/get-temple-data';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 
-const emptyResponse = {
+const redis = Redis.fromEnv({
+  keepAlive: false,
+});
+
+export const emptyResponse = {
   achievementDiaries: null,
   acquiredItems: null,
   joinDate: null,
@@ -34,10 +38,6 @@ const emptyResponse = {
   playerName: null,
   rankStructure: RankStructure.Standard,
 } satisfies PlayerData;
-
-const redis = Redis.fromEnv({
-  keepAlive: false,
-});
 
 export type GetPlayerDetailsResponse = ApiResponse<PlayerData>;
 
@@ -86,6 +86,8 @@ export async function GET(
 
     // TODO: Implement GIMs
     const {
+      info,
+      // g
       Im_ehb: ehb = null,
       Im_ehp: ehp = null,
       Overall_level: totalLevel = null,
