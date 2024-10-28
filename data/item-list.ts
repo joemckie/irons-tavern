@@ -761,7 +761,9 @@ export const itemList: ItemCategoryMap = {
       combatAchievementItem({
         name: '6 Jads',
         points: 100,
-        requiredCombatAchievements: [0],
+        requiredCombatAchievements: [
+          363, // ID #363 - https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
+        ],
       }),
     ],
   },

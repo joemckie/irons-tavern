@@ -16,6 +16,7 @@ interface IsItemAcquiredData {
   achievementDiaries: AchievementDiaryMap | null;
   levels: LevelMap | null;
   musicTracks: Record<string, boolean> | null;
+  combatAchievements: number[] | null;
 }
 
 export function isItemAcquired(
@@ -26,6 +27,7 @@ export function isItemAcquired(
     achievementDiaries,
     levels,
     musicTracks,
+    combatAchievements,
   }: IsItemAcquiredData,
 ) {
   if (isCollectionLogItem(item)) {
@@ -39,7 +41,9 @@ export function isItemAcquired(
   }
 
   if (isCombatAchievementItem(item)) {
-    return false;
+    return item.requiredCombatAchievements.every((id) =>
+      Boolean(combatAchievements?.includes(id)),
+    );
   }
 
   if (isQuestItem(item)) {
