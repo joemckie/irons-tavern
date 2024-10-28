@@ -21,9 +21,9 @@ import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
+import { PlayerStatsResponse } from '@/types/temple-api';
 import { GET } from './route';
 import { ClanMember } from '../update-member-list/route';
-import { PlayerStatsResponse } from '@/types/temple-api';
 
 function setup() {
   const player = 'cousinofkos';
