@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom/jest-globals';
+import '@testing-library/jest-dom';
 import { server } from './mocks/server';
 
 if (/\*|msw/.test(process.env.DEBUG ?? '')) {

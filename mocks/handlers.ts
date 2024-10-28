@@ -25,54 +25,60 @@ const templePlayerStatsHandler = http.get(
         return HttpResponse.json<PlayerStatsResponse>(
           templePlayerStats.earlyGamePlayerFixture,
         );
-      case 'clogging':
+      case 'cousinofkos':
         return HttpResponse.json<PlayerStatsResponse>(
           templePlayerStats.midGamePlayerFixture,
         );
-      default:
+      case 'clogging':
         return HttpResponse.json<PlayerStatsResponse>(
           templePlayerStats.endGamePlayerFixture,
         );
+      default:
+        throw new Error(`No mock provided for ${request.url}`);
     }
   },
 );
 
-const collectionLogHandler = http.get(
+const collectionLogHandler = http.get<{ player: string }>(
   `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
-  ({ params }: { params: { player: string } }) => {
+  ({ params, request }) => {
     switch (params.player.toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<CollectionLogResponse>(
           collectionLog.earlyGamePlayerFixture,
         );
-      case 'clogging':
+      case 'cousinofkos':
         return HttpResponse.json<CollectionLogResponse>(
           collectionLog.midGamePlayerFixture,
         );
-      default:
+      case 'clogging':
         return HttpResponse.json<CollectionLogResponse>(
           collectionLog.endGamePlayerFixture,
         );
+      default:
+        throw new Error(`No mock provided for ${request.url}`);
     }
   },
 );
 
-const wikiSyncHandler = http.get(
+const wikiSyncHandler = http.get<{ player: string }>(
   `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
-  ({ params }: { params: { player: string } }) => {
+  ({ params, request }) => {
     switch (params.player.toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<WikiSyncResponse>(
           wikiSync.earlyGamePlayerFixture,
         );
-      case 'clogging':
+      case 'cousinofkos':
         return HttpResponse.json<WikiSyncResponse>(
           wikiSync.midGamePlayerFixture,
         );
-      default:
+      case 'clogging':
         return HttpResponse.json<WikiSyncResponse>(
           wikiSync.endGamePlayerFixture,
         );
+      default:
+        throw new Error(`No mock provided for ${request.url}`);
     }
   },
 );
@@ -88,9 +94,7 @@ const wikiApiHandler = http.get(
       return HttpResponse.json(combatAchievementTierFixture);
     }
 
-    return HttpResponse.json(`No mock provided for ${request.url}`, {
-      status: 404,
-    });
+    throw new Error(`No mock provided for ${request.url}`);
   },
 );
 

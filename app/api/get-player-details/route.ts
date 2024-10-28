@@ -170,12 +170,18 @@ export async function GET(
           collectionLogCount ?? 0,
           previousSubmission?.collectionLogCount ?? 0,
         ),
-        ehb: Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0)),
-        ehp: Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0)),
-        totalLevel: Math.max(
-          totalLevel ?? 0,
-          previousSubmission?.totalLevel ?? 0,
-        ),
+        ehb:
+          ehb || previousSubmission?.ehb
+            ? Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0))
+            : null,
+        ehp:
+          ehp || previousSubmission?.ehp
+            ? Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0))
+            : null,
+        totalLevel:
+          totalLevel || previousSubmission?.totalLevel
+            ? Math.max(totalLevel ?? 0, previousSubmission?.totalLevel ?? 0)
+            : null,
         collectionLogTotal: collectionLogTotal ?? 0,
         joinDate:
           playerMeta?.joinDate ?? previousSubmission?.joinDate ?? new Date(),

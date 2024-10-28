@@ -12,7 +12,7 @@ import {
   PlayerData,
   RankStructure,
 } from '@/types/rank-calculator';
-import { merge } from 'lodash';
+import { merge, set } from 'lodash';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { WikiSyncResponse } from '@/types/wiki';
 import { CollectionLogResponse } from '@/types/collection-log';
@@ -60,45 +60,73 @@ function setup() {
   };
 }
 
+it('returns no achievement diaries if there is no WikiSync data and no previous submission', async () => {
+  const { request, player } = setup();
+
+  server.use(
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () =>
+        HttpResponse.json<CollectionLogResponse>(
+          collectionLog.midGamePlayerFixture,
+        ),
+    ),
+  );
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.error).toBeNull();
+  expect(result.data.achievementDiaries).toBeNull();
+});
+
 it('returns the highest achievement diary values from the previous submission and API data', async () => {
   const { request, player } = setup();
 
-  const savedSubmission = merge<unknown, FormData, DeepPartial<FormData>>(
-    {},
-    formData.midGamePlayer,
-    {
-      achievementDiaries: {
-        'Kourend & Kebos': DiaryTier.Hard,
-        'Lumbridge & Draynor': DiaryTier.Elite,
-      },
-    },
-  );
-
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: FormData }[]>([{ result: savedSubmission }]),
+      HttpResponse.json<[{ result: string }]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              {
+                achievementDiaries: {
+                  'Kourend & Kebos': DiaryTier.Medium,
+                  'Lumbridge & Draynor': DiaryTier.Elite,
+                },
+              },
+            ),
+          ),
+        },
+      ]),
     ),
     http.get(
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>(
-          merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
-            {},
-            wikiSync.midGamePlayerFixture,
-            {
-              achievement_diaries: {
-                'Kourend & Kebos': {
-                  Elite: {
-                    complete: true,
+          set(
+            merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
+              {},
+              wikiSync.midGamePlayerFixture,
+              {
+                achievement_diaries: {
+                  'Kourend & Kebos': {
+                    Elite: {
+                      complete: true,
+                    },
                   },
-                },
-                'Lumbridge & Draynor': {
-                  Elite: {
-                    complete: false,
+                  'Lumbridge & Draynor': {
+                    Elite: {
+                      complete: false,
+                    },
                   },
                 },
               },
-            },
+            ),
+            ['achievement_diaries', 'Lumbridge & Draynor', 'Elite', 'tasks'],
+            [],
           ),
         ),
     ),
@@ -121,7 +149,7 @@ it('merges the acquired items from the previous submission and API data', async 
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
+      HttpResponse.json<[{ result: string }]>([
         {
           result: JSON.stringify({
             acquiredItems: {
@@ -664,6 +692,27 @@ it('returns the player name from the query parameters if not found in member lis
   expect(result.data.playerName).toEqual(player);
 });
 
+it('returns the player name from the query parameters if there is a network error whilst loading the member list', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
+
+  const { player, request } = setup();
+
+  server.use(
+    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
+      HttpResponse.error(),
+    ),
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        { result: JSON.stringify(formData.midGamePlayer) },
+      ]),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.playerName).toEqual(player);
+});
+
 it('returns the rank structure from the previous submission if found', async () => {
   const { request } = setup();
 
@@ -830,6 +879,33 @@ it('returns the correct efficiency values for ironman accounts', async () => {
   expect(result.data.ehp).toEqual(78);
 });
 
+it('returns no efficiency values for unknown accounts', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          info: {
+            'Game mode': 4 as GameMode,
+          },
+          Ehb: 12,
+          Ehp: 34,
+          Im_ehb: 56,
+          Im_ehp: 78,
+          Uim_ehp: 90,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(null);
+  expect(result.data.ehp).toEqual(null);
+});
+
 it('rounds the ehb value', async () => {
   const { request } = setup();
 
@@ -892,9 +968,9 @@ it('handles errors when the player stats API is not available', async () => {
 
   expect(response.status).toBe(200);
   expect(result.success).toBe(true);
-  expect(result.data.ehb).toBe(0);
-  expect(result.data.ehp).toBe(0);
-  expect(result.data.totalLevel).toBe(0);
+  expect(result.data.ehb).toBe(null);
+  expect(result.data.ehp).toBe(null);
+  expect(result.data.totalLevel).toBe(null);
 });
 
 it('handles errors when the WikiSync API is not available', async () => {
@@ -970,4 +1046,28 @@ it('handles errors when the Collection Log API is not available', async () => {
   expect(result.data.acquiredItems).toEqual(
     expect.arrayContaining(['Book of the dead']),
   );
+});
+
+it('returns no combat achievement tier if there is a network error when requesting the wiki data', async () => {
+  jest
+    .spyOn(console, 'error')
+    .mockImplementationOnce(jest.fn)
+    .mockImplementationOnce(jest.fn);
+
+  const { player, request } = setup();
+
+  server.use(
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () => HttpResponse.json(wikiSync.midGamePlayerFixture),
+    ),
+    http.get(`${constants.wiki.baseUrl}/api.php`, () => HttpResponse.error()),
+  );
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(200);
+  expect(result.success).toBe(true);
+  expect(result.data.combatAchievementTier).toBeNull();
 });
