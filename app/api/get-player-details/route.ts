@@ -20,6 +20,7 @@ import { parseLevels } from './utils/parse-levels';
 import { getTempleData } from './utils/get-temple-data';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
+import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 
 const redis = Redis.fromEnv({
   keepAlive: false,
@@ -84,14 +85,8 @@ export async function GET(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    // TODO: Implement GIMs
-    const {
-      info,
-      // g
-      Im_ehb: ehb = null,
-      Im_ehp: ehp = null,
-      Overall_level: totalLevel = null,
-    } = templeData ?? {};
+    const { Overall_level: totalLevel = null } = templeData ?? {};
+    const { ehb, ehp } = calculateEfficiencyData(templeData);
 
     const collectionLogItems = collectionLogData
       ? get<CollectionLogItem[]>(

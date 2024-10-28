@@ -41,11 +41,18 @@ export interface GroupUpdateRequest {
   key: string;
 }
 
+export enum GameMode {
+  GroupIronman = 0,
+  Ironman = 1,
+  UltimateIronman = 2,
+  HardcoreIronman = 3,
+}
+
 export interface PlayerStats {
   info: {
     Username: string;
     Country: string;
-    'Game mode': number;
+    'Game mode': GameMode;
     GIM: number;
     'Cb-3': number;
     F2p: number;

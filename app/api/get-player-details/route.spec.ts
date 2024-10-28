@@ -22,7 +22,7 @@ import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiError, ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
-import { PlayerStatsResponse } from '@/types/temple-api';
+import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
 import { Rank } from '@/config/enums';
 import { emptyResponse, GET } from './route';
 import { ClanMember } from '../update-member-list/route';
@@ -726,4 +726,110 @@ it('returns an error if no player is provided', async () => {
   });
 });
 
-it.todo('returns the correct ehp/ehb for GIM accounts');
+it('returns the correct efficiency values for GIM accounts', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          info: {
+            'Game mode': GameMode.GroupIronman,
+          },
+          Ehb: 12,
+          Ehp: 34,
+          Im_ehb: 56,
+          Im_ehp: 78,
+          Uim_ehp: 90,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(12);
+  expect(result.data.ehp).toEqual(34);
+});
+
+it('returns the correct efficiency values for UIM accounts', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          info: {
+            'Game mode': GameMode.UltimateIronman,
+          },
+          Ehb: 12,
+          Ehp: 34,
+          Im_ehb: 56,
+          Im_ehp: 78,
+          Uim_ehp: 90,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(56);
+  expect(result.data.ehp).toEqual(90);
+});
+
+it('returns the correct efficiency values for HCIM accounts', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          info: {
+            'Game mode': GameMode.HardcoreIronman,
+          },
+          Ehb: 12,
+          Ehp: 34,
+          Im_ehb: 56,
+          Im_ehp: 78,
+          Uim_ehp: 90,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(56);
+  expect(result.data.ehp).toEqual(78);
+});
+
+it('returns the correct efficiency values for ironman accounts', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          info: {
+            'Game mode': GameMode.Ironman,
+          },
+          Ehb: 12,
+          Ehp: 34,
+          Im_ehb: 56,
+          Im_ehp: 78,
+          Uim_ehp: 90,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(56);
+  expect(result.data.ehp).toEqual(78);
+});
