@@ -3,7 +3,9 @@ import { parse } from 'date-fns';
 import { ClanMember } from '../../update-member-list/route';
 
 export async function getPlayerMeta(player: string) {
-  const blobList = await list();
+  const blobList = await list({
+    prefix: 'members',
+  });
   const [{ url }] = blobList.blobs.sort(
     (a, b) => +b.uploadedAt - +a.uploadedAt,
   );

@@ -6,6 +6,10 @@ export function mergeAchievementDiaries(
   playerDetails: AchievementDiaryMap | null,
   previousSubmission: AchievementDiaryMap | null,
 ) {
+  if (!playerDetails && !previousSubmission) {
+    return null;
+  }
+
   const diaryTiers = Object.keys(DiaryTier);
 
   return mergeWith(

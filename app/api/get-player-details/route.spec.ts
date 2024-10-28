@@ -871,3 +871,107 @@ it('rounds the ehp value', async () => {
 
   expect(result.data.ehp).toEqual(13);
 });
+
+it('handles errors when the player stats API is not available', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
+
+  const { player, request } = setup();
+
+  server.use(
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () => HttpResponse.json(wikiSync.midGamePlayerFixture),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () => HttpResponse.json(collectionLog.midGamePlayerFixture),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.error(),
+    ),
+  );
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(200);
+  expect(result.success).toBe(true);
+  expect(result.data.ehb).toBe(0);
+  expect(result.data.ehp).toBe(0);
+  expect(result.data.totalLevel).toBe(0);
+});
+
+it('handles errors when the WikiSync API is not available', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
+
+  const { player, request } = setup();
+
+  server.use(
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () => HttpResponse.error(),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () => HttpResponse.json(collectionLog.midGamePlayerFixture),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json(templePlayerStats.midGamePlayerFixture),
+    ),
+  );
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(200);
+  expect(result.success).toBe(true);
+  expect(result.data).toMatchObject<Partial<PlayerData>>({
+    // Quest items are derived from WikiSync so these should not be present
+    acquiredItems: expect.not.arrayContaining([
+      'Book of the dead',
+      'Barrows gloves',
+    ]),
+    achievementDiaries: null,
+    combatAchievementTier: null,
+  });
+  // Regular items are derived from the collection log so these should be present
+  expect(result.data.acquiredItems).toEqual(
+    expect.arrayContaining(['Bandos hilt']),
+  );
+});
+
+it('handles errors when the Collection Log API is not available', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
+
+  const { player, request } = setup();
+
+  server.use(
+    http.get(
+      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      () => HttpResponse.json(wikiSync.midGamePlayerFixture),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () => HttpResponse.error(),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json(templePlayerStats.midGamePlayerFixture),
+    ),
+  );
+
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(response.status).toBe(200);
+  expect(result.success).toBe(true);
+  expect(result.data).toMatchObject<Partial<PlayerData>>({
+    // Regular items are derived from the collection log so these should not be present
+    acquiredItems: expect.not.arrayContaining(['Bandos hilt']),
+    collectionLogCount: 0,
+    collectionLogTotal: 0,
+  });
+  // Quest items are derived from WikiSync so these should be present
+  expect(result.data.acquiredItems).toEqual(
+    expect.arrayContaining(['Book of the dead']),
+  );
+});

@@ -189,7 +189,7 @@ export async function GET(
 
     return NextResponse.json(
       {
-        error,
+        error: 'Something went wrong',
         success: false,
       },
       { status: 500 },

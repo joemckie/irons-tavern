@@ -6,11 +6,17 @@ import {
 } from '@/types/collection-log';
 
 export async function getCollectionLog(player: string) {
-  const collectionLogResponse = await fetch(
-    `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
-  );
-  const collectionLogData: CollectionLogResponse | CollectionLogError =
-    await collectionLogResponse.json();
+  try {
+    const collectionLogResponse = await fetch(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+    );
+    const collectionLogData: CollectionLogResponse | CollectionLogError =
+      await collectionLogResponse.json();
 
-  return isCollectionLogError(collectionLogData) ? null : collectionLogData;
+    return isCollectionLogError(collectionLogData) ? null : collectionLogData;
+  } catch (error) {
+    console.error(error);
+
+    return null;
+  }
 }
