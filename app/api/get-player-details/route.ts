@@ -26,7 +26,7 @@ const redis = Redis.fromEnv({
   keepAlive: false,
 });
 
-export const emptyResponse = {
+const emptyResponse = {
   achievementDiaries: null,
   acquiredItems: null,
   joinDate: null,

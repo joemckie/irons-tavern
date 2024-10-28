@@ -1,5 +1,5 @@
-import { JestConfigWithTsJest } from 'ts-jest';
 import nextJest from 'next/jest';
+import type { Config } from 'jest';
 
 const createJestConfig = nextJest({
   dir: './',
@@ -17,6 +17,6 @@ const config = {
   testEnvironmentOptions: {
     customExportConditions: ['node'],
   },
-} satisfies JestConfigWithTsJest;
+} satisfies Config;
 
 export default createJestConfig(config);

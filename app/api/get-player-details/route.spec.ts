@@ -24,7 +24,7 @@ import { ApiError, ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
 import { Rank } from '@/config/enums';
-import { emptyResponse, GET } from './route';
+import { GET } from './route';
 import { ClanMember } from '../update-member-list/route';
 
 function setup() {
@@ -749,6 +749,19 @@ it('returns an empty response if no third party data is found', async () => {
   const { request } = setup();
   const response = await GET(request);
   const result: ApiSuccess<PlayerData> = await response.json();
+  const emptyResponse = {
+    achievementDiaries: null,
+    acquiredItems: null,
+    joinDate: null,
+    collectionLogCount: null,
+    collectionLogTotal: null,
+    combatAchievementTier: null,
+    ehb: null,
+    ehp: null,
+    totalLevel: null,
+    playerName: null,
+    rankStructure: RankStructure.Standard,
+  } satisfies PlayerData;
 
   expect(response.status).toBe(404);
   expect(result).toMatchObject<ApiSuccess<PlayerData>>({
