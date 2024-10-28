@@ -31,7 +31,7 @@ describe('Skilling - Mid-game player', () => {
 
       cy.findByLabelText(/^skilling point completion percentage$/i).should(
         'have.text',
-        fixture.pointsAwardedPercentage,
+        `${fixture.pointsAwardedPercentage}`,
       );
 
       cy.findByLabelText(/^skilling points remaining$/i).should(

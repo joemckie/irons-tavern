@@ -23,7 +23,7 @@ describe('Combat - End-game player', () => {
 
       cy.findByLabelText(/^combat point completion percentage$/i).should(
         'have.text',
-        fixture.pointsAwardedPercentage,
+        `${fixture.pointsAwardedPercentage}`,
       );
 
       cy.findByLabelText(/^combat points remaining$/i).should(

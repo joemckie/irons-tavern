@@ -18,7 +18,7 @@ describe('Collection Log - Early-game player', () => {
 
       cy.findByLabelText(
         /^collection log point completion percentage$/i,
-      ).should('have.text', fixture.pointsAwardedPercentage);
+      ).should('have.text', `${fixture.pointsAwardedPercentage}%`);
 
       cy.findByLabelText(/^collection log points remaining$/i).should(
         'have.text',
