@@ -23,6 +23,7 @@ import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { GET } from './route';
 import { ClanMember } from '../update-member-list/route';
+import { PlayerStatsResponse } from '@/types/temple-api';
 
 function setup() {
   const player = 'cousinofkos';
@@ -82,7 +83,7 @@ it('returns the highest achievement diary values from the previous submission an
     http.get(
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       () =>
-        HttpResponse.json(
+        HttpResponse.json<WikiSyncResponse>(
           merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
             {},
             wikiSync.midGamePlayerFixture,
@@ -194,7 +195,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
     http.get(
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       () =>
-        HttpResponse.json(
+        HttpResponse.json<WikiSyncResponse>(
           merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
             {},
             wikiSync.midGamePlayerFixture,
@@ -240,7 +241,7 @@ it('returns the combat achievement tier from the previous submission if it is hi
     http.get(
       `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       () =>
-        HttpResponse.json({
+        HttpResponse.json<WikiSyncResponse>({
           ...wikiSync.midGamePlayerFixture,
           combat_achievements: [1],
         }),
@@ -272,7 +273,7 @@ it('returns the collection log count from the previous submission if it is highe
     http.get(
       `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
       () =>
-        HttpResponse.json<DeepPartial<CollectionLogResponse>>(
+        HttpResponse.json<CollectionLogResponse>(
           merge<
             unknown,
             CollectionLogResponse,
@@ -311,7 +312,7 @@ it('returns the collection log count from the API data if it is higher than the 
     http.get(
       `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
       () =>
-        HttpResponse.json<DeepPartial<CollectionLogResponse>>(
+        HttpResponse.json<CollectionLogResponse>(
           merge<
             unknown,
             CollectionLogResponse,
@@ -330,13 +331,69 @@ it('returns the collection log count from the API data if it is higher than the 
   expect(result.data.collectionLogCount).toEqual(1000);
 });
 
-it.todo(
-  'returns the ehb from the API data if it is higher than the previous submission',
-);
+it('returns the ehb from the API data if it is higher than the previous submission', async () => {
+  const { request } = setup();
 
-it.todo(
-  'returns the ehb from the previous submission if it is higher than the API data',
-);
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { ehb: 0 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehb: 100,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(100);
+});
+
+it('returns the ehb from the previous submission if it is higher than the API data', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { ehb: 100 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehb: 0,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehb).toEqual(100);
+});
 
 it.todo(
   'returns the ehp from the API data if it is higher than the previous submission',
