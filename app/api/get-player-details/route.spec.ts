@@ -262,33 +262,73 @@ it('returns the collection log count from the previous submission if it is highe
           result: JSON.stringify(
             merge<unknown, FormData, DeepPartial<FormData>>(
               {},
-              { ...formData.midGamePlayer },
-              {
-                combatAchievementTier: CombatAchievementTier.Hard,
-              },
+              formData.midGamePlayer,
+              { collectionLogCount: 100 },
             ),
           ),
         },
       ]),
     ),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
       () =>
-        HttpResponse.json({
-          ...wikiSync.midGamePlayerFixture,
-          combat_achievements: [1],
-        }),
+        HttpResponse.json<DeepPartial<CollectionLogResponse>>(
+          merge<
+            unknown,
+            CollectionLogResponse,
+            DeepPartial<CollectionLogResponse>
+          >({}, collectionLog.midGamePlayerFixture, {
+            collectionLog: {
+              uniqueObtained: 0,
+            },
+          }),
+        ),
     ),
   );
   const response = await GET(request);
   const result: ApiSuccess<PlayerData> = await response.json();
 
-  expect(result.data.combatAchievementTier).toEqual(CombatAchievementTier.Hard);
+  expect(result.data.collectionLogCount).toEqual(100);
 });
 
-it.todo(
-  'returns the collection log count from the API data if it is higher than the previous submission',
-);
+it('returns the collection log count from the API data if it is higher than the previous submission', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { collectionLogCount: 123 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () =>
+        HttpResponse.json<DeepPartial<CollectionLogResponse>>(
+          merge<
+            unknown,
+            CollectionLogResponse,
+            DeepPartial<CollectionLogResponse>
+          >({}, collectionLog.midGamePlayerFixture, {
+            collectionLog: {
+              uniqueObtained: 1000,
+            },
+          }),
+        ),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.collectionLogCount).toEqual(1000);
+});
 
 it.todo('returns the highest ehb from the previous submission and API data');
 
