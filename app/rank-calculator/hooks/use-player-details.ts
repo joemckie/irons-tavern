@@ -39,6 +39,7 @@ export const getPlayerDetails = async (player: string) => {
     },
     joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
     collectionLogCount: data.collectionLogCount ?? 0,
+    collectionLogTotal: data.collectionLogTotal ?? 0,
     playerName: data.playerName ?? player,
     combatAchievementTier: data.combatAchievementTier ?? 'None',
     ehb: data.ehb ?? 0,

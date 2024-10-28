@@ -32,6 +32,7 @@ export interface FormData {
   achievementDiaries: AchievementDiaryMap;
   joinDate: Date;
   collectionLogCount: number;
+  collectionLogTotal: number;
   combatAchievementTier: CombatAchievementTier | 'None';
   ehb: number;
   ehp: number;
