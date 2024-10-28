@@ -395,13 +395,69 @@ it('returns the ehb from the previous submission if it is higher than the API da
   expect(result.data.ehb).toEqual(100);
 });
 
-it.todo(
-  'returns the ehp from the API data if it is higher than the previous submission',
-);
+it('returns the ehp from the API data if it is higher than the previous submission', async () => {
+  const { request } = setup();
 
-it.todo(
-  'returns the ehp from the previous submission if it is higher than the API data',
-);
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { ehp: 0 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehp: 100,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehp).toEqual(100);
+});
+
+it('returns the ehp from the previous submission if it is higher than the API data', async () => {
+  const { request } = setup();
+
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () =>
+      HttpResponse.json<{ result: string }[]>([
+        {
+          result: JSON.stringify(
+            merge<unknown, FormData, DeepPartial<FormData>>(
+              {},
+              formData.midGamePlayer,
+              { ehp: 100 },
+            ),
+          ),
+        },
+      ]),
+    ),
+    http.get('https://templeosrs.com/api/player_stats.php', () =>
+      HttpResponse.json<PlayerStatsResponse>({
+        data: {
+          ...templePlayerStats.midGamePlayerFixture.data,
+          Im_ehp: 0,
+        },
+      }),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.ehp).toEqual(100);
+});
 
 it.todo(
   'returns the total level from the API data if it is higher than the previous submission',
