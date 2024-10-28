@@ -330,12 +330,28 @@ it('returns the collection log count from the API data if it is higher than the 
   expect(result.data.collectionLogCount).toEqual(1000);
 });
 
-it.todo('returns the highest ehb from the previous submission and API data');
-
-it.todo('returns the highest ehp from the previous submission and API data');
+it.todo(
+  'returns the ehb from the API data if it is higher than the previous submission',
+);
 
 it.todo(
-  'returns the highest total level from the previous submission and API data',
+  'returns the ehb from the previous submission if it is higher than the API data',
+);
+
+it.todo(
+  'returns the ehp from the API data if it is higher than the previous submission',
+);
+
+it.todo(
+  'returns the ehp from the previous submission if it is higher than the API data',
+);
+
+it.todo(
+  'returns the total level from the API data if it is higher than the previous submission',
+);
+
+it.todo(
+  'returns the total level from the previous submission if it is higher than the API data',
 );
 
 it.todo('returns the collection log total items from the API data');
