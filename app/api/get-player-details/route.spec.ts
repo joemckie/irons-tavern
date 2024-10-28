@@ -467,7 +467,31 @@ it.todo(
   'returns the total level from the previous submission if it is higher than the API data',
 );
 
-it.todo('returns the collection log total items from the API data');
+it('returns the collection log total items from the API data', async () => {
+  const { player, request } = setup();
+
+  server.use(
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      () =>
+        HttpResponse.json<CollectionLogResponse>(
+          merge<
+            unknown,
+            CollectionLogResponse,
+            DeepPartial<CollectionLogResponse>
+          >({}, collectionLog.midGamePlayerFixture, {
+            collectionLog: {
+              uniqueItems: 1234,
+            },
+          }),
+        ),
+    ),
+  );
+  const response = await GET(request);
+  const result: ApiSuccess<PlayerData> = await response.json();
+
+  expect(result.data.collectionLogTotal).toEqual(1234);
+});
 
 it.todo('returns the join date from the member list if present');
 
@@ -480,6 +504,10 @@ it.todo(
 );
 
 it.todo('returns the player name from the member list if present');
+
+it.todo(
+  'returns the player name from the query parameters if not found in member list',
+);
 
 it.todo('returns the rank structure from the previous submission if found');
 
