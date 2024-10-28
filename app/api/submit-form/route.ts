@@ -39,7 +39,7 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
-        error,
+        error: 'Something went wrong',
       },
       { status: 500 },
     );
