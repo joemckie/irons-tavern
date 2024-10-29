@@ -1,4 +1,4 @@
-import { NotableItemsPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/use-notable-items-point-calculator';
+import { NotableItemsPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/notable-items/use-notable-items-point-calculator';
 import { CategoryFixture } from '@/cypress/support/types';
 
 export const notableItemsExpectedValues = {

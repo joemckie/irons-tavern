@@ -10,12 +10,13 @@ export interface CollectionLogPointCalculatorData
 export function useCollectionLogPointCalculator() {
   const collectionLogSlotPoints = useCollectionLogSlotPoints();
   const totalPointsAvailable = useMaxCollectionLogPoints();
+  const pointsAwarded = collectionLogSlotPoints;
   const pointsRemaining = totalPointsAvailable - collectionLogSlotPoints;
   const pointsAwardedPercentage =
     (collectionLogSlotPoints / totalPointsAvailable) * 100;
 
   return {
-    pointsAwarded: collectionLogSlotPoints,
+    pointsAwarded,
     pointsAwardedPercentage,
     pointsRemaining,
     collectionLogSlotPoints,
