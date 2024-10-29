@@ -2,6 +2,7 @@ import { Rank } from '@/config/enums';
 import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import { useCollectionLogPointCalculator } from './collection-log/use-collection-log-point-calculator';
 import { useNotableItemsPointCalculator } from './notable-items/use-notable-items-point-calculator';
+import { useSkillingPointCalculator } from './skilling/use-skilling-point-calculator';
 
 export interface RankCalculatorData extends CommonPointCalculatorData {
   rank: Rank;
@@ -13,7 +14,9 @@ export function useRankCalculator() {
     useCollectionLogPointCalculator();
   const { pointsAwarded: totalNotableItemsPoints } =
     useNotableItemsPointCalculator();
-  const pointsAwarded = totalCollectionLogPoints + totalNotableItemsPoints;
+  const { pointsAwarded: totalSkillingPoints } = useSkillingPointCalculator();
+  const pointsAwarded =
+    totalCollectionLogPoints + totalNotableItemsPoints + totalSkillingPoints;
 
   return {
     pointsAwarded,
