@@ -2,6 +2,7 @@ import { constants } from '@/config/constants';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { FormData, RankStructure } from '@/types/rank-calculator';
 import { GetPlayerDetailsResponse } from '@/app/api/get-player-details/route';
+import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 
 export const getPlayerDetails = async (player: string) => {
   const response = await fetch(
@@ -24,24 +25,25 @@ export const getPlayerDetails = async (player: string) => {
   return {
     acquiredItems,
     achievementDiaries: data.achievementDiaries ?? {
-      'Kourend & Kebos': 'None',
-      'Lumbridge & Draynor': 'None',
-      'Western Provinces': 'None',
-      Ardougne: 'None',
-      Desert: 'None',
-      Falador: 'None',
-      Fremennik: 'None',
-      Kandarin: 'None',
-      Karamja: 'None',
-      Morytania: 'None',
-      Varrock: 'None',
-      Wilderness: 'None',
+      'Kourend & Kebos': DiaryTier.None,
+      'Lumbridge & Draynor': DiaryTier.None,
+      'Western Provinces': DiaryTier.None,
+      Ardougne: DiaryTier.None,
+      Desert: DiaryTier.None,
+      Falador: DiaryTier.None,
+      Fremennik: DiaryTier.None,
+      Kandarin: DiaryTier.None,
+      Karamja: DiaryTier.None,
+      Morytania: DiaryTier.None,
+      Varrock: DiaryTier.None,
+      Wilderness: DiaryTier.None,
     },
     joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
     collectionLogCount: data.collectionLogCount ?? 0,
     collectionLogTotal: data.collectionLogTotal ?? 0,
     playerName: data.playerName ?? player,
-    combatAchievementTier: data.combatAchievementTier ?? 'None',
+    combatAchievementTier:
+      data.combatAchievementTier ?? CombatAchievementTier.None,
     ehb: data.ehb ?? 0,
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,

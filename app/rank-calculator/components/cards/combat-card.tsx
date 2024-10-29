@@ -73,7 +73,7 @@ export function CombatCard() {
             aria-label="Combat achievement tier value"
             name="combatAchievementTier"
             placeholder="Choose a tier"
-            options={['None', ...Object.values(CombatAchievementTier)]}
+            options={Object.values(CombatAchievementTier)}
           />
         }
         right={

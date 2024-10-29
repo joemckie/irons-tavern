@@ -11,7 +11,7 @@ export enum RankStructure {
   Owner = 'Owner',
 }
 
-export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier | 'None'>;
+export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier>;
 
 export interface PlayerData {
   acquiredItems: string[] | null;
@@ -19,7 +19,7 @@ export interface PlayerData {
   joinDate: Date | null;
   collectionLogCount: number | null;
   collectionLogTotal: number | null;
-  combatAchievementTier: CombatAchievementTier | 'None' | null;
+  combatAchievementTier: CombatAchievementTier | null;
   ehp: number | null;
   ehb: number | null;
   totalLevel: number | null;
@@ -33,7 +33,7 @@ export interface FormData {
   joinDate: Date;
   collectionLogCount: number;
   collectionLogTotal: number;
-  combatAchievementTier: CombatAchievementTier | 'None';
+  combatAchievementTier: CombatAchievementTier;
   ehb: number;
   ehp: number;
   totalLevel: number;

@@ -96,7 +96,7 @@ export function SkillingCard() {
               aria-label={`${location} diary value`}
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
-              options={['None', ...Object.values(DiaryTier)]}
+              options={Object.values(DiaryTier)}
             />
           }
           right={

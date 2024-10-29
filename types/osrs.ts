@@ -243,6 +243,7 @@ export enum DiaryLocation {
 }
 
 export enum DiaryTier {
+  None = 'None',
   Easy = 'Easy',
   Medium = 'Medium',
   Hard = 'Hard',
@@ -250,6 +251,7 @@ export enum DiaryTier {
 }
 
 export enum CombatAchievementTier {
+  None = 'None',
   Easy = 'Easy',
   Medium = 'Medium',
   Hard = 'Hard',

@@ -2,8 +2,8 @@ import { CombatAchievementTier } from '@/types/osrs';
 
 export function mergeCombatAchievementTier(
   playerDetailsTier: CombatAchievementTier | null,
-  previousSubmissionTier: CombatAchievementTier | 'None' | null,
-): CombatAchievementTier | 'None' | null {
+  previousSubmissionTier: CombatAchievementTier | null,
+): CombatAchievementTier | null {
   if (!playerDetailsTier && !previousSubmissionTier) {
     return null;
   }
