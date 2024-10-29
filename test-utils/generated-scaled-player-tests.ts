@@ -43,7 +43,7 @@ export const generateScaledPlayerTests = <T extends CommonPointCalculatorData>(
     );
   });
 
-  describe('Late-game player', () => {
+  describe('End-game player', () => {
     generateScalingTests(
       formData.endGamePlayer,
       scalingFixtures.endGamePlayer,

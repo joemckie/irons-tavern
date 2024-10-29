@@ -1,5 +1,10 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import {
+  DiaryLocation,
+  DiaryTier,
+  maximumTotalLevel,
+  minimumTotalLevel,
+} from '@/types/osrs';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
@@ -75,6 +80,8 @@ export function SkillingCard() {
             name="totalLevel"
             required
             type="number"
+            min={minimumTotalLevel}
+            max={maximumTotalLevel}
           />
         }
         right={

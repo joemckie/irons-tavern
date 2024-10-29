@@ -18,7 +18,7 @@ export const generatePlayerTests = (
     testRunner(formData.midGamePlayer);
   });
 
-  describe('Late-game player', () => {
+  describe('End-game player', () => {
     testRunner(formData.endGamePlayer);
   });
 };
