@@ -1,9 +1,9 @@
 import { useWatch } from 'react-hook-form';
 import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
+import Decimal from 'decimal.js-light';
 import { useGetItems } from '../../use-get-items';
 import { useMaxNotableItemsPoints } from './use-max-notable-items-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
-import Decimal from 'decimal.js-light';
 
 export interface NotableItemsPointCalculatorData
   extends CommonPointCalculatorData {
