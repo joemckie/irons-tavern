@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
-import { useCombatPointCalculator } from '../../hooks/point-calculator/use-combat-point-calculator';
+import { useCombatPointCalculator } from '../../hooks/point-calculator/combat/use-combat-point-calculator';
 
 export function CombatCard() {
   const {

@@ -1,4 +1,4 @@
-import { SkillingPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/use-skilling-point-calculator';
+import { SkillingPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/skilling/use-skilling-point-calculator';
 import { CategoryFixture } from '@/cypress/support/types';
 
 export const skillingExpectedValues = {

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
-import { useSkillingPointCalculator } from '../../hooks/point-calculator/use-skilling-point-calculator';
+import { useSkillingPointCalculator } from '../../hooks/point-calculator/skilling/use-skilling-point-calculator';
 
 export function SkillingCard() {
   const {

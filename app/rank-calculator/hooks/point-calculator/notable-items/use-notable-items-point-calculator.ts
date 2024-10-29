@@ -1,6 +1,7 @@
 import { useWatch } from 'react-hook-form';
 import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
-import { useGetItems } from '../use-get-items';
+import { useGetItems } from '../../use-get-items';
+import { useMaxNotableItemsPoints } from './use-max-notable-items-points';
 
 export interface NotableItemsPointCalculatorData
   extends CommonPointCalculatorData {
@@ -14,25 +15,22 @@ export function useNotableItemsPointCalculator() {
   const itemFields = useWatch<FormData, 'acquiredItems'>({
     name: 'acquiredItems',
   });
-
-  const { totalItems, itemPoints, availablePoints } = data.reduce(
+  const totalPointsAvailable = useMaxNotableItemsPoints();
+  const { totalItems, itemPoints } = data.reduce(
     (acc, [, { items }]) => {
-      const { categoryItemPointMap, categoryTotalPoints } = items.reduce(
+      const { categoryItemPointMap } = items.reduce(
         (categoryAcc, val) => ({
           categoryItemPointMap: {
             ...categoryAcc.categoryItemPointMap,
             [val.name.replaceAll("'", '')]: val.points,
           },
-          categoryTotalPoints: categoryAcc.categoryTotalPoints + val.points,
         }),
         {
           categoryItemPointMap: {},
-          categoryTotalPoints: 0,
         },
       );
 
       return {
-        availablePoints: acc.availablePoints + categoryTotalPoints,
         totalItems: acc.totalItems + items.length,
         itemPoints: {
           ...acc.itemPoints,
@@ -41,12 +39,10 @@ export function useNotableItemsPointCalculator() {
       };
     },
     {
-      availablePoints: 0,
       totalItems: 0,
       itemPoints: {} as Record<string, number>,
     },
   );
-
   const filteredItemFields = itemFields
     ? Object.entries(itemFields).filter(([, value]) => !!value)
     : [];
@@ -56,12 +52,12 @@ export function useNotableItemsPointCalculator() {
     (acc, [item]) => acc + itemPoints[item],
     0,
   );
-  const pointsAwardedPercentage = (pointsAwarded / availablePoints) * 100;
+  const pointsAwardedPercentage = (pointsAwarded / totalPointsAvailable) * 100;
 
   return {
     pointsAwarded,
     pointsAwardedPercentage,
-    pointsRemaining: availablePoints - pointsAwarded,
+    pointsRemaining: totalPointsAvailable - pointsAwarded,
     percentageCollected,
     itemsCollected,
     totalItems,

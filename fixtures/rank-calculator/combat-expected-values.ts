@@ -1,4 +1,4 @@
-import { CombatPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/use-combat-point-calculator';
+import { CombatPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/combat/use-combat-point-calculator';
 import { CategoryFixture } from '@/cypress/support/types';
 
 export const combatExpectedValues = {
