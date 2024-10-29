@@ -46,3 +46,19 @@ export interface CommonPointCalculatorData {
   pointsAwardedPercentage: number;
   pointsRemaining: number;
 }
+
+export const achievementDiaryTierPoints: Record<DiaryTier, number> = {
+  get None() {
+    return this.Elite * 0;
+  },
+  get Easy() {
+    return this.Elite * 0.1;
+  },
+  get Medium() {
+    return this.Elite * 0.3;
+  },
+  get Hard() {
+    return this.Elite * 0.6;
+  },
+  Elite: 1000,
+};
