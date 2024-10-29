@@ -2,7 +2,11 @@ import { sub } from 'date-fns';
 import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
 
 type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
-  'fullScaling' | 'fourMonthScaling' | 'twoMonthScaling' | 'noScaling',
+  | 'fullScaling'
+  | 'fourMonthScaling'
+  | 'twoMonthScaling'
+  | 'threeWeekScaling'
+  | 'noScaling',
   T
 >;
 
@@ -44,6 +48,18 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
         }),
       },
       scalingFixtures.twoMonthScaling,
+    );
+  });
+
+  describe('Three week scaling (17.50%)', () => {
+    testRunner(
+      {
+        ...formData,
+        joinDate: sub(new Date(), {
+          days: 21,
+        }),
+      },
+      scalingFixtures.threeWeekScaling,
     );
   });
 

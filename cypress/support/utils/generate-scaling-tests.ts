@@ -43,6 +43,18 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
     assertValues(scalingFixtures.twoMonthScaling);
   });
 
+  it('Calculates the correct points - Three week scaling (17.50%)', () => {
+    cy.visit(`/rank-calculator/${player}`);
+    cy.setJoinDate(
+      sub(new Date(), {
+        days: 21,
+      }),
+      '17.50%',
+    );
+
+    assertValues(scalingFixtures.threeWeekScaling);
+  });
+
   it('Calculates the correct points - No scaling (10%)', () => {
     cy.visit(`/rank-calculator/${player}`);
     cy.setJoinDate(new Date(), '10.00%');

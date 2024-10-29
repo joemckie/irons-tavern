@@ -1,7 +1,11 @@
 import { CommonPointCalculatorData } from '@/types/rank-calculator';
 
 export type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
-  'fullScaling' | 'fourMonthScaling' | 'twoMonthScaling' | 'noScaling',
+  | 'fullScaling'
+  | 'fourMonthScaling'
+  | 'twoMonthScaling'
+  | 'threeWeekScaling'
+  | 'noScaling',
   T
 >;
 

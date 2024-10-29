@@ -24,6 +24,13 @@ export const notableItemsExpectedValues = {
       itemsCollected: 5,
       percentageCollected: 1.69,
     },
+    threeWeekScaling: {
+      pointsAwarded: 91,
+      pointsAwardedPercentage: 0.95,
+      pointsRemaining: 9506,
+      itemsCollected: 5,
+      percentageCollected: 1.69,
+    },
     noScaling: {
       pointsAwarded: 52,
       pointsAwardedPercentage: 0.95,
@@ -54,6 +61,13 @@ export const notableItemsExpectedValues = {
       itemsCollected: 99,
       percentageCollected: 33.56,
     },
+    threeWeekScaling: {
+      pointsAwarded: 925,
+      pointsAwardedPercentage: 9.64,
+      pointsRemaining: 8672,
+      itemsCollected: 99,
+      percentageCollected: 33.56,
+    },
     noScaling: {
       pointsAwarded: 529,
       pointsAwardedPercentage: 9.65,
@@ -81,6 +95,13 @@ export const notableItemsExpectedValues = {
       pointsAwarded: 13258,
       pointsAwardedPercentage: 60.44,
       pointsRemaining: 8678,
+      itemsCollected: 212,
+      percentageCollected: 71.86,
+    },
+    threeWeekScaling: {
+      pointsAwarded: 5800,
+      pointsAwardedPercentage: 60.44,
+      pointsRemaining: 3797,
       itemsCollected: 212,
       percentageCollected: 71.86,
     },

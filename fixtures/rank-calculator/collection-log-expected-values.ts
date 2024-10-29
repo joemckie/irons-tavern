@@ -21,6 +21,12 @@ export const collectionLogExpectedValues = {
       pointsRemaining: 25644,
       collectionLogSlotPoints: 276,
     },
+    threeWeekScaling: {
+      pointsAwarded: 120,
+      pointsAwardedPercentage: 1.06,
+      pointsRemaining: 11220,
+      collectionLogSlotPoints: 120,
+    },
     noScaling: {
       pointsAwarded: 69, // Nice
       pointsAwardedPercentage: 1.06,
@@ -47,6 +53,12 @@ export const collectionLogExpectedValues = {
       pointsRemaining: 19664,
       collectionLogSlotPoints: 6256,
     },
+    threeWeekScaling: {
+      pointsAwarded: 2737,
+      pointsAwardedPercentage: 24.14,
+      pointsRemaining: 8603,
+      collectionLogSlotPoints: 2737,
+    },
     noScaling: {
       pointsAwarded: 1564,
       pointsAwardedPercentage: 24.14,
@@ -72,6 +84,12 @@ export const collectionLogExpectedValues = {
       pointsAwardedPercentage: 71.51,
       pointsRemaining: 7384,
       collectionLogSlotPoints: 18536,
+    },
+    threeWeekScaling: {
+      pointsAwarded: 8109,
+      pointsAwardedPercentage: 71.51,
+      pointsRemaining: 3231,
+      collectionLogSlotPoints: 8109,
     },
     noScaling: {
       pointsAwarded: 4634,

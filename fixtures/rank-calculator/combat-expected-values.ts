@@ -24,6 +24,13 @@ export const combatExpectedValues = {
       combatAchievementTierPoints: 1000,
       ehbPoints: 4,
     },
+    threeWeekScaling: {
+      pointsAwarded: 438,
+      pointsAwardedPercentage: 4.99,
+      pointsRemaining: 8313,
+      combatAchievementTierPoints: 437,
+      ehbPoints: 1,
+    },
     noScaling: {
       pointsAwarded: 251,
       pointsAwardedPercentage: 5,
@@ -54,6 +61,13 @@ export const combatExpectedValues = {
       combatAchievementTierPoints: 8000,
       ehbPoints: 2096,
     },
+    threeWeekScaling: {
+      pointsAwarded: 4417,
+      pointsAwardedPercentage: 40,
+      pointsRemaining: 5250,
+      combatAchievementTierPoints: 3500,
+      ehbPoints: 917,
+    },
     noScaling: {
       pointsAwarded: 2524,
       pointsAwardedPercentage: 40,
@@ -83,6 +97,13 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 20000,
       ehbPoints: 10408,
+    },
+    threeWeekScaling: {
+      pointsAwarded: 13303,
+      pointsAwardedPercentage: 100,
+      pointsRemaining: 0,
+      combatAchievementTierPoints: 8750,
+      ehbPoints: 4553,
     },
     noScaling: {
       pointsAwarded: 7602,
