@@ -7,22 +7,11 @@ import {
 import { useWatch } from 'react-hook-form';
 import { useCalculatorScaling } from './use-calculator-scaling';
 
-export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
-  ehpPoints: number;
-  totalLevelPoints: number;
-  achievementDiariesPoints: Record<DiaryLocation, number>;
-}
-
-export function useSkillingPointCalculator() {
-  const pointsPerEhp = 10;
+function useDiaryPoints() {
   const scaling = useCalculatorScaling();
-  const ehp = useWatch<FormData, 'ehp'>({ name: 'ehp' });
   const achievementDiaries = useWatch<FormData, 'achievementDiaries'>({
     name: 'achievementDiaries',
   });
-  const unscaledTotalDiaryPoints =
-    Object.values(DiaryLocation).length * achievementDiaryTierPoints.Elite;
-  const scaledTotalDiaryPoints = unscaledTotalDiaryPoints * scaling;
   const achievementDiariesPoints = (
     Object.entries(achievementDiaries) as [DiaryLocation, DiaryTier][]
   ).reduce<Record<DiaryLocation, number>>(
@@ -45,11 +34,49 @@ export function useSkillingPointCalculator() {
       Wilderness: 0,
     } satisfies Record<DiaryLocation, number>,
   );
-  const ehpPoints = Math.floor((ehp * pointsPerEhp * scaling).toFixed(10));
+
   const pointsAwarded = Object.values(achievementDiariesPoints).reduce(
     (acc, val) => acc + val,
+    0,
   );
-  const totalPointsAvailable = scaledTotalDiaryPoints;
+
+  return {
+    pointMap: achievementDiariesPoints,
+    pointsAwarded,
+  };
+}
+
+function useEhpPoints() {
+  const ehp = useWatch<FormData, 'ehp'>({ name: 'ehp' });
+  const scaling = useCalculatorScaling();
+  const pointsPerEhp = 10;
+  const ehpPoints = Math.floor(
+    Number((ehp * pointsPerEhp * scaling).toFixed(3)),
+  );
+
+  return ehpPoints;
+}
+
+// function useTotalLevelPoints() {
+//   const totalLevel = useWatch<FormData, 'totalLevel'>({ name: 'totalLevel' });
+//   const scaling = useCalculatorScaling();
+// }
+
+export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
+  ehpPoints: number;
+  totalLevelPoints: number;
+  achievementDiariesPoints: Record<DiaryLocation, number>;
+}
+
+export function useSkillingPointCalculator() {
+  const {
+    pointMap: achievementDiariesPoints,
+    pointsAwarded: totalAchievementDiaryPointsAwarded,
+  } = useDiaryPoints();
+  const ehpPoints = useEhpPoints();
+
+  const totalPointsAvailable = 50000;
+  const pointsAwarded = totalAchievementDiaryPointsAwarded;
   const pointsRemaining = totalPointsAvailable - pointsAwarded;
   const pointsAwardedPercentage = (pointsAwarded / totalPointsAvailable) * 100;
 
