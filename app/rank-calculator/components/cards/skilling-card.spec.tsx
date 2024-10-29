@@ -36,7 +36,7 @@ generateScaledPlayerTests(
       expect(
         screen.getByLabelText(/^skilling point completion percentage$/i)
           .textContent,
-      ).toBe(`${expected.pointsAwardedPercentage}%`);
+      ).toBe(`${expected.pointsAwardedPercentage.toFixed(2)}%`);
     });
 
     it('renders the EHP points', () => {

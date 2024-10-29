@@ -35,7 +35,7 @@ generateScaledPlayerTests(
       expect(
         screen.getByLabelText(/^collection log point completion percentage$/i)
           .textContent,
-      ).toBe(`${expected.pointsAwardedPercentage}%`);
+      ).toBe(`${expected.pointsAwardedPercentage.toFixed(2)}%`);
     });
 
     it('renders the collection log slot points', () => {
