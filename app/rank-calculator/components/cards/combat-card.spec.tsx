@@ -41,13 +41,13 @@ generateScaledPlayerTests(
     it('renders the EHB points', () => {
       expect(
         screen.getByLabelText(/^efficient hours bossed points$/i).textContent,
-      ).toBe(`${expected.ehbPoints}%`);
+      ).toBe(`${expected.ehbPoints}`);
     });
 
     it('renders the combat achievement tier points', () => {
       expect(
         screen.getByLabelText(/^combat achievement tier points$/i).textContent,
-      ).toBe(`${expected.combatAchievementTierPoints}%`);
+      ).toBe(`${expected.combatAchievementTierPoints}`);
     });
 
     it('renders the EHB value', () => {

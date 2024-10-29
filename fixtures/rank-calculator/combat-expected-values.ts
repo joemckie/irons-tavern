@@ -81,8 +81,8 @@ export const combatExpectedValues = {
       pointsAwarded: 76020,
       pointsAwardedPercentage: 100,
       pointsRemaining: 0,
-      combatAchievementTierPoints: 0,
-      ehbPoints: 0,
+      combatAchievementTierPoints: 50000,
+      ehbPoints: 26020,
     },
     fourMonthScaling: {
       pointsAwarded: 53214,
