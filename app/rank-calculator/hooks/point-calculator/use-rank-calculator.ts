@@ -3,6 +3,7 @@ import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import { useCollectionLogPointCalculator } from './collection-log/use-collection-log-point-calculator';
 import { useNotableItemsPointCalculator } from './notable-items/use-notable-items-point-calculator';
 import { useSkillingPointCalculator } from './skilling/use-skilling-point-calculator';
+import { useCombatPointCalculator } from './combat/use-combat-point-calculator';
 
 export interface RankCalculatorData extends CommonPointCalculatorData {
   rank: Rank;
@@ -15,8 +16,12 @@ export function useRankCalculator() {
   const { pointsAwarded: totalNotableItemsPoints } =
     useNotableItemsPointCalculator();
   const { pointsAwarded: totalSkillingPoints } = useSkillingPointCalculator();
+  const { pointsAwarded: totalCombatPoints } = useCombatPointCalculator();
   const pointsAwarded =
-    totalCollectionLogPoints + totalNotableItemsPoints + totalSkillingPoints;
+    totalCollectionLogPoints +
+    totalNotableItemsPoints +
+    totalSkillingPoints +
+    totalCombatPoints;
 
   return {
     pointsAwarded,
