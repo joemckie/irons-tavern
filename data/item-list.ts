@@ -512,7 +512,12 @@ export const itemList: ItemCategoryMap = {
       combatAchievementItem({
         name: 'Ancient blood ornament kit',
         points: 2000,
-        requiredCombatAchievements: [0],
+        requiredCombatAchievements: [
+          490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
+          499, // https://oldschool.runescape.wiki/w/Whispered
+          508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
+          517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
+        ],
       }),
     ],
   },
@@ -762,7 +767,7 @@ export const itemList: ItemCategoryMap = {
         name: '6 Jads',
         points: 100,
         requiredCombatAchievements: [
-          363, // ID #363 - https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
+          363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
         ],
       }),
     ],
