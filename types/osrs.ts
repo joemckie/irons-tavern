@@ -267,4 +267,4 @@ export const combatAchievementTierPoints = {
   [CombatAchievementTier.Elite]: 4,
   [CombatAchievementTier.Master]: 5,
   [CombatAchievementTier.Grandmaster]: 6,
-} as const;
+} satisfies Record<Exclude<CombatAchievementTier, 'None'>, number>;

@@ -46,7 +46,10 @@ export interface WikiSyncResponse {
   username: string;
   timestamp: string;
   league_tasks: unknown[];
-  achievement_diaries: Record<DiaryLocation, Record<DiaryTier, DiaryTierData>>;
+  achievement_diaries: Record<
+    DiaryLocation,
+    Record<Exclude<DiaryTier, 'None'>, DiaryTierData>
+  >;
   levels: LevelMap & { Overall?: number };
   music_tracks: Record<string, boolean>;
   quests: Record<Quest | MiniQuest, QuestStatus>;
@@ -90,7 +93,7 @@ export interface CombatAchievementJson {
   monster: string;
   type: string;
   name: string;
-  tier: CombatAchievementTier;
+  tier: Exclude<CombatAchievementTier, 'None'>;
   id: string;
   task: string;
 }

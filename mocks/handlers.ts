@@ -127,6 +127,7 @@ const passthroughHandlers = [
   'https://*.gstatic.com/*',
   `${constants.publicUrl}/api/*`,
   'https://oldschool.runescape.wiki/images/*',
+  'https://templeosrs.com/api/group_member_info.php',
 ].map((url) => http.all(url, () => passthrough()));
 
 export const handlers = [
