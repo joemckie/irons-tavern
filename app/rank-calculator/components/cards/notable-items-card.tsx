@@ -1,7 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
-import { useNotableItemsPointCalculator } from '../../hooks/point-calculator/use-notable-items-point-calculator';
+import { useNotableItemsPointCalculator } from '../../hooks/point-calculator/notable-items/use-notable-items-point-calculator';
 
 export function NotableItemsCard() {
   const {

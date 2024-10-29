@@ -1,7 +1,7 @@
 import { Rank } from '@/config/enums';
 import { CommonPointCalculatorData } from '@/types/rank-calculator';
-import { useCollectionLogPointCalculator } from './use-collection-log-point-calculator';
-import { useNotableItemsPointCalculator } from './use-notable-items-point-calculator';
+import { useCollectionLogPointCalculator } from './collection-log/use-collection-log-point-calculator';
+import { useNotableItemsPointCalculator } from './notable-items/use-notable-items-point-calculator';
 
 export interface RankCalculatorData extends CommonPointCalculatorData {
   rank: Rank;

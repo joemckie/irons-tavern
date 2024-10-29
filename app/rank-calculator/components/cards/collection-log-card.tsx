@@ -2,7 +2,7 @@ import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
-import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/use-collection-log-point-calculator';
+import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
 
 export function CollectionLogCard() {
   const {

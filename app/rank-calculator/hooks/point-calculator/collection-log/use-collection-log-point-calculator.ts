@@ -1,6 +1,6 @@
 import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
 import { useWatch } from 'react-hook-form';
-import { useCalculatorScaling } from './use-calculator-scaling';
+import { useCalculatorScaling } from '../use-calculator-scaling';
 
 function calculatePointsForLogSlots(
   collectionLogSlotCount: number,
