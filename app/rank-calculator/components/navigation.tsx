@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { useFormState } from 'react-hook-form';
 
 export const Navigation = forwardRef<HTMLElement>((_props, ref) => {
-  const { isDirty, isValid } = useFormState();
+  const { isDirty, isValid, isSubmitting } = useFormState();
 
   return (
     <Box
@@ -19,7 +19,8 @@ export const Navigation = forwardRef<HTMLElement>((_props, ref) => {
           <Text weight="bold">Irons Tavern rank calculator</Text>
           <Button
             role="button"
-            disabled={!isDirty || !isValid}
+            loading={isSubmitting}
+            disabled={!isDirty || !isValid || isSubmitting}
             variant="surface"
           >
             Submit

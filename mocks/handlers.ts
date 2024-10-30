@@ -108,18 +108,22 @@ const redisHandler = http.post<
   [string, string][],
   { result: FormData }[]
 >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
-  const [[, key]] = await request.json();
+  const [[method, key]] = await request.json();
 
-  switch (key) {
-    case `${RedisKeyNamespace.Submission}:riftletics`:
-      return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
-    case `${RedisKeyNamespace.Submission}:cousinofkos`:
-      return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
-    case `${RedisKeyNamespace.Submission}:clogging`:
-      return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
-    default:
-      throw new Error(`No redis mock provided for ${key}`);
+  if (method === 'JSON.GET') {
+    switch (key) {
+      case `${RedisKeyNamespace.Submission}:riftletics`:
+        return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
+      case `${RedisKeyNamespace.Submission}:cousinofkos`:
+        return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
+      case `${RedisKeyNamespace.Submission}:clogging`:
+        return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
+      default:
+        return passthrough();
+    }
   }
+
+  return passthrough();
 });
 
 const passthroughHandlers = [

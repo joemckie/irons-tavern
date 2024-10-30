@@ -16,21 +16,20 @@ interface RankCalculatorProps {
 
 export function RankCalculator({ formData }: RankCalculatorProps) {
   const { navHeight, navRef } = usePageLayout();
-  const { mutate: saveSubmission } = useSubmitForm();
+  const { mutateAsync: saveSubmission } = useSubmitForm();
 
   const methods = useForm<FormData>({
     defaultValues: formData,
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    saveSubmission(data, {
-      onError(error) {
-        console.log(error);
-      },
-      onSuccess(response) {
-        console.log(response);
-      },
-    });
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const response = await saveSubmission(data);
+
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
