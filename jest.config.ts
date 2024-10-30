@@ -12,7 +12,7 @@ const config = {
     '<rootDir>/test-utils',
   ],
   testEnvironment: 'jest-fixed-jsdom',
-  setupFiles: ['<rootDir>/jest.setup-env.ts'],
+  setupFiles: ['<rootDir>/jest.polyfills.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: {
     customExportConditions: ['node'],

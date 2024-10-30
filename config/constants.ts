@@ -25,5 +25,5 @@ export const constants = {
     baseUrl: 'https://sync.runescape.wiki' as const,
   },
   redisUrl: process.env.KV_REST_API_URL,
-  discordUrl: 'https://discord.com/api' as const,
+  discordUrl: 'https://discord.com/api/v10' as const,
 };

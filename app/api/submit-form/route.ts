@@ -1,7 +1,21 @@
 import { ApiResponse } from '@/types/api';
 import { FormData } from '@/types/rank-calculator';
-import { Redis } from '@upstash/redis';
+import { Redis, errors } from '@upstash/redis';
+import { DiscordAPIError, ResponseLike, REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
+
+function formatErrorMessage(error: unknown) {
+  if (error instanceof errors.UpstashError) {
+    return 'Failed to save to database';
+  }
+
+  if (error instanceof DiscordAPIError) {
+    return 'Failed to send message to Discord';
+  }
+
+  return 'Something went wrong';
+}
 
 const redis = Redis.fromEnv({
   keepAlive: false,
@@ -10,6 +24,21 @@ const redis = Redis.fromEnv({
 export async function POST(
   request: NextRequest,
 ): Promise<NextResponse<ApiResponse<void>>> {
+  if (!process.env.DISCORD_CHANNEL_ID) {
+    throw new Error('No discord channel ID provided');
+  }
+
+  if (!process.env.DISCORD_TOKEN) {
+    throw new Error('No discord token provided');
+  }
+
+  const discord = new REST({
+    async makeRequest(url, init) {
+      const response = await fetch(url, init as RequestInit);
+      return response as ResponseLike;
+    },
+  }).setToken(process.env.DISCORD_TOKEN);
+
   try {
     const { playerName, ...data }: FormData = await request.json();
     const result = await redis.json.set(
@@ -28,6 +57,12 @@ export async function POST(
       );
     }
 
+    await discord.post(Routes.channelMessages(process.env.DISCORD_CHANNEL_ID), {
+      body: {
+        content: `${playerName} has applied for the Owner rank!`,
+      },
+    });
+
     return NextResponse.json({
       success: true,
       error: null,
@@ -39,7 +74,7 @@ export async function POST(
     return NextResponse.json(
       {
         success: false,
-        error: 'Something went wrong',
+        error: formatErrorMessage(error),
       },
       { status: 500 },
     );

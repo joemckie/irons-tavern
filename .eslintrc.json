@@ -41,6 +41,7 @@
           "cypress.config.ts",
           "jest.config.ts",
           "jest.setup*.ts",
+          "jest.polyfills.ts",
           "test-utils/**",
           "cypress/**",
           "**/*.spec.ts",
