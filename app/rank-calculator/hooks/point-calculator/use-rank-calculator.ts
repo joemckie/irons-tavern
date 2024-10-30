@@ -25,15 +25,11 @@ export function useRankCalculator() {
     totalSkillingPoints +
     totalCombatPoints;
   const { rank, nextRank } = useRank(pointsAwarded);
-  const currentRankThreshold = rankThresholds[rankStructure][rank];
   const nextRankThreshold = !nextRank
-    ? currentRankThreshold
-    : rankThresholds[rankStructure][nextRank];
-  const pointsRemaining = (nextRankThreshold || pointsAwarded) - pointsAwarded;
-  const pointsAwardedPercentage = Math.min(
-    (pointsAwarded / (nextRankThreshold ?? pointsAwarded)) * 100,
-    100,
-  );
+    ? pointsAwarded
+    : rankThresholds[rankStructure][nextRank]!;
+  const pointsRemaining = nextRankThreshold - pointsAwarded;
+  const pointsAwardedPercentage = (pointsAwarded / nextRankThreshold) * 100;
 
   return {
     pointsAwarded,
