@@ -25,7 +25,6 @@ export interface PlayerData {
   totalLevel: number | null;
   playerName: string | null;
   rankStructure: RankStructure | null;
-  totalPoints: number | null;
 }
 
 export interface FormData {
@@ -40,7 +39,6 @@ export interface FormData {
   totalLevel: number;
   playerName: string;
   rankStructure: RankStructure;
-  totalPoints: number;
 }
 
 export interface CommonPointCalculatorData {
