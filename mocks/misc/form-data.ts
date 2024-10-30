@@ -375,6 +375,8 @@ export const endGamePlayer = {
     'Tumekens guardian': true,
     'Venenatis spiderling': true,
     Wisp: true,
+    '6 Jads': true,
+    'Ancient blood ornament kit': true,
   },
   achievementDiaries: {
     Ardougne: DiaryTier.Elite,

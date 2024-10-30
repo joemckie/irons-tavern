@@ -25,7 +25,7 @@ generatePlayerTests(formDataMocks, (formData) => {
 
   it('renders the join date', () => {
     expect(screen.getByLabelText(/join date/i)).toHaveValue(
-      format(formData.joinDate!, 'dd-MM-yyyy'),
+      format(formData.joinDate, 'dd-MM-yyyy'),
     );
   });
 

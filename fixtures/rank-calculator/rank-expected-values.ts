@@ -70,7 +70,7 @@ export const rankExpectedValues = {
       nextRank: Rank.Oak as Rank,
     },
     noScaling: {
-      pointsAwarded: 11163,
+      pointsAwarded: 11162,
       pointsAwardedPercentage: 0,
       pointsRemaining: 5838,
       rank: Rank.Oak as Rank,
