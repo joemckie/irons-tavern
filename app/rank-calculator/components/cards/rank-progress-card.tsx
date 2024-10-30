@@ -43,20 +43,22 @@ export function RankProgressCard() {
               </Text>
               <Image
                 alt={`${rank} icon`}
-                src={`/icons/${rank.toLowerCase()}.png`}
+                src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
                 width={22}
                 height={22}
               />
             </Flex>
             <Flex gap="2">
-              <Image
-                alt={`${nextRank} icon`}
-                src={`/icons/${nextRank.toLowerCase()}.png`}
-                height={22}
-                width={22}
-              />
+              {nextRank && (
+                <Image
+                  alt={`${nextRank} icon`}
+                  src={`/icons/${nextRank.replaceAll(' ', '_').toLowerCase()}.png`}
+                  height={22}
+                  width={22}
+                />
+              )}
               <Text aria-label="Next rank" color="gray" size="2">
-                {nextRank}
+                {nextRank ?? 'Max rank'}
               </Text>
             </Flex>
           </Flex>
