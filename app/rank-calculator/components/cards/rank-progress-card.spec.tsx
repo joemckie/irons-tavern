@@ -41,13 +41,15 @@ generateScaledPlayerTests(
       const matcher = new RegExp(`^${expected.rank} icon$`);
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(`${expected.rank.toLowerCase()}.png`),
+        expect.stringContaining(
+          `${expected.rank.replaceAll(' ', '_').toLowerCase()}.png`,
+        ),
       );
     });
 
     it('renders the next rank', () => {
       expect(screen.getByLabelText(/^next rank$/i).textContent).toBe(
-        expected.rank,
+        expected.nextRank,
       );
     });
 
@@ -55,7 +57,9 @@ generateScaledPlayerTests(
       const matcher = new RegExp(`^${expected.nextRank} icon$`);
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(`${expected.nextRank.toLowerCase()}.png`),
+        expect.stringContaining(
+          `${expected.nextRank.replaceAll(' ', '_').toLowerCase()}.png`,
+        ),
       );
     });
 

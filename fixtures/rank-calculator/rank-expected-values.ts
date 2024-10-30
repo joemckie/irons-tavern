@@ -51,7 +51,7 @@ export const rankExpectedValues = {
     fourMonthScaling: {
       pointsAwarded: 78139,
       pointsAwardedPercentage: 0,
-      pointsRemaining: 1868,
+      pointsRemaining: 1861,
       rank: Rank.Maple as Rank,
       nextRank: Rank.Law as Rank,
     },
@@ -67,7 +67,7 @@ export const rankExpectedValues = {
       pointsAwardedPercentage: 0,
       pointsRemaining: 8466,
       rank: Rank.Earth as Rank,
-      nextRank: Rank.Oak as Rank,
+      nextRank: Rank.Willow as Rank,
     },
     noScaling: {
       pointsAwarded: 11162,
@@ -103,8 +103,8 @@ export const rankExpectedValues = {
       pointsAwarded: 42587,
       pointsAwardedPercentage: 0,
       pointsRemaining: 16413,
-      rank: Rank.Willow as Rank,
-      nextRank: Rank.Nature as Rank,
+      rank: Rank.Nature as Rank,
+      nextRank: Rank.Maple as Rank,
     },
     noScaling: {
       pointsAwarded: 24336,
