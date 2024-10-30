@@ -13,7 +13,9 @@ export function useCollectionLogPointCalculator() {
   const pointsAwarded = collectionLogSlotPoints;
   const pointsRemaining = totalPointsAvailable - collectionLogSlotPoints;
   const pointsAwardedPercentage =
-    (collectionLogSlotPoints / totalPointsAvailable) * 100;
+    collectionLogSlotPoints && totalPointsAvailable
+      ? (collectionLogSlotPoints / totalPointsAvailable) * 100
+      : 0;
 
   return {
     pointsAwarded,

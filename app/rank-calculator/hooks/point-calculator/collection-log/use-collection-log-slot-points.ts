@@ -9,5 +9,9 @@ export function useCollectionLogSlotPoints() {
   });
   const scaling = useCalculatorScaling();
 
+  if (collectionLogSlotsAchieved === 0) {
+    return 0;
+  }
+
   return calculatePointsForLogSlots(collectionLogSlotsAchieved, scaling);
 }
