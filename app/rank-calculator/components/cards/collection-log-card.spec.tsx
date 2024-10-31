@@ -4,6 +4,8 @@ import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { collectionLogExpectedValues } from '@/fixtures/rank-calculator/collection-log-expected-values';
 import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { CollectionLogCard } from './collection-log-card';
+import { formatPercentage } from '../../utils/format-percentage';
+import { formatNumber } from '../../utils/format-number';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -22,26 +24,34 @@ generateScaledPlayerTests(
     it('renders the total points', () => {
       expect(
         screen.getByLabelText(/^total collection log points$/i).textContent,
-      ).toBe(`${expected.pointsAwarded}`);
+      ).toBe(formatNumber(expected.pointsAwarded));
     });
 
     it('renders the points remaining', () => {
-      expect(
-        screen.getByLabelText(/^collection log points remaining$/i).textContent,
-      ).toBe(`(${expected.pointsRemaining})`);
+      if (expected.pointsRemaining === 0) {
+        expect(
+          screen.getByLabelText(/^collection log points remaining$/i)
+            .textContent,
+        ).toBe('Completed');
+      } else {
+        expect(
+          screen.getByLabelText(/^collection log points remaining$/i)
+            .textContent,
+        ).toBe(`(${formatNumber(expected.pointsRemaining)})`);
+      }
     });
 
     it('renders the point competion percentage', () => {
       expect(
         screen.getByLabelText(/^collection log point completion percentage$/i)
           .textContent,
-      ).toBe(`${expected.pointsAwardedPercentage.toFixed(2)}%`);
+      ).toBe(formatPercentage(expected.pointsAwardedPercentage));
     });
 
     it('renders the collection log slot points', () => {
       expect(
         screen.getByLabelText(/^collection log slot points$/i).textContent,
-      ).toBe(`${expected.collectionLogSlotPoints}`);
+      ).toBe(formatNumber(expected.collectionLogSlotPoints));
     });
 
     it('renders the collection log slot value', () => {

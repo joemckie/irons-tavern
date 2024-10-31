@@ -5,6 +5,9 @@ import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
 import { useCombatPointCalculator } from '../../hooks/point-calculator/combat/use-combat-point-calculator';
+import { formatPercentage } from '../../utils/format-percentage';
+import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
+import { formatNumber } from '../../utils/format-number';
 
 export function CombatCard() {
   const {
@@ -33,7 +36,7 @@ export function CombatCard() {
         }
         right={
           <Text aria-label="Total combat points" weight="bold" size="2">
-            {pointsAwarded}
+            {formatNumber(pointsAwarded)}
           </Text>
         }
       />
@@ -58,7 +61,7 @@ export function CombatCard() {
             color="gray"
             size="2"
           >
-            {ehbPoints}
+            {formatNumber(ehbPoints)}
           </Text>
         }
       />
@@ -82,7 +85,7 @@ export function CombatCard() {
             color="gray"
             size="2"
           >
-            {combatAchievementTierPoints}
+            {formatNumber(combatAchievementTierPoints)}
           </Text>
         }
       />
@@ -94,16 +97,16 @@ export function CombatCard() {
         }
         center={
           <Text aria-label="Combat point completion percentage" size="2">
-            {`${pointsAwardedPercentage.toFixed(2)}%`}
+            {formatPercentage(pointsAwardedPercentage)}
           </Text>
         }
         right={
           <Text aria-label="Combat points remaining" color="gray" size="2">
-            ({pointsRemaining})
+            {getPointsRemainingLabel(pointsRemaining)}
           </Text>
         }
       />
-      <Progress size="3" value={pointsAwardedPercentage} />
+      <Progress size="3" value={pointsAwardedPercentage * 100} />
     </DataCard.Root>
   );
 }

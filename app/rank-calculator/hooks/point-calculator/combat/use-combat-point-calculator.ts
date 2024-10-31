@@ -15,7 +15,7 @@ export function useCombatPointCalculator() {
   const pointsAwarded = combatAchievementTierPoints + ehbPoints;
   const pointsRemaining = totalPointsAvailable - (pointsAwarded - ehbPoints);
   const pointsAwardedPercentage =
-    ((pointsAwarded - ehbPoints) / totalPointsAvailable) * 100;
+    (pointsAwarded - ehbPoints) / totalPointsAvailable;
 
   return {
     pointsAwarded,

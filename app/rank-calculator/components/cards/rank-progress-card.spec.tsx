@@ -5,6 +5,7 @@ import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-
 import { rankExpectedValues } from '@/fixtures/rank-calculator/rank-expected-values';
 import { RankProgressCard } from './rank-progress-card';
 import { getRankName } from '../../utils/get-rank-name';
+import { formatNumber } from '../../utils/format-number';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -22,14 +23,20 @@ generateScaledPlayerTests(
 
     it('renders the total points', () => {
       expect(screen.getByLabelText(/^total points$/i).textContent).toBe(
-        `${expected.pointsAwarded}`,
+        formatNumber(expected.pointsAwarded),
       );
     });
 
     it('renders the points to the next rank', () => {
-      expect(screen.getByLabelText(/^points to next rank$/i).textContent).toBe(
-        `(${expected.pointsRemaining})`,
-      );
+      if (expected.pointsRemaining === 0) {
+        expect(
+          screen.getByLabelText(/^points to next rank$/i).textContent,
+        ).toBe('Max rank');
+      } else {
+        expect(
+          screen.getByLabelText(/^points to next rank$/i).textContent,
+        ).toBe(`(${formatNumber(expected.pointsRemaining)})`);
+      }
     });
 
     it('renders the current rank', () => {

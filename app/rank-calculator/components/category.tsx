@@ -8,6 +8,7 @@ import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
 import { parseInitials } from '../utils/parse-initials';
+import { formatPercentage } from '../utils/format-percentage';
 
 interface CategoryProps {
   title: string;
@@ -23,7 +24,7 @@ export const Category = memo(
       ),
     });
     const completedCount = fields.filter(Boolean).length;
-    const percentComplete = ((completedCount / items.length) * 100).toFixed(0);
+    const percentComplete = formatPercentage(completedCount / items.length, 0);
 
     return (
       <Card my="3">
@@ -50,11 +51,11 @@ export const Category = memo(
           </Flex>
           <Text
             aria-label={`${title} percentage complete`}
-            color={percentComplete === '100' ? 'green' : undefined}
+            color={percentComplete === '100%' ? 'green' : undefined}
             weight="bold"
             size="4"
           >
-            {`${percentComplete}%`}
+            {percentComplete}
           </Text>
         </Flex>
         <Separator

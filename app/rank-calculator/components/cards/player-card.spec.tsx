@@ -5,6 +5,7 @@ import { generatePlayerTests } from '@/test-utils/generate-player-tests';
 import { format } from 'date-fns';
 import { calculateScaling } from '../../utils/calculate-scaling';
 import { PlayerCard } from './player-card';
+import { formatPercentage } from '../../utils/format-percentage';
 
 generatePlayerTests(formDataMocks, (formData) => {
   beforeEach(async () => {
@@ -30,10 +31,10 @@ generatePlayerTests(formDataMocks, (formData) => {
   });
 
   it('renders the point scaling value', () => {
-    const scaling = (calculateScaling(formData.joinDate) * 100).toFixed(2);
+    const scaling = calculateScaling(formData.joinDate);
 
     expect(screen.getByLabelText(/point scaling/i).textContent).toBe(
-      `${scaling}%`,
+      formatPercentage(scaling),
     );
   });
 });

@@ -3,6 +3,9 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
 import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
+import { formatPercentage } from '../../utils/format-percentage';
+import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
+import { formatNumber } from '../../utils/format-number';
 
 export function CollectionLogCard() {
   const {
@@ -30,7 +33,7 @@ export function CollectionLogCard() {
         }
         right={
           <Text aria-label="Total collection log points" weight="bold" size="2">
-            {pointsAwarded}
+            {formatNumber(pointsAwarded)}
           </Text>
         }
       />
@@ -51,7 +54,7 @@ export function CollectionLogCard() {
         }
         right={
           <Text aria-label="Collection log slot points" color="gray" size="2">
-            {collectionLogSlotPoints}
+            {formatNumber(collectionLogSlotPoints)}
           </Text>
         }
       />
@@ -66,7 +69,7 @@ export function CollectionLogCard() {
             aria-label="Collection log point completion percentage"
             size="2"
           >
-            {`${pointsAwardedPercentage.toFixed(2)}%`}
+            {formatPercentage(pointsAwardedPercentage)}
           </Text>
         }
         right={
@@ -75,11 +78,11 @@ export function CollectionLogCard() {
             color="gray"
             size="2"
           >
-            ({pointsRemaining})
+            {getPointsRemainingLabel(pointsRemaining)}
           </Text>
         }
       />
-      <Progress size="3" value={pointsAwardedPercentage} />
+      <Progress size="3" value={pointsAwardedPercentage * 100} />
     </DataCard.Root>
   );
 }

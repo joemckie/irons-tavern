@@ -50,7 +50,7 @@ export function useNotableItemsPointCalculator() {
     ? Object.entries(itemFields).filter(([, value]) => !!value)
     : [];
   const itemsCollected = filteredItemFields.length;
-  const percentageCollected = (itemsCollected / totalItems) * 100;
+  const percentageCollected = itemsCollected / totalItems;
   const unscaledPointsAwarded = filteredItemFields.reduce(
     (acc, [item]) => acc + itemPoints[item],
     0,
@@ -59,7 +59,7 @@ export function useNotableItemsPointCalculator() {
     .times(scaling)
     .toDecimalPlaces(0, Decimal.ROUND_FLOOR)
     .toNumber();
-  const pointsAwardedPercentage = (pointsAwarded / totalPointsAvailable) * 100;
+  const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
 
   return {
     pointsAwarded,

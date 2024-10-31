@@ -4,6 +4,8 @@ import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { combatExpectedValues } from '@/fixtures/rank-calculator/combat-expected-values';
 import { CombatCard } from './combat-card';
+import { formatPercentage } from '../../utils/format-percentage';
+import { formatNumber } from '../../utils/format-number';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -21,33 +23,39 @@ generateScaledPlayerTests(
 
     it('renders the total points', () => {
       expect(screen.getByLabelText(/^total combat points$/i).textContent).toBe(
-        `${expected.pointsAwarded}`,
+        formatNumber(expected.pointsAwarded),
       );
     });
 
     it('renders the points remaining', () => {
-      expect(
-        screen.getByLabelText(/^combat points remaining$/i).textContent,
-      ).toBe(`(${expected.pointsRemaining})`);
+      if (expected.pointsRemaining === 0) {
+        expect(
+          screen.getByLabelText(/^combat points remaining$/i).textContent,
+        ).toBe('Completed');
+      } else {
+        expect(
+          screen.getByLabelText(/^combat points remaining$/i).textContent,
+        ).toBe(`(${formatNumber(expected.pointsRemaining)})`);
+      }
     });
 
     it('renders the point competion percentage', () => {
       expect(
         screen.getByLabelText(/^combat point completion percentage$/i)
           .textContent,
-      ).toBe(`${expected.pointsAwardedPercentage.toFixed(2)}%`);
+      ).toBe(formatPercentage(expected.pointsAwardedPercentage));
     });
 
     it('renders the EHB points', () => {
       expect(
         screen.getByLabelText(/^efficient hours bossed points$/i).textContent,
-      ).toBe(`${expected.ehbPoints}`);
+      ).toBe(formatNumber(expected.ehbPoints));
     });
 
     it('renders the combat achievement tier points', () => {
       expect(
         screen.getByLabelText(/^combat achievement tier points$/i).textContent,
-      ).toBe(`${expected.combatAchievementTierPoints}`);
+      ).toBe(formatNumber(expected.combatAchievementTierPoints));
     });
 
     it('renders the EHB value', () => {

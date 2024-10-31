@@ -5,7 +5,7 @@ export const skillingExpectedValues = {
   earlyGamePlayer: {
     fullScaling: {
       pointsAwarded: 27061,
-      pointsAwardedPercentage: 37.71,
+      pointsAwardedPercentage: 0.3771,
       pointsRemaining: 38619,
       achievementDiariesPoints: {
         'Kourend & Kebos': 100,
@@ -26,7 +26,7 @@ export const skillingExpectedValues = {
     },
     fourMonthScaling: {
       pointsAwarded: 18942,
-      pointsAwardedPercentage: 37.71,
+      pointsAwardedPercentage: 0.3771,
       pointsRemaining: 27034,
       achievementDiariesPoints: {
         'Kourend & Kebos': 70,
@@ -47,7 +47,7 @@ export const skillingExpectedValues = {
     },
     twoMonthScaling: {
       pointsAwarded: 10824,
-      pointsAwardedPercentage: 37.71,
+      pointsAwardedPercentage: 0.3771,
       pointsRemaining: 15448,
       achievementDiariesPoints: {
         'Kourend & Kebos': 40,
@@ -68,7 +68,7 @@ export const skillingExpectedValues = {
     },
     threeWeekScaling: {
       pointsAwarded: 4732,
-      pointsAwardedPercentage: 37.68,
+      pointsAwardedPercentage: 0.3768,
       pointsRemaining: 6762,
       achievementDiariesPoints: {
         'Kourend & Kebos': 17,
@@ -89,7 +89,7 @@ export const skillingExpectedValues = {
     },
     noScaling: {
       pointsAwarded: 2706,
-      pointsAwardedPercentage: 37.71,
+      pointsAwardedPercentage: 0.3771,
       pointsRemaining: 3862,
       achievementDiariesPoints: {
         'Kourend & Kebos': 10,
@@ -112,7 +112,7 @@ export const skillingExpectedValues = {
   midGamePlayer: {
     fullScaling: {
       pointsAwarded: 65458,
-      pointsAwardedPercentage: 87.13,
+      pointsAwardedPercentage: 0.8713,
       pointsRemaining: 7982,
       achievementDiariesPoints: {
         'Kourend & Kebos': 1000,
@@ -133,7 +133,7 @@ export const skillingExpectedValues = {
     },
     fourMonthScaling: {
       pointsAwarded: 45820,
-      pointsAwardedPercentage: 87.12,
+      pointsAwardedPercentage: 0.8712,
       pointsRemaining: 5588,
       achievementDiariesPoints: {
         'Kourend & Kebos': 700,
@@ -154,7 +154,7 @@ export const skillingExpectedValues = {
     },
     twoMonthScaling: {
       pointsAwarded: 26183,
-      pointsAwardedPercentage: 87.13,
+      pointsAwardedPercentage: 0.8713,
       pointsRemaining: 3193,
       achievementDiariesPoints: {
         'Kourend & Kebos': 400,
@@ -175,7 +175,7 @@ export const skillingExpectedValues = {
     },
     threeWeekScaling: {
       pointsAwarded: 11455,
-      pointsAwardedPercentage: 87.12,
+      pointsAwardedPercentage: 0.8712,
       pointsRemaining: 1397,
       achievementDiariesPoints: {
         'Kourend & Kebos': 175,
@@ -196,7 +196,7 @@ export const skillingExpectedValues = {
     },
     noScaling: {
       pointsAwarded: 6545,
-      pointsAwardedPercentage: 87.11,
+      pointsAwardedPercentage: 0.8711,
       pointsRemaining: 799,
       achievementDiariesPoints: {
         'Kourend & Kebos': 100,
@@ -219,7 +219,7 @@ export const skillingExpectedValues = {
   endGamePlayer: {
     fullScaling: {
       pointsAwarded: 85760,
-      pointsAwardedPercentage: 93.55,
+      pointsAwardedPercentage: 0.9355,
       pointsRemaining: 4000,
       achievementDiariesPoints: {
         'Kourend & Kebos': 1000,
@@ -240,7 +240,7 @@ export const skillingExpectedValues = {
     },
     fourMonthScaling: {
       pointsAwarded: 60032,
-      pointsAwardedPercentage: 93.55,
+      pointsAwardedPercentage: 0.9355,
       pointsRemaining: 2800,
       achievementDiariesPoints: {
         'Kourend & Kebos': 700,
@@ -261,7 +261,7 @@ export const skillingExpectedValues = {
     },
     twoMonthScaling: {
       pointsAwarded: 34304,
-      pointsAwardedPercentage: 93.55,
+      pointsAwardedPercentage: 0.9355,
       pointsRemaining: 1600,
       achievementDiariesPoints: {
         'Kourend & Kebos': 400,
@@ -282,7 +282,7 @@ export const skillingExpectedValues = {
     },
     threeWeekScaling: {
       pointsAwarded: 15008,
-      pointsAwardedPercentage: 93.55,
+      pointsAwardedPercentage: 0.9355,
       pointsRemaining: 700,
       achievementDiariesPoints: {
         'Kourend & Kebos': 175,
@@ -303,7 +303,7 @@ export const skillingExpectedValues = {
     },
     noScaling: {
       pointsAwarded: 8576,
-      pointsAwardedPercentage: 93.55,
+      pointsAwardedPercentage: 0.9355,
       pointsRemaining: 400,
       achievementDiariesPoints: {
         'Kourend & Kebos': 100,

@@ -10,6 +10,9 @@ import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
 import { useSkillingPointCalculator } from '../../hooks/point-calculator/skilling/use-skilling-point-calculator';
+import { formatPercentage } from '../../utils/format-percentage';
+import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
+import { formatNumber } from '../../utils/format-number';
 
 export function SkillingCard() {
   const {
@@ -39,7 +42,7 @@ export function SkillingCard() {
         }
         right={
           <Text aria-label="Total skilling points" weight="bold" size="2">
-            {pointsAwarded}
+            {formatNumber(pointsAwarded)}
           </Text>
         }
       />
@@ -64,7 +67,7 @@ export function SkillingCard() {
             color="gray"
             size="2"
           >
-            {ehpPoints}
+            {formatNumber(ehpPoints)}
           </Text>
         }
       />
@@ -86,7 +89,7 @@ export function SkillingCard() {
         }
         right={
           <Text aria-label="Total level points" color="gray" size="2">
-            {totalLevelPoints}
+            {formatNumber(totalLevelPoints)}
           </Text>
         }
       />
@@ -108,7 +111,9 @@ export function SkillingCard() {
           }
           right={
             <Text aria-label={`${location} diary points`} color="gray" size="2">
-              {achievementDiariesPoints[location as DiaryLocation]}
+              {formatNumber(
+                achievementDiariesPoints[location as DiaryLocation],
+              )}
             </Text>
           }
         />
@@ -121,16 +126,16 @@ export function SkillingCard() {
         }
         center={
           <Text aria-label="Skilling point completion percentage" size="2">
-            {`${pointsAwardedPercentage.toFixed(2)}%`}
+            {formatPercentage(pointsAwardedPercentage)}
           </Text>
         }
         right={
           <Text aria-label="Skilling points remaining" color="gray" size="2">
-            ({pointsRemaining})
+            {getPointsRemainingLabel(pointsRemaining)}
           </Text>
         }
       />
-      <Progress size="3" value={pointsAwardedPercentage} />
+      <Progress size="3" value={pointsAwardedPercentage * 100} />
     </DataCard.Root>
   );
 }

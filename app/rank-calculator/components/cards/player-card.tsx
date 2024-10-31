@@ -3,6 +3,7 @@ import { useWatch } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { DatePicker } from '../date-picker';
 import { useCalculatorScaling } from '../../hooks/point-calculator/use-calculator-scaling';
+import { formatPercentage } from '../../utils/format-percentage';
 
 export function PlayerCard() {
   const playerName = useWatch({ name: 'playerName' });
@@ -39,7 +40,7 @@ export function PlayerCard() {
         }
         right={
           <Text aria-label="Point scaling" size="2" color="gray">
-            {`${(scaling * 100).toFixed(2)}%`}
+            {formatPercentage(scaling)}
           </Text>
         }
       />

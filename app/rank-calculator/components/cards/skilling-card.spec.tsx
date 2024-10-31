@@ -5,6 +5,8 @@ import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-
 import { skillingExpectedValues } from '@/fixtures/rank-calculator/skilling-expected-values';
 import { DiaryLocation } from '@/types/osrs';
 import { SkillingCard } from './skilling-card';
+import { formatPercentage } from '../../utils/format-percentage';
+import { formatNumber } from '../../utils/format-number';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -23,26 +25,32 @@ generateScaledPlayerTests(
     it('renders the total points', () => {
       expect(
         screen.getByLabelText(/^total skilling points$/i).textContent,
-      ).toBe(`${expected.pointsAwarded}`);
+      ).toBe(formatNumber(expected.pointsAwarded));
     });
 
     it('renders the points remaining', () => {
-      expect(
-        screen.getByLabelText(/^skilling points remaining$/i).textContent,
-      ).toBe(`(${expected.pointsRemaining})`);
+      if (expected.pointsRemaining === 0) {
+        expect(
+          screen.getByLabelText(/^skilling points remaining$/i).textContent,
+        ).toBe('Completed');
+      } else {
+        expect(
+          screen.getByLabelText(/^skilling points remaining$/i).textContent,
+        ).toBe(`(${formatNumber(expected.pointsRemaining)})`);
+      }
     });
 
     it('renders the point competion percentage', () => {
       expect(
         screen.getByLabelText(/^skilling point completion percentage$/i)
           .textContent,
-      ).toBe(`${expected.pointsAwardedPercentage.toFixed(2)}%`);
+      ).toBe(formatPercentage(expected.pointsAwardedPercentage));
     });
 
     it('renders the EHP points', () => {
       expect(
         screen.getByLabelText(/^efficient hours played points$/i).textContent,
-      ).toBe(`${expected.ehpPoints}`);
+      ).toBe(formatNumber(expected.ehpPoints));
     });
 
     it('renders the EHP value', () => {
@@ -53,7 +61,7 @@ generateScaledPlayerTests(
 
     it('renders the total level points', () => {
       expect(screen.getByLabelText(/^total level points$/i).textContent).toBe(
-        `${expected.totalLevelPoints}`,
+        formatNumber(expected.totalLevelPoints),
       );
     });
 
@@ -68,7 +76,9 @@ generateScaledPlayerTests(
         ([diaryLocation, points]) => {
           const matcher = new RegExp(`${diaryLocation} diary points`, 'i');
 
-          expect(screen.getByLabelText(matcher).textContent).toBe(`${points}`);
+          expect(screen.getByLabelText(matcher).textContent).toBe(
+            formatNumber(points),
+          );
         },
       );
     });

@@ -21,7 +21,7 @@ export function useSkillingPointCalculator() {
   const totalPointsAvailable = useMaxSkillingPoints();
   const pointsAwarded = totalAchievementDiaryPointsAwarded + totalLevelPoints;
   const pointsRemaining = totalPointsAvailable - pointsAwarded;
-  const pointsAwardedPercentage = (pointsAwarded / totalPointsAvailable) * 100;
+  const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
 
   return {
     pointsAwarded: pointsAwarded + ehpPoints,

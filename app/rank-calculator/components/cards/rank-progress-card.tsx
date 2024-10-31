@@ -5,6 +5,8 @@ import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calculator';
 import { getRankName } from '../../utils/get-rank-name';
+import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
+import { formatNumber } from '../../utils/format-number';
 
 export function RankProgressCard() {
   const {
@@ -24,7 +26,7 @@ export function RankProgressCard() {
           <DataCard.Row
             left={
               <Text aria-label="Total points" color="gray" size="2">
-                {pointsAwarded}
+                {formatNumber(pointsAwarded)}
               </Text>
             }
             center={
@@ -34,11 +36,11 @@ export function RankProgressCard() {
             }
             right={
               <Text aria-label="Points to next rank" color="gray" size="2">
-                ({pointsRemaining})
+                {getPointsRemainingLabel(pointsRemaining)}
               </Text>
             }
           />
-          <Progress size="3" value={pointsAwardedPercentage} />
+          <Progress size="3" value={pointsAwardedPercentage * 100} />
           <Flex justify="between">
             <Flex gap="2">
               <Text aria-label="Current rank" color="gray" size="2">
