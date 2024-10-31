@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { Box, Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import { RankStructure } from '@/types/rank-calculator';
 import Image from 'next/image';
@@ -16,11 +18,32 @@ export function RankProgressCard() {
     nextRank,
     rank,
   } = useRankCalculator();
+  const { register, setValue, getValues } = useFormContext();
   const rankName = getRankName(rank);
   const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
 
+  useEffect(() => {
+    if (rankName !== getValues('rank')) {
+      setValue('rank', rankName);
+    }
+  }, [rankName, setValue, getValues]);
+
+  useEffect(() => {
+    setValue('points', pointsAwarded);
+  }, [pointsAwarded, setValue]);
+
   return (
     <Box>
+      <input
+        {...register('rank', { value: rankName })}
+        defaultValue={rankName}
+        type="hidden"
+      />
+      <input
+        {...register('points', { value: pointsAwarded })}
+        defaultValue={pointsAwarded}
+        type="hidden"
+      />
       <Card>
         <Flex direction="column" gap="3">
           <DataCard.Row

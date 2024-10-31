@@ -106,7 +106,7 @@ const memberListHandler = http.get(
 const redisHandler = http.post<
   PathParams,
   [string, string][],
-  { result: FormData }[]
+  { result: Omit<FormData, 'rank' | 'points'> }[]
 >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
   const [[method, key]] = await request.json();
 

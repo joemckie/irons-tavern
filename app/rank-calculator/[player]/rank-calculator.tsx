@@ -7,23 +7,15 @@ import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
 import { useSubmitForm } from '../hooks/use-submit-form';
-import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
-import { getRankName } from '../utils/get-rank-name';
 
 export function RankCalculator() {
   const { handleSubmit } = useFormContext<FormData>();
   const { navHeight, navRef } = usePageLayout();
   const { mutateAsync: saveSubmission } = useSubmitForm();
-  const { rank, pointsAwarded } = useRankCalculator();
-  const rankName = getRankName(rank);
 
   const onSubmit: SubmitHandler<FormData> = async (formData) => {
     try {
-      const response = await saveSubmission({
-        formData,
-        points: pointsAwarded,
-        rank: rankName,
-      });
+      const response = await saveSubmission(formData);
 
       console.log(response);
     } catch (error) {

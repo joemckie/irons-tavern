@@ -32,7 +32,7 @@ export const earlyGamePlayer = {
   ehp: 368,
   totalLevel: 1588,
   rankStructure: RankStructure.Standard,
-} satisfies FormData;
+} satisfies Omit<FormData, 'rank' | 'points'>;
 
 export const midGamePlayer = {
   acquiredItems: {
@@ -159,7 +159,7 @@ export const midGamePlayer = {
   ehp: 1144,
   totalLevel: 2174,
   rankStructure: RankStructure.Standard,
-} satisfies FormData;
+} satisfies Omit<FormData, 'rank' | 'points'>;
 
 export const endGamePlayer = {
   acquiredItems: {
@@ -401,4 +401,4 @@ export const endGamePlayer = {
   ehp: 2776,
   totalLevel: 2277,
   rankStructure: RankStructure.Standard,
-} satisfies FormData;
+} satisfies Omit<FormData, 'rank' | 'points'>;

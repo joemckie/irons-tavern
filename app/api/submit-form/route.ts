@@ -4,12 +4,8 @@ import { Redis, errors } from '@upstash/redis';
 import { DiscordAPIError, ResponseLike, REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
-
-export interface SubmitFormData {
-  formData: FormData;
-  points: number;
-  rank: string;
-}
+import { formatNumber } from '@/app/rank-calculator/utils/format-number';
+import { RedisKeyNamespace } from '@/config/redis';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -46,13 +42,10 @@ export async function POST(
   }).setToken(process.env.DISCORD_TOKEN);
 
   try {
-    const {
-      formData: { playerName, ...data },
-      rank,
-      points,
-    }: SubmitFormData = await request.json();
+    const { playerName, points, rank, ...data }: FormData =
+      await request.json();
     const result = await redis.json.set(
-      `submission:${playerName.toLowerCase()}`,
+      `${RedisKeyNamespace.Submission}:${playerName.toLowerCase()}`,
       '$',
       data,
     );
@@ -69,7 +62,7 @@ export async function POST(
 
     await discord.post(Routes.channelMessages(process.env.DISCORD_CHANNEL_ID), {
       body: {
-        content: `${playerName} has applied for the ${rank} rank with ${points} points!`,
+        content: `${playerName} has applied for the ${rank} rank with ${formatNumber(points)} points!`,
       },
     });
 
