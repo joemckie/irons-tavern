@@ -1,4 +1,4 @@
-import { RankCalculator } from './rank-calculator';
+import { FormWrapper } from './form-wrapper';
 import { getPlayerDetails } from '../hooks/use-player-details';
 
 interface Params {
@@ -13,5 +13,5 @@ export default async function RankCalculatorPage({
   const { player } = await params;
   const playerDetails = await getPlayerDetails(player);
 
-  return <RankCalculator formData={playerDetails} />;
+  return <FormWrapper formData={playerDetails} />;
 }

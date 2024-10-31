@@ -11,7 +11,9 @@ import { NextRequest } from 'next/server';
 import { http, HttpResponse, PathParams } from 'msw';
 import { Routes } from 'discord-api-types/v10';
 import * as discordFixtures from '@/mocks/discord';
-import { POST } from './route';
+import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
+import { Rank } from '@/config/enums';
+import { POST, SubmitFormData } from './route';
 
 it('saves the submission to the database', async () => {
   const player = 'cousinofkos';
@@ -38,9 +40,14 @@ it('saves the submission to the database', async () => {
     ),
   );
 
+  const body = {
+    formData: formData.midGamePlayer,
+    points: 100000,
+    rank: getRankName(Rank.Owner),
+  } satisfies SubmitFormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
-    body: JSON.stringify(formData.midGamePlayer),
+    body: JSON.stringify(body),
   });
   const response = await POST(request);
   const result: ApiSuccess<void> = await response.json();
@@ -74,9 +81,14 @@ it('returns an error if the save was not successful', async () => {
     ),
   );
 
+  const body = {
+    formData: formData.midGamePlayer,
+    points: 100000,
+    rank: getRankName(Rank.Owner),
+  } satisfies SubmitFormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
-    body: JSON.stringify(formData.midGamePlayer),
+    body: JSON.stringify(body),
   });
   const response = await POST(request);
   const result: ApiSuccess<void> = await response.json();
@@ -95,9 +107,14 @@ it('returns an error if a network error occurs whilst saving the submission', as
     http.post(`${constants.redisUrl}/pipeline`, () => HttpResponse.error()),
   );
 
+  const body = {
+    formData: formData.midGamePlayer,
+    points: 100000,
+    rank: getRankName(Rank.Owner),
+  } satisfies SubmitFormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
-    body: JSON.stringify(formData.midGamePlayer),
+    body: JSON.stringify(body),
   });
   const response = await POST(request);
   const result: ApiSuccess<void> = await response.json();
@@ -136,9 +153,14 @@ it('returns an error if a network error occurs whilst sending the discord messag
     ),
   );
 
+  const body = {
+    formData: formData.midGamePlayer,
+    points: 100000,
+    rank: getRankName(Rank.Owner),
+  } satisfies SubmitFormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
-    body: JSON.stringify(formData.midGamePlayer),
+    body: JSON.stringify(body),
   });
   const response = await POST(request);
   const result: ApiSuccess<void> = await response.json();

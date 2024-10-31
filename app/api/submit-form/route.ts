@@ -5,6 +5,12 @@ import { DiscordAPIError, ResponseLike, REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
 
+export interface SubmitFormData {
+  formData: FormData;
+  points: number;
+  rank: string;
+}
+
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
     return 'Failed to save to database';
@@ -40,7 +46,11 @@ export async function POST(
   }).setToken(process.env.DISCORD_TOKEN);
 
   try {
-    const { playerName, ...data }: FormData = await request.json();
+    const {
+      formData: { playerName, ...data },
+      rank,
+      points,
+    }: SubmitFormData = await request.json();
     const result = await redis.json.set(
       `submission:${playerName.toLowerCase()}`,
       '$',
@@ -59,7 +69,7 @@ export async function POST(
 
     await discord.post(Routes.channelMessages(process.env.DISCORD_CHANNEL_ID), {
       body: {
-        content: `${playerName} has applied for the Owner rank!`,
+        content: `${playerName} has applied for the ${rank} rank with ${points} points!`,
       },
     });
 

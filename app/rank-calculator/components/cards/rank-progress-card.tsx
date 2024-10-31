@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calculator';
+import { getRankName } from '../../utils/get-rank-name';
 
 export function RankProgressCard() {
   const {
@@ -13,6 +14,8 @@ export function RankProgressCard() {
     nextRank,
     rank,
   } = useRankCalculator();
+  const rankName = getRankName(rank);
+  const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
 
   return (
     <Box>
@@ -39,7 +42,7 @@ export function RankProgressCard() {
           <Flex justify="between">
             <Flex gap="2">
               <Text aria-label="Current rank" color="gray" size="2">
-                {rank}
+                {rankName}
               </Text>
               <Image
                 alt={`${rank} icon`}
@@ -58,7 +61,7 @@ export function RankProgressCard() {
                 />
               )}
               <Text aria-label="Next rank" color="gray" size="2">
-                {nextRank ?? 'Max rank'}
+                {nextRankName}
               </Text>
             </Flex>
           </Flex>

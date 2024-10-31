@@ -1,7 +1,7 @@
 import { RankStructure } from '@/types/rank-calculator';
 import { Rank } from './enums';
 
-export const rankNames = {
+export const rankNames: Partial<Record<Rank, string>> = {
   Air: 'Airhead',
   Pine: 'Pine Cone',
   Water: 'Hydro Homie',
@@ -19,7 +19,7 @@ export const rankNames = {
   Onyx: 'Onyxian',
   Legend: 'Legacy',
   Blisterwood: 'Hollow',
-} satisfies AtLeastOne<Record<Rank, string>>;
+};
 
 export const rankThresholds: Record<
   RankStructure,

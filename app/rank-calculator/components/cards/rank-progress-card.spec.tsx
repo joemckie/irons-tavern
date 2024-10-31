@@ -4,6 +4,7 @@ import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { rankExpectedValues } from '@/fixtures/rank-calculator/rank-expected-values';
 import { RankProgressCard } from './rank-progress-card';
+import { getRankName } from '../../utils/get-rank-name';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -33,7 +34,7 @@ generateScaledPlayerTests(
 
     it('renders the current rank', () => {
       expect(screen.getByLabelText(/^current rank$/i).textContent).toBe(
-        expected.rank,
+        getRankName(expected.rank),
       );
     });
 
@@ -49,7 +50,7 @@ generateScaledPlayerTests(
 
     it('renders the next rank', () => {
       expect(screen.getByLabelText(/^next rank$/i).textContent).toBe(
-        expected.nextRank,
+        getRankName(expected.nextRank),
       );
     });
 
