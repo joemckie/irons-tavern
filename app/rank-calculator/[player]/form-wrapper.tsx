@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { RankCalculator } from './rank-calculator';
 
 interface FormWrapperProps {
-  formData: FormData;
+  formData: Omit<FormData, 'rank' | 'points'>;
 }
 
 export function FormWrapper({ formData }: FormWrapperProps) {

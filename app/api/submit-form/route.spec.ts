@@ -13,6 +13,7 @@ import { Routes } from 'discord-api-types/v10';
 import * as discordFixtures from '@/mocks/discord';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { Rank } from '@/config/enums';
+import { FormData } from '@/types/rank-calculator';
 import { POST } from './route';
 
 it('saves the submission to the database', async () => {
@@ -35,16 +36,16 @@ it('saves the submission to the database', async () => {
       },
     ),
     http.post(
-      `${constants.discordUrl}${Routes.channelMessages('discord-channel-id')}`,
+      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
       () => HttpResponse.json(discordFixtures.sendMessageFixture),
     ),
   );
 
   const body = {
-    formData: formData.midGamePlayer,
+    ...formData.midGamePlayer,
     points: 100000,
     rank: getRankName(Rank.Owner),
-  } satisfies SubmitFormData;
+  } satisfies FormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -82,10 +83,10 @@ it('returns an error if the save was not successful', async () => {
   );
 
   const body = {
-    formData: formData.midGamePlayer,
+    ...formData.midGamePlayer,
     points: 100000,
     rank: getRankName(Rank.Owner),
-  } satisfies SubmitFormData;
+  } satisfies FormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -108,10 +109,10 @@ it('returns an error if a network error occurs whilst saving the submission', as
   );
 
   const body = {
-    formData: formData.midGamePlayer,
+    ...formData.midGamePlayer,
     points: 100000,
     rank: getRankName(Rank.Owner),
-  } satisfies SubmitFormData;
+  } satisfies FormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -148,16 +149,16 @@ it('returns an error if a network error occurs whilst sending the discord messag
       },
     ),
     http.post(
-      `${constants.discordUrl}${Routes.channelMessages('discord-channel-id')}`,
+      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
       () => HttpResponse.error(),
     ),
   );
 
   const body = {
-    formData: formData.midGamePlayer,
+    ...formData.midGamePlayer,
     points: 100000,
     rank: getRankName(Rank.Owner),
-  } satisfies SubmitFormData;
+  } satisfies FormData;
   const request = new NextRequest(`${constants.publicUrl}/api/submit-form`, {
     method: 'POST',
     body: JSON.stringify(body),

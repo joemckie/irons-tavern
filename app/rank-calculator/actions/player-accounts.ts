@@ -48,7 +48,7 @@ export async function savePlayerAccount(playerName: string) {
     const maybeFormattedPlayerName = playerStats?.info.Username ?? playerName;
     const result = await redis.json.set(
       `${RedisKeyNamespace.Submissions}:${session.user.id}`,
-      `$.${maybeFormattedPlayerName}`,
+      `$.['${maybeFormattedPlayerName}']`,
       {},
       { nx: true },
     );

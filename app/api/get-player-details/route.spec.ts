@@ -88,16 +88,16 @@ it('returns the highest achievement diary values from the previous submission an
       HttpResponse.json<[{ result: string }]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              {
-                achievementDiaries: {
-                  'Kourend & Kebos': DiaryTier.Medium,
-                  'Lumbridge & Draynor': DiaryTier.Elite,
-                },
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, {
+              achievementDiaries: {
+                'Kourend & Kebos': DiaryTier.Medium,
+                'Lumbridge & Draynor': DiaryTier.Elite,
               },
-            ),
+            }),
           ),
         },
       ]),
@@ -219,11 +219,13 @@ it('returns the combat achievement tier from the API data if it is higher than t
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { combatAchievementTier: CombatAchievementTier.Grandmaster },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, {
+              combatAchievementTier: CombatAchievementTier.Grandmaster,
+            }),
           ),
         },
       ]),
@@ -265,11 +267,13 @@ it('returns the combat achievement tier from the previous submission if it is hi
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { combatAchievementTier: CombatAchievementTier.Hard },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, {
+              combatAchievementTier: CombatAchievementTier.Hard,
+            }),
           ),
         },
       ]),
@@ -297,11 +301,11 @@ it('returns the collection log count from the previous submission if it is highe
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { collectionLogCount: 100 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { collectionLogCount: 100 }),
           ),
         },
       ]),
@@ -336,11 +340,11 @@ it('returns the collection log count from the API data if it is higher than the 
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { collectionLogCount: 123 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { collectionLogCount: 123 }),
           ),
         },
       ]),
@@ -375,11 +379,11 @@ it('returns the ehb from the API data if it is higher than the previous submissi
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { ehb: 0 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { ehb: 0 }),
           ),
         },
       ]),
@@ -407,11 +411,11 @@ it('returns the ehb from the previous submission if it is higher than the API da
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { ehb: 100 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { ehb: 100 }),
           ),
         },
       ]),
@@ -439,11 +443,11 @@ it('returns the ehp from the API data if it is higher than the previous submissi
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { ehp: 0 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { ehp: 0 }),
           ),
         },
       ]),
@@ -471,11 +475,11 @@ it('returns the ehp from the previous submission if it is higher than the API da
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { ehp: 100 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { ehp: 100 }),
           ),
         },
       ]),
@@ -503,11 +507,11 @@ it('returns the total level from the API data if it is higher than the previous 
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { totalLevel: 100 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { totalLevel: 100 }),
           ),
         },
       ]),
@@ -535,11 +539,11 @@ it('returns the total level from the previous submission if it is higher than th
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { totalLevel: 1000 },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { totalLevel: 1000 }),
           ),
         },
       ]),
@@ -602,11 +606,11 @@ it('returns the join date from the member list if present', async () => {
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { joinDate: new Date('2021-01-01') },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { joinDate: new Date('2021-01-01') }),
           ),
         },
       ]),
@@ -626,11 +630,11 @@ it('returns the join date from the previous submission if not found in member li
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { joinDate: new Date('2021-01-01') },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, { joinDate: new Date('2021-01-01') }),
           ),
         },
       ]),
@@ -721,11 +725,13 @@ it('returns the rank structure from the previous submission if found', async () 
       HttpResponse.json<{ result: string }[]>([
         {
           result: JSON.stringify(
-            merge<unknown, FormData, DeepPartial<FormData>>(
-              {},
-              formData.midGamePlayer,
-              { rankStructure: RankStructure.Admin },
-            ),
+            merge<
+              unknown,
+              Omit<FormData, 'rank' | 'points'>,
+              DeepPartial<Omit<FormData, 'rank' | 'points'>>
+            >({}, formData.midGamePlayer, {
+              rankStructure: RankStructure.Admin,
+            }),
           ),
         },
       ]),

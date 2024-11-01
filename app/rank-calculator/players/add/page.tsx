@@ -24,8 +24,11 @@ export default function RankCalculatorPlayerList() {
 
   const onSubmit: SubmitHandler<FormData> = async ({ playerName }) => {
     try {
-      await savePlayerAccount(playerName);
-      router.push('/rank-calculator/players');
+      const response = await savePlayerAccount(playerName);
+
+      if (response === 'OK') {
+        router.push('/rank-calculator/players');
+      }
     } catch (error) {
       console.log(error);
     }

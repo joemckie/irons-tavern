@@ -55,7 +55,7 @@ export function DatePicker({
   name,
   ...props
 }: DatePickerProps & BaseDatePickerProps) {
-  const { field } = useController({ name });
+  const { field, fieldState } = useController({ name });
 
   return (
     <BaseDatePicker
@@ -64,7 +64,7 @@ export function DatePicker({
       selected={field.value}
       dateFormat="dd-MM-yyyy"
       maxDate={new Date()}
-      customInput={<Input />}
+      customInput={<Input hasError={!!fieldState.error} />}
       portalId="theme-root"
       calendarClassName="rt-PopoverContent rt-r-size-2"
       renderDayContents={(day) => <Text size="2">{day}</Text>}

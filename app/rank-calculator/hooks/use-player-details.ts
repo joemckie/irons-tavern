@@ -48,7 +48,7 @@ export const getPlayerDetails = async (player: string) => {
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,
     rankStructure: data.rankStructure ?? RankStructure.Standard,
-  } satisfies FormData;
+  } satisfies Omit<FormData, 'rank' | 'points'>;
 };
 
 export function usePlayerDetails(player: string) {
