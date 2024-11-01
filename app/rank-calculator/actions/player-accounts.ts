@@ -2,6 +2,7 @@
 
 import { auth, redis } from '@/auth';
 import { RedisKeyNamespace } from '@/config/redis';
+import { revalidatePath } from 'next/cache';
 import { fetchTemplePlayerStats } from './temple-osrs';
 
 export async function validatePlayerName(playerName: string) {
@@ -71,8 +72,12 @@ export async function deletePlayerAccount(playerName: string) {
   try {
     const result = await redis.json.del(
       `${RedisKeyNamespace.Submissions}:${session.user.id}`,
-      `$.${playerName}`,
+      `$.['${playerName}']`,
     );
+
+    if (result) {
+      revalidatePath('/rank-calculator/players');
+    }
 
     return result;
   } catch (error) {
