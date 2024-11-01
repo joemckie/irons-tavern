@@ -1,48 +1,35 @@
-'use client';
+import { Box, Button, Flex, Heading } from '@radix-ui/themes';
+import { signIn } from '@/auth';
+import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
-import { Button, Flex, Heading } from '@radix-ui/themes';
-import Link from 'next/link';
-import { Routes } from 'discord-api-types/v10';
-import { constants } from '@/config/constants';
+export default async function RankCalculatorLoginPage() {
+  const handleSubmit = async () => {
+    'use server';
 
-export default function RankCalculatorLoginPage() {
-  if (!constants.discord.clientId) {
-    throw new Error('No discord client ID');
-  }
-
-  if (!constants.discord.redirectUri) {
-    throw new Error('Empty discord redirect URI');
-  }
+    await signIn('discord', {
+      redirectTo: '/rank-calculator/players',
+    });
+  };
 
   return (
-    <Flex
-      height="100vh"
-      align="center"
-      justify="center"
-      gap="6"
-      direction="column"
-    >
-      <Heading>Irons Tavern Rank Calculator</Heading>
-      <Flex direction="column" gap="4" width="330px">
-        <Button size="3" asChild>
-          <Link
-            href={{
-              protocol: 'https',
-              host: constants.discord.baseUrl.replace('https://', ''),
-              pathname: Routes.oauth2Authorization(),
-              query: new URLSearchParams({
-                response_type: 'code',
-                client_id: constants.discord.clientId,
-                scope: 'identify',
-                prompt: 'none',
-                redirect_uri: encodeURI(constants.discord.redirectUri),
-              }).toString(),
-            }}
-          >
-            Log in with Discord
-          </Link>
-        </Button>
+    <form action={handleSubmit}>
+      <Flex
+        height="100vh"
+        align="center"
+        justify="center"
+        gap="6"
+        direction="column"
+      >
+        <Box asChild width="450px">
+          <>
+            <Heading>Irons Tavern Rank Calculator</Heading>
+            <Button size="3" type="submit">
+              <DiscordLogoIcon />
+              Log in with Discord
+            </Button>
+          </>
+        </Box>
       </Flex>
-    </Flex>
+    </form>
   );
 }
