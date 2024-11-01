@@ -1,14 +1,11 @@
 import { constants } from '@/config/constants';
-import { http, HttpResponse, passthrough, PathParams } from 'msw';
+import { http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
 import { PlayerStatsResponse } from '@/types/temple-api';
-import { RedisKeyNamespace } from '@/config/redis';
-import { FormData } from '@/types/rank-calculator';
 import * as collectionLog from './collection-log';
 import * as wikiSync from './wiki-sync';
-import * as formDataFixture from './misc/form-data';
 import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';
 import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
@@ -103,28 +100,28 @@ const memberListHandler = http.get(
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
 );
 
-const redisHandler = http.post<
-  PathParams,
-  [string, string][],
-  { result: Omit<FormData, 'rank' | 'points'> }[]
->(`${constants.redisUrl}/pipeline`, async ({ request }) => {
-  const [[method, key]] = await request.json();
+// const redisHandler = http.post<
+//   PathParams,
+//   [string, string][],
+//   { result: Omit<FormData, 'rank' | 'points'> }[]
+// >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
+//   const [[method, key]] = await request.json();
 
-  if (method === 'JSON.GET') {
-    switch (key) {
-      case `${RedisKeyNamespace.Submission}:riftletics`:
-        return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
-      case `${RedisKeyNamespace.Submission}:cousinofkos`:
-        return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
-      case `${RedisKeyNamespace.Submission}:clogging`:
-        return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
-      default:
-        return passthrough();
-    }
-  }
+//   if (method === 'JSON.GET') {
+//     switch (key) {
+//       case `${RedisKeyNamespace.Submission}:riftletics`:
+//         return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
+//       case `${RedisKeyNamespace.Submission}:cousinofkos`:
+//         return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
+//       case `${RedisKeyNamespace.Submission}:clogging`:
+//         return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
+//       default:
+//         return passthrough();
+//     }
+//   }
 
-  return passthrough();
-});
+//   return passthrough();
+// });
 
 const passthroughHandlers = [
   'https://*.googleapis.com/*',
@@ -135,6 +132,7 @@ const passthroughHandlers = [
   'https://discord.com/api/users/@me',
   'https://discord.com/api/oauth2/token',
   `${constants.redisUrl}/*`,
+  'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
 ].map((url) => http.all(url, passthrough));
 
 export const handlers = [

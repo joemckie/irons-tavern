@@ -1,12 +1,13 @@
 import { ApiResponse } from '@/types/api';
 import { FormData } from '@/types/rank-calculator';
-import { Redis, errors } from '@upstash/redis';
+import { errors } from '@upstash/redis';
 import { DiscordAPIError, REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import { RedisKeyNamespace } from '@/config/redis';
 import { makeDiscordRequest } from '@/app/rank-calculator/utils/discord';
+import { redis } from '@/auth';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -19,10 +20,6 @@ function formatErrorMessage(error: unknown) {
 
   return 'Something went wrong';
 }
-
-const redis = Redis.fromEnv({
-  keepAlive: false,
-});
 
 export async function POST(
   request: NextRequest,

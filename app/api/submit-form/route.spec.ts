@@ -13,7 +13,7 @@ import { Routes } from 'discord-api-types/v10';
 import * as discordFixtures from '@/mocks/discord';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { Rank } from '@/config/enums';
-import { POST, SubmitFormData } from './route';
+import { POST } from './route';
 
 it('saves the submission to the database', async () => {
   const player = 'cousinofkos';

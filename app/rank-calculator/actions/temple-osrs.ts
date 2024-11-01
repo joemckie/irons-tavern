@@ -1,15 +1,19 @@
-import { constants } from '@/config/constants';
-import {
-  isPlayerStatsError,
-  PlayerStatsError,
-  PlayerStatsResponse,
-} from '@/types/temple-api';
+'use server';
 
-export async function getTempleData(player: string) {
+import { constants } from '@/config/constants';
+import { PlayerStatsError, PlayerStatsResponse } from '@/types/temple-api';
+
+function isPlayerStatsError(
+  playerStatsResponse: PlayerStatsResponse | PlayerStatsError,
+): playerStatsResponse is PlayerStatsError {
+  return (playerStatsResponse as PlayerStatsError).error !== undefined;
+}
+
+export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
   try {
     const playerStatsQueryParams = new URLSearchParams({
       player,
-      bosses: '1',
+      bosses: Number(bosses).toString(),
     });
     const playerStatsResponse = await fetch(
       `${constants.temple.baseUrl}/api/player_stats.php?${playerStatsQueryParams}`,
@@ -18,8 +22,8 @@ export async function getTempleData(player: string) {
       await playerStatsResponse.json();
 
     return isPlayerStatsError(playerStatsData) ? null : playerStatsData.data;
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
 
     return null;
   }

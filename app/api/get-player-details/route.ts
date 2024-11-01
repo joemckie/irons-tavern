@@ -10,6 +10,7 @@ import { RedisKeyNamespace } from '@/config/redis';
 import { Redis } from '@upstash/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
+import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -17,7 +18,6 @@ import { calculateCombatAchievementTier } from './utils/calculate-combat-achieve
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
 import { getPlayerMeta } from './utils/get-player-meta';
 import { parseLevels } from './utils/parse-levels';
-import { getTempleData } from './utils/get-temple-data';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
@@ -62,7 +62,7 @@ export async function GET(
       await Promise.all([
         getWikiSyncData(player),
         getCollectionLog(player),
-        getTempleData(player),
+        fetchTemplePlayerStats(player, true),
         redis.json.get<FormData>(`${RedisKeyNamespace.Submission}:${player}`),
       ]);
 

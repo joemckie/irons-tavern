@@ -2,6 +2,7 @@ import { Redis } from '@upstash/redis';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
+import { RedisKeyNamespace } from './config/redis';
 
 declare module 'next-auth' {
   /**
@@ -13,13 +14,23 @@ declare module 'next-auth' {
   }
 }
 
-const redis = Redis.fromEnv({
+export const redis = Redis.fromEnv({
   keepAlive: false,
 });
 
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   adapter: UpstashRedisAdapter(redis),
+  events: {
+    async createUser({ user }) {
+      // Initialise submission map
+      await redis.json.set(
+        `${RedisKeyNamespace.Submissions}:${user.id}`,
+        '$',
+        {},
+      );
+    },
+  },
   providers: [
     Discord<DiscordProfile>({
       authorization: 'https://discord.com/api/oauth2/authorize?scope=identify',

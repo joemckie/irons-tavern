@@ -1,9 +1,18 @@
 import { TextField } from '@radix-ui/themes';
 import { forwardRef } from 'react';
 
-export const Input = forwardRef<HTMLInputElement, TextField.RootProps>(
-  ({ children, ...props }, forwardedRef) => (
-    <TextField.Root {...props} ref={forwardedRef} role="textbox">
+interface InputProps extends TextField.RootProps {
+  hasError: boolean;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ children, hasError, ...props }, forwardedRef) => (
+    <TextField.Root
+      {...props}
+      ref={forwardedRef}
+      role="textbox"
+      color={hasError ? 'red' : undefined}
+    >
       {children}
     </TextField.Root>
   ),

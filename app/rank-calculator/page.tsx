@@ -1,8 +1,15 @@
-import { Box, Button, Flex, Heading } from '@radix-ui/themes';
-import { signIn } from '@/auth';
+import { Button, Flex, Heading } from '@radix-ui/themes';
+import { auth, signIn } from '@/auth';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
+import { redirect } from 'next/navigation';
 
 export default async function RankCalculatorLoginPage() {
+  const session = await auth();
+
+  if (session?.user) {
+    redirect('/rank-calculator/players');
+  }
+
   const handleSubmit = async () => {
     'use server';
 
@@ -20,15 +27,11 @@ export default async function RankCalculatorLoginPage() {
         gap="6"
         direction="column"
       >
-        <Box asChild width="450px">
-          <>
-            <Heading>Irons Tavern Rank Calculator</Heading>
-            <Button size="3" type="submit">
-              <DiscordLogoIcon />
-              Log in with Discord
-            </Button>
-          </>
-        </Box>
+        <Heading size="5">Irons Tavern Rank Calculator</Heading>
+        <Button size="3" type="submit">
+          <DiscordLogoIcon />
+          Sign in with Discord
+        </Button>
       </Flex>
     </form>
   );
