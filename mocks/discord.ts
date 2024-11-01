@@ -30,3 +30,29 @@ export const sendMessageFixture = {
   mention_everyone: false,
   tts: false,
 };
+
+export const userFixture = {
+  id: '80351110224678912',
+  username: 'Nelly',
+  discriminator: '1337',
+  avatar: '8342729096ea3675442027381ff50dfe',
+  verified: true,
+  email: 'nelly@discord.com',
+  flags: 64,
+  banner: '06c16474723fe537c283b8efa61a30c8',
+  accent_color: 16711680,
+  premium_type: 1,
+  public_flags: 64,
+  avatar_decoration_data: {
+    sku_id: '1144058844004233369',
+    asset: 'a_fed43ab12698df65902ba06727e20c0e',
+  },
+};
+
+export const tokenFixture = {
+  access_token: 'access token',
+  token_type: 'Bearer',
+  expires_in: 604800,
+  refresh_token: 'refresh token',
+  scope: 'identify',
+};

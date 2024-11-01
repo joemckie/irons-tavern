@@ -1,56 +1,48 @@
 'use client';
 
-import { useState } from 'react';
 import { Button, Flex, Heading } from '@radix-ui/themes';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { Input } from './components/input';
+import Link from 'next/link';
+import { Routes } from 'discord-api-types/v10';
+import { constants } from '@/config/constants';
 
-interface FormData {
-  player: string;
-}
+export default function RankCalculatorLoginPage() {
+  if (!constants.discord.clientId) {
+    throw new Error('No discord client ID');
+  }
 
-export default function RankCalculatorHome() {
-  const router = useRouter();
-  const methods = useForm<FormData>();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const onSubmit: SubmitHandler<FormData> = () => {
-    setIsLoading(true);
-
-    try {
-      router.push(
-        `/rank-calculator/${encodeURIComponent(methods.getValues('player'))}`,
-      );
-    } catch {
-      setIsLoading(false);
-    }
-  };
+  if (!constants.discord.redirectUri) {
+    throw new Error('Empty discord redirect URI');
+  }
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Flex
-          height="100vh"
-          align="center"
-          justify="center"
-          gap="6"
-          direction="column"
-        >
-          <Heading>Irons Tavern Rank Calculator</Heading>
-          <Flex direction="column" gap="4" width="330px">
-            <Input
-              {...methods.register('player')}
-              size="3"
-              placeholder="Player name"
-              required
-            />
-            <Button loading={isLoading} size="3">
-              Go to calculator
-            </Button>
-          </Flex>
-        </Flex>
-      </form>
-    </FormProvider>
+    <Flex
+      height="100vh"
+      align="center"
+      justify="center"
+      gap="6"
+      direction="column"
+    >
+      <Heading>Irons Tavern Rank Calculator</Heading>
+      <Flex direction="column" gap="4" width="330px">
+        <Button size="3" asChild>
+          <Link
+            href={{
+              protocol: 'https',
+              host: constants.discord.baseUrl.replace('https://', ''),
+              pathname: Routes.oauth2Authorization(),
+              query: new URLSearchParams({
+                response_type: 'code',
+                client_id: constants.discord.clientId,
+                scope: 'identify',
+                prompt: 'none',
+                redirect_uri: encodeURI(constants.discord.redirectUri),
+              }).toString(),
+            }}
+          >
+            Log in with Discord
+          </Link>
+        </Button>
+      </Flex>
+    </Flex>
   );
 }

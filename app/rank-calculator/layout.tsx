@@ -1,8 +1,16 @@
 import '@radix-ui/themes/styles.css';
 import { PropsWithChildren, Suspense } from 'react';
 import { Flex, Spinner, Text, Theme } from '@radix-ui/themes';
+import { getAccessToken, getRefreshToken } from './actions';
 
-export default function RankCalculatorLayout({ children }: PropsWithChildren) {
+export default async function RankCalculatorLayout({
+  children,
+}: PropsWithChildren) {
+  const accessToken = await getAccessToken();
+  const refreshToken = await getRefreshToken();
+
+  console.log({ accessToken, refreshToken });
+
   return (
     <Theme
       accentColor="iris"

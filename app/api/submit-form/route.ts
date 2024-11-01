@@ -1,11 +1,12 @@
 import { ApiResponse } from '@/types/api';
 import { FormData } from '@/types/rank-calculator';
 import { Redis, errors } from '@upstash/redis';
-import { DiscordAPIError, ResponseLike, REST } from '@discordjs/rest';
+import { DiscordAPIError, REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import { RedisKeyNamespace } from '@/config/redis';
+import { makeDiscordRequest } from '@/app/rank-calculator/utils/discord';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -35,10 +36,7 @@ export async function POST(
   }
 
   const discord = new REST({
-    async makeRequest(url, init) {
-      const response = await fetch(url, init as RequestInit);
-      return response as ResponseLike;
-    },
+    makeRequest: makeDiscordRequest,
   }).setToken(process.env.DISCORD_TOKEN);
 
   try {

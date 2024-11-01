@@ -25,5 +25,11 @@ export const constants = {
     baseUrl: 'https://sync.runescape.wiki' as const,
   },
   redisUrl: process.env.KV_REST_API_URL,
-  discordUrl: 'https://discord.com/api/v10' as const,
+  discord: {
+    baseUrl: 'https://discord.com/api/v10' as const,
+    clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    redirectUri: encodeURI(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI ?? ''),
+    token: process.env.DISCORD_TOKEN,
+  },
 };

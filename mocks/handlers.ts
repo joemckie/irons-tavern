@@ -13,6 +13,7 @@ import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';
 import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
 import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tiers';
+import { tokenFixture } from './discord';
 
 const templePlayerStatsHandler = http.get(
   'https://templeosrs.com/api/player_stats.php',
@@ -126,6 +127,11 @@ const redisHandler = http.post<
   return passthrough();
 });
 
+const discordTokenHandler = http.post(
+  'https://discord.com/api/v10/oauth2/token',
+  async () => HttpResponse.json(tokenFixture),
+);
+
 const passthroughHandlers = [
   'https://*.googleapis.com/*',
   'https://*.gstatic.com/*',
@@ -141,5 +147,6 @@ export const handlers = [
   memberListHandler,
   wikiApiHandler,
   redisHandler,
+  discordTokenHandler,
   ...passthroughHandlers,
 ];
