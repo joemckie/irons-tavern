@@ -20,6 +20,27 @@ export async function validatePlayerName(playerName: string) {
   }
 }
 
+export async function assertUniquePlayerRecord(playerName: string) {
+  const session = await auth();
+
+  if (!session?.user) {
+    return false;
+  }
+
+  try {
+    const [record] = await redis.json.type(
+      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      `$.['${playerName.toLowerCase()}']`,
+    );
+
+    return record === 'null';
+  } catch (error) {
+    Sentry.captureException(error);
+
+    return false;
+  }
+}
+
 export async function fetchPlayerAccounts() {
   const session = await auth();
 
@@ -52,6 +73,12 @@ export async function savePlayerAccount(playerName: string, joinDate: Date) {
 
     if (!isPlayerNameValid) {
       throw new Error('Invalid player name');
+    }
+
+    const isPlayerNameUnique = await assertUniquePlayerRecord(playerName);
+
+    if (!isPlayerNameUnique) {
+      throw new Error('Account already exists on profile');
     }
 
     const [playerMeta, playerStats] = await Promise.all([

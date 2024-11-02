@@ -8,6 +8,7 @@ import { debounce } from 'lodash';
 import * as Sentry from '@sentry/nextjs';
 import { Input } from '../../components/input';
 import {
+  assertUniquePlayerRecord,
   fetchPlayerJoinDate,
   savePlayerAccount,
   validatePlayerName,
@@ -81,6 +82,12 @@ export default function RankCalculatorPlayerList() {
                         const valid = await validatePlayerName(playerName);
 
                         return valid || 'Invalid player name';
+                      },
+                      isUnique: async (playerName) => {
+                        const valid =
+                          await assertUniquePlayerRecord(playerName);
+
+                        return valid || 'Accounts cannot be duplicated';
                       },
                     },
                   })}
