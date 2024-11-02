@@ -19,7 +19,7 @@ export function PlayerCard() {
         }
         right={
           <Text aria-label="Player name" weight="bold" size="2">
-            {playerName}
+            {decodeURIComponent(playerName)}
           </Text>
         }
       />
