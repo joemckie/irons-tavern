@@ -47,6 +47,9 @@ export const config = {
       );
     },
   },
+  logger: {
+    error: Sentry.captureException,
+  },
   providers: [
     Discord<DiscordProfile>({
       authorization: 'https://discord.com/api/oauth2/authorize?scope=identify',
