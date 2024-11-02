@@ -1,6 +1,10 @@
 import '@testing-library/jest-dom';
 import { server } from './mocks/server';
 
+jest.mock('crypto', () => ({
+  randomUUID: jest.fn().mockReturnValue('1-2-3-4-5'),
+}));
+
 if (/\*|msw/.test(process.env.DEBUG ?? '')) {
   server.events.on('request:start', ({ request }) => {
     console.log('Outgoing:', request.method, request.url);
@@ -27,5 +31,7 @@ beforeAll(() =>
     onUnhandledRequest: 'error',
   }),
 );
+
 afterEach(() => server.resetHandlers());
+
 afterAll(() => server.close());

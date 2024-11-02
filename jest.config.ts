@@ -1,5 +1,7 @@
 import nextJest from 'next/jest';
 import type { Config } from 'jest';
+import { merge } from 'lodash';
+import { compilerOptions } from './tsconfig.json';
 
 const createJestConfig = nextJest({
   dir: './',
@@ -17,6 +19,21 @@ const config = {
   testEnvironmentOptions: {
     customExportConditions: ['node'],
   },
+  modulePaths: [compilerOptions.baseUrl],
+  moduleNameMapper: {
+    '@auth/upstash-redis-adapter':
+      'node_modules/@auth/upstash-redis-adapter/index.js',
+  },
 } satisfies Config;
 
-export default createJestConfig(config);
+const buildConfig = async () => {
+  const baseConfig = await createJestConfig(config)();
+
+  return merge<unknown, Config, Config>({}, baseConfig, {
+    transformIgnorePatterns: [
+      ' /node_modules/(?!(next-auth|@auth/core/(.*)|oauth4webapi))',
+    ],
+  });
+};
+
+export default buildConfig;
