@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
-import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
