@@ -11,6 +11,7 @@ export default async function RankCalculatorLayout({
       appearance="dark"
       id="theme-root"
       panelBackground="solid"
+      radius="small"
     >
       {children}
     </Theme>
