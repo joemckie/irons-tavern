@@ -4,6 +4,7 @@ import {
   CombatAchievementJson,
   CombatAchievementListResponse,
 } from '@/types/wiki';
+import { captureException } from '@sentry/nextjs';
 
 export async function getCaIdMap() {
   const query = [
@@ -49,7 +50,7 @@ export async function getCaIdMap() {
       {},
     );
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return null;
   }

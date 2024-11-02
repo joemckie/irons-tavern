@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { constants } from '@/config/constants';
 import { PlayerInfoResponse } from '@/types/temple-api';
+import { captureException } from '@sentry/nextjs';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,9 +36,8 @@ export async function GET(request: NextRequest) {
     revalidatePath('/');
 
     return NextResponse.json({ success: true });
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
+  } catch (error) {
+    captureException(error);
 
     return NextResponse.json({ success: false });
   }

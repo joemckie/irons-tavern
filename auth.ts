@@ -2,6 +2,7 @@ import { Redis } from '@upstash/redis';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
+import * as Sentry from '@sentry/nextjs';
 import { RedisKeyNamespace } from './config/redis';
 
 declare module 'next-auth' {
@@ -25,6 +26,15 @@ export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   adapter: UpstashRedisAdapter(redis),
   events: {
+    signIn({ user }) {
+      Sentry.setUser({
+        id: user.id,
+        discordId: user.discordId,
+      });
+    },
+    signOut() {
+      Sentry.setUser(null);
+    },
     async createUser({ user }) {
       // Initialise submission map
       await redis.json.set(

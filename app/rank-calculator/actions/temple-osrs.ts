@@ -2,6 +2,7 @@
 
 import { constants } from '@/config/constants';
 import { PlayerStatsError, PlayerStatsResponse } from '@/types/temple-api';
+import { captureException } from '@sentry/nextjs';
 
 function isPlayerStatsError(
   playerStatsResponse: PlayerStatsResponse | PlayerStatsError,
@@ -23,7 +24,7 @@ export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
 
     return isPlayerStatsError(playerStatsData) ? null : playerStatsData.data;
   } catch (error) {
-    console.error(error);
+    captureExceptionr(error);
 
     return null;
   }

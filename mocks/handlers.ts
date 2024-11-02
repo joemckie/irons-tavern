@@ -133,6 +133,8 @@ const passthroughHandlers = [
   'https://discord.com/api/oauth2/token',
   `${constants.redisUrl}/*`,
   'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
+  'https://*.sentry.io/*',
+  'https://telemetry.nextjs.org/*',
 ].map((url) => http.all(url, passthrough));
 
 export const handlers = [

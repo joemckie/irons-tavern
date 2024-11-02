@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { constants } from '@/config/constants';
 import { GroupMemberInfoResponse } from '@/types/temple-api';
 import { ClanMember } from './api/update-member-list/route';
+import { captureException } from '@sentry/nextjs';
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
@@ -37,7 +38,7 @@ async function getLatestMemberList() {
       {} as Record<string, ClanMember>,
     );
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return {};
   }

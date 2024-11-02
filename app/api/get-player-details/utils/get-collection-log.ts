@@ -4,6 +4,7 @@ import {
   CollectionLogResponse,
   isCollectionLogError,
 } from '@/types/collection-log';
+import { captureException } from '@sentry/nextjs';
 
 export async function getCollectionLog(player: string) {
   try {
@@ -15,7 +16,7 @@ export async function getCollectionLog(player: string) {
 
     return isCollectionLogError(collectionLogData) ? null : collectionLogData;
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return null;
   }

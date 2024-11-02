@@ -21,6 +21,7 @@ import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
+import { captureException } from '@sentry/nextjs';
 
 const redis = Redis.fromEnv({
   keepAlive: false,
@@ -191,7 +192,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return NextResponse.json(
       {

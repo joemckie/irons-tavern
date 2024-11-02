@@ -1,5 +1,6 @@
 import { constants } from '@/config/constants';
 import { CombatAchievementTier } from '@/types/osrs';
+import { captureException } from '@sentry/nextjs';
 
 export async function getCombatAchievementTierThresholds() {
   const query = [
@@ -45,7 +46,7 @@ export async function getCombatAchievementTierThresholds() {
       [CombatAchievementTier.Grandmaster]: Number(gmPoints),
     };
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return null;
   }

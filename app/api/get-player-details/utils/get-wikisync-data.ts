@@ -1,5 +1,6 @@
 import { constants } from '@/config/constants';
 import { isWikiSyncError, WikiSyncError, WikiSyncResponse } from '@/types/wiki';
+import { captureException } from '@sentry/nextjs';
 
 export async function getWikiSyncData(player: string) {
   try {
@@ -17,7 +18,7 @@ export async function getWikiSyncData(player: string) {
 
     return isWikiSyncError(wikiSyncData) ? null : wikiSyncData;
   } catch (error) {
-    console.error(error);
+    captureException(error);
 
     return null;
   }
