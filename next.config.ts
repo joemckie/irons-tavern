@@ -1,7 +1,7 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import { NextConfig } from 'next';
 
-export default withSentryConfig(
+export default withSentryConfig<NextConfig>(
   {
     images: {
       remotePatterns: [
