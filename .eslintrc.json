@@ -53,7 +53,9 @@
     "jsx-a11y/label-has-associated-control": [
       "error",
       {
-        "assert": "htmlFor"
+        "controlComponents": ["Input"],
+        "labelComponents": ["Label"],
+        "depth": 3
       }
     ]
   }

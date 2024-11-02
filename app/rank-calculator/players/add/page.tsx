@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Flex, Heading, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
+import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
@@ -9,6 +10,7 @@ import {
   savePlayerAccount,
   validatePlayerName,
 } from '../../actions/player-accounts';
+import { Label } from '../../components/label';
 
 interface FormData {
   playerName: string;
@@ -43,37 +45,75 @@ export default function RankCalculatorPlayerList() {
           justify="center"
           gap="6"
           direction="column"
+          width="450px"
+          my="0"
+          mx="auto"
         >
           <Heading size="5">New rank application</Heading>
-          <Flex direction="column" gap="4" width="330px">
-            <Input
-              {...methods.register('playerName', {
-                required: 'Player name is required',
-                validate: {
-                  playerExists: async (playerName) => {
-                    const valid = await validatePlayerName(playerName);
+          <Text as="p" color="gray" align="center">
+            Enter your player name below.
+            <br />
+            We will attempt to populate as much data as possible,
+            <br />
+            but please double check to make sure everything is correct!
+          </Text>
+          <Flex direction="column" gap="3" width="330px">
+            <Flex direction="column" gap="2" asChild>
+              <Label weight="bold">
+                <Text>Player name</Text>
+                <Input
+                  {...methods.register('playerName', {
+                    required: 'Player name is required',
+                    validate: {
+                      playerExists: async (playerName) => {
+                        const valid = await validatePlayerName(playerName);
 
-                    return valid || 'Invalid player name';
-                  },
-                },
-              })}
-              hasError={!!errors.playerName}
-              size="3"
-              placeholder="Player name"
-              required
-            />
+                        return valid || 'Invalid player name';
+                      },
+                    },
+                  })}
+                  hasError={!!errors.playerName}
+                  size="3"
+                  placeholder="Enter your RSN"
+                  required
+                  id="playerName"
+                />
+              </Label>
+            </Flex>
             <ErrorMessage
               errors={errors}
               name="playerName"
-              render={({ message }) => <Text color="red">{message}</Text>}
+              render={({ message }) => (
+                <Text as="p" color="red" mt="2">
+                  {message}
+                </Text>
+              )}
             />
-            <Button
-              disabled={!isDirty || isSubmitting}
-              loading={methods.formState.isSubmitting}
-              size="3"
-            >
-              Go to rank calculator
-            </Button>
+            <Flex gap="2">
+              <Flex flexGrow="1">
+                <Box asChild width="100%">
+                  <Button
+                    color="gray"
+                    size="3"
+                    onClick={router.back}
+                    variant="soft"
+                  >
+                    <Text weight="regular">Back</Text>
+                  </Button>
+                </Box>
+              </Flex>
+              <Flex flexGrow="1">
+                <Box asChild width="100%">
+                  <Button
+                    disabled={!isDirty || isSubmitting}
+                    loading={methods.formState.isSubmitting}
+                    size="3"
+                  >
+                    <Text weight="regular">Create</Text>
+                  </Button>
+                </Box>
+              </Flex>
+            </Flex>
           </Flex>
         </Flex>
       </form>
