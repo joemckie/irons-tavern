@@ -3,7 +3,7 @@
  */
 
 import { server } from '@/mocks/server';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, PathParams } from 'msw';
 import { constants } from '@/config/constants';
 import {
   AchievementDiaryMap,
@@ -22,33 +22,93 @@ import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
-import { Rank } from '@/config/enums';
+import * as auth from '@/auth';
+import { mockUUID } from '@/test-utils/mock-uuid';
+import { RedisKeyNamespace } from '@/config/redis';
+import { RedisPipelineJsonGetResponse } from '@/types/database';
+import { Player } from '@/types/player';
 import { fetchPlayerDetails } from './fetch-player-details';
 import { ClanMember } from '../../../api/update-member-list/route';
 
+interface GenerateRedisMockOptions {
+  accountRecord?: Player;
+  previousSubmission?: DeepPartial<FormData> | null;
+}
+
+function generateRedisMock(
+  player: string,
+  {
+    previousSubmission = null,
+    accountRecord = {
+      joinDate: new Date(),
+      rsn: player,
+    },
+  }: GenerateRedisMockOptions = {},
+) {
+  return http.post<
+    PathParams,
+    [[string, string]],
+    RedisPipelineJsonGetResponse
+  >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
+    const [[type, key]] = await request.json();
+
+    if (
+      type === 'JSON.GET' &&
+      key === `${RedisKeyNamespace.Accounts}:${mockUUID}`
+    ) {
+      return HttpResponse.json([
+        {
+          result: JSON.stringify([accountRecord]),
+        },
+      ]);
+    }
+
+    if (
+      type === 'JSON.GET' &&
+      key === `${RedisKeyNamespace.Submission}:${player}`
+    ) {
+      return HttpResponse.json([
+        {
+          result: previousSubmission
+            ? JSON.stringify(previousSubmission)
+            : null,
+        },
+      ]);
+    }
+
+    throw new Error(
+      `No mock provided for ${request.url} with body [${type}, ${key}]`,
+    );
+  });
+}
+
 function setup() {
-  const player = 'cousinofkos';
+  const player = 'test player';
 
   // Reset the mocks before running tests to prevent inaccurate results
   server.use(
     http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
       HttpResponse.json<ClanMember[]>([]),
     ),
-    http.post(`${constants.redisUrl}/pipeline`, async () =>
-      HttpResponse.json<{ result: null }[]>([{ result: null }]),
-    ),
+    generateRedisMock(player),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.emptyResponseFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.emptyResponseFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json(templePlayerStats.emptyResponseFixture),
     ),
   );
+
+  jest.spyOn(auth, 'auth').mockReturnValue({
+    user: {
+      id: mockUUID,
+    },
+  } as never);
 
   return {
     player,
@@ -60,7 +120,7 @@ it('returns no achievement diaries if there is no WikiSync data and no previous 
 
   server.use(
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           collectionLog.midGamePlayerFixture,
@@ -78,26 +138,20 @@ it('returns the highest achievement diary values from the previous submission an
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<[{ result: string }]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, {
-              achievementDiaries: {
-                'Kourend & Kebos': DiaryTier.Medium,
-                'Lumbridge & Draynor': DiaryTier.Elite,
-              },
-            }),
-          ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, {
+        achievementDiaries: {
+          'Kourend & Kebos': DiaryTier.Medium,
+          'Lumbridge & Draynor': DiaryTier.Elite,
         },
-      ]),
-    ),
+      }),
+    }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>(
           set(
@@ -119,7 +173,7 @@ it('returns the highest achievement diary values from the previous submission an
                 },
               },
             ),
-            ['achievement_diaries', 'Lumbridge & Draynor', 'Elite', 'tasks'],
+            "achievement_diaries['Lumbridge & Draynor'].Elite.tasks",
             [],
           ),
         ),
@@ -141,20 +195,16 @@ it('merges the acquired items from the previous submission and API data', async 
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<[{ result: string }]>([
-        {
-          result: JSON.stringify({
-            acquiredItems: {
-              'Bandos hilt': true,
-              'Bandos boots': false,
-            },
-          } satisfies DeepPartial<FormData>),
+    generateRedisMock(player, {
+      previousSubmission: {
+        acquiredItems: {
+          'Bandos hilt': true,
+          'Bandos boots': false,
         },
-      ]),
-    ),
+      } satisfies DeepPartial<FormData>,
+    }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<DeepPartial<CollectionLogResponse>>({
           collectionLog: {
@@ -207,23 +257,17 @@ it('returns the combat achievement tier from the API data if it is higher than t
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, {
-              combatAchievementTier: CombatAchievementTier.Grandmaster,
-            }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, {
+        combatAchievementTier: CombatAchievementTier.Grandmaster,
+      }),
+    }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>(
           merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
@@ -254,23 +298,17 @@ it('returns the combat achievement tier from the previous submission if it is hi
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, {
-              combatAchievementTier: CombatAchievementTier.Hard,
-            }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, {
+        combatAchievementTier: CombatAchievementTier.Hard,
+      }),
+    }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>({
           ...wikiSync.midGamePlayerFixture,
@@ -287,21 +325,15 @@ it('returns the collection log count from the previous submission if it is highe
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { collectionLogCount: 100 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { collectionLogCount: 100 }),
+    }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -325,21 +357,15 @@ it('returns the collection log count from the API data if it is higher than the 
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { collectionLogCount: 123 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { collectionLogCount: 123 }),
+    }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -363,19 +389,13 @@ it('returns the ehb from the API data if it is higher than the previous submissi
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { ehb: 0 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { ehb: 0 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -394,19 +414,13 @@ it('returns the ehb from the previous submission if it is higher than the API da
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { ehb: 100 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { ehb: 100 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -425,19 +439,13 @@ it('returns the ehp from the API data if it is higher than the previous submissi
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { ehp: 0 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { ehp: 0 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -456,19 +464,13 @@ it('returns the ehp from the previous submission if it is higher than the API da
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { ehp: 100 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { ehp: 100 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -487,19 +489,13 @@ it('returns the total level from the API data if it is higher than the previous 
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { totalLevel: 100 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { totalLevel: 100 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -518,19 +514,13 @@ it('returns the total level from the previous submission if it is higher than th
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { totalLevel: 1000 }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, { totalLevel: 1000 }),
+    }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
       HttpResponse.json<PlayerStatsResponse>({
         data: {
@@ -550,7 +540,7 @@ it('returns the collection log total items from the API data', async () => {
 
   server.use(
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -570,122 +560,50 @@ it('returns the collection log total items from the API data', async () => {
   expect(result.data.collectionLogTotal).toEqual(1234);
 });
 
-it('returns the join date from the member list if present', async () => {
+it('returns the join date from the account record', async () => {
   const { player } = setup();
 
   server.use(
-    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
-      HttpResponse.json<ClanMember[]>([
-        {
-          joinedDate: '01-Jan-2020',
-          rank: Rank.Air,
-          rsn: player,
-        },
-      ]),
-    ),
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { joinDate: new Date('2021-01-01') }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      accountRecord: {
+        joinDate: new Date('2020-01-01'),
+        rsn: player,
+      },
+      previousSubmission: merge<unknown, Omit<FormData, 'rank' | 'points'>>(
+        {},
+        formData.midGamePlayer,
+      ),
+    }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.joinDate).toEqual(new Date('2020-01-01'));
+  expect(result.data.joinDate).toEqual(new Date('2020-01-01').toISOString());
 });
 
-it('returns the join date from the previous submission if not found in member list', async () => {
+it('returns the player name from the account record', async () => {
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, { joinDate: new Date('2021-01-01') }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      accountRecord: {
+        joinDate: new Date(),
+        rsn: 'player',
+      },
+      previousSubmission: formData.midGamePlayer,
+    }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.joinDate).toEqual(new Date('2021-01-01').toISOString());
-});
-
-it('returns no join date if not in member list and no previous submission is found', async () => {
-  const { player } = setup();
-
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
-
-  expect(result.data.joinDate).toBeNull();
-});
-
-it('returns the player name from the member list if present', async () => {
-  const { player } = setup();
-
-  server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        { result: JSON.stringify(formData.midGamePlayer) },
-      ]),
-    ),
-    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
-      HttpResponse.json<ClanMember[]>([
-        {
-          joinedDate: '01-Jan-2020',
-          rank: Rank.Air,
-          rsn: 'CousinOfKos',
-        },
-      ]),
-    ),
-  );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
-
-  expect(result.data.playerName).toEqual('CousinOfKos');
+  expect(result.data.playerName).toEqual('player');
 });
 
 it('returns the player name from the query parameters if not found in member list', async () => {
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        { result: JSON.stringify(formData.midGamePlayer) },
-      ]),
-    ),
-  );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
-
-  expect(result.data.playerName).toEqual(player);
-});
-
-it('returns the player name from the query parameters if there is a network error whilst loading the member list', async () => {
-  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
-
-  const { player } = setup();
-
-  server.use(
-    http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
-      HttpResponse.error(),
-    ),
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        { result: JSON.stringify(formData.midGamePlayer) },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: formData.midGamePlayer,
+    }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
@@ -696,21 +614,15 @@ it('returns the rank structure from the previous submission if found', async () 
   const { player } = setup();
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () =>
-      HttpResponse.json<{ result: string }[]>([
-        {
-          result: JSON.stringify(
-            merge<
-              unknown,
-              Omit<FormData, 'rank' | 'points'>,
-              DeepPartial<Omit<FormData, 'rank' | 'points'>>
-            >({}, formData.midGamePlayer, {
-              rankStructure: RankStructure.Admin,
-            }),
-          ),
-        },
-      ]),
-    ),
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<FormData, 'rank' | 'points'>,
+        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, {
+        rankStructure: RankStructure.Admin,
+      }),
+    }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
@@ -921,11 +833,11 @@ it('handles errors when the player stats API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.midGamePlayerFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -948,11 +860,11 @@ it('handles errors when the WikiSync API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.error(),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.midGamePlayerFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -985,11 +897,11 @@ it('handles errors when the Collection Log API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.error(),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -1022,7 +934,7 @@ it('returns no combat achievement tier if there is a network error when requesti
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
     http.get(`${constants.wiki.baseUrl}/api.php`, () => HttpResponse.error()),

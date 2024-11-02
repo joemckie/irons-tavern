@@ -11,7 +11,7 @@ export default async function RankCalculatorPage({
   params: Promise<Params>;
 }) {
   const { player } = await params;
-  const playerDetails = await getPlayerDetails(player);
+  const playerDetails = await getPlayerDetails(decodeURIComponent(player));
 
   return <FormWrapper formData={playerDetails} />;
 }

@@ -17,12 +17,17 @@ const templePlayerStatsHandler = http.get(
     const url = new URL(request.url);
     const player = url.searchParams.get('player');
 
-    switch (player?.toLowerCase()) {
+    if (!player) {
+      return HttpResponse.error();
+    }
+
+    switch (decodeURIComponent(player).toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<PlayerStatsResponse>(
           templePlayerStats.earlyGamePlayerFixture,
         );
       case 'cousinofkos':
+      case 'iron tyson':
         return HttpResponse.json<PlayerStatsResponse>(
           templePlayerStats.midGamePlayerFixture,
         );
@@ -39,12 +44,13 @@ const templePlayerStatsHandler = http.get(
 const collectionLogHandler = http.get<{ player: string }>(
   `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
   ({ params, request }) => {
-    switch (params.player.toLowerCase()) {
+    switch (decodeURIComponent(params.player).toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<CollectionLogResponse>(
           collectionLog.earlyGamePlayerFixture,
         );
       case 'cousinofkos':
+      case 'iron tyson':
         return HttpResponse.json<CollectionLogResponse>(
           collectionLog.midGamePlayerFixture,
         );
@@ -61,12 +67,13 @@ const collectionLogHandler = http.get<{ player: string }>(
 const wikiSyncHandler = http.get<{ player: string }>(
   `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
   ({ params, request }) => {
-    switch (params.player.toLowerCase()) {
+    switch (decodeURIComponent(params.player).toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<WikiSyncResponse>(
           wikiSync.earlyGamePlayerFixture,
         );
       case 'cousinofkos':
+      case 'iron tyson':
         return HttpResponse.json<WikiSyncResponse>(
           wikiSync.midGamePlayerFixture,
         );
@@ -135,6 +142,7 @@ const passthroughHandlers = [
   'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
   'https://*.sentry.io/*',
   'https://telemetry.nextjs.org/*',
+  'http://localhost:3000/__nextjs_original-stack-frame',
 ].map((url) => http.all(url, passthrough));
 
 export const handlers = [

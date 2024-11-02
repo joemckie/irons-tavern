@@ -40,11 +40,7 @@ export const config = {
   events: {
     async createUser({ user }) {
       // Initialise submission map
-      await redis.json.set(
-        `${RedisKeyNamespace.Submissions}:${user.id}`,
-        '$',
-        {},
-      );
+      await redis.json.set(`${RedisKeyNamespace.Accounts}:${user.id}`, '$', {});
     },
   },
   logger: {

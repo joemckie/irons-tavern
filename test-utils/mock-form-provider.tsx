@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 export function MockFormProvider({
   children,
   defaultValues,
-}: PropsWithChildren<{ defaultValues: FormData }>) {
+}: PropsWithChildren<{ defaultValues: Omit<FormData, 'rank' | 'points'> }>) {
   const form = useForm({
     defaultValues,
   });

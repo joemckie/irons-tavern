@@ -49,10 +49,12 @@ function CalendarHeader({
 
 interface DatePickerProps {
   name: string;
+  size?: '1' | '2' | '3';
 }
 
 export function DatePicker({
   name,
+  size = '2',
   ...props
 }: DatePickerProps & BaseDatePickerProps) {
   const { field, fieldState } = useController({ name });
@@ -64,7 +66,7 @@ export function DatePicker({
       selected={field.value}
       dateFormat="dd-MM-yyyy"
       maxDate={new Date()}
-      customInput={<Input hasError={!!fieldState.error} />}
+      customInput={<Input hasError={!!fieldState.error} size={size} />}
       portalId="theme-root"
       calendarClassName="rt-PopoverContent rt-r-size-2"
       renderDayContents={(day) => <Text size="2">{day}</Text>}

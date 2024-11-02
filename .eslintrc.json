@@ -53,7 +53,7 @@
     "jsx-a11y/label-has-associated-control": [
       "error",
       {
-        "controlComponents": ["Input"],
+        "controlComponents": ["Input", "DatePicker"],
         "labelComponents": ["Label"],
         "depth": 3
       }

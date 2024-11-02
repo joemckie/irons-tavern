@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
 import { server } from './mocks/server';
+import { mockUUID } from './test-utils/mock-uuid';
 
 jest.mock('crypto', () => ({
-  randomUUID: jest.fn().mockReturnValue('1-2-3-4-5'),
+  randomUUID: jest.fn().mockReturnValue(mockUUID),
 }));
 
 if (/\*|msw/.test(process.env.DEBUG ?? '')) {
@@ -24,6 +25,24 @@ if (/\*|msw/.test(process.env.DEBUG ?? '')) {
 server.events.on('unhandledException', ({ request, error }) => {
   console.log('%s %s errored! See details below.', request.method, request.url);
   console.error(error);
+});
+
+jest.mock('next-auth', () => {
+  const originalModule = jest.requireActual('next-auth');
+
+  return {
+    __esModule: true,
+    ...originalModule,
+    default: jest.fn().mockReturnValue({
+      auth: jest.fn(),
+      signIn: jest.fn(),
+      signOut: jest.fn(),
+      handlers: {
+        GET: jest.fn(),
+        POST: jest.fn(),
+      },
+    }),
+  };
 });
 
 beforeAll(() =>

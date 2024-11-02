@@ -1,4 +1,4 @@
 export enum RedisKeyNamespace {
   Submission = 'submission',
-  Submissions = 'submissions',
+  Accounts = 'accounts',
 }

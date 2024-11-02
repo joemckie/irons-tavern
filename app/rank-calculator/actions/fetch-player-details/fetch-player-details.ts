@@ -10,13 +10,13 @@ import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
-import { redis } from '@/auth';
+import { auth, redis } from '@/auth';
+import { Player } from '@/types/player';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
-import { getPlayerMeta } from './utils/get-player-meta';
 import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
@@ -36,12 +36,26 @@ const emptyResponse = {
   rankStructure: RankStructure.Standard,
 } satisfies PlayerData;
 
-export type GetPlayerDetailsResponse = ApiResponse<PlayerData>;
-
 export async function fetchPlayerDetails(
   player: string,
-): Promise<GetPlayerDetailsResponse> {
+): Promise<ApiResponse<PlayerData>> {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new Error('No user session');
+  }
+
   try {
+    const playerRecord = await redis.json.get<[Player]>(
+      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      `$.["${player.toLowerCase()}"]`,
+    );
+
+    if (!playerRecord) {
+      throw new Error('Unable to find player record');
+    }
+
+    const [{ joinDate, rsn }] = playerRecord;
     const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
       await Promise.all([
         getWikiSyncData(player),
@@ -125,7 +139,6 @@ export async function fetchPlayerDetails(
             .map(({ name }) => stripEntityName(name))
         : [];
 
-    const playerMeta = await getPlayerMeta(player);
     const previouslyAcquiredItems = previousSubmission
       ? Object.keys(previousSubmission.acquiredItems).filter(
           (key) => previousSubmission.acquiredItems[key],
@@ -164,14 +177,14 @@ export async function fetchPlayerDetails(
             ? Math.max(totalLevel ?? 0, previousSubmission?.totalLevel ?? 0)
             : null,
         collectionLogTotal: collectionLogTotal ?? 0,
-        joinDate:
-          playerMeta?.joinDate ?? previousSubmission?.joinDate ?? new Date(),
-        playerName: playerMeta?.rsn ?? player,
+        joinDate,
+        playerName: rsn,
         rankStructure:
           previousSubmission?.rankStructure ?? RankStructure.Standard,
       },
     };
   } catch (error) {
+    console.error(error);
     Sentry.captureException(error);
 
     return {

@@ -62,7 +62,7 @@ img.rt-AvatarImage {
   stroke: var(--gray-a5) !important;
 }
 
-.react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle {
+.react-datepicker-popper .react-datepicker__triangle {
   color: var(--color-panel) !important;
   fill: var(--color-panel) !important;
 }

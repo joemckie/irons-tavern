@@ -4,36 +4,53 @@ import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
+import { debounce } from 'lodash';
+import * as Sentry from '@sentry/nextjs';
 import { Input } from '../../components/input';
 import {
+  fetchPlayerJoinDate,
   savePlayerAccount,
   validatePlayerName,
 } from '../../actions/player-accounts';
 import { Label } from '../../components/label';
+import { DatePicker } from '../../components/date-picker';
 
 interface FormData {
   playerName: string;
+  joinDate: Date;
 }
 
 export default function RankCalculatorPlayerList() {
   const router = useRouter();
   const methods = useForm<FormData>({
-    mode: 'onSubmit',
+    mode: 'onBlur',
     criteriaMode: 'all',
   });
   const { isDirty, isSubmitting, errors } = methods.formState;
 
-  const onSubmit: SubmitHandler<FormData> = async ({ playerName }) => {
+  const onSubmit: SubmitHandler<FormData> = async ({
+    playerName,
+    joinDate,
+  }) => {
     try {
-      const response = await savePlayerAccount(playerName);
+      const response = await savePlayerAccount(playerName, joinDate);
 
       if (response === 'OK') {
-        router.push('/rank-calculator/players');
+        router.push(`/rank-calculator/${playerName}`);
       }
     } catch (error) {
-      console.log(error);
+      Sentry.captureException(error);
     }
   };
+
+  const fetchAndSetJoinDate = debounce(async () => {
+    const playerNameValue = methods.getValues('playerName');
+    const joinDate = await fetchPlayerJoinDate(playerNameValue);
+
+    if (joinDate) {
+      methods.setValue('joinDate', joinDate);
+    }
+  }, 600);
 
   return (
     <FormProvider {...methods}>
@@ -49,19 +66,15 @@ export default function RankCalculatorPlayerList() {
           mx="auto"
         >
           <Heading size="5">New rank application</Heading>
-          <Text as="p" color="gray" align="center">
-            Enter your player name below.
-            <br />
-            We will attempt to populate as much data as possible,
-            <br />
-            but please double check to make sure everything is correct!
-          </Text>
           <Flex direction="column" gap="3" width="330px">
-            <Flex direction="column" gap="2" asChild>
+            <Flex direction="column" gap="2">
               <Label weight="bold">
-                <Text>Player name</Text>
+                <Text as="p" mb="2">
+                  Player name
+                </Text>
                 <Input
                   {...methods.register('playerName', {
+                    onChange: fetchAndSetJoinDate,
                     required: 'Player name is required',
                     validate: {
                       playerExists: async (playerName) => {
@@ -78,17 +91,41 @@ export default function RankCalculatorPlayerList() {
                   id="playerName"
                 />
               </Label>
+              <ErrorMessage
+                errors={errors}
+                name="playerName"
+                render={({ message }) => (
+                  <Text as="p" color="red">
+                    {message}
+                  </Text>
+                )}
+              />
             </Flex>
-            <ErrorMessage
-              errors={errors}
-              name="playerName"
-              render={({ message }) => (
-                <Text as="p" color="red" mt="2">
-                  {message}
+            <Flex direction="column" gap="2">
+              <Label weight="bold">
+                <Text as="p" mb="2">
+                  Join date
                 </Text>
-              )}
-            />
-            <Flex gap="2">
+                <Box asChild width="100%">
+                  <DatePicker
+                    name="joinDate"
+                    placeholderText="dd-mm-yyyy"
+                    required
+                    size="3"
+                  />
+                </Box>
+              </Label>
+              <ErrorMessage
+                errors={errors}
+                name="joinDate"
+                render={({ message }) => (
+                  <Text as="p" color="red">
+                    {message}
+                  </Text>
+                )}
+              />
+            </Flex>
+            <Flex gap="2" mt="2">
               <Flex flexGrow="1">
                 <Box asChild width="100%">
                   <Button
@@ -108,7 +145,7 @@ export default function RankCalculatorPlayerList() {
                     loading={methods.formState.isSubmitting}
                     size="3"
                   >
-                    Create
+                    Next
                   </Button>
                 </Box>
               </Flex>

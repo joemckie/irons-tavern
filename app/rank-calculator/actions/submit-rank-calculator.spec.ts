@@ -11,6 +11,7 @@ import { Routes } from 'discord-api-types/v10';
 import * as discordFixtures from '@/mocks/discord';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { Rank } from '@/config/enums';
+import { mockUUID } from '@/test-utils/mock-uuid';
 import { submitRankCalculator } from './submit-rank-calculator';
 
 it('saves the submission to the database', async () => {
@@ -22,7 +23,7 @@ it('saves the submission to the database', async () => {
 
         if (
           type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:1-2-3-4-5`
+          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
         ) {
           return HttpResponse.json([{ result: 'OK' }]);
         }
@@ -60,7 +61,7 @@ it('returns an error if the save was not successful', async () => {
 
         if (
           type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:1-2-3-4-5`
+          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
         ) {
           return HttpResponse.json([{ result: null }]);
         }
@@ -114,7 +115,7 @@ it('returns an error if a network error occurs whilst sending the discord messag
 
         if (
           type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:1-2-3-4-5`
+          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
         ) {
           return HttpResponse.json([{ result: 'OK' }]);
         }

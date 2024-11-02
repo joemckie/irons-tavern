@@ -4,7 +4,9 @@ import { auth, redis } from '@/auth';
 import { RedisKeyNamespace } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
 import * as Sentry from '@sentry/nextjs';
+import { Player } from '@/types/player';
 import { fetchTemplePlayerStats } from './temple-osrs';
+import { fetchPlayerMeta } from './fetch-player-meta';
 
 export async function validatePlayerName(playerName: string) {
   try {
@@ -22,17 +24,23 @@ export async function fetchPlayerAccounts() {
   const session = await auth();
 
   if (!session?.user) {
-    return [];
+    return {};
   }
 
-  const accounts = await redis.json.get<Record<string, unknown>>(
-    `${RedisKeyNamespace.Submissions}:${session.user.id}`,
+  const accounts = await redis.json.get<Record<string, Player>>(
+    `${RedisKeyNamespace.Accounts}:${session.user.id}`,
   );
 
-  return accounts ?? [];
+  return accounts ?? {};
 }
 
-export async function savePlayerAccount(playerName: string) {
+export async function fetchPlayerJoinDate(playerName: string) {
+  const playerMeta = await fetchPlayerMeta(playerName);
+
+  return playerMeta?.joinDate ?? null;
+}
+
+export async function savePlayerAccount(playerName: string, joinDate: Date) {
   const session = await auth();
 
   if (!session?.user) {
@@ -46,14 +54,29 @@ export async function savePlayerAccount(playerName: string) {
       throw new Error('Invalid player name');
     }
 
-    const playerStats = await fetchTemplePlayerStats(playerName, false);
-    const maybeFormattedPlayerName = playerStats?.info.Username ?? playerName;
+    const [playerMeta, playerStats] = await Promise.all([
+      fetchPlayerMeta(playerName),
+      fetchTemplePlayerStats(playerName, false),
+    ]);
+
+    const maybeFormattedPlayerName =
+      playerMeta?.rsn ?? playerStats?.info.Username ?? playerName;
+
+    const data = {
+      joinDate,
+      rsn: maybeFormattedPlayerName,
+    } satisfies Player;
+
     const result = await redis.json.set(
-      `${RedisKeyNamespace.Submissions}:${session.user.id}`,
-      `$.['${maybeFormattedPlayerName}']`,
-      {},
+      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      `$.['${maybeFormattedPlayerName.toLowerCase()}']`,
+      data,
       { nx: true },
     );
+
+    if (!result) {
+      throw new Error('Error creating player account record');
+    }
 
     return result;
   } catch (error) {
@@ -72,7 +95,7 @@ export async function deletePlayerAccount(playerName: string) {
 
   try {
     const result = await redis.json.del(
-      `${RedisKeyNamespace.Submissions}:${session.user.id}`,
+      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
       `$.['${playerName}']`,
     );
 

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   Flex,
@@ -10,6 +11,7 @@ import Link from 'next/link';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { fetchPlayerAccounts } from '../actions/player-accounts';
 import { DeleteSubmissionButton } from './delete-submission-button';
+import { format } from 'date-fns';
 
 export default async function RankCalculatorPlayerList() {
   const accounts = await fetchPlayerAccounts();
@@ -24,14 +26,21 @@ export default async function RankCalculatorPlayerList() {
     >
       <Heading size="5">Irons Tavern Rank Calculator</Heading>
       <Flex direction="column" gap="4" width="330px">
-        {Object.keys(accounts).map((playerName) => (
-          <Card key={playerName}>
+        {Object.values(accounts).map(({ rsn, joinDate }) => (
+          <Card key={rsn}>
             <Flex align="center" justify="between">
-              <Text weight="bold">{playerName}</Text>
+              <Box>
+                <Text as="p" weight="bold">
+                  {rsn}
+                </Text>
+                <Text as="p" size="2" color="gray">
+                  Joined {format(joinDate, 'dd MMM yyyy')}
+                </Text>
+              </Box>
               <Flex gap="2">
-                <DeleteSubmissionButton playerName={playerName} />
+                <DeleteSubmissionButton playerName={rsn} />
                 <IconButton asChild>
-                  <Link href={`/rank-calculator/${playerName}`}>
+                  <Link href={`/rank-calculator/${rsn}`}>
                     <ChevronRightIcon />
                   </Link>
                 </IconButton>

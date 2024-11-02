@@ -1,14 +1,14 @@
 import { FormData } from '@/types/rank-calculator';
 
 interface FormDataMap {
-  earlyGamePlayer: FormData;
-  midGamePlayer: FormData;
-  endGamePlayer: FormData;
+  earlyGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  midGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  endGamePlayer: Omit<FormData, 'rank' | 'points'>;
 }
 
 export const generatePlayerTests = (
   formData: FormDataMap,
-  testRunner: (formFixture: FormData) => void,
+  testRunner: (formFixture: Omit<FormData, 'rank' | 'points'>) => void,
 ) => {
   describe('Early-game player', () => {
     testRunner(formData.earlyGamePlayer);
