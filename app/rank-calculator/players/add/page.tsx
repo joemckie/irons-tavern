@@ -98,7 +98,7 @@ export default function RankCalculatorPlayerList() {
                     onClick={router.back}
                     variant="soft"
                   >
-                    <Text weight="regular">Back</Text>
+                    Back
                   </Button>
                 </Box>
               </Flex>
@@ -109,7 +109,7 @@ export default function RankCalculatorPlayerList() {
                     loading={methods.formState.isSubmitting}
                     size="3"
                   >
-                    <Text weight="regular">Create</Text>
+                    Create
                   </Button>
                 </Box>
               </Flex>
