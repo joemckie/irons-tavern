@@ -2,7 +2,6 @@
  * @jest-environment node
  */
 
-import { NextRequest } from 'next/server';
 import { server } from '@/mocks/server';
 import { http, HttpResponse } from 'msw';
 import { constants } from '@/config/constants';
@@ -20,20 +19,17 @@ import * as formData from '@/mocks/misc/form-data';
 import * as wikiSync from '@/mocks/wiki-sync';
 import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
-import { ApiError, ApiSuccess } from '@/types/api';
+import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
 import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
 import { Rank } from '@/config/enums';
-import { GET } from './route';
-import { ClanMember } from '../update-member-list/route';
+import { fetchPlayerDetails } from './fetch-player-details';
+import { ClanMember } from '../../../api/update-member-list/route';
 
 function setup() {
   const player = 'cousinofkos';
-  const request = new NextRequest(
-    `${constants.publicUrl}/api/get-player-details?player=${player}`,
-  );
 
-  // Clear the mocks before running tests to prevent inaccurate results
+  // Reset the mocks before running tests to prevent inaccurate results
   server.use(
     http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
       HttpResponse.json<ClanMember[]>([]),
@@ -55,13 +51,12 @@ function setup() {
   );
 
   return {
-    request,
     player,
   };
 }
 
 it('returns no achievement diaries if there is no WikiSync data and no previous submission', async () => {
-  const { request, player } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -73,15 +68,14 @@ it('returns no achievement diaries if there is no WikiSync data and no previous 
     ),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.error).toBeNull();
   expect(result.data.achievementDiaries).toBeNull();
 });
 
 it('returns the highest achievement diary values from the previous submission and API data', async () => {
-  const { request, player } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -132,8 +126,7 @@ it('returns the highest achievement diary values from the previous submission an
     ),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.error).toBeNull();
   expect(result.data.achievementDiaries).toMatchObject<
@@ -145,7 +138,7 @@ it('returns the highest achievement diary values from the previous submission an
 });
 
 it('merges the acquired items from the previous submission and API data', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -201,8 +194,7 @@ it('merges the acquired items from the previous submission and API data', async 
         }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.acquiredItems).toEqual([
     'Bandos chestplate',
@@ -212,7 +204,7 @@ it('merges the acquired items from the previous submission and API data', async 
 });
 
 it('returns the combat achievement tier from the API data if it is higher than the previous submission', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -251,8 +243,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
         ),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.combatAchievementTier).toEqual(
     CombatAchievementTier.Grandmaster,
@@ -260,7 +251,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
 });
 
 it('returns the combat achievement tier from the previous submission if it is higher than the API data', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -287,14 +278,13 @@ it('returns the combat achievement tier from the previous submission if it is hi
         }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.combatAchievementTier).toEqual(CombatAchievementTier.Hard);
 });
 
 it('returns the collection log count from the previous submission if it is higher than the API data', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -326,14 +316,13 @@ it('returns the collection log count from the previous submission if it is highe
         ),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.collectionLogCount).toEqual(100);
 });
 
 it('returns the collection log count from the API data if it is higher than the previous submission', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -365,14 +354,13 @@ it('returns the collection log count from the API data if it is higher than the 
         ),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.collectionLogCount).toEqual(1000);
 });
 
 it('returns the ehb from the API data if it is higher than the previous submission', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -397,14 +385,13 @@ it('returns the ehb from the API data if it is higher than the previous submissi
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(100);
 });
 
 it('returns the ehb from the previous submission if it is higher than the API data', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -429,14 +416,13 @@ it('returns the ehb from the previous submission if it is higher than the API da
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(100);
 });
 
 it('returns the ehp from the API data if it is higher than the previous submission', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -461,14 +447,13 @@ it('returns the ehp from the API data if it is higher than the previous submissi
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehp).toEqual(100);
 });
 
 it('returns the ehp from the previous submission if it is higher than the API data', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -493,14 +478,13 @@ it('returns the ehp from the previous submission if it is higher than the API da
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehp).toEqual(100);
 });
 
 it('returns the total level from the API data if it is higher than the previous submission', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -525,14 +509,13 @@ it('returns the total level from the API data if it is higher than the previous 
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.totalLevel).toEqual(1000);
 });
 
 it('returns the total level from the previous submission if it is higher than the API data', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -557,14 +540,13 @@ it('returns the total level from the previous submission if it is higher than th
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.totalLevel).toEqual(1000);
 });
 
 it('returns the collection log total items from the API data', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -583,14 +565,13 @@ it('returns the collection log total items from the API data', async () => {
         ),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.collectionLogTotal).toEqual(1234);
 });
 
 it('returns the join date from the member list if present', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
@@ -616,14 +597,13 @@ it('returns the join date from the member list if present', async () => {
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.joinDate).toEqual(new Date('2020-01-01').toISOString());
+  expect(result.data.joinDate).toEqual(new Date('2020-01-01'));
 });
 
 it('returns the join date from the previous submission if not found in member list', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -640,23 +620,21 @@ it('returns the join date from the previous submission if not found in member li
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.joinDate).toEqual(new Date('2021-01-01').toISOString());
 });
 
 it('returns no join date if not in member list and no previous submission is found', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.joinDate).toBeNull();
 });
 
 it('returns the player name from the member list if present', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -674,14 +652,13 @@ it('returns the player name from the member list if present', async () => {
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.playerName).toEqual('CousinOfKos');
 });
 
 it('returns the player name from the query parameters if not found in member list', async () => {
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -690,8 +667,7 @@ it('returns the player name from the query parameters if not found in member lis
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.playerName).toEqual(player);
 });
@@ -699,7 +675,7 @@ it('returns the player name from the query parameters if not found in member lis
 it('returns the player name from the query parameters if there is a network error whilst loading the member list', async () => {
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://*.public.blob.vercel-storage.com/members-*.json', () =>
@@ -711,14 +687,13 @@ it('returns the player name from the query parameters if there is a network erro
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.playerName).toEqual(player);
 });
 
 it('returns the rank structure from the previous submission if found', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.post(`${constants.redisUrl}/pipeline`, () =>
@@ -737,24 +712,21 @@ it('returns the rank structure from the previous submission if found', async () 
       ]),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.rankStructure).toEqual(RankStructure.Admin);
 });
 
 it('returns the default rank structure if no previous submission is found', async () => {
-  const { request } = setup();
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const { player } = setup();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.rankStructure).toEqual(RankStructure.Standard);
 });
 
 it('returns an empty response if no third party data is found', async () => {
-  const { request } = setup();
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const { player } = setup();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
   const emptyResponse = {
     achievementDiaries: null,
     acquiredItems: null,
@@ -769,7 +741,6 @@ it('returns an empty response if no third party data is found', async () => {
     rankStructure: RankStructure.Standard,
   } satisfies PlayerData;
 
-  expect(response.status).toBe(404);
   expect(result).toMatchObject<ApiSuccess<PlayerData>>({
     success: true,
     error: null,
@@ -777,21 +748,8 @@ it('returns an empty response if no third party data is found', async () => {
   });
 });
 
-it('returns an error if no player is provided', async () => {
-  const response = await GET(
-    new NextRequest(`${constants.publicUrl}/api/get-player-details`),
-  );
-  const result: ApiSuccess<PlayerData> = await response.json();
-
-  expect(response.status).toBe(400);
-  expect(result).toMatchObject<ApiError>({
-    error: 'No player provided',
-    success: false,
-  });
-});
-
 it('returns the correct efficiency values for GIM accounts', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -810,15 +768,14 @@ it('returns the correct efficiency values for GIM accounts', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(12);
   expect(result.data.ehp).toEqual(34);
 });
 
 it('returns the correct efficiency values for UIM accounts', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -837,15 +794,14 @@ it('returns the correct efficiency values for UIM accounts', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(90);
 });
 
 it('returns the correct efficiency values for HCIM accounts', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -864,15 +820,14 @@ it('returns the correct efficiency values for HCIM accounts', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(78);
 });
 
 it('returns the correct efficiency values for ironman accounts', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -891,15 +846,14 @@ it('returns the correct efficiency values for ironman accounts', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(78);
 });
 
 it('returns no efficiency values for unknown accounts', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -918,15 +872,14 @@ it('returns no efficiency values for unknown accounts', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(null);
   expect(result.data.ehp).toEqual(null);
 });
 
 it('rounds the ehb value', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -938,14 +891,13 @@ it('rounds the ehb value', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehb).toEqual(91);
 });
 
 it('rounds the ehp value', async () => {
-  const { request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -957,8 +909,7 @@ it('rounds the ehp value', async () => {
       }),
     ),
   );
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
   expect(result.data.ehp).toEqual(13);
 });
@@ -966,7 +917,7 @@ it('rounds the ehp value', async () => {
 it('handles errors when the player stats API is not available', async () => {
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -982,10 +933,8 @@ it('handles errors when the player stats API is not available', async () => {
     ),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(response.status).toBe(200);
   expect(result.success).toBe(true);
   expect(result.data.ehb).toBe(null);
   expect(result.data.ehp).toBe(null);
@@ -995,7 +944,7 @@ it('handles errors when the player stats API is not available', async () => {
 it('handles errors when the WikiSync API is not available', async () => {
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -1011,10 +960,8 @@ it('handles errors when the WikiSync API is not available', async () => {
     ),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(response.status).toBe(200);
   expect(result.success).toBe(true);
   expect(result.data).toMatchObject<Partial<PlayerData>>({
     // Quest items are derived from WikiSync so these should not be present
@@ -1034,7 +981,7 @@ it('handles errors when the WikiSync API is not available', async () => {
 it('handles errors when the Collection Log API is not available', async () => {
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -1050,10 +997,8 @@ it('handles errors when the Collection Log API is not available', async () => {
     ),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(response.status).toBe(200);
   expect(result.success).toBe(true);
   expect(result.data).toMatchObject<Partial<PlayerData>>({
     // Regular items are derived from the collection log so these should not be present
@@ -1073,7 +1018,7 @@ it('returns no combat achievement tier if there is a network error when requesti
     .mockImplementationOnce(jest.fn)
     .mockImplementationOnce(jest.fn);
 
-  const { player, request } = setup();
+  const { player } = setup();
 
   server.use(
     http.get(
@@ -1083,10 +1028,8 @@ it('returns no combat achievement tier if there is a network error when requesti
     http.get(`${constants.wiki.baseUrl}/api.php`, () => HttpResponse.error()),
   );
 
-  const response = await GET(request);
-  const result: ApiSuccess<PlayerData> = await response.json();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(response.status).toBe(200);
   expect(result.success).toBe(true);
   expect(result.data.combatAchievementTier).toBeNull();
 });

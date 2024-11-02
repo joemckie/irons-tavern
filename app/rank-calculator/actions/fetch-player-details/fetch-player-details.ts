@@ -1,4 +1,3 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { get } from 'get-wild';
 import {
   CollectionLogItemMap,
@@ -7,11 +6,11 @@ import {
 import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { RedisKeyNamespace } from '@/config/redis';
-import { Redis } from '@upstash/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
+import { redis } from '@/auth';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -22,10 +21,6 @@ import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
-
-const redis = Redis.fromEnv({
-  keepAlive: false,
-});
 
 const emptyResponse = {
   achievementDiaries: null,
@@ -43,21 +38,9 @@ const emptyResponse = {
 
 export type GetPlayerDetailsResponse = ApiResponse<PlayerData>;
 
-export async function GET(
-  request: NextRequest,
-): Promise<NextResponse<GetPlayerDetailsResponse>> {
-  const player = request.nextUrl.searchParams.get('player');
-
-  if (!player) {
-    return NextResponse.json(
-      {
-        error: 'No player provided',
-        success: false,
-      },
-      { status: 400 },
-    );
-  }
-
+export async function fetchPlayerDetails(
+  player: string,
+): Promise<GetPlayerDetailsResponse> {
   try {
     const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
       await Promise.all([
@@ -72,14 +55,11 @@ export async function GET(
     );
 
     if (!hasThirdPartyData && !previousSubmission) {
-      return NextResponse.json(
-        {
-          error: null,
-          success: true,
-          data: emptyResponse,
-        },
-        { status: 404 },
-      );
+      return {
+        error: null,
+        success: true,
+        data: emptyResponse,
+      };
     }
 
     const combatAchievementTier = wikiSyncData
@@ -152,7 +132,7 @@ export async function GET(
         )
       : [];
 
-    return NextResponse.json<ApiResponse<PlayerData>>({
+    return {
       success: true,
       error: null,
       data: {
@@ -190,16 +170,13 @@ export async function GET(
         rankStructure:
           previousSubmission?.rankStructure ?? RankStructure.Standard,
       },
-    });
+    };
   } catch (error) {
     Sentry.captureException(error);
 
-    return NextResponse.json(
-      {
-        error: 'Something went wrong',
-        success: false,
-      },
-      { status: 500 },
-    );
+    return {
+      error: 'Something went wrong',
+      success: false,
+    };
   }
 }

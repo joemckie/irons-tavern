@@ -1,20 +1,16 @@
-import { constants } from '@/config/constants';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { FormData, RankStructure } from '@/types/rank-calculator';
-import { GetPlayerDetailsResponse } from '@/app/api/get-player-details/route';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
+import { fetchPlayerDetails } from '../actions/fetch-player-details/fetch-player-details';
 
 export const getPlayerDetails = async (player: string) => {
-  const response = await fetch(
-    `${constants.publicUrl}/api/get-player-details?player=${player}`,
-  );
-  const getPlayerDetailsData: GetPlayerDetailsResponse = await response.json();
+  const playerDetails = await fetchPlayerDetails(player);
 
-  if (!getPlayerDetailsData.success) {
+  if (!playerDetails.success) {
     throw new Error('Could not retrieve player details');
   }
 
-  const { data } = getPlayerDetailsData;
+  const { data } = playerDetails;
 
   const acquiredItems =
     data.acquiredItems?.reduce<Record<string, boolean>>(
