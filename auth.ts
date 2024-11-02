@@ -71,6 +71,7 @@ export const config = {
         }
 
         return {
+          id: profile.id,
           name: profile.global_name ?? profile.username,
           image: getProfileImage(),
           discordId: profile.id,
