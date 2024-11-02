@@ -24,7 +24,7 @@ export async function fetchPlayerAccounts() {
     return [];
   }
 
-  const accounts = await redis.json.get(
+  const accounts = await redis.json.get<Record<string, unknown>>(
     `${RedisKeyNamespace.Submissions}:${session.user.id}`,
   );
 
