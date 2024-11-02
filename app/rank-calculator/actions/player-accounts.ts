@@ -33,7 +33,7 @@ export async function assertUniquePlayerRecord(playerName: string) {
       `$.['${playerName.toLowerCase()}']`,
     );
 
-    return record === 'null';
+    return typeof record === 'undefined';
   } catch (error) {
     Sentry.captureException(error);
 

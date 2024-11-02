@@ -1,11 +1,12 @@
 'use client';
 
-import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Heading, Spinner, Text } from '@radix-ui/themes';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
 import { debounce } from 'lodash';
 import * as Sentry from '@sentry/nextjs';
+import { CalendarIcon, PersonIcon } from '@radix-ui/react-icons';
 import { Input } from '../../components/input';
 import {
   assertUniquePlayerRecord,
@@ -21,13 +22,25 @@ interface FormData {
   joinDate: Date;
 }
 
+const validatePlayerExists = debounce(async (playerName: string) => {
+  const valid = await validatePlayerName(playerName);
+
+  return valid || 'Invalid player name';
+}, 600);
+
+const validatePlayerUniqueness = debounce(async (playerName: string) => {
+  const valid = await assertUniquePlayerRecord(playerName);
+
+  return valid || 'Accounts cannot be duplicated';
+}, 600);
+
 export default function RankCalculatorPlayerList() {
   const router = useRouter();
   const methods = useForm<FormData>({
-    mode: 'onBlur',
+    mode: 'onSubmit',
     criteriaMode: 'all',
   });
-  const { isDirty, isSubmitting, errors } = methods.formState;
+  const { isDirty, isSubmitting, errors, validatingFields } = methods.formState;
 
   const onSubmit: SubmitHandler<FormData> = async ({
     playerName,
@@ -77,25 +90,22 @@ export default function RankCalculatorPlayerList() {
                   {...methods.register('playerName', {
                     onChange: fetchAndSetJoinDate,
                     required: 'Player name is required',
+                    maxLength: 12,
                     validate: {
-                      playerExists: async (playerName) => {
-                        const valid = await validatePlayerName(playerName);
-
-                        return valid || 'Invalid player name';
-                      },
-                      isUnique: async (playerName) => {
-                        const valid =
-                          await assertUniquePlayerRecord(playerName);
-
-                        return valid || 'Accounts cannot be duplicated';
-                      },
+                      playerExists: validatePlayerExists,
+                      isUnique: validatePlayerUniqueness,
                     },
                   })}
+                  maxLength={12}
                   hasError={!!errors.playerName}
                   size="3"
                   placeholder="Enter your RSN"
                   required
                   id="playerName"
+                  leftIcon={<PersonIcon />}
+                  rightIcon={
+                    validatingFields.playerName ? <Spinner /> : undefined
+                  }
                 />
               </Label>
               <ErrorMessage
@@ -115,10 +125,21 @@ export default function RankCalculatorPlayerList() {
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
+                    isClearable
                     name="joinDate"
                     placeholderText="dd-mm-yyyy"
                     required
                     size="3"
+                    customInput={
+                      <Input
+                        size="3"
+                        hasError={!!errors.joinDate}
+                        leftIcon={<CalendarIcon />}
+                        rightIcon={
+                          validatingFields.joinDate ? <Spinner /> : undefined
+                        }
+                      />
+                    }
                   />
                 </Box>
               </Label>

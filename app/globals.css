@@ -161,3 +161,11 @@ img.rt-AvatarImage {
 .react-datepicker__day--outside-month {
   color: var(--gray-a10) !important;
 }
+
+.react-datepicker__close-icon {
+  padding-right: 12px !important;
+}
+
+.react-datepicker__close-icon::after {
+  background: var(--accent-10) !important;
+}
