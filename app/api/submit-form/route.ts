@@ -1,13 +1,13 @@
 import { ApiResponse } from '@/types/api';
 import { FormData } from '@/types/rank-calculator';
 import { errors } from '@upstash/redis';
-import { DiscordAPIError, REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v10';
+import { DiscordAPIError } from '@discordjs/rest';
 import { NextRequest, NextResponse } from 'next/server';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import { RedisKeyNamespace } from '@/config/redis';
-import { makeDiscordRequest } from '@/app/rank-calculator/utils/discord';
 import { redis } from '@/auth';
+import { randomUUID } from 'crypto';
+import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -28,19 +28,12 @@ export async function POST(
     throw new Error('No discord channel ID provided');
   }
 
-  if (!process.env.DISCORD_TOKEN) {
-    throw new Error('No discord token provided');
-  }
-
-  const discord = new REST({
-    makeRequest: makeDiscordRequest,
-  }).setToken(process.env.DISCORD_TOKEN);
-
   try {
     const { playerName, points, rank, ...data }: FormData =
       await request.json();
+    const submissionId = randomUUID();
     const result = await redis.json.set(
-      `${RedisKeyNamespace.Submission}:${playerName.toLowerCase()}`,
+      `${RedisKeyNamespace.Submission}:${submissionId}}`,
       '$',
       data,
     );
@@ -55,11 +48,10 @@ export async function POST(
       );
     }
 
-    await discord.post(Routes.channelMessages(process.env.DISCORD_CHANNEL_ID), {
-      body: {
-        content: `${playerName} has applied for the ${rank} rank with ${formatNumber(points)} points!`,
-      },
-    });
+    await sendDiscordMessage(
+      `${playerName} has applied for the ${rank} rank with ${formatNumber(points)} points!`,
+      process.env.DISCORD_CHANNEL_ID,
+    );
 
     return NextResponse.json({
       success: true,
