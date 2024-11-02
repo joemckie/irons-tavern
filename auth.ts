@@ -25,16 +25,19 @@ export const redis = Redis.fromEnv({
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   adapter: UpstashRedisAdapter(redis),
-  events: {
-    signIn({ user }) {
-      Sentry.setUser({
+  callbacks: {
+    session({ session, user }) {
+      const scope = Sentry.getCurrentScope();
+
+      scope.setUser({
         id: user.id,
         discordId: user.discordId,
       });
+
+      return session;
     },
-    signOut() {
-      Sentry.setUser(null);
-    },
+  },
+  events: {
     async createUser({ user }) {
       // Initialise submission map
       await redis.json.set(
