@@ -3,8 +3,8 @@
 import { auth, redis } from '@/auth';
 import { RedisKeyNamespace } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
+import * as Sentry from '@sentry/nextjs';
 import { fetchTemplePlayerStats } from './temple-osrs';
-import { captureException } from '@sentry/nextjs';
 
 export async function validatePlayerName(playerName: string) {
   try {
@@ -57,7 +57,7 @@ export async function savePlayerAccount(playerName: string) {
 
     return result;
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return null;
   }
@@ -82,7 +82,7 @@ export async function deletePlayerAccount(playerName: string) {
 
     return result;
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return null;
   }

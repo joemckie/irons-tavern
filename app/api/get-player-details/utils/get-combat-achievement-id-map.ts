@@ -4,7 +4,7 @@ import {
   CombatAchievementJson,
   CombatAchievementListResponse,
 } from '@/types/wiki';
-import { captureException } from '@sentry/nextjs';
+import * as Sentry from '@sentry/nextjs';
 
 export async function getCaIdMap() {
   const query = [
@@ -50,7 +50,7 @@ export async function getCaIdMap() {
       {},
     );
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return null;
   }

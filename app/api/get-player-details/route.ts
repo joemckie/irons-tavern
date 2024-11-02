@@ -11,6 +11,7 @@ import { Redis } from '@upstash/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
+import * as Sentry from '@sentry/nextjs';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -21,7 +22,6 @@ import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
-import { captureException } from '@sentry/nextjs';
 
 const redis = Redis.fromEnv({
   keepAlive: false,
@@ -192,7 +192,7 @@ export async function GET(
       },
     });
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return NextResponse.json(
       {

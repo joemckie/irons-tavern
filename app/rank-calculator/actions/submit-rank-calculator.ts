@@ -9,7 +9,7 @@ import { RedisKeyNamespace } from '@/config/redis';
 import { redis } from '@/auth';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { captureException } from '@sentry/nextjs';
+import * as Sentry from '@sentry/nextjs';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -59,7 +59,7 @@ export async function submitRankCalculator({
       data: null,
     };
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return {
       success: false,

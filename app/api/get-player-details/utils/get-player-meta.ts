@@ -1,7 +1,7 @@
 import { list } from '@vercel/blob';
 import { parse } from 'date-fns';
+import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../../update-member-list/route';
-import { captureException } from '@sentry/nextjs';
 
 export async function getPlayerMeta(player: string) {
   const blobList = await list({
@@ -28,7 +28,7 @@ export async function getPlayerMeta(player: string) {
       rsn: playerMeta?.rsn ?? player,
     };
   } catch (error) {
-    captureException(error);
+    Sentry.captureException(error);
 
     return null;
   }
