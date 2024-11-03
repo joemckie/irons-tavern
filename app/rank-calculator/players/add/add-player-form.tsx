@@ -129,7 +129,6 @@ export function AddPlayerForm({
                         rightIcon={
                           validatingFields.playerName ? <Spinner /> : undefined
                         }
-                        className="combobox"
                         {...props}
                       />
                     )}
