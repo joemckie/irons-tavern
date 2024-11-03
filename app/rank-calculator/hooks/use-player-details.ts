@@ -1,4 +1,3 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { FormData, RankStructure } from '@/types/rank-calculator';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { fetchPlayerDetails } from '../actions/fetch-player-details/fetch-player-details';
@@ -46,12 +45,3 @@ export const getPlayerDetails = async (player: string) => {
     rankStructure: data.rankStructure ?? RankStructure.Standard,
   } satisfies Omit<FormData, 'rank' | 'points'>;
 };
-
-export function usePlayerDetails(player: string) {
-  return useSuspenseQuery({
-    queryKey: ['playerDetails', player],
-    async queryFn() {
-      return getPlayerDetails(player);
-    },
-  });
-}

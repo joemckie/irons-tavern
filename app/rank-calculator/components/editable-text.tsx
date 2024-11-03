@@ -52,9 +52,16 @@ export function EditableText({
       <Text aria-label={ariaLabel} size="2">
         {field.value}
       </Text>
-      <IconButton onClick={() => setIsEditing(true)} size="1" variant="ghost">
-        <Pencil1Icon />
-      </IconButton>
+      {!field.disabled && (
+        <IconButton
+          disabled={field.disabled}
+          onClick={() => setIsEditing(true)}
+          size="1"
+          variant="ghost"
+        >
+          <Pencil1Icon />
+        </IconButton>
+      )}
     </Flex>
   );
 }

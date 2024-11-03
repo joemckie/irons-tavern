@@ -28,7 +28,6 @@ function formatErrorMessage(error: unknown) {
 }
 
 export async function submitRankCalculator({
-  playerName,
   points,
   rank,
   ...data
@@ -52,7 +51,7 @@ export async function submitRankCalculator({
     });
 
     submissionTransaction.lpush(
-      userRankSubmissionsKey(session.user.id, playerName),
+      userRankSubmissionsKey(session.user.id, data.playerName),
       rankSubmissionKey(submissionId),
     );
 
@@ -69,7 +68,7 @@ export async function submitRankCalculator({
       {
         embeds: [
           {
-            title: `${playerName} rank application`,
+            title: `${data.playerName} rank application`,
             thumbnail: {
               url: 'https://irons-tavern-inactivity-checker.vercel.app/icons/owner.png',
             },

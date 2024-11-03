@@ -13,6 +13,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(
     return (
       <BaseCheckbox
         {...props}
+        {...field}
         onCheckedChange={field.onChange}
         checked={field.value}
         ref={forwardedRef}

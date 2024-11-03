@@ -138,6 +138,7 @@ const passthroughHandlers = [
   'https://templeosrs.com/api/group_member_info.php',
   'https://discord.com/api/users/@me',
   'https://discord.com/api/oauth2/token',
+  'https://discord.com/api/v10/channels/*/messages',
   `${constants.redisUrl}/*`,
   'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
   'https://*.sentry.io/*',
