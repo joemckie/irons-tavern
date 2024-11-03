@@ -40,7 +40,7 @@ export default async function RankCalculatorPlayerList() {
               <Flex gap="2">
                 <DeleteSubmissionButton playerName={rsn} />
                 <IconButton asChild>
-                  <Link href={`/rank-calculator/${rsn}`}>
+                  <Link href={`/rank-calculator/${rsn.toLowerCase()}`}>
                     <ChevronRightIcon />
                   </Link>
                 </IconButton>
