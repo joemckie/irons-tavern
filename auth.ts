@@ -1,17 +1,19 @@
+import 'next-auth/jwt';
 import { Redis } from '@upstash/redis';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
-import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
 import * as Sentry from '@sentry/nextjs';
-import { userOsrsAccountsKey, userRankSubmissionsKey } from './config/redis';
 
 declare module 'next-auth' {
-  /**
-   * The shape of the user object returned in the OAuth providers' `profile` callback,
-   * or the second parameter of the `session` callback, when using a database.
-   */
-  interface User {
-    discordId: string;
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface Profile extends DiscordProfile {}
+}
+
+declare module 'next-auth/jwt' {
+  /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
+  // eslint-disable-next-line no-shadow
+  interface JWT {
+    id: string;
   }
 }
 
@@ -24,36 +26,26 @@ export const redis = Redis.fromEnv({
 
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
-  adapter: UpstashRedisAdapter(redis),
   callbacks: {
-    session({ session, user }) {
+    async jwt({ profile, token }) {
+      if (profile?.id) {
+        // eslint-disable-next-line no-param-reassign
+        token.id = profile.id;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
       const scope = Sentry.getCurrentScope();
 
+      // eslint-disable-next-line no-param-reassign
+      session.user.id = token.id;
+
       scope.setUser({
-        id: user.id,
-        discordId: user.discordId,
+        id: token.id,
       });
 
       return session;
-    },
-  },
-  events: {
-    async createUser({ user }) {
-      if (user.id) {
-        // Initialise user data
-        await redis.json.mset(
-          {
-            key: userOsrsAccountsKey(user.id),
-            path: '$',
-            value: {},
-          },
-          {
-            key: userRankSubmissionsKey(user.id),
-            path: '$',
-            value: {},
-          },
-        );
-      }
     },
   },
   logger: {
@@ -62,30 +54,6 @@ export const config = {
   providers: [
     Discord<DiscordProfile>({
       authorization: 'https://discord.com/api/oauth2/authorize?scope=identify',
-      profile(profile) {
-        function getProfileImage() {
-          if (profile.avatar === null) {
-            const defaultAvatarNumber =
-              profile.discriminator === '0'
-                ? // eslint-disable-next-line no-bitwise
-                  Number(BigInt(profile.id) >> BigInt(22)) % 6
-                : parseInt(profile.discriminator, 10) % 5;
-
-            return `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
-          }
-
-          const format = profile.avatar.startsWith('a_') ? 'gif' : 'png';
-
-          return `https://cdn.discordapp.com/avatars/${profile.id}/${profile.avatar}.${format}`;
-        }
-
-        return {
-          id: profile.id,
-          name: profile.global_name ?? profile.username,
-          image: getProfileImage(),
-          discordId: profile.id,
-        };
-      },
     }),
   ],
 } satisfies NextAuthConfig;

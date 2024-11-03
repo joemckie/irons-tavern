@@ -6,14 +6,14 @@ import { redirect } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 import { FormData } from '../add-player-form';
 
-export const submitForm: SubmitHandler<FormData> = async ({
+export const submitAddPlayerForm: SubmitHandler<FormData> = async ({
   playerName,
   joinDate,
 }) => {
   try {
     const result = await savePlayerAccount(playerName, joinDate);
 
-    if (result !== 'OK') {
+    if (!result) {
       throw new Error('Unable to save player');
     }
   } catch (error) {
@@ -22,5 +22,5 @@ export const submitForm: SubmitHandler<FormData> = async ({
     return;
   }
 
-  redirect(`/rank-calculator/${playerName}`);
+  redirect(`/rank-calculator/${playerName.toLowerCase()}`);
 };

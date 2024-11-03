@@ -5,13 +5,13 @@ import {
 } from '@/types/collection-log';
 import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
-import { latestRankSubmissionKey, userOsrsAccountsKey } from '@/config/redis';
+import { userOsrsAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
 import { auth, redis } from '@/auth';
-import { LatestRankSubmission, Player } from '@/types/player';
+import { Player } from '@/types/player';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -46,27 +46,27 @@ export async function fetchPlayerDetails(
   }
 
   try {
-    const playerRecord = await redis.json.get<[Player]>(
+    const playerRecord = await redis.hget<Player>(
       userOsrsAccountsKey(session.user.id),
-      `$.["${player.toLowerCase()}"]`,
+      player.toLowerCase(),
     );
-    const latestRankSubmission = await redis.json.get<LatestRankSubmission>(
-      latestRankSubmissionKey(session.user.id, player),
-      '$',
+    const latestRankSubmissionId: string | null = await redis.lindex(
+      userRankSubmissionsKey(session.user.id, player),
+      0,
     );
 
     if (!playerRecord) {
       throw new Error('Unable to find player record');
     }
 
-    const [{ joinDate, rsn }] = playerRecord;
+    const { joinDate, rsn } = playerRecord;
     const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
       await Promise.all([
         getWikiSyncData(player),
         getCollectionLog(player),
         fetchTemplePlayerStats(player, true),
-        latestRankSubmission
-          ? redis.json.get<FormData>(latestRankSubmission?.id)
+        latestRankSubmissionId
+          ? redis.json.get<FormData>(latestRankSubmissionId)
           : null,
       ]);
 

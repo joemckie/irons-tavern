@@ -28,12 +28,12 @@ export async function assertUniquePlayerRecord(playerName: string) {
   }
 
   try {
-    const [record] = await redis.json.type(
+    const count = await redis.hexists(
       userOsrsAccountsKey(session.user.id),
-      `$.['${playerName.toLowerCase()}']`,
+      playerName.toLowerCase(),
     );
 
-    return typeof record === 'undefined';
+    return count === 0;
   } catch (error) {
     Sentry.captureException(error);
 
@@ -48,7 +48,7 @@ export async function fetchPlayerAccounts() {
     return {};
   }
 
-  const accounts = await redis.json.get<Record<string, Player>>(
+  const accounts = await redis.hgetall<Record<string, Player>>(
     userOsrsAccountsKey(session.user.id),
   );
 
@@ -94,11 +94,10 @@ export async function savePlayerAccount(playerName: string, joinDate: Date) {
       rsn: maybeFormattedPlayerName,
     } satisfies Player;
 
-    const result = await redis.json.set(
+    const result = await redis.hsetnx(
       userOsrsAccountsKey(session.user.id),
-      `$.['${maybeFormattedPlayerName.toLowerCase()}']`,
+      maybeFormattedPlayerName.toLowerCase(),
       data,
-      { nx: true },
     );
 
     if (!result) {
@@ -107,6 +106,7 @@ export async function savePlayerAccount(playerName: string, joinDate: Date) {
 
     return result;
   } catch (error) {
+    console.error(error);
     Sentry.captureException(error);
 
     return null;
@@ -121,9 +121,9 @@ export async function deletePlayerAccount(playerName: string) {
   }
 
   try {
-    const result = await redis.json.del(
+    const result = await redis.hdel(
       userOsrsAccountsKey(session.user.id),
-      `$.['${playerName}']`,
+      playerName,
     );
 
     if (result) {

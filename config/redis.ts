@@ -10,8 +10,8 @@ export function latestRankSubmissionKey(userId: string, playerName: string) {
   return `${RedisKeyNamespace.User}:${userId}:${playerName.toLowerCase()}:${RedisKeyNamespace.LatestRankSubmission}` as const;
 }
 
-export function userRankSubmissionsKey(userId: string) {
-  return `${RedisKeyNamespace.User}:${userId}:${RedisKeyNamespace.RankSubmissions}` as const;
+export function userRankSubmissionsKey(userId: string, playerName: string) {
+  return `${RedisKeyNamespace.User}:${userId}:${RedisKeyNamespace.RankSubmissions}:${playerName.toLowerCase()}` as const;
 }
 
 export function userOsrsAccountsKey(userId: string) {

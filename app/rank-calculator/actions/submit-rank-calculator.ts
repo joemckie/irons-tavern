@@ -5,11 +5,7 @@ import { FormData } from '@/types/rank-calculator';
 import { errors } from '@upstash/redis';
 import { DiscordAPIError } from '@discordjs/rest';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
-import {
-  latestRankSubmissionKey,
-  rankSubmissionKey,
-  userRankSubmissionsKey,
-} from '@/config/redis';
+import { rankSubmissionKey, userRankSubmissionsKey } from '@/config/redis';
 import { auth, redis } from '@/auth';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
@@ -46,32 +42,18 @@ export async function submitRankCalculator({
 
   try {
     const submissionId = randomUUID();
+    const submissionTransaction = redis.multi();
 
-    const submissionResult = await redis.json.mset(
-      // Create the submission
-      {
-        key: rankSubmissionKey(submissionId),
-        path: '$',
-        value: data,
-      },
-      // Add the ID to the list of the user's submissions
-      {
-        key: userRankSubmissionsKey(session.user.id),
-        path: `$.${submissionId}`,
-        value: {
-          id: submissionId,
-          dateSubmitted: new Date(),
-        },
-      },
-      // Overwrite the latest submission ID
-      {
-        key: latestRankSubmissionKey(session.user.id, playerName),
-        path: `$`,
-        value: {
-          id: rankSubmissionKey(submissionId),
-        },
-      },
+    submissionTransaction.json.set(rankSubmissionKey(submissionId), '$', data, {
+      nx: true,
+    });
+
+    submissionTransaction.lpush(
+      userRankSubmissionsKey(session.user.id, playerName),
+      rankSubmissionKey(submissionId),
     );
+
+    const submissionResult = await submissionTransaction.exec();
 
     if (!submissionResult) {
       return {
@@ -81,7 +63,7 @@ export async function submitRankCalculator({
     }
 
     await sendDiscordMessage(
-      `<@${session.user.discordId}> has applied for the ${rank} rank on ${playerName} with ${formatNumber(points)} points!\n\n` +
+      `<@${session.user.id}> has applied for the ${rank} rank on ${playerName} with ${formatNumber(points)} points!\n\n` +
         `View their submission here: ${constants.publicUrl}/rank-calculator/view/${submissionId}`,
       process.env.DISCORD_CHANNEL_ID,
     );
