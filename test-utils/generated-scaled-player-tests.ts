@@ -25,7 +25,10 @@ type CategoryFixture<T extends CommonPointCalculatorData> = {
 export const generateScaledPlayerTests = <T extends CommonPointCalculatorData>(
   formData: FormDataMap,
   scalingFixtures: CategoryFixture<T>,
-  testRunner: (formFixture: FormData, resultFixture: T) => void,
+  testRunner: (
+    formFixture: Omit<FormData, 'rank' | 'points'>,
+    resultFixture: T,
+  ) => void,
 ) => {
   describe('Early-game player', () => {
     generateScalingTests(
