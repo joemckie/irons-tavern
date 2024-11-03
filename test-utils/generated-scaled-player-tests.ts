@@ -2,9 +2,9 @@ import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
 import { generateScalingTests } from './generate-scaling-tests';
 
 interface FormDataMap {
-  earlyGamePlayer: FormData;
-  midGamePlayer: FormData;
-  endGamePlayer: FormData;
+  earlyGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  midGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  endGamePlayer: Omit<FormData, 'rank' | 'points'>;
 }
 
 type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<

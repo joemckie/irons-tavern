@@ -1,8 +1,11 @@
 import 'server-only';
 import { ResponseLike, REST } from '@discordjs/rest';
-import { Routes } from 'discord-api-types/v10';
+import { APIMessage, Routes } from 'discord-api-types/v10';
 
-export async function sendDiscordMessage(message: string, channelId: string) {
+export async function sendDiscordMessage(
+  message: string,
+  channelId: string,
+): Promise<APIMessage> {
   if (!process.env.DISCORD_TOKEN) {
     throw new Error('No discord token provided');
   }
@@ -14,9 +17,11 @@ export async function sendDiscordMessage(message: string, channelId: string) {
     },
   }).setToken(process.env.DISCORD_TOKEN);
 
-  return discord.post(Routes.channelMessages(channelId), {
+  const response = await discord.post(Routes.channelMessages(channelId), {
     body: {
       content: message,
     },
   });
+
+  return response as APIMessage;
 }

@@ -11,9 +11,12 @@ type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
 >;
 
 export const generateScalingTests = <T extends CommonPointCalculatorData>(
-  formData: FormData,
+  formData: Omit<FormData, 'rank' | 'points'>,
   scalingFixtures: ScalingFixtureMap<T>,
-  testRunner: (formFixture: FormData, resultFixture: T) => void,
+  testRunner: (
+    formFixture: Omit<FormData, 'rank' | 'points'>,
+    resultFixture: T,
+  ) => void,
 ) => {
   describe('Full scaling (100%)', () => {
     testRunner(

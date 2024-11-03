@@ -11,9 +11,14 @@ export const submitForm: SubmitHandler<FormData> = async ({
   joinDate,
 }) => {
   try {
-    await savePlayerAccount(playerName, joinDate);
+    const result = await savePlayerAccount(playerName, joinDate);
+
+    if (result !== 'OK') {
+      throw new Error('Unable to save player');
+    }
   } catch (error) {
     Sentry.captureException(error);
+
     return;
   }
 

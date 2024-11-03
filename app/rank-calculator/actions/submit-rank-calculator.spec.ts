@@ -5,26 +5,36 @@
 import { constants } from '@/config/constants';
 import { server } from '@/mocks/server';
 import * as formData from '@/mocks/misc/form-data';
-import { RedisKeyNamespace } from '@/config/redis';
+import { rankSubmissionKey } from '@/config/redis';
 import { http, HttpResponse, PathParams } from 'msw';
 import { Routes } from 'discord-api-types/v10';
 import * as discordFixtures from '@/mocks/discord';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { Rank } from '@/config/enums';
 import { mockUUID } from '@/test-utils/mock-uuid';
+import * as auth from '@/auth';
 import { submitRankCalculator } from './submit-rank-calculator';
+
+beforeEach(() => {
+  jest.spyOn(auth, 'auth').mockReturnValue({
+    user: {
+      id: mockUUID,
+    },
+  } as never);
+
+  return {
+    player: 'cousinofkos',
+  };
+});
 
 it('saves the submission to the database', async () => {
   server.use(
-    http.post<PathParams, [string, string][], [{ result: 'OK' }]>(
+    http.post<PathParams, [string, string][], [{ result: 'OK' | number[] }]>(
       `${constants.redisUrl}/pipeline`,
       async ({ request }) => {
         const [[type, key]] = await request.json();
 
-        if (
-          type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
-        ) {
+        if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
           return HttpResponse.json([{ result: 'OK' }]);
         }
 
@@ -54,15 +64,12 @@ it('saves the submission to the database', async () => {
 
 it('returns an error if the save was not successful', async () => {
   server.use(
-    http.post<PathParams, [string, string][], [{ result: null }]>(
+    http.post<PathParams, [string, string][], [{ result: null | number[] }]>(
       `${constants.redisUrl}/pipeline`,
       async ({ request }) => {
         const [[type, key]] = await request.json();
 
-        if (
-          type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
-        ) {
+        if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
           return HttpResponse.json([{ result: null }]);
         }
 
@@ -108,15 +115,12 @@ it('returns an error if a network error occurs whilst sending the discord messag
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
   server.use(
-    http.post<PathParams, [string, string][], [{ result: 'OK' }]>(
+    http.post<PathParams, [string, string][], [{ result: 'OK' | number[] }]>(
       `${constants.redisUrl}/pipeline`,
       async ({ request }) => {
         const [[type, key]] = await request.json();
 
-        if (
-          type === 'JSON.SET' &&
-          key === `${RedisKeyNamespace.Submission}:${mockUUID}`
-        ) {
+        if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
           return HttpResponse.json([{ result: 'OK' }]);
         }
 

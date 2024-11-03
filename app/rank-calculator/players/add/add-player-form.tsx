@@ -21,10 +21,10 @@ import { Input } from '../../components/input';
 import {
   assertUniquePlayerRecord,
   fetchPlayerJoinDate,
+  validatePlayerName,
 } from '../../actions/player-accounts';
 import { Label } from '../../components/label';
 import { DatePicker } from '../../components/date-picker';
-import { validatePlayerName } from '../../utils/validate-player-name';
 
 export interface FormData {
   playerName: string;

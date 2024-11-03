@@ -1,24 +1,35 @@
 'use server';
 
 import { auth, redis } from '@/auth';
-import { RedisKeyNamespace } from '@/config/redis';
+import { userOsrsAccountsKey } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
 import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/types/player';
 import { fetchTemplePlayerStats } from './temple-osrs';
 import { fetchPlayerMeta } from './fetch-player-meta';
-import { validatePlayerName } from '../utils/validate-player-name';
+
+export async function validatePlayerName(playerName: string) {
+  try {
+    const response = await fetch(
+      `https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=${playerName}`,
+    );
+
+    return response.status === 200;
+  } catch {
+    return false;
+  }
+}
 
 export async function assertUniquePlayerRecord(playerName: string) {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return false;
   }
 
   try {
     const [record] = await redis.json.type(
-      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      userOsrsAccountsKey(session.user.id),
       `$.['${playerName.toLowerCase()}']`,
     );
 
@@ -33,12 +44,12 @@ export async function assertUniquePlayerRecord(playerName: string) {
 export async function fetchPlayerAccounts() {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return {};
   }
 
   const accounts = await redis.json.get<Record<string, Player>>(
-    `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+    userOsrsAccountsKey(session.user.id),
   );
 
   return accounts ?? {};
@@ -53,7 +64,7 @@ export async function fetchPlayerJoinDate(playerName: string) {
 export async function savePlayerAccount(playerName: string, joinDate: Date) {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return null;
   }
 
@@ -84,7 +95,7 @@ export async function savePlayerAccount(playerName: string, joinDate: Date) {
     } satisfies Player;
 
     const result = await redis.json.set(
-      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      userOsrsAccountsKey(session.user.id),
       `$.['${maybeFormattedPlayerName.toLowerCase()}']`,
       data,
       { nx: true },
@@ -105,13 +116,13 @@ export async function savePlayerAccount(playerName: string, joinDate: Date) {
 export async function deletePlayerAccount(playerName: string) {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return null;
   }
 
   try {
     const result = await redis.json.del(
-      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      userOsrsAccountsKey(session.user.id),
       `$.['${playerName}']`,
     );
 

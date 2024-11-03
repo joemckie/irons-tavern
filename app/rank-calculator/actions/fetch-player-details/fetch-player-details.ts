@@ -5,13 +5,13 @@ import {
 } from '@/types/collection-log';
 import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
-import { RedisKeyNamespace } from '@/config/redis';
+import { latestRankSubmissionKey, userOsrsAccountsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/actions/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
 import { auth, redis } from '@/auth';
-import { Player } from '@/types/player';
+import { LatestRankSubmission, Player } from '@/types/player';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './utils/get-wikisync-data';
 import { getCollectionLog } from './utils/get-collection-log';
@@ -41,14 +41,18 @@ export async function fetchPlayerDetails(
 ): Promise<ApiResponse<PlayerData>> {
   const session = await auth();
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     throw new Error('No user session');
   }
 
   try {
     const playerRecord = await redis.json.get<[Player]>(
-      `${RedisKeyNamespace.Accounts}:${session.user.id}`,
+      userOsrsAccountsKey(session.user.id),
       `$.["${player.toLowerCase()}"]`,
+    );
+    const latestRankSubmission = await redis.json.get<LatestRankSubmission>(
+      latestRankSubmissionKey(session.user.id, player),
+      '$',
     );
 
     if (!playerRecord) {
@@ -61,7 +65,9 @@ export async function fetchPlayerDetails(
         getWikiSyncData(player),
         getCollectionLog(player),
         fetchTemplePlayerStats(player, true),
-        redis.json.get<FormData>(`${RedisKeyNamespace.Submission}:${player}`),
+        latestRankSubmission
+          ? redis.json.get<FormData>(latestRankSubmission?.id)
+          : null,
       ]);
 
     const hasThirdPartyData = Boolean(

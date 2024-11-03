@@ -24,7 +24,11 @@ import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achieveme
 import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
 import * as auth from '@/auth';
 import { mockUUID } from '@/test-utils/mock-uuid';
-import { RedisKeyNamespace } from '@/config/redis';
+import {
+  latestRankSubmissionKey,
+  rankSubmissionKey,
+  userOsrsAccountsKey,
+} from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/types/player';
 import { fetchPlayerDetails } from './fetch-player-details';
@@ -51,11 +55,9 @@ function generateRedisMock(
     RedisPipelineJsonGetResponse
   >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
     const [[type, key]] = await request.json();
+    const previousSubmissionId = 'previous-submission-id';
 
-    if (
-      type === 'JSON.GET' &&
-      key === `${RedisKeyNamespace.Accounts}:${mockUUID}`
-    ) {
+    if (type === 'JSON.GET' && key === userOsrsAccountsKey(mockUUID)) {
       return HttpResponse.json([
         {
           result: JSON.stringify([accountRecord]),
@@ -65,7 +67,22 @@ function generateRedisMock(
 
     if (
       type === 'JSON.GET' &&
-      key === `${RedisKeyNamespace.Submission}:${player}`
+      key === latestRankSubmissionKey(mockUUID, player)
+    ) {
+      return HttpResponse.json([
+        {
+          result: previousSubmission
+            ? JSON.stringify({
+                id: rankSubmissionKey(previousSubmissionId),
+              })
+            : null,
+        },
+      ]);
+    }
+
+    if (
+      type === 'JSON.GET' &&
+      key === rankSubmissionKey(previousSubmissionId)
     ) {
       return HttpResponse.json([
         {
@@ -83,7 +100,7 @@ function generateRedisMock(
 }
 
 function setup() {
-  const player = 'test player';
+  const player = 'testplayer';
 
   // Reset the mocks before running tests to prevent inaccurate results
   server.use(

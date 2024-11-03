@@ -3,7 +3,7 @@ import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import { UpstashRedisAdapter } from '@auth/upstash-redis-adapter';
 import * as Sentry from '@sentry/nextjs';
-import { RedisKeyNamespace } from './config/redis';
+import { userOsrsAccountsKey, userRankSubmissionsKey } from './config/redis';
 
 declare module 'next-auth' {
   /**
@@ -39,8 +39,21 @@ export const config = {
   },
   events: {
     async createUser({ user }) {
-      // Initialise submission map
-      await redis.json.set(`${RedisKeyNamespace.Accounts}:${user.id}`, '$', {});
+      if (user.id) {
+        // Initialise user data
+        await redis.json.mset(
+          {
+            key: userOsrsAccountsKey(user.id),
+            path: '$',
+            value: {},
+          },
+          {
+            key: userRankSubmissionsKey(user.id),
+            path: '$',
+            value: {},
+          },
+        );
+      }
     },
   },
   logger: {
