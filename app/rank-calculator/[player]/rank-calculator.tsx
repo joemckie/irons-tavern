@@ -6,22 +6,14 @@ import { Navigation } from '../components/navigation';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
-import { useSubmitForm } from '../hooks/use-submit-form';
 
-export function RankCalculator() {
+interface RankCalculatorProps {
+  onSubmit: SubmitHandler<FormData>;
+}
+
+export function RankCalculator({ onSubmit }: RankCalculatorProps) {
   const { handleSubmit } = useFormContext<FormData>();
   const { navHeight, navRef } = usePageLayout();
-  const { mutateAsync: saveSubmission } = useSubmitForm();
-
-  const onSubmit: SubmitHandler<FormData> = async (formData) => {
-    try {
-      const response = await saveSubmission(formData);
-
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

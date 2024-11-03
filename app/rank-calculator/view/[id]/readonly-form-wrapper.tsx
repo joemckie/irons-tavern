@@ -16,7 +16,7 @@ export function ReadonlyFormWrapper({ formData }: FormWrapperProps) {
 
   return (
     <FormProvider {...methods}>
-      <RankCalculator />
+      <RankCalculator onSubmit={() => {}} />
     </FormProvider>
   );
 }
