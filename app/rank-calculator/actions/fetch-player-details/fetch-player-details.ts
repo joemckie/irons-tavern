@@ -184,7 +184,6 @@ export async function fetchPlayerDetails(
       },
     };
   } catch (error) {
-    console.error(error);
     Sentry.captureException(error);
 
     return {

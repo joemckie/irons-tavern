@@ -169,3 +169,55 @@ img.rt-AvatarImage {
 .react-datepicker__close-icon::after {
   background: var(--accent-10) !important;
 }
+
+//--------------------------
+
+.combobox {
+  height: 2.5rem;
+  width: 250px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.popover {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  max-height: min(var(--popover-available-height, 300px), 300px);
+  flex-direction: column;
+  overflow: auto;
+  overscroll-behavior: contain;
+  box-shadow: var(--base-card-surface-box-shadow);
+}
+
+.combobox-item {
+  display: flex;
+  cursor: default;
+  scroll-margin: 0.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  outline: none !important;
+}
+
+.combobox-item:active,
+.combobox-item[data-active] {
+  padding-top: 9px;
+  padding-bottom: 7px;
+}
+
+.combobox-item:hover {
+  background-color: var(--accent-8);
+}
+
+.combobox-item[data-active-item] {
+  background-color: var(--accent-a3);
+}
+
+.no-results {
+  gap: 0.5rem;
+  padding: 0.5rem;
+}

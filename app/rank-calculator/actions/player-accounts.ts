@@ -7,18 +7,7 @@ import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/types/player';
 import { fetchTemplePlayerStats } from './temple-osrs';
 import { fetchPlayerMeta } from './fetch-player-meta';
-
-export async function validatePlayerName(playerName: string) {
-  try {
-    const response = await fetch(
-      `https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=${playerName}`,
-    );
-
-    return response.status === 200;
-  } catch {
-    return false;
-  }
-}
+import { validatePlayerName } from '../utils/validate-player-name';
 
 export async function assertUniquePlayerRecord(playerName: string) {
   const session = await auth();

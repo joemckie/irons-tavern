@@ -26,6 +26,7 @@
     "date-fns": "^4.1.0",
     "decimal.js-light": "^2.5.1",
     "discord-api-types": "^0.37.103",
+    "fast-fuzzy": "^1.12.0",
     "get-wild": "^3.0.2",
     "lodash": "^4.17.21",
     "next": "15.0.1",

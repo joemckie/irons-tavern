@@ -9,9 +9,9 @@ import {
 } from '@radix-ui/themes';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
+import { format } from 'date-fns';
 import { fetchPlayerAccounts } from '../actions/player-accounts';
 import { DeleteSubmissionButton } from './delete-submission-button';
-import { format } from 'date-fns';
 
 export default async function RankCalculatorPlayerList() {
   const accounts = await fetchPlayerAccounts();
