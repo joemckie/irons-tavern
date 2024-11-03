@@ -1,5 +1,5 @@
 import { FormWrapper } from './form-wrapper';
-import { getPlayerDetails } from '../hooks/use-player-details';
+import { getPlayerDetails } from '../utils/get-player-details';
 
 interface Params {
   player: string;
