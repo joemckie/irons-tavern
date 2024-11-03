@@ -11,6 +11,9 @@ import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import * as Sentry from '@sentry/nextjs';
 import { constants } from '@/config/constants';
+import { format } from 'date-fns';
+import { calculateScaling } from '../utils/calculate-scaling';
+import { formatPercentage } from '../utils/format-percentage';
 
 function formatErrorMessage(error: unknown) {
   if (error instanceof errors.UpstashError) {
@@ -63,8 +66,52 @@ export async function submitRankCalculator({
     }
 
     await sendDiscordMessage(
-      `<@${session.user.id}> has applied for the ${rank} rank on ${playerName} with ${formatNumber(points)} points!\n\n` +
-        `View their submission here: ${constants.publicUrl}/rank-calculator/view/${submissionId}`,
+      {
+        embeds: [
+          {
+            title: `${playerName} rank application`,
+            thumbnail: {
+              url: 'https://irons-tavern-inactivity-checker.vercel.app/icons/owner.png',
+            },
+            fields: [
+              {
+                name: 'Rank',
+                value: rank,
+                inline: true,
+              },
+              {
+                name: 'Rank structure',
+                value: data.rankStructure,
+                inline: true,
+              },
+              {
+                name: 'Total points',
+                value: formatNumber(points),
+                inline: true,
+              },
+              {
+                name: 'Join date',
+                value: format(data.joinDate, 'dd MMM yyyy'),
+                inline: true,
+              },
+              {
+                name: 'Scaling',
+                value: formatPercentage(calculateScaling(data.joinDate)),
+                inline: true,
+              },
+              {
+                name: 'User',
+                value: `<@${session.user.id}>`,
+                inline: true,
+              },
+              {
+                name: 'View link',
+                value: `[Click to view submission](${constants.publicUrl}/rank-calculator/view/${submissionId})`,
+              },
+            ],
+          },
+        ],
+      },
       process.env.DISCORD_CHANNEL_ID,
     );
 

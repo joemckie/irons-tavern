@@ -3,7 +3,7 @@ import { ResponseLike, REST } from '@discordjs/rest';
 import { APIMessage, Routes } from 'discord-api-types/v10';
 
 export async function sendDiscordMessage(
-  message: string,
+  message: Partial<APIMessage>,
   channelId: string,
 ): Promise<APIMessage> {
   if (!process.env.DISCORD_TOKEN) {
@@ -18,9 +18,7 @@ export async function sendDiscordMessage(
   }).setToken(process.env.DISCORD_TOKEN);
 
   const response = await discord.post(Routes.channelMessages(channelId), {
-    body: {
-      content: message,
-    },
+    body: message,
   });
 
   return response as APIMessage;
