@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
 import { ClanMember } from '@/app/api/update-member-list/route';
+import { withSession } from '@/app/utils/withSession';
 import { AddPlayerForm } from './add-player-form';
 import { submitAddPlayerForm } from './actions/submit-add-player-form';
 
@@ -22,7 +23,7 @@ async function getLatestMemberList() {
   }
 }
 
-export default async function RankCalculatorAddPlayerPage() {
+async function RankCalculatorAddPlayerPage() {
   const memberList = await getLatestMemberList();
 
   return (
@@ -32,3 +33,5 @@ export default async function RankCalculatorAddPlayerPage() {
     />
   );
 }
+
+export default withSession(RankCalculatorAddPlayerPage);

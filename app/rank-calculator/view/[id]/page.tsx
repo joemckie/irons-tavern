@@ -1,8 +1,8 @@
 import { rankSubmissionKey } from '@/config/redis';
 import { FormData } from '@/types/rank-calculator';
 import { Flex, Heading } from '@radix-ui/themes';
-import { withAuth } from '@/app/utils/withAuth';
 import { redis } from '@/redis';
+import { withSession } from '@/app/utils/withSession';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 
 async function ViewSubmissionPage({
@@ -26,4 +26,4 @@ async function ViewSubmissionPage({
   return <ReadonlyFormWrapper formData={submission} />;
 }
 
-export default withAuth(ViewSubmissionPage, ['Administrator', 'SendMessages']);
+export default withSession(ViewSubmissionPage);

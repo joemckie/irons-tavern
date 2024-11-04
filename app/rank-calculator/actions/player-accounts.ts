@@ -124,11 +124,11 @@ export async function deletePlayerAccount(playerName: string) {
   try {
     const result = await redis.hdel(
       userOsrsAccountsKey(session.user.id),
-      playerName,
+      playerName.toLowerCase(),
     );
 
     if (result) {
-      revalidatePath('/rank-calculator/players');
+      revalidatePath('/rank-calculator');
     }
 
     return result;

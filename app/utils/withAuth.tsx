@@ -3,7 +3,7 @@ import { Flex, Heading } from '@radix-ui/themes';
 import { PermissionFlagsBits } from 'discord-api-types/v10';
 import React from 'react';
 
-export type PermissionsString = keyof typeof PermissionFlagsBits;
+type PermissionsString = keyof typeof PermissionFlagsBits;
 
 export function withAuth<T extends object>(
   Component: React.FunctionComponent<T>,
