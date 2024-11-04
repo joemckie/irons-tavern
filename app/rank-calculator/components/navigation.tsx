@@ -9,8 +9,22 @@ export function Navigation() {
       asChild
       p="3"
       gridArea="nav"
+      position={{
+        initial: 'fixed',
+        md: 'static',
+      }}
+      right={{
+        initial: '0',
+        md: 'auto',
+      }}
+      left={{
+        initial: '0',
+        md: 'auto',
+      }}
       style={{
+        background: 'var(--color-background)',
         borderBottom: '1px solid var(--gray-5)',
+        zIndex: 100,
       }}
     >
       <nav role="navigation">
