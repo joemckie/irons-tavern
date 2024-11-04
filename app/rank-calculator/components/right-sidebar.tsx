@@ -17,18 +17,17 @@ export function RightSidebar() {
       style={{
         borderLeft: '1px solid var(--gray-5)',
       }}
+      height={{ md: mainHeightCss }}
     >
-      <Box asChild height={{ md: mainHeightCss }}>
-        <ScrollArea>
-          <aside>
-            <Flex gap="4" direction="column">
-              <PlayerCard />
-              <Separator size="4" />
-              <SkillingCard />
-            </Flex>
-          </aside>
-        </ScrollArea>
-      </Box>
+      <ScrollArea>
+        <aside>
+          <Flex gap="4" direction="column">
+            <PlayerCard />
+            <Separator size="4" />
+            <SkillingCard />
+          </Flex>
+        </aside>
+      </ScrollArea>
     </Box>
   );
 }

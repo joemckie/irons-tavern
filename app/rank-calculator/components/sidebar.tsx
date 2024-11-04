@@ -16,20 +16,19 @@ export function Sidebar() {
       style={{
         borderRight: '1px solid var(--gray-5)',
       }}
+      height={{ md: mainHeightCss }}
     >
-      <Box asChild height={{ md: mainHeightCss }}>
-        <ScrollArea>
-          <aside>
-            <Flex gap="4" direction="column">
-              <RankProgressCard />
-              <Separator size="4" />
-              <CombatCard />
-              <CollectionLogCard />
-              <NotableItemsCard />
-            </Flex>
-          </aside>
-        </ScrollArea>
-      </Box>
+      <ScrollArea>
+        <aside>
+          <Flex gap="4" direction="column">
+            <RankProgressCard />
+            <Separator size="4" />
+            <CombatCard />
+            <CollectionLogCard />
+            <NotableItemsCard />
+          </Flex>
+        </aside>
+      </ScrollArea>
     </Box>
   );
 }
