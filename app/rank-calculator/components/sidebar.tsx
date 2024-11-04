@@ -3,10 +3,10 @@ import { RankProgressCard } from './cards/rank-progress-card';
 import { CombatCard } from './cards/combat-card';
 import { CollectionLogCard } from './cards/collection-log-card';
 import { NotableItemsCard } from './cards/notable-items-card';
-import { usePageLayout } from '../hooks/use-page-layout';
+import { usePageHeight } from '../hooks/use-page-height';
 
 export function Sidebar() {
-  const { mainHeightCss } = usePageLayout();
+  const mainHeightCss = usePageHeight();
 
   return (
     <Box
@@ -17,17 +17,19 @@ export function Sidebar() {
         borderRight: '1px solid var(--gray-5)',
       }}
     >
-      <ScrollArea style={{ height: mainHeightCss }}>
-        <aside>
-          <Flex gap="4" direction="column">
-            <RankProgressCard />
-            <Separator size="4" />
-            <CombatCard />
-            <CollectionLogCard />
-            <NotableItemsCard />
-          </Flex>
-        </aside>
-      </ScrollArea>
+      <Box asChild height={{ md: mainHeightCss }}>
+        <ScrollArea>
+          <aside>
+            <Flex gap="4" direction="column">
+              <RankProgressCard />
+              <Separator size="4" />
+              <CombatCard />
+              <CollectionLogCard />
+              <NotableItemsCard />
+            </Flex>
+          </aside>
+        </ScrollArea>
+      </Box>
     </Box>
   );
 }

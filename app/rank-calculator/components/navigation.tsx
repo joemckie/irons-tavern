@@ -1,8 +1,7 @@
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
-import { forwardRef } from 'react';
 import { useFormState } from 'react-hook-form';
 
-export const Navigation = forwardRef<HTMLElement>((_props, ref) => {
+export function Navigation() {
   const { isDirty, isValid, isSubmitting } = useFormState();
 
   return (
@@ -14,7 +13,7 @@ export const Navigation = forwardRef<HTMLElement>((_props, ref) => {
         borderBottom: '1px solid var(--gray-5)',
       }}
     >
-      <nav ref={ref}>
+      <nav role="navigation">
         <Flex align="center" justify="between">
           <Text weight="bold">Irons Tavern rank calculator</Text>
           <Button
@@ -29,6 +28,4 @@ export const Navigation = forwardRef<HTMLElement>((_props, ref) => {
       </nav>
     </Box>
   );
-});
-
-Navigation.displayName = 'Navigation';
+}
