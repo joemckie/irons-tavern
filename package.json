@@ -36,7 +36,8 @@
     "react-datepicker": "^7.5.0",
     "react-dom": "19.0.0-rc-69d4b800-20241021",
     "react-hook-form": "^7.53.0",
-    "server-only": "^0.0.1"
+    "server-only": "^0.0.1",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin": "^2.6.4",
