@@ -6,12 +6,13 @@ import { errors } from '@upstash/redis';
 import { DiscordAPIError } from '@discordjs/rest';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import { rankSubmissionKey, userRankSubmissionsKey } from '@/config/redis';
-import { auth, redis } from '@/auth';
+import { auth } from '@/auth';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import * as Sentry from '@sentry/nextjs';
 import { constants } from '@/config/constants';
 import { format } from 'date-fns';
+import { redis } from '@/redis';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
 

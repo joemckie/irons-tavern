@@ -1,10 +1,11 @@
 'use server';
 
-import { auth, redis } from '@/auth';
+import { auth } from '@/auth';
 import { userOsrsAccountsKey } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
 import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/types/player';
+import { redis } from '@/redis';
 import { fetchTemplePlayerStats } from './temple-osrs';
 import { fetchPlayerMeta } from './fetch-player-meta';
 

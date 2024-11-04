@@ -1,10 +1,11 @@
-import { redis } from '@/auth';
 import { rankSubmissionKey } from '@/config/redis';
 import { FormData } from '@/types/rank-calculator';
 import { Flex, Heading } from '@radix-ui/themes';
+import { withAuth } from '@/app/utils/withAuth';
+import { redis } from '@/redis';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 
-export default async function ViewSubmissionPage({
+async function ViewSubmissionPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -24,3 +25,5 @@ export default async function ViewSubmissionPage({
 
   return <ReadonlyFormWrapper formData={submission} />;
 }
+
+export default withAuth(ViewSubmissionPage, ['Administrator', 'SendMessages']);
