@@ -15,7 +15,7 @@ interface RankCalculatorProps {
 export function RankCalculator({ onSubmit }: RankCalculatorProps) {
   const { handleSubmit } = useFormContext<FormData>();
   const { navHeight, navRef } = usePageLayout();
-  const isMediumViewport = useMediaQuery('min-width: 768px');
+  const isMediumViewport = useMediaQuery('(min-width: 768px)');
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
