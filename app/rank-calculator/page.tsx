@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { DeleteSubmissionButton } from './components/delete-submission-button';
-import { fetchPlayerAccounts } from './data-sources/player-accounts';
+import { fetchPlayerAccounts } from './data-sources/fetch-player-accounts';
 
 export default async function RankCalculatorPlayerList() {
   const accounts = await fetchPlayerAccounts();

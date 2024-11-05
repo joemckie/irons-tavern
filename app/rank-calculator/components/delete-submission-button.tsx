@@ -3,7 +3,7 @@
 import { TrashIcon } from '@radix-ui/react-icons';
 import { AlertDialog, Button, Flex, IconButton, Text } from '@radix-ui/themes';
 import { useCallback } from 'react';
-import { deletePlayerAccount } from '../actions/player-accounts';
+import { deletePlayerAccount } from '../actions/delete-player-account';
 
 interface DeleteSubmissionButtonProps {
   playerName: string;

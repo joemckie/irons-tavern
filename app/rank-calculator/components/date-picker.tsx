@@ -1,5 +1,3 @@
-'use client';
-
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { PropsWithChildren } from 'react';
@@ -57,8 +55,17 @@ export function DatePicker({
   size = '2',
   customInput,
   ...props
-}: DatePickerProps & BaseDatePickerProps) {
-  const { field, fieldState } = useController({ name });
+}: DatePickerProps &
+  Pick<
+    BaseDatePickerProps,
+    'customInput' | 'isClearable' | 'placeholderText' | 'required'
+  >) {
+  const { field, fieldState } = useController({
+    name,
+    rules: {
+      required: props.required,
+    },
+  });
 
   return (
     <BaseDatePicker

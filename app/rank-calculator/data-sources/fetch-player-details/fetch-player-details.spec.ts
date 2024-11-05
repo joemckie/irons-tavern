@@ -27,7 +27,7 @@ import { mockUUID } from '@/test-utils/mock-uuid';
 import {
   latestRankSubmissionKey,
   rankSubmissionKey,
-  userOsrsAccountsKey,
+  userOSRSAccountsKey,
 } from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/types/player';
@@ -57,7 +57,7 @@ function generateRedisMock(
     const [[type, key]] = await request.json();
     const previousSubmissionId = 'previous-submission-id';
 
-    if (type === 'JSON.GET' && key === userOsrsAccountsKey(mockUUID)) {
+    if (type === 'JSON.GET' && key === userOSRSAccountsKey(mockUUID)) {
       return HttpResponse.json([
         {
           result: JSON.stringify([accountRecord]),

@@ -14,7 +14,7 @@ export function userRankSubmissionsKey(userId: string, playerName: string) {
   return `${RedisKeyNamespace.User}:${userId}:${RedisKeyNamespace.RankSubmissions}:${playerName.toLowerCase()}` as const;
 }
 
-export function userOsrsAccountsKey(userId: string) {
+export function userOSRSAccountsKey(userId: string) {
   return `${RedisKeyNamespace.User}:${userId}:${RedisKeyNamespace.OsrsAccounts}` as const;
 }
 

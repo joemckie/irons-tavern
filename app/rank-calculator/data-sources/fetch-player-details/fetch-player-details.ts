@@ -5,7 +5,7 @@ import {
 } from '@/types/collection-log';
 import { FormData, PlayerData, RankStructure } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
-import { userOsrsAccountsKey, userRankSubmissionsKey } from '@/config/redis';
+import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/data-sources/temple-osrs';
@@ -48,7 +48,7 @@ export async function fetchPlayerDetails(
 
   try {
     const playerRecord = await redis.hget<Player>(
-      userOsrsAccountsKey(session.user.id),
+      userOSRSAccountsKey(session.user.id),
       player.toLowerCase(),
     );
     const latestRankSubmissionId: string | null = await redis.lindex(

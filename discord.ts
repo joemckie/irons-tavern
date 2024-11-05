@@ -1,3 +1,4 @@
+import 'server-only';
 import { ResponseLike, REST } from '@discordjs/rest';
 
 if (!process.env.DISCORD_TOKEN) {

@@ -1,101 +1,54 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  ScrollArea,
-  Spinner,
-  Text,
-} from '@radix-ui/themes';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
+import { FormProvider } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
-import { debounce } from 'lodash';
-import { CalendarIcon, PersonIcon } from '@radix-ui/react-icons';
-import * as Ariakit from '@ariakit/react';
-import { startTransition, useMemo } from 'react';
-import { search } from 'fast-fuzzy';
+import { CalendarIcon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
-import { isRedirectError } from 'next/dist/client/components/redirect';
+import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { DatePicker } from '../../components/date-picker';
-import {
-  assertUniquePlayerRecord,
-  fetchPlayerJoinDate,
-  validatePlayerName,
-} from '../../data-sources/player-accounts';
-
-export interface FormData {
-  playerName: string;
-  joinDate: Date;
-}
+import { PlayerNameInput } from './components/player-name-input';
+import { addPlayerSchema } from './add-player-validation';
+import { addPlayerAction } from './add-player-action';
 
 interface AddPlayerFormProps {
   members: string[];
-  submitFormAction: SubmitHandler<FormData>;
 }
 
-const validatePlayerExists = debounce(async (playerName: string) => {
-  const valid = await validatePlayerName(playerName);
-
-  return valid || 'Invalid player name';
-}, 600);
-
-const validatePlayerUniqueness = debounce(async (playerName: string) => {
-  const valid = await assertUniquePlayerRecord(playerName);
-
-  return valid || 'Accounts cannot be duplicated';
-}, 600);
-
-export function AddPlayerForm({
-  members,
-  submitFormAction,
-}: AddPlayerFormProps) {
+export function AddPlayerForm({ members }: AddPlayerFormProps) {
   const router = useRouter();
-  const methods = useForm<FormData>({
-    mode: 'onSubmit',
-    criteriaMode: 'all',
-    defaultValues: {
-      playerName: '',
+  const {
+    action: { isExecuting, execute },
+    form,
+  } = useHookFormAction(addPlayerAction, zodResolver(addPlayerSchema), {
+    actionProps: {
+      onError({ error }) {
+        if (error.serverError) {
+          toast.error('Failed to save player!');
+        }
+      },
+      async onSuccess({ data }) {
+        if (data?.playerName) {
+          toast.success(`Player saved successfully!`);
+
+          router.push(`/rank-calculator/${data.playerName.toLowerCase()}`);
+        }
+      },
+    },
+    formProps: {
+      mode: 'onSubmit',
+      criteriaMode: 'all',
     },
   });
-  const { isDirty, isSubmitting, errors, validatingFields } = methods.formState;
-  const playerNameValue = methods.watch('playerName');
-
-  const fetchAndSetJoinDate = debounce(async () => {
-    const playerName = methods.getValues('playerName');
-    const joinDate = await fetchPlayerJoinDate(playerName);
-
-    if (joinDate) {
-      methods.setValue('joinDate', joinDate);
-    }
-  }, 600);
-
-  const matches = useMemo(
-    () => (playerNameValue ? search(playerNameValue, members) : members),
-    [playerNameValue, members],
-  );
-
-  async function handleSubmit(data: FormData) {
-    try {
-      await submitFormAction(data);
-    } catch (error) {
-      if (isRedirectError(error)) {
-        toast.success('Player saved!');
-
-        return;
-      }
-
-      toast.error('Failed to save player');
-    }
-  }
+  const { isDirty, errors } = form.formState;
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+    <FormProvider {...form}>
+      <form action={execute}>
         <Flex
           height="100vh"
           align="center"
@@ -109,91 +62,7 @@ export function AddPlayerForm({
           <Heading size="5">New rank application</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">
-              <Ariakit.ComboboxProvider
-                setValue={(value) => {
-                  startTransition(() => {
-                    methods.setValue('playerName', value);
-                  });
-                }}
-              >
-                <Label weight="bold">
-                  <Text as="p" mb="2">
-                    Player name
-                  </Text>
-                  <Ariakit.Combobox
-                    showOnClick
-                    autoComplete="both"
-                    render={({ color, defaultValue, ...props }) => (
-                      <Input
-                        {...methods.register('playerName', {
-                          onChange: fetchAndSetJoinDate,
-                          required: 'Player name is required',
-                          maxLength: 12,
-                          validate: {
-                            playerExists: validatePlayerExists,
-                            isUnique: validatePlayerUniqueness,
-                          },
-                        })}
-                        maxLength={12}
-                        hasError={!!errors.playerName}
-                        size="3"
-                        placeholder="Enter your RSN"
-                        required
-                        id="playerName"
-                        leftIcon={<PersonIcon />}
-                        rightIcon={
-                          validatingFields.playerName ? <Spinner /> : undefined
-                        }
-                        {...props}
-                      />
-                    )}
-                  />
-                  <Ariakit.ComboboxPopover
-                    getAnchorRect={(anchor) =>
-                      anchor?.parentElement?.getBoundingClientRect() ?? null
-                    }
-                    portal
-                    portalElement={
-                      typeof document !== 'undefined'
-                        ? document.getElementById('theme-root')
-                        : null
-                    }
-                    gutter={8}
-                    sameWidth
-                    className="rt-PopoverContent rt-SelectContent rt-r-size-1 popover"
-                    render={({ dir, children, ...props }) => (
-                      <ScrollArea {...props}>
-                        <Box>{children}</Box>
-                      </ScrollArea>
-                    )}
-                  >
-                    {matches.length === 0 && playerNameValue && (
-                      <Box p="2">
-                        <Text size="2">No matches found</Text>
-                      </Box>
-                    )}
-                    {matches.map((value) => (
-                      <Ariakit.ComboboxItem
-                        key={value}
-                        value={value}
-                        className="combobox-item"
-                        render={({ color, ...props }) => (
-                          <Text {...props} size="2" />
-                        )}
-                      />
-                    ))}
-                  </Ariakit.ComboboxPopover>
-                </Label>
-              </Ariakit.ComboboxProvider>
-              <ErrorMessage
-                errors={errors}
-                name="playerName"
-                render={({ message }) => (
-                  <Text as="p" color="red">
-                    {message}
-                  </Text>
-                )}
-              />
+              <PlayerNameInput members={members} />
             </Flex>
             <Flex direction="column" gap="2">
               <Label weight="bold">
@@ -202,19 +71,16 @@ export function AddPlayerForm({
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
-                    isClearable
                     name="joinDate"
-                    placeholderText="dd-mm-yyyy"
                     required
+                    isClearable
+                    placeholderText="dd-mm-yyyy"
                     size="3"
                     customInput={
                       <Input
                         size="3"
                         hasError={!!errors.joinDate}
                         leftIcon={<CalendarIcon />}
-                        rightIcon={
-                          validatingFields.joinDate ? <Spinner /> : undefined
-                        }
                       />
                     }
                   />
@@ -247,8 +113,8 @@ export function AddPlayerForm({
               <Flex flexGrow="1">
                 <Box asChild width="100%">
                   <Button
-                    disabled={!isDirty || isSubmitting}
-                    loading={methods.formState.isSubmitting}
+                    disabled={!isDirty || isExecuting}
+                    loading={isExecuting}
                     size="3"
                   >
                     Next
