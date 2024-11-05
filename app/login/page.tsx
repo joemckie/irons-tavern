@@ -1,15 +1,8 @@
 import { Button, Flex, Heading } from '@radix-ui/themes';
-import { auth, signIn } from '@/auth';
+import { signIn } from '@/auth';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
-import { redirect } from 'next/navigation';
 
 export default async function LoginPage() {
-  const session = await auth();
-
-  if (session?.user) {
-    redirect('/rank-calculator');
-  }
-
   const handleSubmit = async () => {
     'use server';
 
