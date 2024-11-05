@@ -45,13 +45,12 @@ export const config = {
       return token;
     },
     session({ session, token }) {
-      const scope = Sentry.getCurrentScope();
-
       session.user.id = token.id;
       session.user.permissions = token.permissions;
 
-      scope.setUser({
+      Sentry.setUser({
         id: token.id,
+        username: token.name ?? undefined,
       });
 
       return session;
