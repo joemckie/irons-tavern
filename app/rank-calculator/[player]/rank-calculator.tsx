@@ -50,13 +50,13 @@ export function RankCalculator({ onSubmitAction }: RankCalculatorProps) {
         rows="54px 1fr"
       >
         <Navigation />
-        <Suspense fallback={<Text>Loading sidebar</Text>}>
+        <Suspense fallback={<Text>Loading</Text>}>
           <Sidebar />
         </Suspense>
-        <Suspense fallback={<Text>Loading sidebar</Text>}>
+        <Suspense fallback={<Text>Loading</Text>}>
           <RightSidebar />
         </Suspense>
-        <Suspense fallback={<Text>Loading item list</Text>}>
+        <Suspense fallback={<Text>Loading</Text>}>
           <ItemList />
         </Suspense>
       </Grid>
