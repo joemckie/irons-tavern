@@ -1,17 +1,27 @@
 import { Grid } from '@radix-ui/themes';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { FormData } from '@/types/rank-calculator';
+import { toast } from 'react-toastify';
 import { Navigation } from '../components/navigation';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
 
 interface RankCalculatorProps {
-  onSubmit: SubmitHandler<FormData>;
+  onSubmitAction: SubmitHandler<FormData>;
 }
 
-export function RankCalculator({ onSubmit }: RankCalculatorProps) {
+export function RankCalculator({ onSubmitAction }: RankCalculatorProps) {
   const { handleSubmit } = useFormContext<FormData>();
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      await onSubmitAction(data);
+      toast.success('Rank application submitted!');
+    } catch {
+      toast.error('Form submission failed!');
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -17,6 +17,8 @@ import { CalendarIcon, PersonIcon } from '@radix-ui/react-icons';
 import * as Ariakit from '@ariakit/react';
 import { startTransition, useMemo } from 'react';
 import { search } from 'fast-fuzzy';
+import { toast } from 'react-toastify';
+import { isRedirectError } from 'next/dist/client/components/redirect';
 import { Input } from '../../components/input';
 import {
   assertUniquePlayerRecord,
@@ -64,7 +66,6 @@ export function AddPlayerForm({
   const playerNameValue = methods.watch('playerName');
 
   const fetchAndSetJoinDate = debounce(async () => {
-    console.log('change');
     const playerName = methods.getValues('playerName');
     const joinDate = await fetchPlayerJoinDate(playerName);
 
@@ -78,9 +79,23 @@ export function AddPlayerForm({
     [playerNameValue, members],
   );
 
+  async function handleSubmit(data: FormData) {
+    try {
+      await submitFormAction(data);
+    } catch (error) {
+      if (isRedirectError(error)) {
+        toast.success('Player saved!');
+
+        return;
+      }
+
+      toast.error('Failed to save player');
+    }
+  }
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(submitFormAction)}>
+      <form onSubmit={methods.handleSubmit(handleSubmit)}>
         <Flex
           height="100vh"
           align="center"

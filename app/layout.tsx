@@ -1,9 +1,10 @@
 import '@radix-ui/themes/styles.css';
+import 'react-toastify/dist/ReactToastify.css';
+import './globals.css';
 import { Theme } from '@radix-ui/themes';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
-import React from 'react';
+import { ToastContainer } from 'react-toastify';
 import Providers from './providers';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
@@ -32,6 +33,13 @@ export default function RootLayout({
           radius="small"
         >
           <Providers>{children}</Providers>
+          <ToastContainer
+            theme="dark"
+            pauseOnHover
+            pauseOnFocusLoss
+            bodyClassName="rt-Text rt-r-size-2"
+            autoClose={8000}
+          />
         </Theme>
       </body>
     </html>

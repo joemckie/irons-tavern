@@ -19,7 +19,7 @@ export function FormWrapper({
 
   return (
     <FormProvider {...methods}>
-      <RankCalculator onSubmit={handleSubmitAction} />
+      <RankCalculator onSubmitAction={handleSubmitAction} />
     </FormProvider>
   );
 }

@@ -220,3 +220,7 @@ img.rt-AvatarImage {
   gap: 0.5rem;
   padding: 0.5rem;
 }
+
+.Toastify__toast-theme--dark {
+  background: var(--gray-5) !important;
+}
