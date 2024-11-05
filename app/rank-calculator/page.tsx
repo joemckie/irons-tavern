@@ -12,9 +12,8 @@ import { ChevronRightIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { fetchPlayerAccounts } from './actions/player-accounts';
 import { DeleteSubmissionButton } from './components/delete-submission-button';
-import { withSession } from '../utils/withSession';
 
-async function RankCalculatorPlayerList() {
+export default async function RankCalculatorPlayerList() {
   const accounts = await fetchPlayerAccounts();
 
   return (
@@ -56,5 +55,3 @@ async function RankCalculatorPlayerList() {
     </Flex>
   );
 }
-
-export default withSession(RankCalculatorPlayerList);

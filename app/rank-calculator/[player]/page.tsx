@@ -1,7 +1,6 @@
 import { SubmitHandler } from 'react-hook-form';
 import { FormData } from '@/types/rank-calculator';
 import * as Sentry from '@sentry/nextjs';
-import { withSession } from '@/app/utils/withSession';
 import { FormWrapper } from './form-wrapper';
 import { getPlayerDetails } from '../utils/get-player-details';
 import { submitRankCalculator } from '../actions/submit-rank-calculator';
@@ -10,7 +9,11 @@ interface Params {
   player: string;
 }
 
-async function RankCalculatorPage({ params }: { params: Promise<Params> }) {
+export default async function RankCalculatorPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
   const { player } = await params;
   const playerDetails = await getPlayerDetails(decodeURIComponent(player));
 
@@ -31,5 +34,3 @@ async function RankCalculatorPage({ params }: { params: Promise<Params> }) {
     />
   );
 }
-
-export default withSession(RankCalculatorPage);
