@@ -1,6 +1,6 @@
 import { CombatAchievementTier } from '@/types/osrs';
-import { getCaIdMap } from './get-combat-achievement-id-map';
-import { getCombatAchievementTierThresholds } from './get-combat-achievement-tier-thresholds';
+import { getCaIdMap } from '../get-combat-achievement-id-map';
+import { getCombatAchievementTierThresholds } from '../get-combat-achievement-tier-thresholds';
 
 export async function calculateCombatAchievementTier(
   combatAchievements: number[],

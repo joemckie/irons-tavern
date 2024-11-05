@@ -1,6 +1,6 @@
 import { FormData, RankStructure } from '@/types/rank-calculator';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
-import { fetchPlayerDetails } from '../actions/fetch-player-details/fetch-player-details';
+import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 
 export const getPlayerDetails = async (player: string) => {
   const playerDetails = await fetchPlayerDetails(player);
