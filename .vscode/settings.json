@@ -11,6 +11,7 @@
     "Kourend",
     "Lumbridge",
     "Morytania",
+    "OSRS",
     "Varrock"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"

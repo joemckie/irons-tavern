@@ -8,10 +8,10 @@ import { CalendarIcon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '../../components/input';
-import { Label } from '../../components/label';
-import { DatePicker } from '../../components/date-picker';
-import { PlayerNameInput } from './components/player-name-input';
+import { Input } from '../../../components/input';
+import { Label } from '../../../components/label';
+import { DatePicker } from '../../../components/date-picker';
+import { PlayerNameInput } from '../components/player-name-input';
 import { addPlayerSchema } from './add-player-validation';
 import { addPlayerAction } from './add-player-action';
 

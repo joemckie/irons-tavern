@@ -6,8 +6,8 @@ import { authActionClient } from '@/app/safe-action';
 import { Player } from '@/types/player';
 import { returnValidationErrors } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
-import { fetchPlayerMeta } from '../../data-sources/fetch-player-meta';
-import { fetchTemplePlayerStats } from '../../data-sources/temple-osrs';
+import { fetchPlayerMeta } from '../../../data-sources/fetch-player-meta';
+import { fetchTemplePlayerStats } from '../../../data-sources/temple-osrs';
 import { addPlayerSchema } from './add-player-validation';
 
 async function assertUniquePlayerRecord(userId: string, playerName: string) {

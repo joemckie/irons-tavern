@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
 import { ClanMember } from '@/app/api/update-member-list/route';
-import { AddPlayerForm } from './add-player-form';
+import { AddPlayerForm } from './actions/add-player-form';
 
 async function getLatestMemberList() {
   const blobList = await list();
