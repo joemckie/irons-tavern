@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, Flex, Heading, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Heading, Spinner, Text } from '@radix-ui/themes';
 import { FormProvider } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
@@ -8,12 +8,15 @@ import { CalendarIcon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '../../../components/input';
-import { Label } from '../../../components/label';
-import { DatePicker } from '../../../components/date-picker';
-import { PlayerNameInput } from '../components/player-name-input';
-import { addPlayerSchema } from './add-player-validation';
-import { addPlayerAction } from './add-player-action';
+import { debounce } from 'lodash';
+import { useAction } from 'next-safe-action/hooks';
+import { Input } from '../../components/input';
+import { Label } from '../../components/label';
+import { DatePicker } from '../../components/date-picker';
+import { PlayerNameInput } from './components/player-name-input';
+import { addPlayerSchema } from './actions/add-player-validation';
+import { addPlayerAction } from './actions/add-player-action';
+import { fetchPlayerJoinDateAction } from './actions/fetch-player-join-date-action';
 
 interface AddPlayerFormProps {
   members: string[];
@@ -46,6 +49,22 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
   });
   const { isDirty, errors } = form.formState;
 
+  const {
+    execute: executeFetchPlayerJoinDate,
+    isExecuting: isFetchPlayerJoinDateExecuting,
+  } = useAction(fetchPlayerJoinDateAction, {
+    onSettled({ result }) {
+      if (result.data) {
+        form.setValue('joinDate', result.data);
+      }
+    },
+  });
+
+  const debouncedExecuteFetchPlayerJoinDate = debounce(
+    executeFetchPlayerJoinDate,
+    600,
+  );
+
   return (
     <FormProvider {...form}>
       <form action={execute}>
@@ -62,7 +81,10 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
           <Heading size="5">New rank application</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">
-              <PlayerNameInput members={members} />
+              <PlayerNameInput
+                members={members}
+                onChange={debouncedExecuteFetchPlayerJoinDate}
+              />
             </Flex>
             <Flex direction="column" gap="2">
               <Label weight="bold">
@@ -73,7 +95,6 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                   <DatePicker
                     name="joinDate"
                     required
-                    isClearable
                     placeholderText="dd-mm-yyyy"
                     size="3"
                     customInput={
@@ -81,6 +102,11 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                         size="3"
                         hasError={!!errors.joinDate}
                         leftIcon={<CalendarIcon />}
+                        rightIcon={
+                          isFetchPlayerJoinDateExecuting ? (
+                            <Spinner />
+                          ) : undefined
+                        }
                       />
                     }
                   />

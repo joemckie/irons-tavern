@@ -1,39 +1,26 @@
 import { Label } from '@/app/rank-calculator/components/label';
-import { Box, ScrollArea, Spinner, Text } from '@radix-ui/themes';
+import { Box, ScrollArea, Text } from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
-import { startTransition, useCallback, useMemo } from 'react';
+import { startTransition, useMemo } from 'react';
 import { useFormContext, useFormState, useWatch } from 'react-hook-form';
 import { Input } from '@/app/rank-calculator/components/input';
 import { PersonIcon } from '@radix-ui/react-icons';
 import { search } from 'fast-fuzzy';
 import { ErrorMessage } from '@hookform/error-message';
-import { debounce } from 'lodash';
-import { fetchPlayerJoinDate } from '@/app/rank-calculator/data-sources/fetch-player-join-date';
 
 interface PlayerNameInputProps {
   members: string[];
+  onChange: (playerName: string) => void;
 }
 
-export function PlayerNameInput({ members }: PlayerNameInputProps) {
+export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
   const { setValue, register } = useFormContext();
-  const { errors, validatingFields } = useFormState();
+  const { errors } = useFormState();
   const playerNameValue = useWatch({ name: 'playerName' });
 
   const matches = useMemo(
     () => (playerNameValue ? search(playerNameValue, members) : members),
     [playerNameValue, members],
-  );
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fetchAndSetJoinDate = useCallback(
-    debounce(async (playerName: string) => {
-      const joinDate = await fetchPlayerJoinDate(playerName);
-
-      if (joinDate) {
-        setValue('joinDate', joinDate);
-      }
-    }, 600),
-    [],
   );
 
   return (
@@ -42,7 +29,7 @@ export function PlayerNameInput({ members }: PlayerNameInputProps) {
         setValue={(value) => {
           startTransition(() => {
             setValue('playerName', value);
-            fetchAndSetJoinDate(value);
+            onChange(value);
           });
         }}
       >
@@ -61,12 +48,7 @@ export function PlayerNameInput({ members }: PlayerNameInputProps) {
                 required
                 id="playerName"
                 leftIcon={<PersonIcon />}
-                rightIcon={
-                  validatingFields.playerName ? <Spinner /> : undefined
-                }
-                {...register('playerName', {
-                  onChange: fetchAndSetJoinDate,
-                })}
+                {...register('playerName')}
                 {...props}
               />
             )}
