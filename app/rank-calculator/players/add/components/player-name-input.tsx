@@ -28,7 +28,9 @@ export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
       <Ariakit.ComboboxProvider
         setValue={(value) => {
           startTransition(() => {
-            setValue('playerName', value);
+            setValue('playerName', value, {
+              shouldDirty: true,
+            });
             onChange(value);
           });
         }}

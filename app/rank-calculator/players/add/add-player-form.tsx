@@ -55,7 +55,9 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
   } = useAction(fetchPlayerJoinDateAction, {
     onSettled({ result }) {
       if (result.data) {
-        form.setValue('joinDate', result.data);
+        form.setValue('joinDate', result.data, {
+          shouldDirty: true,
+        });
       }
     },
   });
