@@ -1,4 +1,5 @@
-import { Grid } from '@radix-ui/themes';
+import { Suspense } from 'react';
+import { Grid, Text } from '@radix-ui/themes';
 import { SubmitHandler, useFormContext } from 'react-hook-form';
 import { FormData } from '@/types/rank-calculator';
 import { toast } from 'react-toastify';
@@ -49,9 +50,15 @@ export function RankCalculator({ onSubmitAction }: RankCalculatorProps) {
         rows="54px 1fr"
       >
         <Navigation />
-        <Sidebar />
-        <RightSidebar />
-        <ItemList />
+        <Suspense fallback={<Text>Loading sidebar</Text>}>
+          <Sidebar />
+        </Suspense>
+        <Suspense fallback={<Text>Loading sidebar</Text>}>
+          <RightSidebar />
+        </Suspense>
+        <Suspense fallback={<Text>Loading item list</Text>}>
+          <ItemList />
+        </Suspense>
       </Grid>
     </form>
   );

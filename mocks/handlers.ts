@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { http, HttpResponse, passthrough } from 'msw';
+import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
@@ -13,13 +13,15 @@ import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tie
 
 const templePlayerStatsHandler = http.get(
   'https://templeosrs.com/api/player_stats.php',
-  ({ request }) => {
+  async ({ request }) => {
     const url = new URL(request.url);
     const player = url.searchParams.get('player');
 
     if (!player) {
       return HttpResponse.error();
     }
+
+    await delay();
 
     switch (decodeURIComponent(player).toLowerCase()) {
       case 'riftletics':
@@ -43,7 +45,9 @@ const templePlayerStatsHandler = http.get(
 
 const collectionLogHandler = http.get<{ player: string }>(
   `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
-  ({ params, request }) => {
+  async ({ params, request }) => {
+    await delay();
+
     switch (decodeURIComponent(params.player).toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<CollectionLogResponse>(
@@ -66,7 +70,9 @@ const collectionLogHandler = http.get<{ player: string }>(
 
 const wikiSyncHandler = http.get<{ player: string }>(
   `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
-  ({ params, request }) => {
+  async ({ params, request }) => {
+    await delay();
+
     switch (decodeURIComponent(params.player).toLowerCase()) {
       case 'riftletics':
         return HttpResponse.json<WikiSyncResponse>(
