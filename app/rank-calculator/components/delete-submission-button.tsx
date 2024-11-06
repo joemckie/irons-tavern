@@ -2,20 +2,16 @@
 
 import { TrashIcon } from '@radix-ui/react-icons';
 import { AlertDialog, Button, Flex, IconButton, Text } from '@radix-ui/themes';
-import { useCallback } from 'react';
-import { deletePlayerAccount } from '../actions/delete-player-account';
 
 interface DeleteSubmissionButtonProps {
   playerName: string;
+  deletePlayerAccountAction: (playerName: string) => void;
 }
 
 export function DeleteSubmissionButton({
   playerName,
+  deletePlayerAccountAction,
 }: DeleteSubmissionButtonProps) {
-  const handleDelete = useCallback(async () => {
-    await deletePlayerAccount(playerName);
-  }, [playerName]);
-
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
@@ -38,7 +34,11 @@ export function DeleteSubmissionButton({
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="solid" color="red" onClick={handleDelete}>
+            <Button
+              variant="solid"
+              color="red"
+              onClick={() => deletePlayerAccountAction(playerName)}
+            >
               Remove account
             </Button>
           </AlertDialog.Action>
