@@ -1,4 +1,4 @@
-import { PlayerStatsError, PlayerStatsResponse } from '@/types/temple-api';
+import { PlayerStatsError, TempleOSRSPlayerStats } from '@/types/temple-api';
 
 export const emptyResponseFixture = {
   error: {
@@ -261,7 +261,7 @@ export const earlyGamePlayerFixture = {
     Ehb: 0.2941,
     Im_ehb: 1.0174,
   },
-} satisfies PlayerStatsResponse;
+} as TempleOSRSPlayerStats;
 
 export const midGamePlayerFixture = {
   data: {
@@ -517,7 +517,7 @@ export const midGamePlayerFixture = {
     Ehb: 409.821,
     Im_ehb: 524.4315,
   },
-} satisfies PlayerStatsResponse;
+} as TempleOSRSPlayerStats;
 
 export const endGamePlayerFixture = {
   data: {
@@ -773,4 +773,4 @@ export const endGamePlayerFixture = {
     Ehb: 2054.7972,
     Im_ehb: 2602.2528,
   },
-} satisfies PlayerStatsResponse;
+} as TempleOSRSPlayerStats;

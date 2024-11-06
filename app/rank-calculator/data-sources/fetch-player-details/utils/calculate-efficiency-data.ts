@@ -1,4 +1,4 @@
-import { GameMode, PlayerStats } from '@/types/temple-api';
+import { GameMode, TempleOSRSPlayerStats } from '@/types/temple-api';
 
 interface EfficiencyData {
   ehb: number | null;
@@ -6,7 +6,7 @@ interface EfficiencyData {
 }
 
 export function calculateEfficiencyData(
-  playerStats: PlayerStats | null,
+  playerStats: TempleOSRSPlayerStats['data'] | null,
 ): EfficiencyData {
   if (!playerStats) {
     return {
@@ -21,9 +21,10 @@ export function calculateEfficiencyData(
     Im_ehb: ironEhb,
     Im_ehp: ironEhp,
     Uim_ehp: ultimateIronEhp,
+    info: { 'Game mode': gameMode },
   } = playerStats;
 
-  switch (playerStats.info['Game mode']) {
+  switch (gameMode) {
     case GameMode.GroupIronman:
       return {
         ehb,

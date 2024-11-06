@@ -3,7 +3,7 @@ import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/types/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
 import { CollectionLogResponse } from '@/types/collection-log';
-import { PlayerStatsResponse } from '@/types/temple-api';
+import { TempleOSRSPlayerStats } from '@/types/temple-api';
 import * as collectionLog from './collection-log';
 import * as wikiSync from './wiki-sync';
 import * as templePlayerStats from './temple-player-stats';
@@ -25,16 +25,16 @@ const templePlayerStatsHandler = http.get(
 
     switch (decodeURIComponent(player).toLowerCase()) {
       case 'riftletics':
-        return HttpResponse.json<PlayerStatsResponse>(
+        return HttpResponse.json<TempleOSRSPlayerStats>(
           templePlayerStats.earlyGamePlayerFixture,
         );
       case 'cousinofkos':
       case 'iron tyson':
-        return HttpResponse.json<PlayerStatsResponse>(
+        return HttpResponse.json<TempleOSRSPlayerStats>(
           templePlayerStats.midGamePlayerFixture,
         );
       case 'clogging':
-        return HttpResponse.json<PlayerStatsResponse>(
+        return HttpResponse.json<TempleOSRSPlayerStats>(
           templePlayerStats.endGamePlayerFixture,
         );
       default:

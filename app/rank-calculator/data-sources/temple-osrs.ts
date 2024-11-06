@@ -1,14 +1,8 @@
 'use server';
 
 import { constants } from '@/config/constants';
-import { PlayerStatsError, PlayerStatsResponse } from '@/types/temple-api';
+import { TempleOSRSPlayerStats } from '@/types/temple-api';
 import * as Sentry from '@sentry/nextjs';
-
-function isPlayerStatsError(
-  playerStatsResponse: PlayerStatsResponse | PlayerStatsError,
-): playerStatsResponse is PlayerStatsError {
-  return (playerStatsResponse as PlayerStatsError).error !== undefined;
-}
 
 export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
   try {
@@ -19,10 +13,8 @@ export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
     const playerStatsResponse = await fetch(
       `${constants.temple.baseUrl}/api/player_stats.php?${playerStatsQueryParams}`,
     );
-    const playerStatsData: PlayerStatsResponse | PlayerStatsError =
-      await playerStatsResponse.json();
 
-    return isPlayerStatsError(playerStatsData) ? null : playerStatsData.data;
+    return TempleOSRSPlayerStats.parse(await playerStatsResponse.json()).data;
   } catch (error) {
     Sentry.captureException(error);
 
