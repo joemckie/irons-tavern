@@ -1,5 +1,3 @@
-import { Rank } from './enums';
-
 export const constants = {
   collectionLogBaseUrl: 'https://api.collectionlog.net' as const,
   publicUrl: process.env.NEXT_PUBLIC_URL,
@@ -15,8 +13,8 @@ export const constants = {
     privateGroup: process.env.TEMPLE_PRIVATE_GROUP,
   },
   ranks: {
-    leaders: [Rank.Owner, Rank['Deputy Owner'], Rank.Artisan],
-    unranked: Rank.Air,
+    leaders: ['Owner', 'Deputy Owner', 'Artisan'],
+    unranked: 'Air',
   },
   wiki: {
     baseUrl: 'https://oldschool.runescape.wiki' as const,

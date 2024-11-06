@@ -1,4 +1,4 @@
-export enum RedisKeyNamespace {
+enum RedisKeyNamespace {
   RankSubmission = 'rank-submission',
   RankSubmissions = 'rank-submissions',
   LatestRankSubmission = `${RedisKeyNamespace.RankSubmissions}:latest`,
