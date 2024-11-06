@@ -11,13 +11,13 @@ import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
-import { SubmitRankCalculatorSchema } from './submit-rank-calculator-validation';
+import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 
 export const submitRankCalculatorAction = authActionClient
   .metadata({
     actionName: 'submit-rank-calculator',
   })
-  .schema(SubmitRankCalculatorSchema)
+  .schema(RankCalculatorSchema)
   .action(
     async ({ parsedInput: { rank, points, ...data }, ctx: { userId } }) => {
       if (!process.env.DISCORD_CHANNEL_ID) {

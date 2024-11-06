@@ -32,22 +32,6 @@ export interface PlayerData {
   rankStructure: RankStructure | null;
 }
 
-export interface FormData {
-  acquiredItems: Record<string, boolean>;
-  achievementDiaries: AchievementDiaryMap;
-  joinDate: Date;
-  collectionLogCount: number;
-  collectionLogTotal: number;
-  combatAchievementTier: CombatAchievementTier;
-  ehb: number;
-  ehp: number;
-  totalLevel: number;
-  playerName: string;
-  rankStructure: RankStructure;
-  rank: string;
-  points: number;
-}
-
 export interface CommonPointCalculatorData {
   pointsAwarded: number;
   pointsAwardedPercentage: number;

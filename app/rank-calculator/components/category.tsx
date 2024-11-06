@@ -2,13 +2,13 @@ import { memo } from 'react';
 import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
 import { Item } from '@/types/items';
-import { FormData } from '@/types/rank-calculator';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
 import { parseInitials } from '../utils/parse-initials';
 import { formatPercentage } from '../utils/format-percentage';
+import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 interface CategoryProps {
   title: string;
@@ -18,7 +18,7 @@ interface CategoryProps {
 
 export const Category = memo(
   ({ title, items, image = formatWikiImageUrl(title) }: CategoryProps) => {
-    const fields = useWatch<FormData, `acquiredItems.${string}`[]>({
+    const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
       name: items.map(
         ({ name }) => `acquiredItems.${stripEntityName(name)}` as const,
       ),

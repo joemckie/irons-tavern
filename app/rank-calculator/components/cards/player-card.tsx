@@ -1,14 +1,18 @@
 import { Separator, Text } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { FormData } from '@/types/rank-calculator';
 import { format } from 'date-fns';
 import { DataCard } from '../data-card';
 import { useCalculatorScaling } from '../../hooks/point-calculator/use-calculator-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function PlayerCard() {
-  const playerName = useWatch<FormData, 'playerName'>({ name: 'playerName' });
-  const joinDate = useWatch<FormData, 'joinDate'>({ name: 'joinDate' });
+  const playerName = useWatch<RankCalculatorSchema, 'playerName'>({
+    name: 'playerName',
+  });
+  const joinDate = useWatch<RankCalculatorSchema, 'joinDate'>({
+    name: 'joinDate',
+  });
   const scaling = useCalculatorScaling();
 
   return (

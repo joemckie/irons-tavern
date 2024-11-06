@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
-import { FormData } from '@/types/rank-calculator';
 import { rankThresholds } from '@/config/ranks';
 import { Rank } from '@/config/enums';
+import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 export interface RankData {
   rank: Rank;
@@ -9,7 +9,7 @@ export interface RankData {
 }
 
 export function useRank(pointsAwarded: number) {
-  const rankStructure = useWatch<FormData, 'rankStructure'>({
+  const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
     name: 'rankStructure',
   });
 

@@ -113,29 +113,6 @@ const memberListHandler = http.get(
   () => HttpResponse.json<ClanMember[]>(memberListFixture),
 );
 
-// const redisHandler = http.post<
-//   PathParams,
-//   [string, string][],
-//   { result: Omit<FormData, 'rank' | 'points'> }[]
-// >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
-//   const [[method, key]] = await request.json();
-
-//   if (method === 'JSON.GET') {
-//     switch (key) {
-//       case `${RedisKeyNamespace.Submission}:riftletics`:
-//         return HttpResponse.json([{ result: formDataFixture.earlyGamePlayer }]);
-//       case `${RedisKeyNamespace.Submission}:cousinofkos`:
-//         return HttpResponse.json([{ result: formDataFixture.midGamePlayer }]);
-//       case `${RedisKeyNamespace.Submission}:clogging`:
-//         return HttpResponse.json([{ result: formDataFixture.endGamePlayer }]);
-//       default:
-//         return passthrough();
-//     }
-//   }
-
-//   return passthrough();
-// });
-
 const passthroughHandlers = [
   'https://*.googleapis.com/*',
   'https://*.gstatic.com/*',

@@ -3,7 +3,7 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import { FormData, PlayerData } from '@/types/rank-calculator';
+import { PlayerData } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
@@ -22,6 +22,7 @@ import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 const emptyResponse = {
   achievementDiaries: null,
@@ -67,7 +68,7 @@ export async function fetchPlayerDetails(
         getCollectionLog(player),
         fetchTemplePlayerStats(player, true),
         latestRankSubmissionId
-          ? redis.json.get<FormData>(latestRankSubmissionId)
+          ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
           : null,
       ]);
 

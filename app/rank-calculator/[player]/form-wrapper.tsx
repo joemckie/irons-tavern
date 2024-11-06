@@ -1,22 +1,21 @@
 'use client';
 
-import { FormData } from '@/types/rank-calculator';
 import { FormProvider } from 'react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
-import { SubmitRankCalculatorSchema } from './submit-rank-calculator-validation';
+import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 
 interface FormWrapperProps {
-  formData: Omit<FormData, 'rank' | 'points'>;
+  formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
 }
 
 export function FormWrapper({ formData }: FormWrapperProps) {
   const { handleSubmitWithAction, form } = useHookFormAction(
     submitRankCalculatorAction,
-    zodResolver(SubmitRankCalculatorSchema),
+    zodResolver(RankCalculatorSchema),
     {
       actionProps: {
         onSuccess() {

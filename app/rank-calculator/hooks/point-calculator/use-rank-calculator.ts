@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import { rankThresholds } from '@/config/ranks';
 import { useWatch } from 'react-hook-form';
 import { useCollectionLogPointCalculator } from './collection-log/use-collection-log-point-calculator';
@@ -6,11 +6,12 @@ import { useNotableItemsPointCalculator } from './notable-items/use-notable-item
 import { useSkillingPointCalculator } from './skilling/use-skilling-point-calculator';
 import { useCombatPointCalculator } from './combat/use-combat-point-calculator';
 import { RankData, useRank } from '../use-rank';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export type RankCalculatorData = CommonPointCalculatorData & RankData;
 
 export function useRankCalculator() {
-  const rankStructure = useWatch<FormData, 'rankStructure'>({
+  const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
     name: 'rankStructure',
   });
   const { pointsAwarded: totalCollectionLogPoints } =

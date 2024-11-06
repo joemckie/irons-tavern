@@ -1,4 +1,4 @@
-import { FormData } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 export const earlyGamePlayer = {
   acquiredItems: {
@@ -31,7 +31,7 @@ export const earlyGamePlayer = {
   ehp: 368,
   totalLevel: 1588,
   rankStructure: 'Standard',
-} satisfies Omit<FormData, 'rank' | 'points'>;
+} satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 
 export const midGamePlayer = {
   acquiredItems: {
@@ -158,7 +158,7 @@ export const midGamePlayer = {
   ehp: 1144,
   totalLevel: 2174,
   rankStructure: 'Standard',
-} satisfies Omit<FormData, 'rank' | 'points'>;
+} satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 
 export const endGamePlayer = {
   acquiredItems: {
@@ -400,4 +400,4 @@ export const endGamePlayer = {
   ehp: 2776,
   totalLevel: 2277,
   rankStructure: 'Standard',
-} satisfies Omit<FormData, 'rank' | 'points'>;
+} satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;

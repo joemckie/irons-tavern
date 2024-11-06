@@ -1,11 +1,14 @@
 import { CombatAchievementTier } from '@/types/osrs';
-import { FormData } from '@/types/rank-calculator';
 import { useWatch } from 'react-hook-form';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useMaxCombatAchievementPoints } from './use-max-combat-points';
 
 export function useCombatAchievementTierPoints() {
   const maxCombatAchievementPoints = useMaxCombatAchievementPoints();
-  const combatAchievementTier = useWatch<FormData, 'combatAchievementTier'>({
+  const combatAchievementTier = useWatch<
+    RankCalculatorSchema,
+    'combatAchievementTier'
+  >({
     name: 'combatAchievementTier',
   });
   const tierPointMap = {

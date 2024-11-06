@@ -1,8 +1,8 @@
 import { rankSubmissionKey } from '@/config/redis';
-import { FormData } from '@/types/rank-calculator';
 import { Flex, Heading } from '@radix-ui/themes';
 import { redis } from '@/redis';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export default async function ViewSubmissionPage({
   params,
@@ -10,9 +10,9 @@ export default async function ViewSubmissionPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const submission = await redis.json.get<Omit<FormData, 'rank' | 'points'>>(
-    rankSubmissionKey(id),
-  );
+  const submission = await redis.json.get<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >(rankSubmissionKey(id));
 
   if (!submission) {
     return (

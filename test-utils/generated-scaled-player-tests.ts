@@ -1,10 +1,11 @@
-import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { generateScalingTests } from './generate-scaling-tests';
 
 interface FormDataMap {
-  earlyGamePlayer: Omit<FormData, 'rank' | 'points'>;
-  midGamePlayer: Omit<FormData, 'rank' | 'points'>;
-  endGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  earlyGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  midGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  endGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
 }
 
 type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
@@ -26,7 +27,7 @@ export const generateScaledPlayerTests = <T extends CommonPointCalculatorData>(
   formData: FormDataMap,
   scalingFixtures: CategoryFixture<T>,
   testRunner: (
-    formFixture: Omit<FormData, 'rank' | 'points'>,
+    formFixture: Omit<RankCalculatorSchema, 'rank' | 'points'>,
     resultFixture: T,
   ) => void,
 ) => {

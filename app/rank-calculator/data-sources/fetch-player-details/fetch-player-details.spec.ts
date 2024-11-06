@@ -5,11 +5,7 @@
 import { server } from '@/mocks/server';
 import { http, HttpResponse, PathParams } from 'msw';
 import { constants } from '@/config/constants';
-import {
-  AchievementDiaryMap,
-  FormData,
-  PlayerData,
-} from '@/types/rank-calculator';
+import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
 import { merge, set } from 'lodash';
 import { WikiSyncResponse } from '@/types/wiki';
 import { CollectionLogResponse } from '@/types/collection-log';
@@ -19,7 +15,7 @@ import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
-import { GameMode, PlayerStatsResponse } from '@/types/temple-api';
+import { GameMode, TempleOSRSPlayerStats } from '@/types/temple-api';
 import * as auth from '@/auth';
 import { mockUUID } from '@/test-utils/mock-uuid';
 import {
@@ -31,10 +27,11 @@ import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/types/player';
 import { fetchPlayerDetails } from './fetch-player-details';
 import { ClanMember } from '../../../api/update-member-list/route';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 interface GenerateRedisMockOptions {
   accountRecord?: Player;
-  previousSubmission?: DeepPartial<FormData> | null;
+  previousSubmission?: DeepPartial<RankCalculatorSchema> | null;
 }
 
 function generateRedisMock(
@@ -156,8 +153,8 @@ it('returns the highest achievement diary values from the previous submission an
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
         achievementDiaries: {
           'Kourend & Kebos': 'Medium',
@@ -216,7 +213,7 @@ it('merges the acquired items from the previous submission and API data', async 
           'Bandos hilt': true,
           'Bandos boots': false,
         },
-      } satisfies DeepPartial<FormData>,
+      } satisfies DeepPartial<RankCalculatorSchema>,
     }),
     http.get(
       `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
@@ -275,8 +272,8 @@ it('returns the combat achievement tier from the API data if it is higher than t
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
         combatAchievementTier: 'Grandmaster',
       }),
@@ -314,8 +311,8 @@ it('returns the combat achievement tier from the previous submission if it is hi
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
         combatAchievementTier: 'Hard',
       }),
@@ -341,8 +338,8 @@ it('returns the collection log count from the previous submission if it is highe
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { collectionLogCount: 100 }),
     }),
     http.get(
@@ -373,8 +370,8 @@ it('returns the collection log count from the API data if it is higher than the 
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { collectionLogCount: 123 }),
     }),
     http.get(
@@ -405,12 +402,12 @@ it('returns the ehb from the API data if it is higher than the previous submissi
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { ehb: 0 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehb: 100,
@@ -430,12 +427,12 @@ it('returns the ehb from the previous submission if it is higher than the API da
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { ehb: 100 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehb: 0,
@@ -455,12 +452,12 @@ it('returns the ehp from the API data if it is higher than the previous submissi
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { ehp: 0 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehp: 100,
@@ -480,12 +477,12 @@ it('returns the ehp from the previous submission if it is higher than the API da
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { ehp: 100 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehp: 0,
@@ -505,12 +502,12 @@ it('returns the total level from the API data if it is higher than the previous 
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { totalLevel: 100 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Overall_level: 1000,
@@ -530,12 +527,12 @@ it('returns the total level from the previous submission if it is higher than th
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, { totalLevel: 1000 }),
     }),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<PlayerStatsResponse>({
+      HttpResponse.json<TempleOSRSPlayerStats>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Overall_level: 100,
@@ -582,10 +579,10 @@ it('returns the join date from the account record', async () => {
         joinDate: new Date('2020-01-01'),
         rsn: player,
       },
-      previousSubmission: merge<unknown, Omit<FormData, 'rank' | 'points'>>(
-        {},
-        formData.midGamePlayer,
-      ),
+      previousSubmission: merge<
+        unknown,
+        Omit<RankCalculatorSchema, 'rank' | 'points'>
+      >({}, formData.midGamePlayer),
     }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
@@ -630,8 +627,8 @@ it('returns the rank structure from the previous submission if found', async () 
     generateRedisMock(player, {
       previousSubmission: merge<
         unknown,
-        Omit<FormData, 'rank' | 'points'>,
-        DeepPartial<Omit<FormData, 'rank' | 'points'>>
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
         rankStructure: 'Admin',
       }),
@@ -678,7 +675,7 @@ it('returns the correct efficiency values for GIM accounts', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
@@ -704,7 +701,7 @@ it('returns the correct efficiency values for UIM accounts', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
@@ -730,7 +727,7 @@ it('returns the correct efficiency values for HCIM accounts', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
@@ -756,7 +753,7 @@ it('returns the correct efficiency values for ironman accounts', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
@@ -782,7 +779,7 @@ it('returns no efficiency values for unknown accounts', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
@@ -808,7 +805,7 @@ it('rounds the ehb value', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehb: 90.99,
@@ -826,7 +823,7 @@ it('rounds the ehp value', async () => {
 
   server.use(
     http.get('https://templeosrs.com/api/player_stats.php', () =>
-      HttpResponse.json<DeepPartial<PlayerStatsResponse>>({
+      HttpResponse.json<DeepPartial<TempleOSRSPlayerStats>>({
         data: {
           ...templePlayerStats.midGamePlayerFixture.data,
           Im_ehp: 13.37,

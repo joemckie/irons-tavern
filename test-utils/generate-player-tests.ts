@@ -1,14 +1,16 @@
-import { FormData } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 interface FormDataMap {
-  earlyGamePlayer: Omit<FormData, 'rank' | 'points'>;
-  midGamePlayer: Omit<FormData, 'rank' | 'points'>;
-  endGamePlayer: Omit<FormData, 'rank' | 'points'>;
+  earlyGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  midGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  endGamePlayer: Omit<RankCalculatorSchema, 'rank' | 'points'>;
 }
 
 export const generatePlayerTests = (
   formData: FormDataMap,
-  testRunner: (formFixture: Omit<FormData, 'rank' | 'points'>) => void,
+  testRunner: (
+    formFixture: Omit<RankCalculatorSchema, 'rank' | 'points'>,
+  ) => void,
 ) => {
   describe('Early-game player', () => {
     testRunner(formData.earlyGamePlayer);

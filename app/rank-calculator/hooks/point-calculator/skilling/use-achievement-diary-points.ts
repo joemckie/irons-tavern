@@ -1,11 +1,15 @@
 import { useWatch } from 'react-hook-form';
 import { DiaryLocation, DiaryTier } from '@/types/osrs';
-import { achievementDiaryTierPoints, FormData } from '@/types/rank-calculator';
+import { achievementDiaryTierPoints } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export function useAchievementDiaryPoints() {
   const scaling = useCalculatorScaling();
-  const achievementDiaries = useWatch<FormData, 'achievementDiaries'>({
+  const achievementDiaries = useWatch<
+    RankCalculatorSchema,
+    'achievementDiaries'
+  >({
     name: 'achievementDiaries',
   });
   const achievementDiariesPoints = (

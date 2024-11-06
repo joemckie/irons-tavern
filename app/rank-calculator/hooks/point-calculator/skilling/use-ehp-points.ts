@@ -1,9 +1,9 @@
 import { useWatch } from 'react-hook-form';
-import { FormData } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export function useEhpPoints() {
-  const ehp = useWatch<FormData, 'ehp'>({ name: 'ehp' });
+  const ehp = useWatch<RankCalculatorSchema, 'ehp'>({ name: 'ehp' });
   const scaling = useCalculatorScaling();
   const pointsPerEhp = 10;
   const ehpPoints = Math.floor(

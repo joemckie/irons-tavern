@@ -1,6 +1,7 @@
 import { useWatch } from 'react-hook-form';
-import { CommonPointCalculatorData, FormData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/types/rank-calculator';
 import Decimal from 'decimal.js-light';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useGetItems } from '../../use-get-items';
 import { useMaxNotableItemsPoints } from './use-max-notable-items-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
@@ -14,7 +15,7 @@ export interface NotableItemsPointCalculatorData
 
 export function useNotableItemsPointCalculator() {
   const { data } = useGetItems();
-  const itemFields = useWatch<FormData, 'acquiredItems'>({
+  const itemFields = useWatch<RankCalculatorSchema, 'acquiredItems'>({
     name: 'acquiredItems',
   });
   const scaling = useCalculatorScaling();

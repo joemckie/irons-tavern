@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
-import { FormData } from '@/types/rank-calculator';
 import { maximumSkillLevel, maximumTotalLevel } from '@/types/osrs';
 import { Decimal } from 'decimal.js-light';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useMaxTotalLevelPoints } from './use-max-total-level-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
@@ -10,7 +10,7 @@ import { useCalculatorScaling } from '../use-calculator-scaling';
 export function useTotalLevelPoints() {
   const maxPoints = useMaxTotalLevelPoints();
 
-  const totalLevel = useWatch<FormData, 'totalLevel'>({
+  const totalLevel = useWatch<RankCalculatorSchema, 'totalLevel'>({
     name: 'totalLevel',
   });
 

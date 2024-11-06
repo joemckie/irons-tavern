@@ -1,4 +1,4 @@
-import { FormData } from '@/types/rank-calculator';
+import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 
 export const getPlayerDetails = async (player: string) => {
@@ -41,5 +41,5 @@ export const getPlayerDetails = async (player: string) => {
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,
     rankStructure: data.rankStructure ?? 'Standard',
-  } satisfies Omit<FormData, 'rank' | 'points'>;
+  } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 };
