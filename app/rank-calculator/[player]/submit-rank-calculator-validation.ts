@@ -10,9 +10,9 @@ import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/types/rank-calculator';
 
 export const RankCalculatorSchema = zfd.formData({
-  acquiredItems: z.record(z.boolean().optional()),
+  acquiredItems: z.record(z.coerce.boolean()),
   achievementDiaries: z.record(DiaryLocation, DiaryTier),
-  joinDate: z.date(),
+  joinDate: z.coerce.date(),
   collectionLogCount: z.coerce.number().nonnegative(),
   collectionLogTotal: z.coerce.number().nonnegative(),
   combatAchievementTier: CombatAchievementTier,
@@ -22,7 +22,7 @@ export const RankCalculatorSchema = zfd.formData({
   playerName: PlayerName,
   rankStructure: RankStructure,
   rank: z.string(),
-  points: z.number().nonnegative(),
+  points: z.coerce.number().nonnegative(),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

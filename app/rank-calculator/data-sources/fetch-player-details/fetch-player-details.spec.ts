@@ -19,9 +19,9 @@ import { GameMode, TempleOSRSPlayerStats } from '@/types/temple-api';
 import * as auth from '@/auth';
 import { mockUUID } from '@/test-utils/mock-uuid';
 import {
-  latestRankSubmissionKey,
   rankSubmissionKey,
   userOSRSAccountsKey,
+  userRankSubmissionsKey,
 } from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/types/player';
@@ -52,24 +52,19 @@ function generateRedisMock(
     const [[type, key]] = await request.json();
     const previousSubmissionId = 'previous-submission-id';
 
-    if (type === 'JSON.GET' && key === userOSRSAccountsKey(mockUUID)) {
+    if (type === 'hget' && key === userOSRSAccountsKey(mockUUID)) {
       return HttpResponse.json([
         {
-          result: JSON.stringify([accountRecord]),
+          result: JSON.stringify(accountRecord),
         },
       ]);
     }
 
-    if (
-      type === 'JSON.GET' &&
-      key === latestRankSubmissionKey(mockUUID, player)
-    ) {
+    if (type === 'lindex' && key === userRankSubmissionsKey(mockUUID, player)) {
       return HttpResponse.json([
         {
           result: previousSubmission
-            ? JSON.stringify({
-                id: rankSubmissionKey(previousSubmissionId),
-              })
+            ? JSON.stringify(rankSubmissionKey(previousSubmissionId))
             : null,
         },
       ]);
@@ -186,7 +181,7 @@ it('returns the highest achievement diary values from the previous submission an
               },
             ),
             "achievement_diaries['Lumbridge & Draynor'].Elite.tasks",
-            [],
+            [false],
           ),
         ),
     ),
@@ -219,7 +214,9 @@ it('merges the acquired items from the previous submission and API data', async 
       `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<DeepPartial<CollectionLogResponse>>({
+          ...collectionLog.midGamePlayerFixture,
           collectionLog: {
+            ...collectionLog.midGamePlayerFixture.collectionLog,
             tabs: {
               Bosses: {
                 'General Graardor': {
@@ -643,7 +640,7 @@ it('returns the default rank structure if no previous submission is found', asyn
   const { player } = setup();
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.rankStructure).toEqual('standard');
+  expect(result.data.rankStructure).toEqual('Standard');
 });
 
 it('returns an empty response if no third party data is found', async () => {
@@ -680,6 +677,7 @@ it('returns the correct efficiency values for GIM accounts', async () => {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
             'Game mode': GameMode.GroupIronman,
+            Username: player,
           },
           Ehb: 12,
           Ehp: 34,
@@ -706,6 +704,7 @@ it('returns the correct efficiency values for UIM accounts', async () => {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
             'Game mode': GameMode.UltimateIronman,
+            Username: player,
           },
           Ehb: 12,
           Ehp: 34,
@@ -732,6 +731,7 @@ it('returns the correct efficiency values for HCIM accounts', async () => {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
             'Game mode': GameMode.HardcoreIronman,
+            Username: player,
           },
           Ehb: 12,
           Ehp: 34,
@@ -758,6 +758,7 @@ it('returns the correct efficiency values for ironman accounts', async () => {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
             'Game mode': GameMode.Ironman,
+            Username: player,
           },
           Ehb: 12,
           Ehp: 34,
@@ -784,6 +785,7 @@ it('returns no efficiency values for unknown accounts', async () => {
           ...templePlayerStats.midGamePlayerFixture.data,
           info: {
             'Game mode': 4 as GameMode,
+            Username: player,
           },
           Ehb: 12,
           Ehp: 34,

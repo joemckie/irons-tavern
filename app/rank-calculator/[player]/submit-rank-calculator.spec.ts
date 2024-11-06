@@ -1,148 +1,112 @@
-// /**
-//  * @jest-environment node
-//  */
+/**
+ * @jest-environment node
+ */
 
-// import { constants } from '@/config/constants';
-// import { server } from '@/mocks/server';
-// import * as formData from '@/mocks/misc/form-data';
-// import { rankSubmissionKey } from '@/config/redis';
-// import { http, HttpResponse, PathParams } from 'msw';
-// import { Routes } from 'discord-api-types/v10';
-// import * as discordFixtures from '@/mocks/discord';
-// import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-// import { Rank } from '@/config/enums';
-// import { mockUUID } from '@/test-utils/mock-uuid';
-// import * as auth from '@/auth';
-// import { submitRankCalculatorAction } from '../[player]/submit-rank-calculator-action';
+import { constants } from '@/config/constants';
+import { server } from '@/mocks/server';
+import * as formData from '@/mocks/misc/form-data';
+import { http, HttpResponse } from 'msw';
+import { Routes } from 'discord-api-types/v10';
+import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
+import { mockUUID } from '@/test-utils/mock-uuid';
+import * as auth from '@/auth';
+import { serialize } from 'object-to-formdata';
+import * as discordFixtures from '@/mocks/discord';
+import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 
-// beforeEach(() => {
-//   jest.spyOn(auth, 'auth').mockReturnValue({
-//     user: {
-//       id: mockUUID,
-//     },
-//   } as never);
+beforeEach(() => {
+  jest.spyOn(auth, 'auth').mockReturnValue({
+    user: {
+      id: mockUUID,
+    },
+  } as never);
 
-//   return {
-//     player: 'cousinofkos',
-//   };
-// });
+  server.use(
+    http.post(
+      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      () => HttpResponse.json(discordFixtures.sendMessageFixture),
+    ),
+  );
 
-// it('saves the submission to the database', async () => {
-//   server.use(
-//     http.post<PathParams, [string, string][], [{ result: 'OK' | number[] }]>(
-//       `${constants.redisUrl}/pipeline`,
-//       async ({ request }) => {
-//         const [[type, key]] = await request.json();
+  return {
+    player: 'cousinofkos',
+  };
+});
 
-//         if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
-//           return HttpResponse.json([{ result: 'OK' }]);
-//         }
+fit('saves the submission to the database', async () => {
+  const result = await submitRankCalculatorAction(
+    serialize({
+      ...formData.midGamePlayer,
+      points: '100000',
+      rank: getRankName('Owner'),
+    }),
+  );
 
-//         throw new Error(
-//           `No mock provided for ${request.url} and params ${[type, key]}`,
-//         );
-//       },
-//     ),
-//     http.post(
-//       `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
-//       () => HttpResponse.json(discordFixtures.sendMessageFixture),
-//     ),
-//   );
+  expect(result?.serverError).toBeUndefined();
+  expect(result?.data).toMatchObject({
+    success: true,
+  });
+});
 
-//   const result = await submitRankCalculatorAction({
-//     ...formData.midGamePlayer,
-//     points: 100000,
-//     rank: getRankName(Rank.Owner),
-//   });
+it('returns an error if the save was not successful', async () => {
+  server.use(
+    http.post(
+      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      () => HttpResponse.error(),
+    ),
+  );
 
-//   expect(result).toMatchObject({
-//     error: null,
-//     data: null,
-//     success: true,
-//   });
-// });
+  const result = await submitRankCalculatorAction(
+    serialize({
+      ...formData.midGamePlayer,
+      points: 100000,
+      rank: getRankName('Owner'),
+    }),
+  );
 
-// it('returns an error if the save was not successful', async () => {
-//   server.use(
-//     http.post<PathParams, [string, string][], [{ result: null | number[] }]>(
-//       `${constants.redisUrl}/pipeline`,
-//       async ({ request }) => {
-//         const [[type, key]] = await request.json();
+  expect(result?.serverError).toBeDefined();
+  expect(result?.data).toBeUndefined();
+});
 
-//         if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
-//           return HttpResponse.json([{ result: null }]);
-//         }
+xit('returns an error if a network error occurs whilst saving the submission', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-//         throw new Error(
-//           `No mock provided for ${request.url} and params ${[type, key]}`,
-//         );
-//       },
-//     ),
-//   );
+  server.use(
+    http.post(`${constants.redisUrl}/pipeline`, () => HttpResponse.error()),
+  );
 
-//   const result = await submitRankCalculator({
-//     ...formData.midGamePlayer,
-//     points: 100000,
-//     rank: getRankName(Rank.Owner),
-//   });
+  const result = await submitRankCalculatorAction(
+    serialize({
+      ...formData.midGamePlayer,
+      points: 100000,
+      rank: getRankName('Owner'),
+    }),
+  );
 
-//   expect(result).toMatchObject({
-//     error: 'Failed to save submission',
-//     success: false,
-//   });
-// });
+  expect(result?.data).toMatchObject({
+    error: 'Something went wrong',
+    success: false,
+  });
+}, 15000);
 
-// it('returns an error if a network error occurs whilst saving the submission', async () => {
-//   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
+it('returns an error if a network error occurs whilst sending the discord message', async () => {
+  jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
-//   server.use(
-//     http.post(`${constants.redisUrl}/pipeline`, () => HttpResponse.error()),
-//   );
+  server.use(
+    http.post(
+      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      () => HttpResponse.error(),
+    ),
+  );
 
-//   const result = await submitRankCalculator({
-//     ...formData.midGamePlayer,
-//     points: 100000,
-//     rank: getRankName(Rank.Owner),
-//   });
+  const result = await submitRankCalculatorAction(
+    serialize({
+      ...formData.midGamePlayer,
+      points: 100000,
+      rank: getRankName('Owner'),
+    }),
+  );
 
-//   expect(result).toMatchObject({
-//     error: 'Something went wrong',
-//     success: false,
-//   });
-// }, 15000);
-
-// it('returns an error if a network error occurs whilst sending the discord message', async () => {
-//   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
-
-//   server.use(
-//     http.post<PathParams, [string, string][], [{ result: 'OK' | number[] }]>(
-//       `${constants.redisUrl}/pipeline`,
-//       async ({ request }) => {
-//         const [[type, key]] = await request.json();
-
-//         if (type === 'JSON.MSET' && key === rankSubmissionKey(mockUUID)) {
-//           return HttpResponse.json([{ result: 'OK' }]);
-//         }
-
-//         throw new Error(
-//           `No mock provided for ${request.url} and params ${[type, key]}`,
-//         );
-//       },
-//     ),
-//     http.post(
-//       `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
-//       () => HttpResponse.error(),
-//     ),
-//   );
-
-//   const result = await submitRankCalculator({
-//     ...formData.midGamePlayer,
-//     points: 100000,
-//     rank: getRankName(Rank.Owner),
-//   });
-
-//   expect(result).toMatchObject({
-//     error: 'Something went wrong',
-//     success: false,
-//   });
-// }, 15000);
+  expect(result?.serverError).toBeDefined();
+  expect(result?.data).toBeUndefined();
+}, 15000);

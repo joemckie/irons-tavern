@@ -277,7 +277,7 @@ export const combatAchievementTierPoints = {
 
 export const maximumSkillLevel = 99;
 
-export const skillsCount = Object.values(Skill).length;
+export const skillsCount = Skill.options.length;
 
 export const minimumTotalLevel = skillsCount + 9; // Hitpoints starts at 10
 

@@ -1,6 +1,7 @@
 import { createSafeActionClient } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
+import { auth } from '@/auth';
 
 export const actionClient = createSafeActionClient({
   defineMetadataSchema() {
@@ -25,7 +26,6 @@ export const actionClient = createSafeActionClient({
   );
 
 export const authActionClient = actionClient.use(async ({ next }) => {
-  const { auth } = await import('@/auth');
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -34,7 +34,7 @@ export const authActionClient = actionClient.use(async ({ next }) => {
 
   return next({
     ctx: {
-      userId: session!.user!.id,
+      userId: session.user.id,
     },
   });
 });
