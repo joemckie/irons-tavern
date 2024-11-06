@@ -242,6 +242,21 @@ export enum DiaryLocation {
   'Wilderness' = 'Wilderness',
 }
 
+export const diaryLocationValues = [
+  'Ardougne',
+  'Desert',
+  'Falador',
+  'Fremennik',
+  'Kandarin',
+  'Karamja',
+  'Kourend & Kebos',
+  'Lumbridge & Draynor',
+  'Morytania',
+  'Varrock',
+  'Western Provinces',
+  'Wilderness',
+] as const;
+
 export enum DiaryTier {
   None = 'None',
   Easy = 'Easy',
@@ -249,6 +264,14 @@ export enum DiaryTier {
   Hard = 'Hard',
   Elite = 'Elite',
 }
+
+export const diaryTierValues = [
+  'None',
+  'Easy',
+  'Medium',
+  'Hard',
+  'Elite',
+] as const;
 
 export enum CombatAchievementTier {
   None = 'None',
@@ -259,6 +282,16 @@ export enum CombatAchievementTier {
   Master = 'Master',
   Grandmaster = 'Grandmaster',
 }
+
+export const combatAchievementTierValues = [
+  'None',
+  'Easy',
+  'Medium',
+  'Hard',
+  'Elite',
+  'Master',
+  'Grandmaster',
+] as const;
 
 export const combatAchievementTierPoints = {
   [CombatAchievementTier.Easy]: 1,

@@ -12,11 +12,12 @@ export function ReadonlyFormWrapper({ formData }: FormWrapperProps) {
   const methods = useForm<Omit<FormData, 'rank' | 'points'>>({
     values: formData,
     disabled: true,
+    shouldUnregister: false,
   });
 
   return (
     <FormProvider {...methods}>
-      <RankCalculator onSubmitAction={() => {}} />
+      <RankCalculator submitRankCalculatorAction={() => {}} />
     </FormProvider>
   );
 }

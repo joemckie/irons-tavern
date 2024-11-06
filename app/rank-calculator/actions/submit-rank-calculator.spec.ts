@@ -13,7 +13,7 @@ import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { Rank } from '@/config/enums';
 import { mockUUID } from '@/test-utils/mock-uuid';
 import * as auth from '@/auth';
-import { submitRankCalculator } from './submit-rank-calculator';
+import { submitRankCalculator } from '../[player]/submit-rank-calculator-action';
 
 beforeEach(() => {
   jest.spyOn(auth, 'auth').mockReturnValue({

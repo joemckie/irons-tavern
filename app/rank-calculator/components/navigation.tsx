@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import { useFormState } from 'react-hook-form';
 
 export function Navigation() {
-  const { isDirty, isValid, isSubmitting } = useFormState();
+  const { isValid, isSubmitting } = useFormState();
 
   return (
     <Box
@@ -33,7 +33,7 @@ export function Navigation() {
           <Button
             role="button"
             loading={isSubmitting}
-            disabled={!isDirty || !isValid || isSubmitting}
+            disabled={!isValid || isSubmitting}
             variant="surface"
           >
             Submit

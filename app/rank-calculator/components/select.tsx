@@ -12,7 +12,7 @@ import { AriaAttributes } from 'react';
 interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
   name: string;
   placeholder?: string;
-  options: string[];
+  options: readonly string[];
 }
 
 export function Select({

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Box, Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import { RankStructure } from '@/types/rank-calculator';
+import { rankStructureSchema } from '@/types/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
@@ -24,12 +24,16 @@ export function RankProgressCard() {
 
   useEffect(() => {
     if (rankName !== getValues('rank')) {
-      setValue('rank', rankName);
+      setValue('rank', rankName, {
+        shouldDirty: true,
+      });
     }
   }, [rankName, setValue, getValues]);
 
   useEffect(() => {
-    setValue('points', pointsAwarded);
+    setValue('points', pointsAwarded, {
+      shouldDirty: true,
+    });
   }, [pointsAwarded, setValue]);
 
   return (
@@ -101,7 +105,7 @@ export function RankProgressCard() {
               <Select
                 aria-label="Selected rank structure"
                 name="rankStructure"
-                options={Object.values(RankStructure)}
+                options={rankStructureSchema.options}
               />
             }
           />

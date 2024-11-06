@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
 export enum RankStructure {
@@ -10,6 +11,17 @@ export enum RankStructure {
   DeputyOwner = 'Deputy Owner',
   Owner = 'Owner',
 }
+
+export const rankStructureSchema = z.enum([
+  'Standard',
+  'Bingo Winner',
+  'Legacy',
+  'Inviter',
+  'Admin',
+  'Moderator',
+  'Deputy Owner',
+  'Owner',
+]);
 
 export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier>;
 
