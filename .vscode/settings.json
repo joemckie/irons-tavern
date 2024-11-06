@@ -12,6 +12,7 @@
     "Lumbridge",
     "Morytania",
     "OSRS",
+    "Skilling",
     "Varrock"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"

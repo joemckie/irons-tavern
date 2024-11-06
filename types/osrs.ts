@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export enum Skill {
   Attack = 'Attack',
   Strength = 'Strength',
@@ -227,22 +229,7 @@ export enum MiniQuest {
   'Skippy and the Mogres' = 'Skippy and the Mogres',
 }
 
-export enum DiaryLocation {
-  'Ardougne' = 'Ardougne',
-  'Desert' = 'Desert',
-  'Falador' = 'Falador',
-  'Fremennik' = 'Fremennik',
-  'Kandarin' = 'Kandarin',
-  'Karamja' = 'Karamja',
-  'Kourend & Kebos' = 'Kourend & Kebos',
-  'Lumbridge & Draynor' = 'Lumbridge & Draynor',
-  'Morytania' = 'Morytania',
-  'Varrock' = 'Varrock',
-  'Western Provinces' = 'Western Provinces',
-  'Wilderness' = 'Wilderness',
-}
-
-export const diaryLocationValues = [
+export const diaryLocationSchema = z.enum([
   'Ardougne',
   'Desert',
   'Falador',
@@ -255,15 +242,19 @@ export const diaryLocationValues = [
   'Varrock',
   'Western Provinces',
   'Wilderness',
-] as const;
+]);
 
-export enum DiaryTier {
-  None = 'None',
-  Easy = 'Easy',
-  Medium = 'Medium',
-  Hard = 'Hard',
-  Elite = 'Elite',
-}
+export type DiaryLocation = z.infer<typeof diaryLocationSchema>;
+
+export const diaryTierSchema = z.enum([
+  'None',
+  'Easy',
+  'Medium',
+  'Hard',
+  'Elite',
+]);
+
+export type DiaryTier = z.infer<typeof diaryTierSchema>;
 
 export const diaryTierValues = [
   'None',

@@ -1,4 +1,4 @@
-import { DiaryLocation, DiaryTier } from '@/types/osrs';
+import { DiaryLocation, DiaryTier, diaryTierSchema } from '@/types/osrs';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { DiaryTierData, WikiSyncResponse } from '@/types/wiki';
 
@@ -8,10 +8,10 @@ export function parseAchievementDiaries(
   return Object.entries(diaries).reduce<AchievementDiaryMap>(
     (acc, [diaryLocation, diaryTiers]) => {
       const orderedTiers = [
-        [DiaryTier.Easy, diaryTiers.Easy],
-        [DiaryTier.Medium, diaryTiers.Medium],
-        [DiaryTier.Hard, diaryTiers.Hard],
-        [DiaryTier.Elite, diaryTiers.Elite],
+        [diaryTierSchema.enum.Easy, diaryTiers.Easy],
+        [diaryTierSchema.enum.Medium, diaryTiers.Medium],
+        [diaryTierSchema.enum.Hard, diaryTiers.Hard],
+        [diaryTierSchema.enum.Elite, diaryTiers.Elite],
       ] satisfies [DiaryTier, DiaryTierData][];
 
       orderedTiers.forEach(([tierName, tierData]) => {
@@ -25,18 +25,18 @@ export function parseAchievementDiaries(
       return acc;
     },
     {
-      Ardougne: DiaryTier.None,
-      Desert: DiaryTier.None,
-      Falador: DiaryTier.None,
-      Fremennik: DiaryTier.None,
-      Kandarin: DiaryTier.None,
-      Karamja: DiaryTier.None,
-      'Kourend & Kebos': DiaryTier.None,
-      'Lumbridge & Draynor': DiaryTier.None,
-      Morytania: DiaryTier.None,
-      Varrock: DiaryTier.None,
-      'Western Provinces': DiaryTier.None,
-      Wilderness: DiaryTier.None,
+      Ardougne: diaryTierSchema.enum.None,
+      Desert: diaryTierSchema.enum.None,
+      Falador: diaryTierSchema.enum.None,
+      Fremennik: diaryTierSchema.enum.None,
+      Kandarin: diaryTierSchema.enum.None,
+      Karamja: diaryTierSchema.enum.None,
+      'Kourend & Kebos': diaryTierSchema.enum.None,
+      'Lumbridge & Draynor': diaryTierSchema.enum.None,
+      Morytania: diaryTierSchema.enum.None,
+      Varrock: diaryTierSchema.enum.None,
+      'Western Provinces': diaryTierSchema.enum.None,
+      Wilderness: diaryTierSchema.enum.None,
     } satisfies AchievementDiaryMap,
   );
 }
