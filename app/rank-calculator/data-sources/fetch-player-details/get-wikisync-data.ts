@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { isWikiSyncError, WikiSyncError, WikiSyncResponse } from '@/types/wiki';
+import { WikiSyncResponse } from '@/types/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getWikiSyncData(player: string) {
@@ -13,10 +13,8 @@ export async function getWikiSyncData(player: string) {
         },
       },
     );
-    const wikiSyncData: WikiSyncResponse | WikiSyncError =
-      await wikiSyncResponse.json();
 
-    return isWikiSyncError(wikiSyncData) ? null : wikiSyncData;
+    return WikiSyncResponse.parse(await wikiSyncResponse.json());
   } catch (error) {
     Sentry.captureException(error);
 

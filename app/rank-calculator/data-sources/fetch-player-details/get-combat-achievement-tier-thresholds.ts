@@ -1,5 +1,6 @@
 import { constants } from '@/config/constants';
 import { CombatAchievementTier } from '@/types/osrs';
+import { CombatAchievementTierThresholdResponse } from '@/types/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getCombatAchievementTierThresholds(): Promise<Record<
@@ -28,8 +29,9 @@ export async function getCombatAchievementTierThresholds(): Promise<Record<
       `${constants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
     );
 
-    const data: { expandtemplates: { wikitext: string } } =
-      await response.json();
+    const data = CombatAchievementTierThresholdResponse.parse(
+      await response.json(),
+    );
 
     const [
       easyPoints,

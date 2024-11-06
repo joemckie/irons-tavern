@@ -1254,9 +1254,7 @@ export const itemList: ItemCategoryMap = {
             ? Object.entries(musicTracks)
                 .filter(
                   ([track]) =>
-                    !Object.values(HolidayTrack).includes(
-                      track as HolidayTrack,
-                    ),
+                    !HolidayTrack.options.includes(track as HolidayTrack),
                 )
                 .every(([, unlocked]) => unlocked)
             : false;

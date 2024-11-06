@@ -26,8 +26,9 @@ export async function getCaIdMap() {
       `${constants.wiki.baseUrl}/api.php?${params}`,
     );
 
-    const data: CombatAchievementListResponse =
-      await allCombatAchievementsResponse.json();
+    const data = CombatAchievementListResponse.parse(
+      await allCombatAchievementsResponse.json(),
+    );
 
     return Object.values(data.query.results).reduce<Record<string, number>>(
       (acc, val) => {
@@ -38,8 +39,8 @@ export async function getCaIdMap() {
           return acc;
         }
 
-        const { id, tier }: CombatAchievementJson = JSON.parse(
-          combatAchievementJson,
+        const { id, tier } = CombatAchievementJson.parse(
+          JSON.parse(combatAchievementJson),
         );
 
         return {

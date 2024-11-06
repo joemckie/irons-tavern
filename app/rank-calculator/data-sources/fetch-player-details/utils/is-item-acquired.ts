@@ -44,7 +44,7 @@ export function isItemAcquired(
 
   if (quests && isQuestItem(item)) {
     return item.requiredQuests.every(
-      (quest) => quests[quest] === QuestStatus.Completed,
+      (quest) => quests[quest] === QuestStatus.enum.Completed,
     );
   }
 
