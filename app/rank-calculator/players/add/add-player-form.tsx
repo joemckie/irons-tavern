@@ -14,7 +14,7 @@ import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { DatePicker } from '../../components/date-picker';
 import { PlayerNameInput } from './components/player-name-input';
-import { addPlayerSchema } from './actions/add-player-validation';
+import { AddPlayerSchema } from './actions/add-player-validation';
 import { addPlayerAction } from './actions/add-player-action';
 import { fetchPlayerJoinDateAction } from './actions/fetch-player-join-date-action';
 
@@ -27,7 +27,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
   const {
     action: { isExecuting, execute },
     form,
-  } = useHookFormAction(addPlayerAction, zodResolver(addPlayerSchema), {
+  } = useHookFormAction(addPlayerAction, zodResolver(AddPlayerSchema), {
     actionProps: {
       onError({ error }) {
         if (error.serverError) {

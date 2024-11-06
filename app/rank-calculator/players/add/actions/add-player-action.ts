@@ -8,7 +8,7 @@ import { returnValidationErrors } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
 import { fetchPlayerMeta } from '../../../data-sources/fetch-player-meta';
 import { fetchTemplePlayerStats } from '../../../data-sources/temple-osrs';
-import { addPlayerSchema } from './add-player-validation';
+import { AddPlayerSchema } from './add-player-validation';
 
 async function assertUniquePlayerRecord(userId: string, playerName: string) {
   if (!userId) {
@@ -33,7 +33,7 @@ export const addPlayerAction = authActionClient
   .metadata({
     actionName: 'add-player-to-account',
   })
-  .schema(addPlayerSchema)
+  .schema(AddPlayerSchema)
   .action(
     async ({ parsedInput: { joinDate, playerName }, ctx: { userId } }) => {
       const isUsernameUnique = await assertUniquePlayerRecord(
@@ -42,7 +42,7 @@ export const addPlayerAction = authActionClient
       );
 
       if (!isUsernameUnique) {
-        returnValidationErrors(addPlayerSchema, {
+        returnValidationErrors(AddPlayerSchema, {
           playerName: {
             _errors: ['You have already registered this account'],
           },

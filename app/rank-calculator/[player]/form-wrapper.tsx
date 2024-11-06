@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
-import { submitRankCalculatorSchema } from './submit-rank-calculator-validation';
+import { SubmitRankCalculatorSchema } from './submit-rank-calculator-validation';
 
 interface FormWrapperProps {
   formData: Omit<FormData, 'rank' | 'points'>;
@@ -16,7 +16,7 @@ interface FormWrapperProps {
 export function FormWrapper({ formData }: FormWrapperProps) {
   const { handleSubmitWithAction, form } = useHookFormAction(
     submitRankCalculatorAction,
-    zodResolver(submitRankCalculatorSchema),
+    zodResolver(SubmitRankCalculatorSchema),
     {
       actionProps: {
         onSuccess() {

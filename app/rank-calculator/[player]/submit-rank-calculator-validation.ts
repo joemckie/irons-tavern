@@ -9,7 +9,7 @@ import {
 import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/types/rank-calculator';
 
-export const submitRankCalculatorSchema = zfd.formData({
+export const SubmitRankCalculatorSchema = zfd.formData({
   acquiredItems: z.record(z.boolean().optional()),
   achievementDiaries: z.record(DiaryLocation, DiaryTier),
   joinDate: z.date(),

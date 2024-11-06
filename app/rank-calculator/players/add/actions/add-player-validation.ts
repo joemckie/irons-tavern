@@ -13,7 +13,7 @@ async function validatePlayerExists(playerName: string) {
   }
 }
 
-export const addPlayerSchema = zfd.formData({
+export const AddPlayerSchema = zfd.formData({
   playerName: z
     .string()
     .max(12)
