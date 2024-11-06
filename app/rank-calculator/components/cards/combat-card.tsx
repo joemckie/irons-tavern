@@ -1,6 +1,6 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import { combatAchievementTierSchema } from '@/types/osrs';
 import Image from 'next/image';
+import { CombatAchievementTier } from '@/types/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -76,7 +76,7 @@ export function CombatCard() {
             aria-label="Combat achievement tier value"
             name="combatAchievementTier"
             placeholder="Choose a tier"
-            options={combatAchievementTierSchema.options}
+            options={CombatAchievementTier.options}
           />
         }
         right={

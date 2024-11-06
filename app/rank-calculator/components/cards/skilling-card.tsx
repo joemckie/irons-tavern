@@ -1,7 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import {
-  diaryLocationSchema,
-  diaryTierSchema,
+  DiaryLocation,
+  DiaryTier,
   maximumTotalLevel,
   minimumTotalLevel,
 } from '@/types/osrs';
@@ -93,7 +93,7 @@ export function SkillingCard() {
           </Text>
         }
       />
-      {diaryLocationSchema.options.map((location) => (
+      {DiaryLocation.options.map((location) => (
         <DataCard.Row
           key={location}
           left={
@@ -106,7 +106,7 @@ export function SkillingCard() {
               aria-label={`${location} diary value`}
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
-              options={diaryTierSchema.options}
+              options={DiaryTier.options}
             />
           }
           right={

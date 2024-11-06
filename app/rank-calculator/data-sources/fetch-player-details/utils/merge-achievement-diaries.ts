@@ -1,4 +1,4 @@
-import { DiaryTier, diaryTierSchema } from '@/types/osrs';
+import { DiaryTier } from '@/types/osrs';
 import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { mergeWith } from 'lodash';
 
@@ -16,8 +16,8 @@ export function mergeAchievementDiaries(
     previousSubmission,
     (playerDetailsVal: DiaryTier, previousSubmissionVal: DiaryTier) => {
       if (
-        diaryTierSchema.options.indexOf(playerDetailsVal) >
-        diaryTierSchema.options.indexOf(previousSubmissionVal)
+        DiaryTier.options.indexOf(playerDetailsVal) >
+        DiaryTier.options.indexOf(previousSubmissionVal)
       ) {
         return playerDetailsVal;
       }

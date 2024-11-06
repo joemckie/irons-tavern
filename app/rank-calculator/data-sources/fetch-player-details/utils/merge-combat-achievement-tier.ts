@@ -1,7 +1,4 @@
-import {
-  CombatAchievementTier,
-  combatAchievementTierSchema,
-} from '@/types/osrs';
+import { CombatAchievementTier } from '@/types/osrs';
 
 export function mergeCombatAchievementTier(
   playerDetailsTier: CombatAchievementTier | null,
@@ -15,7 +12,7 @@ export function mergeCombatAchievementTier(
     return previousSubmissionTier;
   }
 
-  const combatAchievementTiers = combatAchievementTierSchema.options;
+  const combatAchievementTiers = CombatAchievementTier.options;
   const playerDetailsTierIndex =
     (playerDetailsTier && combatAchievementTiers.indexOf(playerDetailsTier)) ??
     0;

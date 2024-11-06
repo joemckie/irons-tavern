@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
-export const rankStructureSchema = z.enum([
+export const RankStructure = z.enum([
   'Standard',
   'Bingo Winner',
   'Legacy',
@@ -11,6 +11,8 @@ export const rankStructureSchema = z.enum([
   'Deputy Owner',
   'Owner',
 ]);
+
+export type RankStructure = z.infer<typeof RankStructure>;
 
 export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier>;
 
@@ -25,7 +27,7 @@ export interface PlayerData {
   ehb: number | null;
   totalLevel: number | null;
   playerName: string | null;
-  rankStructure: z.infer<typeof rankStructureSchema> | null;
+  rankStructure: RankStructure | null;
 }
 
 export interface FormData {
@@ -39,7 +41,7 @@ export interface FormData {
   ehp: number;
   totalLevel: number;
   playerName: string;
-  rankStructure: z.infer<typeof rankStructureSchema>;
+  rankStructure: RankStructure;
   rank: string;
   points: number;
 }
@@ -50,7 +52,7 @@ export interface CommonPointCalculatorData {
   pointsRemaining: number;
 }
 
-export const achievementDiaryTierPoints: Record<DiaryTier, number> = {
+export const achievementDiaryTierPoints = {
   get None() {
     return this.Elite * 0;
   },
@@ -63,5 +65,7 @@ export const achievementDiaryTierPoints: Record<DiaryTier, number> = {
   get Hard() {
     return this.Elite * 0.6;
   },
-  Elite: 1000,
-};
+  get Elite() {
+    return 1000;
+  },
+} satisfies Record<DiaryTier, number>;

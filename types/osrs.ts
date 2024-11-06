@@ -229,7 +229,7 @@ export enum MiniQuest {
   'Skippy and the Mogres' = 'Skippy and the Mogres',
 }
 
-export const diaryLocationSchema = z.enum([
+export const DiaryLocation = z.enum([
   'Ardougne',
   'Desert',
   'Falador',
@@ -244,27 +244,13 @@ export const diaryLocationSchema = z.enum([
   'Wilderness',
 ]);
 
-export type DiaryLocation = z.infer<typeof diaryLocationSchema>;
+export type DiaryLocation = z.infer<typeof DiaryLocation>;
 
-export const diaryTierSchema = z.enum([
-  'None',
-  'Easy',
-  'Medium',
-  'Hard',
-  'Elite',
-]);
+export const DiaryTier = z.enum(['None', 'Easy', 'Medium', 'Hard', 'Elite']);
 
-export type DiaryTier = z.infer<typeof diaryTierSchema>;
+export type DiaryTier = z.infer<typeof DiaryTier>;
 
-export const diaryTierValues = [
-  'None',
-  'Easy',
-  'Medium',
-  'Hard',
-  'Elite',
-] as const;
-
-export const combatAchievementTierSchema = z.enum([
+export const CombatAchievementTier = z.enum([
   'None',
   'Easy',
   'Medium',
@@ -274,7 +260,7 @@ export const combatAchievementTierSchema = z.enum([
   'Grandmaster',
 ]);
 
-export type CombatAchievementTier = z.infer<typeof combatAchievementTierSchema>;
+export type CombatAchievementTier = z.infer<typeof CombatAchievementTier>;
 
 export const combatAchievementTierPoints = {
   Easy: 1,

@@ -1,5 +1,4 @@
-import { z } from 'zod';
-import { rankStructureSchema } from '@/types/rank-calculator';
+import { RankStructure } from '@/types/rank-calculator';
 import { Rank } from './enums';
 
 export const rankNames: Partial<Record<Rank, string>> = {
@@ -23,7 +22,7 @@ export const rankNames: Partial<Record<Rank, string>> = {
 };
 
 export const rankThresholds: Record<
-  z.infer<typeof rankStructureSchema>,
+  RankStructure,
   Partial<Record<Rank, number>>
 > = {
   Standard: {

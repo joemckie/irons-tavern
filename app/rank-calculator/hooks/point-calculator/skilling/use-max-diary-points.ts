@@ -1,6 +1,6 @@
-import { diaryLocationSchema } from '@/types/osrs';
+import { DiaryLocation } from '@/types/osrs';
 import { achievementDiaryTierPoints } from '@/types/rank-calculator';
 
 export function useMaxDiaryPoints() {
-  return diaryLocationSchema.options.length * achievementDiaryTierPoints.Elite;
+  return DiaryLocation.options.length * achievementDiaryTierPoints.Elite;
 }

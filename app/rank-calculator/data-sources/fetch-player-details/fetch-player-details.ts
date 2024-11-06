@@ -3,11 +3,7 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import {
-  FormData,
-  PlayerData,
-  rankStructureSchema,
-} from '@/types/rank-calculator';
+import { FormData, PlayerData } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
@@ -38,7 +34,7 @@ const emptyResponse = {
   ehp: null,
   totalLevel: null,
   playerName: null,
-  rankStructure: rankStructureSchema.enum.Standard,
+  rankStructure: 'Standard',
 } satisfies PlayerData;
 
 export async function fetchPlayerDetails(
@@ -190,9 +186,7 @@ export async function fetchPlayerDetails(
         collectionLogTotal: collectionLogTotal ?? 0,
         joinDate,
         playerName: rsn,
-        rankStructure:
-          previousSubmission?.rankStructure ??
-          rankStructureSchema.enum.Standard,
+        rankStructure: previousSubmission?.rankStructure ?? 'Standard',
       },
     };
   } catch (error) {
