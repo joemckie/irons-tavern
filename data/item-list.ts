@@ -9,7 +9,7 @@ import {
   QuestItem,
   RequiredItem,
 } from '@/types/items';
-import { DiaryTier, MiniQuest, Quest, Skill } from '@/types/osrs';
+import { MiniQuest, Quest, Skill } from '@/types/osrs';
 import { HolidayTrack } from '@/types/wiki';
 
 type SingleItemOptions = Omit<
@@ -137,7 +137,7 @@ export const itemList: ItemCategoryMap = {
         isAcquired({ achievementDiaries }) {
           return achievementDiaries
             ? Object.values(achievementDiaries).every(
-                (tier) => tier === DiaryTier.Elite,
+                (tier) => tier === 'Elite',
               )
             : false;
         },

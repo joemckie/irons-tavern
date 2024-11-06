@@ -2,7 +2,10 @@ import { constants } from '@/config/constants';
 import { CombatAchievementTier } from '@/types/osrs';
 import * as Sentry from '@sentry/nextjs';
 
-export async function getCombatAchievementTierThresholds() {
+export async function getCombatAchievementTierThresholds(): Promise<Record<
+  Exclude<CombatAchievementTier, 'None'>,
+  number
+> | null> {
   const query = [
     '{{Globals|ca easy points}}',
     '{{Globals|ca medium points}}',
@@ -38,12 +41,12 @@ export async function getCombatAchievementTierThresholds() {
     ] = data.expandtemplates.wikitext.split('|');
 
     return {
-      [CombatAchievementTier.Easy]: Number(easyPoints),
-      [CombatAchievementTier.Medium]: Number(mediumPoints),
-      [CombatAchievementTier.Hard]: Number(hardPoints),
-      [CombatAchievementTier.Elite]: Number(elitePoints),
-      [CombatAchievementTier.Master]: Number(masterPoints),
-      [CombatAchievementTier.Grandmaster]: Number(gmPoints),
+      Easy: Number(easyPoints),
+      Medium: Number(mediumPoints),
+      Hard: Number(hardPoints),
+      Elite: Number(elitePoints),
+      Master: Number(masterPoints),
+      Grandmaster: Number(gmPoints),
     };
   } catch (error) {
     Sentry.captureException(error);

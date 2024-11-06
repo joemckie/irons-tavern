@@ -1,5 +1,4 @@
 import { FormData, rankStructureSchema } from '@/types/rank-calculator';
-import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 
 export const getPlayerDetails = async (player: string) => {
@@ -20,25 +19,24 @@ export const getPlayerDetails = async (player: string) => {
   return {
     acquiredItems,
     achievementDiaries: data.achievementDiaries ?? {
-      'Kourend & Kebos': DiaryTier.None,
-      'Lumbridge & Draynor': DiaryTier.None,
-      'Western Provinces': DiaryTier.None,
-      Ardougne: DiaryTier.None,
-      Desert: DiaryTier.None,
-      Falador: DiaryTier.None,
-      Fremennik: DiaryTier.None,
-      Kandarin: DiaryTier.None,
-      Karamja: DiaryTier.None,
-      Morytania: DiaryTier.None,
-      Varrock: DiaryTier.None,
-      Wilderness: DiaryTier.None,
+      'Kourend & Kebos': 'None',
+      'Lumbridge & Draynor': 'None',
+      'Western Provinces': 'None',
+      Ardougne: 'None',
+      Desert: 'None',
+      Falador: 'None',
+      Fremennik: 'None',
+      Kandarin: 'None',
+      Karamja: 'None',
+      Morytania: 'None',
+      Varrock: 'None',
+      Wilderness: 'None',
     },
     joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
     collectionLogCount: data.collectionLogCount ?? 0,
     collectionLogTotal: data.collectionLogTotal ?? 0,
     playerName: data.playerName ?? player,
-    combatAchievementTier:
-      data.combatAchievementTier ?? CombatAchievementTier.None,
+    combatAchievementTier: data.combatAchievementTier ?? 'None',
     ehb: data.ehb ?? 0,
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,

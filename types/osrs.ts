@@ -264,17 +264,7 @@ export const diaryTierValues = [
   'Elite',
 ] as const;
 
-export enum CombatAchievementTier {
-  None = 'None',
-  Easy = 'Easy',
-  Medium = 'Medium',
-  Hard = 'Hard',
-  Elite = 'Elite',
-  Master = 'Master',
-  Grandmaster = 'Grandmaster',
-}
-
-export const combatAchievementTierValues = [
+export const combatAchievementTierSchema = z.enum([
   'None',
   'Easy',
   'Medium',
@@ -282,15 +272,17 @@ export const combatAchievementTierValues = [
   'Elite',
   'Master',
   'Grandmaster',
-] as const;
+]);
+
+export type CombatAchievementTier = z.infer<typeof combatAchievementTierSchema>;
 
 export const combatAchievementTierPoints = {
-  [CombatAchievementTier.Easy]: 1,
-  [CombatAchievementTier.Medium]: 2,
-  [CombatAchievementTier.Hard]: 3,
-  [CombatAchievementTier.Elite]: 4,
-  [CombatAchievementTier.Master]: 5,
-  [CombatAchievementTier.Grandmaster]: 6,
+  Easy: 1,
+  Medium: 2,
+  Hard: 3,
+  Elite: 4,
+  Master: 5,
+  Grandmaster: 6,
 } satisfies Record<Exclude<CombatAchievementTier, 'None'>, number>;
 
 export const maximumSkillLevel = 99;
