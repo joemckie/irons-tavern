@@ -1,5 +1,5 @@
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
-import { FormData, RankStructure } from '@/types/rank-calculator';
+import { FormData, rankStructureSchema } from '@/types/rank-calculator';
 
 export const earlyGamePlayer = {
   acquiredItems: {
@@ -31,7 +31,7 @@ export const earlyGamePlayer = {
   ehb: 1,
   ehp: 368,
   totalLevel: 1588,
-  rankStructure: RankStructure.Standard,
+  rankStructure: rankStructureSchema.enum.Standard,
 } satisfies Omit<FormData, 'rank' | 'points'>;
 
 export const midGamePlayer = {
@@ -158,7 +158,7 @@ export const midGamePlayer = {
   ehb: 524,
   ehp: 1144,
   totalLevel: 2174,
-  rankStructure: RankStructure.Standard,
+  rankStructure: rankStructureSchema.enum.Standard,
 } satisfies Omit<FormData, 'rank' | 'points'>;
 
 export const endGamePlayer = {
@@ -400,5 +400,5 @@ export const endGamePlayer = {
   ehb: 2602,
   ehp: 2776,
   totalLevel: 2277,
-  rankStructure: RankStructure.Standard,
+  rankStructure: rankStructureSchema.enum.Standard,
 } satisfies Omit<FormData, 'rank' | 'points'>;

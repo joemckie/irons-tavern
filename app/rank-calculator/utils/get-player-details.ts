@@ -1,4 +1,4 @@
-import { FormData, RankStructure } from '@/types/rank-calculator';
+import { FormData, rankStructureSchema } from '@/types/rank-calculator';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 
@@ -42,6 +42,6 @@ export const getPlayerDetails = async (player: string) => {
     ehb: data.ehb ?? 0,
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,
-    rankStructure: data.rankStructure ?? RankStructure.Standard,
+    rankStructure: data.rankStructure ?? rankStructureSchema.enum.Standard,
   } satisfies Omit<FormData, 'rank' | 'points'>;
 };

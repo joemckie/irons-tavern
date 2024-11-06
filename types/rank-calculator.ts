@@ -1,17 +1,6 @@
 import { z } from 'zod';
 import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
 
-export enum RankStructure {
-  Standard = 'Standard',
-  BingoWinner = 'Bingo Winner',
-  Legacy = 'Legacy',
-  Inviter = 'Inviter',
-  Admin = 'Admin',
-  Moderator = 'Moderator',
-  DeputyOwner = 'Deputy Owner',
-  Owner = 'Owner',
-}
-
 export const rankStructureSchema = z.enum([
   'Standard',
   'Bingo Winner',
@@ -36,7 +25,7 @@ export interface PlayerData {
   ehb: number | null;
   totalLevel: number | null;
   playerName: string | null;
-  rankStructure: RankStructure | null;
+  rankStructure: z.infer<typeof rankStructureSchema> | null;
 }
 
 export interface FormData {
@@ -50,7 +39,7 @@ export interface FormData {
   ehp: number;
   totalLevel: number;
   playerName: string;
-  rankStructure: RankStructure;
+  rankStructure: z.infer<typeof rankStructureSchema>;
   rank: string;
   points: number;
 }

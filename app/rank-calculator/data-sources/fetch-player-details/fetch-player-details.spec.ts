@@ -9,7 +9,7 @@ import {
   AchievementDiaryMap,
   FormData,
   PlayerData,
-  RankStructure,
+  rankStructureSchema,
 } from '@/types/rank-calculator';
 import { merge, set } from 'lodash';
 import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
@@ -637,20 +637,20 @@ it('returns the rank structure from the previous submission if found', async () 
         Omit<FormData, 'rank' | 'points'>,
         DeepPartial<Omit<FormData, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
-        rankStructure: RankStructure.Admin,
+        rankStructure: rankStructureSchema.Enum.Admin,
       }),
     }),
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.rankStructure).toEqual(RankStructure.Admin);
+  expect(result.data.rankStructure).toEqual(rankStructureSchema.Enum.Admin);
 });
 
 it('returns the default rank structure if no previous submission is found', async () => {
   const { player } = setup();
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.rankStructure).toEqual(RankStructure.Standard);
+  expect(result.data.rankStructure).toEqual(rankStructureSchema.Enum.Standard);
 });
 
 it('returns an empty response if no third party data is found', async () => {
@@ -667,7 +667,7 @@ it('returns an empty response if no third party data is found', async () => {
     ehp: null,
     totalLevel: null,
     playerName: null,
-    rankStructure: RankStructure.Standard,
+    rankStructure: rankStructureSchema.enum.Standard,
   } satisfies PlayerData;
 
   expect(result).toMatchObject<ApiSuccess<PlayerData>>({
