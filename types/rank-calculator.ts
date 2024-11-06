@@ -14,7 +14,9 @@ export const RankStructure = z.enum([
 
 export type RankStructure = z.infer<typeof RankStructure>;
 
-export type AchievementDiaryMap = Record<DiaryLocation, DiaryTier>;
+export const AchievementDiaryMap = z.record(DiaryLocation, DiaryTier);
+
+export type AchievementDiaryMap = z.infer<typeof AchievementDiaryMap>;
 
 export interface PlayerData {
   acquiredItems: string[] | null;

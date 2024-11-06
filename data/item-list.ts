@@ -9,7 +9,7 @@ import {
   QuestItem,
   RequiredItem,
 } from '@/types/items';
-import { MiniQuest, Quest, Skill } from '@/types/osrs';
+import { Quest } from '@/types/osrs';
 import { HolidayTrack } from '@/types/wiki';
 
 type SingleItemOptions = Omit<
@@ -397,7 +397,7 @@ export const itemList: ItemCategoryMap = {
           'Ballista limbs',
         ],
         requiredLevels: {
-          [Skill.Fletching]: 72,
+          Fletching: 72,
         },
       }),
       ...Array.from({ length: 4 }).map<Item>((_, i) =>
@@ -457,8 +457,8 @@ export const itemList: ItemCategoryMap = {
           'Warrior ring',
         ],
         requiredLevels: {
-          [Skill.Magic]: 85,
-          [Skill.Crafting]: 75,
+          Magic: 85,
+          Crafting: 75,
         },
       }),
       compoundItem({
@@ -466,8 +466,8 @@ export const itemList: ItemCategoryMap = {
         points: 100,
         requiredItems: ['Magus vestige', ['Chromium ingot', 3], 'Seers ring'],
         requiredLevels: {
-          [Skill.Magic]: 85,
-          [Skill.Crafting]: 75,
+          Magic: 85,
+          Crafting: 75,
         },
       }),
       compoundItem({
@@ -479,8 +479,8 @@ export const itemList: ItemCategoryMap = {
           'Berserker ring',
         ],
         requiredLevels: {
-          [Skill.Magic]: 85,
-          [Skill.Crafting]: 75,
+          Magic: 85,
+          Crafting: 75,
         },
       }),
       compoundItem({
@@ -492,8 +492,8 @@ export const itemList: ItemCategoryMap = {
           'Archers ring',
         ],
         requiredLevels: {
-          [Skill.Magic]: 85,
-          [Skill.Crafting]: 75,
+          Magic: 85,
+          Crafting: 75,
         },
       }),
       compoundItem({
@@ -506,7 +506,7 @@ export const itemList: ItemCategoryMap = {
           'Eye of the duke',
         ],
         requiredLevels: {
-          [Skill.Magic]: 75,
+          Magic: 75,
         },
       }),
       combatAchievementItem({
@@ -791,7 +791,7 @@ export const itemList: ItemCategoryMap = {
         clogName: 'Tanzanite fang',
         points: 80,
         requiredLevels: {
-          [Skill.Fletching]: 73,
+          Fletching: 73,
         },
       }),
       singleItem({
@@ -1039,7 +1039,7 @@ export const itemList: ItemCategoryMap = {
       questItem({
         name: 'Mage Arena 2 cape',
         points: 20,
-        requiredQuests: [MiniQuest['Mage Arena II']],
+        requiredQuests: ['Mage Arena II'],
       }),
       compoundItem({
         name: 'Odium ward',
@@ -1086,7 +1086,7 @@ export const itemList: ItemCategoryMap = {
         points: 100,
         requiredItems: [['Ancient crystal', 4]],
         requiredLevels: {
-          [Skill.Construction]: 72,
+          Construction: 72,
         },
       }),
       singleItem({
@@ -1207,12 +1207,12 @@ export const itemList: ItemCategoryMap = {
       questItem({
         name: 'Barrows gloves',
         points: 20,
-        requiredQuests: [Quest['Recipe for Disaster']],
+        requiredQuests: ['Recipe for Disaster'],
       }),
       questItem({
         name: 'Book of the dead',
         points: 10,
-        requiredQuests: [Quest['A Kingdom Divided']],
+        requiredQuests: ['A Kingdom Divided'],
       }),
       singleItem({
         name: 'Bottomless compost bucket',
@@ -1265,7 +1265,7 @@ export const itemList: ItemCategoryMap = {
       questItem({
         name: 'Quest cape',
         points: 80,
-        requiredQuests: Object.values(Quest) as NonEmptyArray<Quest>,
+        requiredQuests: Quest.options,
       }),
       singleItem({
         name: 'Ranger boots',
@@ -1295,7 +1295,7 @@ export const itemList: ItemCategoryMap = {
         clogName: 'Broken zombie axe',
         points: 20,
         requiredLevels: {
-          [Skill.Smithing]: 65,
+          Smithing: 65,
         },
       }),
     ],

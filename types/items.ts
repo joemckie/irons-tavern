@@ -1,71 +1,92 @@
+import { z } from 'zod';
 import { CollectionLogItemMap } from './collection-log';
-import { MiniQuest, Quest } from './osrs';
+import { MiniQuest, Quest, Skill } from './osrs';
 import { AchievementDiaryMap } from './rank-calculator';
 import { LevelMap } from './wiki';
 
-export interface RequiredItem {
-  clogName: string;
-  amount: number;
-}
+export const BaseItem = z.object({
+  image: z.string(),
+  name: z.string(),
+  points: z.number(),
+});
 
-export interface BaseItem {
-  image: string;
-  name: string;
-  points: number;
-}
+export type BaseItem = z.infer<typeof BaseItem>;
 
-export interface CollectionLogItem extends BaseItem {
-  requiredLevels?: AtLeastOne<LevelMap>;
-  requiredItems: NonEmptyArray<RequiredItem>;
-}
+export const RequiredItem = z.object({
+  clogName: z.string(),
+  amount: z.number(),
+});
 
-export interface CombatAchievementItem extends BaseItem {
-  requiredCombatAchievements: NonEmptyArray<number>;
-}
+export type RequiredItem = z.infer<typeof RequiredItem>;
 
-export interface QuestItem extends BaseItem {
-  requiredQuests: NonEmptyArray<Quest | MiniQuest>;
-}
+export const CollectionLogItem = BaseItem.extend({
+  requiredLevels: z.record(Skill, z.number()).optional(),
+  requiredItems: z.array(RequiredItem).nonempty(),
+}).superRefine((item) => item.requiredItems !== undefined);
 
-export interface CustomItem extends BaseItem {
-  isAcquired: (playerData: {
-    achievementDiaries: AchievementDiaryMap | null;
-    collectionLogItems: CollectionLogItemMap | null;
-    levels: LevelMap | null;
-    musicTracks: Record<string, boolean> | null;
-  }) => boolean;
-}
+export type CollectionLogItem = z.infer<typeof CollectionLogItem>;
 
-export type Item =
-  | BaseItem
-  | CollectionLogItem
-  | CombatAchievementItem
-  | QuestItem
-  | CustomItem;
+export const CombatAchievementItem = BaseItem.extend({
+  requiredCombatAchievements: z.array(z.number()).nonempty(),
+});
 
-export interface ItemCategory {
-  image?: string;
-  items: NonEmptyArray<Item>;
-}
+export type CombatAchievementItem = z.infer<typeof CombatAchievementItem>;
 
-export type ItemCategoryMap = Record<string, ItemCategory>;
+export const QuestItem = BaseItem.extend({
+  requiredQuests: z.array(z.union([Quest, MiniQuest])).nonempty(),
+});
+
+export type QuestItem = z.infer<typeof QuestItem>;
+
+export const CustomItem = BaseItem.extend({
+  isAcquired: z
+    .function()
+    .args(
+      z.object({
+        achievementDiaries: AchievementDiaryMap.nullable(),
+        collectionLogItems: CollectionLogItemMap.nullable(),
+        levels: LevelMap.nullable(),
+        musicTracks: z.record(z.string(), z.boolean()).nullable(),
+      }),
+    )
+    .returns(z.boolean()),
+});
+
+export type CustomItem = z.infer<typeof CustomItem>;
+
+export const Item = z.union([
+  BaseItem,
+  CollectionLogItem,
+  CombatAchievementItem,
+  QuestItem,
+  CustomItem,
+]);
+
+export type Item = z.infer<typeof Item>;
+
+export const ItemCategory = z.object({
+  image: z.string().optional(),
+  items: z.array(Item).nonempty(),
+});
+
+export const ItemCategoryMap = z.record(z.string(), ItemCategory);
+
+export type ItemCategoryMap = z.infer<typeof ItemCategoryMap>;
 
 export function isCollectionLogItem(item: Item): item is CollectionLogItem {
-  return (item as CollectionLogItem).requiredItems !== undefined;
+  return CollectionLogItem.safeParse(item).success;
 }
 
 export function isCombatAchievementItem(
   item: Item,
 ): item is CombatAchievementItem {
-  return (
-    (item as CombatAchievementItem).requiredCombatAchievements !== undefined
-  );
+  return CombatAchievementItem.safeParse(item).success;
 }
 
 export function isQuestItem(item: Item): item is QuestItem {
-  return (item as QuestItem).requiredQuests !== undefined;
+  return QuestItem.safeParse(item).success;
 }
 
 export function isCustomItem(item: Item): item is CustomItem {
-  return (item as CustomItem).isAcquired !== undefined;
+  return CustomItem.safeParse(item).success;
 }

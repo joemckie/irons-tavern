@@ -30,28 +30,21 @@ export function isItemAcquired(
     combatAchievements,
   }: IsItemAcquiredData,
 ) {
-  if (isCollectionLogItem(item)) {
-    return (
-      collectionLogItems &&
-      item.requiredItems.every(
-        ({ amount, clogName }) =>
-          (collectionLogItems?.[clogName] ?? 0) >= amount,
-      )
+  if (collectionLogItems && isCollectionLogItem(item)) {
+    return item.requiredItems.every(
+      ({ amount, clogName }) => (collectionLogItems?.[clogName] ?? 0) >= amount,
     );
   }
 
-  if (isCombatAchievementItem(item)) {
+  if (combatAchievements && isCombatAchievementItem(item)) {
     return item.requiredCombatAchievements.every((id) =>
-      Boolean(combatAchievements?.includes(id)),
+      Boolean(combatAchievements.includes(id)),
     );
   }
 
-  if (isQuestItem(item)) {
-    return (
-      quests &&
-      item.requiredQuests.every(
-        (quest) => quests[quest] === QuestStatus.Completed,
-      )
+  if (quests && isQuestItem(item)) {
+    return item.requiredQuests.every(
+      (quest) => quests[quest] === QuestStatus.Completed,
     );
   }
 

@@ -11,7 +11,6 @@ import {
   PlayerData,
 } from '@/types/rank-calculator';
 import { merge, set } from 'lodash';
-import { CombatAchievementTier, DiaryTier } from '@/types/osrs';
 import { WikiSyncResponse } from '@/types/wiki';
 import { CollectionLogResponse } from '@/types/collection-log';
 import * as formData from '@/mocks/misc/form-data';
@@ -161,8 +160,8 @@ it('returns the highest achievement diary values from the previous submission an
         DeepPartial<Omit<FormData, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
         achievementDiaries: {
-          'Kourend & Kebos': DiaryTier.Medium,
-          'Lumbridge & Draynor': DiaryTier.Elite,
+          'Kourend & Kebos': 'Medium',
+          'Lumbridge & Draynor': 'Elite',
         },
       }),
     }),
@@ -202,8 +201,8 @@ it('returns the highest achievement diary values from the previous submission an
   expect(result.data.achievementDiaries).toMatchObject<
     Partial<AchievementDiaryMap>
   >({
-    'Kourend & Kebos': DiaryTier.Elite,
-    'Lumbridge & Draynor': DiaryTier.Elite,
+    'Kourend & Kebos': 'Elite',
+    'Lumbridge & Draynor': 'Elite',
   });
 });
 
@@ -279,7 +278,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
         Omit<FormData, 'rank' | 'points'>,
         DeepPartial<Omit<FormData, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
-        combatAchievementTier: CombatAchievementTier.Grandmaster,
+        combatAchievementTier: 'Grandmaster',
       }),
     }),
     http.get(
@@ -305,9 +304,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.combatAchievementTier).toEqual(
-    CombatAchievementTier.Grandmaster,
-  );
+  expect(result.data.combatAchievementTier).toEqual('Grandmaster');
 });
 
 it('returns the combat achievement tier from the previous submission if it is higher than the API data', async () => {
@@ -320,7 +317,7 @@ it('returns the combat achievement tier from the previous submission if it is hi
         Omit<FormData, 'rank' | 'points'>,
         DeepPartial<Omit<FormData, 'rank' | 'points'>>
       >({}, formData.midGamePlayer, {
-        combatAchievementTier: CombatAchievementTier.Hard,
+        combatAchievementTier: 'Hard',
       }),
     }),
     http.get(
@@ -334,7 +331,7 @@ it('returns the combat achievement tier from the previous submission if it is hi
   );
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
 
-  expect(result.data.combatAchievementTier).toEqual(CombatAchievementTier.Hard);
+  expect(result.data.combatAchievementTier).toEqual('Hard');
 });
 
 it('returns the collection log count from the previous submission if it is higher than the API data', async () => {

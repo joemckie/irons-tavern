@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface CollectionLogItem {
   id: number;
   name: string;
@@ -38,7 +40,9 @@ export interface CollectionLogResponse {
   };
 }
 
-export type CollectionLogItemMap = Record<string, number>;
+export const CollectionLogItemMap = z.record(z.string(), z.number());
+
+export type CollectionLogItemMap = z.infer<typeof CollectionLogItemMap>;
 
 export function isCollectionLogError(
   collectionLogResponse: CollectionLogResponse | CollectionLogError,

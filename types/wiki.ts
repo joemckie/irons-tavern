@@ -1,7 +1,9 @@
+import { z } from 'zod';
 import {
   CombatAchievementTier,
   DiaryLocation,
   DiaryTier,
+  maximumSkillLevel,
   MiniQuest,
   Quest,
   Skill,
@@ -18,7 +20,12 @@ export enum QuestStatus {
   Completed,
 }
 
-export type LevelMap = Record<Skill, number>;
+export const LevelMap = z.record(
+  Skill,
+  z.number().min(1).max(maximumSkillLevel),
+);
+
+export type LevelMap = z.infer<typeof LevelMap>;
 
 export enum HolidayTrack {
   "Bunny's Sugar Rush" = "Bunny's Sugar Rush",
