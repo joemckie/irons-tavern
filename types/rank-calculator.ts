@@ -30,6 +30,7 @@ export interface PlayerData {
   totalLevel: number | null;
   playerName: string | null;
   rankStructure: RankStructure | null;
+  proofLink: string | null;
 }
 
 export interface CommonPointCalculatorData {

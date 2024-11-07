@@ -33,7 +33,7 @@ beforeEach(() => {
   };
 });
 
-fit('saves the submission to the database', async () => {
+it('saves the submission to the database', async () => {
   const result = await submitRankCalculatorAction(
     serialize({
       ...formData.midGamePlayer,

@@ -658,6 +658,7 @@ it('returns an empty response if no third party data is found', async () => {
     totalLevel: null,
     playerName: null,
     rankStructure: 'Standard',
+    proofLink: null,
   } satisfies PlayerData;
 
   expect(result).toMatchObject<ApiSuccess<PlayerData>>({
@@ -956,4 +957,47 @@ it('returns no combat achievement tier if there is a network error when requesti
 
   expect(result.success).toBe(true);
   expect(result.data.combatAchievementTier).toBeNull();
+});
+
+it('returns the proof link from the previous submission if found', async () => {
+  const { player } = setup();
+
+  server.use(
+    generateRedisMock(player, {
+      previousSubmission: merge<
+        unknown,
+        Omit<RankCalculatorSchema, 'rank' | 'points'>,
+        DeepPartial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
+      >({}, formData.midGamePlayer, {
+        proofLink: 'https://google.com',
+      }),
+    }),
+  );
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+
+  expect(result.data.proofLink).toEqual('https://google.com');
+});
+
+it('returns the collection log link if no previous submission is found and collection log data is available', async () => {
+  const { player } = setup();
+
+  server.use(
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      () => HttpResponse.json(collectionLog.midGamePlayerFixture),
+    ),
+  );
+
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+
+  expect(result.data.proofLink).toEqual(
+    `https://collectionlog.net/log/${player}`,
+  );
+});
+
+it('returns no proof link if no previous submission is found and no collection log data is available', async () => {
+  const { player } = setup();
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+
+  expect(result.data.proofLink).toBeNull();
 });

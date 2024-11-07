@@ -36,6 +36,7 @@ const emptyResponse = {
   totalLevel: null,
   playerName: null,
   rankStructure: 'Standard',
+  proofLink: null,
 } satisfies PlayerData;
 
 export async function fetchPlayerDetails(
@@ -153,6 +154,10 @@ export async function fetchPlayerDetails(
         )
       : [];
 
+    const proofLink =
+      previousSubmission?.proofLink ??
+      (collectionLogData ? `https://collectionlog.net/log/${player}` : null);
+
     return {
       success: true,
       error: null,
@@ -188,6 +193,7 @@ export async function fetchPlayerDetails(
         joinDate,
         playerName: rsn,
         rankStructure: previousSubmission?.rankStructure ?? 'Standard',
+        proofLink,
       },
     };
   } catch (error) {

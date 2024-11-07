@@ -23,6 +23,7 @@ export const RankCalculatorSchema = zfd.formData({
   rankStructure: RankStructure,
   rank: z.string(),
   points: z.coerce.number().nonnegative(),
+  proofLink: z.union([z.string().url().nullish(), z.literal('')]),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

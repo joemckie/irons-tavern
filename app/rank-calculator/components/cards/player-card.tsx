@@ -1,12 +1,14 @@
 import { Separator, Text } from '@radix-ui/themes';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DataCard } from '../data-card';
 import { useCalculatorScaling } from '../../hooks/point-calculator/use-calculator-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { Input } from '../input';
 
 export function PlayerCard() {
+  const { register } = useFormContext<RankCalculatorSchema>();
   const playerName = useWatch<RankCalculatorSchema, 'playerName'>({
     name: 'playerName',
   });
@@ -44,6 +46,19 @@ export function PlayerCard() {
         right={
           <Text aria-label="Point scaling" size="2" color="gray">
             {formatPercentage(scaling)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Proof Link
+          </Text>
+        }
+        center={<Input {...register('proofLink')} size="1" hasError={false} />}
+        right={
+          <Text size="2" color="gray">
+            Test
           </Text>
         }
       />

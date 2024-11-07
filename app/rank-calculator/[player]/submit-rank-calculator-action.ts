@@ -27,6 +27,8 @@ export const submitRankCalculatorAction = authActionClient
       const submissionId = randomUUID();
       const submissionTransaction = redis.multi();
 
+      // TODO: Remove "false" items from acquiredItems list, or convert to array.
+      // Each submission is ~20kb
       submissionTransaction.json.set(
         rankSubmissionKey(submissionId),
         '$',

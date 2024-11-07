@@ -1,4 +1,4 @@
-import { Box, Flex, ScrollArea, Separator } from '@radix-ui/themes';
+import { Box, Flex, ScrollArea } from '@radix-ui/themes';
 import { SkillingCard } from './cards/skilling-card';
 import { usePageHeight } from '../hooks/use-page-height';
 import { PlayerCard } from './cards/player-card';
@@ -23,7 +23,6 @@ export function RightSidebar() {
         <aside>
           <Flex gap="4" direction="column">
             <PlayerCard />
-            <Separator size="4" />
             <SkillingCard />
           </Flex>
         </aside>
