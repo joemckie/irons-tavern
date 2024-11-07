@@ -10,7 +10,9 @@ import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/types/rank-calculator';
 
 export const RankCalculatorSchema = zfd.formData({
-  acquiredItems: z.record(z.coerce.boolean()),
+  acquiredItems: z.record(
+    z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
+  ),
   achievementDiaries: z.record(DiaryLocation, DiaryTier),
   joinDate: z.coerce.date(),
   collectionLogCount: z.coerce.number().nonnegative(),

@@ -42,6 +42,7 @@ it('saves the submission to the database', async () => {
     }),
   );
 
+  expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeUndefined();
   expect(result?.data).toMatchObject({
     success: true,
@@ -64,6 +65,7 @@ it('returns an error if the save was not successful', async () => {
     }),
   );
 
+  expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeDefined();
   expect(result?.data).toBeUndefined();
 });
@@ -107,6 +109,7 @@ it('returns an error if a network error occurs whilst sending the discord messag
     }),
   );
 
+  expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeDefined();
   expect(result?.data).toBeUndefined();
 }, 15000);

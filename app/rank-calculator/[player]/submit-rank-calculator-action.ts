@@ -7,7 +7,6 @@ import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-mes
 import { constants } from '@/config/constants';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
-
 import { authActionClient } from '@/app/safe-action';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
@@ -27,8 +26,6 @@ export const submitRankCalculatorAction = authActionClient
       const submissionId = randomUUID();
       const submissionTransaction = redis.multi();
 
-      // TODO: Remove "false" items from acquiredItems list, or convert to array.
-      // Each submission is ~20kb
       submissionTransaction.json.set(
         rankSubmissionKey(submissionId),
         '$',

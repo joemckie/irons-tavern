@@ -41,5 +41,6 @@ export const getPlayerDetails = async (player: string) => {
     ehp: data.ehp ?? 0,
     totalLevel: data.totalLevel ?? 0,
     rankStructure: data.rankStructure ?? 'Standard',
+    proofLink: data.proofLink,
   } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 };
