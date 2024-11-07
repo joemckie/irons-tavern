@@ -1,5 +1,5 @@
 import { useWatch } from 'react-hook-form';
-import { maximumSkillLevel, maximumTotalLevel } from '@/types/osrs';
+import { maximumSkillLevel, maximumTotalLevel } from '@/app/schemas/osrs';
 import { Decimal } from 'decimal.js-light';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useMaxTotalLevelPoints } from './use-max-total-level-points';

@@ -5,9 +5,9 @@ import {
   DiaryLocation,
   DiaryTier,
   skillsCount,
-} from '@/types/osrs';
+} from '@/app/schemas/osrs';
 import { PlayerName } from '@/app/schemas/player';
-import { RankStructure } from '@/types/rank-calculator';
+import { RankStructure } from '@/app/schemas/rank-calculator';
 
 export const RankCalculatorSchema = zfd.formData({
   acquiredItems: z.record(

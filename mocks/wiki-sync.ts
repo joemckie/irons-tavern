@@ -1,4 +1,4 @@
-import { WikiSyncError, WikiSyncResponse } from '@/types/wiki';
+import { WikiSyncError, WikiSyncResponse } from '@/app/schemas/wiki';
 
 export const emptyResponseFixture = {
   code: 'NO_USER_DATA',

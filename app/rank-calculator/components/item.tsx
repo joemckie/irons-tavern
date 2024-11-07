@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Flex, Table, Text } from '@radix-ui/themes';
-import { Item } from '@/types/items';
+import { Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';

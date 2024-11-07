@@ -3,7 +3,7 @@ import * as formDataMocks from '@/mocks/misc/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-tests';
 import { skillingExpectedValues } from '@/fixtures/rank-calculator/skilling-expected-values';
-import { DiaryLocation } from '@/types/osrs';
+import { DiaryLocation } from '@/app/schemas/osrs';
 import { SkillingCard } from './skilling-card';
 import { formatPercentage } from '../../utils/format-percentage';
 import { formatNumber } from '../../utils/format-number';

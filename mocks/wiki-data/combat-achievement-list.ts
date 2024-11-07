@@ -1,4 +1,4 @@
-import { CombatAchievementListResponse } from '@/types/wiki';
+import { CombatAchievementListResponse } from '@/app/schemas/wiki';
 
 export const combatAchievementListFixture = {
   query: {

@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
 import { useWatch } from 'react-hook-form';
-import { Item } from '@/types/items';
+import { Item } from '@/app/schemas/items';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
 import { stripEntityName } from '../utils/strip-entity-name';

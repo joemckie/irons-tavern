@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { useEhbPoints } from './use-ehb-points';
 import { useMaxCombatAchievementPoints } from './use-max-combat-points';
 import { useCombatAchievementTierPoints } from './use-combat-achievement-points';

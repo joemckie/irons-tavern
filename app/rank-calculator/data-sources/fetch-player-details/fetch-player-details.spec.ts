@@ -5,17 +5,17 @@
 import { server } from '@/mocks/server';
 import { http, HttpResponse, PathParams } from 'msw';
 import { constants } from '@/config/constants';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
 import { merge, set } from 'lodash';
-import { WikiSyncResponse } from '@/types/wiki';
-import { CollectionLogResponse } from '@/types/collection-log';
+import { WikiSyncResponse } from '@/app/schemas/wiki';
+import { CollectionLogResponse } from '@/app/schemas/collection-log';
 import * as formData from '@/mocks/misc/form-data';
 import * as wikiSync from '@/mocks/wiki-sync';
 import * as collectionLog from '@/mocks/collection-log';
 import * as templePlayerStats from '@/mocks/temple-player-stats';
 import { ApiSuccess } from '@/types/api';
 import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
-import { GameMode, TempleOSRSPlayerStats } from '@/types/temple-api';
+import { GameMode, TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
 import * as auth from '@/auth';
 import { mockUUID } from '@/test-utils/mock-uuid';
 import {
@@ -24,7 +24,7 @@ import {
   userRankSubmissionsKey,
 } from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
-import { Player } from '@/types/player';
+import { Player } from '@/app/schemas/player';
 import { emptyResponse, fetchPlayerDetails } from './fetch-player-details';
 import { ClanMember } from '../../../api/update-member-list/route';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';

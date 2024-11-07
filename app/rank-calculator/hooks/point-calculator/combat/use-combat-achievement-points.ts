@@ -1,4 +1,4 @@
-import { CombatAchievementTier } from '@/types/osrs';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useMaxCombatAchievementPoints } from './use-max-combat-points';

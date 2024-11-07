@@ -1,6 +1,6 @@
-import { DiaryLocation, DiaryTier } from '@/types/osrs';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
-import { DiaryTierData, WikiSyncResponse } from '@/types/wiki';
+import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
+import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
+import { DiaryTierData, WikiSyncResponse } from '@/app/schemas/wiki';
 
 export function parseAchievementDiaries(
   diaries: WikiSyncResponse['achievement_diaries'],

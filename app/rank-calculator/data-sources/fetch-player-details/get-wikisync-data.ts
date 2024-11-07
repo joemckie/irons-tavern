@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { WikiSyncResponse } from '@/types/wiki';
+import { WikiSyncResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getWikiSyncData(player: string) {

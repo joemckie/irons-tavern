@@ -8,9 +8,9 @@ import {
   ItemCategoryMap,
   QuestItem,
   RequiredItem,
-} from '@/types/items';
-import { Quest } from '@/types/osrs';
-import { HolidayTrack } from '@/types/wiki';
+} from '@/app/schemas/items';
+import { Quest } from '@/app/schemas/osrs';
+import { HolidayTrack } from '@/app/schemas/wiki';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,

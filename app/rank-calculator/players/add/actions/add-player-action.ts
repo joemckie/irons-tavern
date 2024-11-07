@@ -3,9 +3,9 @@
 import { userOSRSAccountsKey } from '@/config/redis';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
-import { Player } from '@/types/player';
 import { returnValidationErrors } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
+import { Player } from '@/app/schemas/player';
 import { fetchPlayerMeta } from '../../../data-sources/fetch-player-meta';
 import { fetchTemplePlayerStats } from '../../../data-sources/temple-osrs';
 import { AddPlayerSchema } from './add-player-validation';

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Box, Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import { RankStructure } from '@/types/rank-calculator';
+import { RankStructure } from '@/app/schemas/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';

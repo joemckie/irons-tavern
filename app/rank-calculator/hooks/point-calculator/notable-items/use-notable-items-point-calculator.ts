@@ -1,5 +1,5 @@
 import { useWatch } from 'react-hook-form';
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import Decimal from 'decimal.js-light';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useGetItems } from '../../use-get-items';

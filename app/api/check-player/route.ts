@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { constants } from '@/config/constants';
-import { PlayerInfoResponse } from '@/types/temple-api';
+import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 
 export const dynamic = 'force-dynamic';

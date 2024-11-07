@@ -3,7 +3,7 @@ import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
 import { constants } from '@/config/constants';
-import { GroupMemberInfoResponse } from '@/types/temple-api';
+import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
 

@@ -1,4 +1,7 @@
-import { PlayerStatsError, TempleOSRSPlayerStats } from '@/types/temple-api';
+import {
+  PlayerStatsError,
+  TempleOSRSPlayerStats,
+} from '@/app/schemas/temple-api';
 
 export const emptyResponseFixture = {
   error: {

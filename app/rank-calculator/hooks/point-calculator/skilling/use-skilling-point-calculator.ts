@@ -1,5 +1,5 @@
-import { DiaryLocation } from '@/types/osrs';
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { DiaryLocation } from '@/app/schemas/osrs';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { useAchievementDiaryPoints } from './use-achievement-diary-points';
 import { useEhpPoints } from './use-ehp-points';
 import { useTotalLevelPoints } from './use-total-level-points';

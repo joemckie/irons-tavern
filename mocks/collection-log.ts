@@ -1,7 +1,7 @@
 import {
   CollectionLogError,
   CollectionLogResponse,
-} from '@/types/collection-log';
+} from '@/app/schemas/collection-log';
 
 export const emptyResponseFixture = {
   error: 'Unable to find collection log for user ___',

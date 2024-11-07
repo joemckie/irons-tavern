@@ -1,5 +1,5 @@
-import { DiaryTier } from '@/types/osrs';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
+import { DiaryTier } from '@/app/schemas/osrs';
+import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
 import { mergeWith } from 'lodash';
 
 export function mergeAchievementDiaries(

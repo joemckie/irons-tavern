@@ -1,4 +1,4 @@
-import { WikiSyncResponse } from '@/types/wiki';
+import { WikiSyncResponse } from '@/app/schemas/wiki';
 
 export function parseLevels({
   Overall,

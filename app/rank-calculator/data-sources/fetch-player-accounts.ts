@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { userOSRSAccountsKey } from '@/config/redis';
 import { redis } from '@/redis';
-import { Player } from '@/types/player';
+import { Player } from '@/app/schemas/player';
 
 export async function fetchPlayerAccounts() {
   const session = await auth();

@@ -1,4 +1,4 @@
-import { RankStructure } from '@/types/rank-calculator';
+import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from './enums';
 
 export const rankNames: Partial<Record<Rank, string>> = {

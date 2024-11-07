@@ -2,7 +2,7 @@ import { get } from 'get-wild';
 import {
   CollectionLogItemMap,
   CollectionLogItem,
-} from '@/types/collection-log';
+} from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
 import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
@@ -10,8 +10,8 @@ import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/data-sources/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/auth';
-import { Player } from '@/types/player';
 import { redis } from '@/redis';
+import { Player } from '@/app/schemas/player';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { getCollectionLog } from './get-collection-log';

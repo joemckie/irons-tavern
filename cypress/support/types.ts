@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 
 export type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
   | 'fullScaling'

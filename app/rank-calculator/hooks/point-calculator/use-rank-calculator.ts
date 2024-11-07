@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { rankThresholds } from '@/config/ranks';
 import { useWatch } from 'react-hook-form';
 import { useCollectionLogPointCalculator } from './collection-log/use-collection-log-point-calculator';

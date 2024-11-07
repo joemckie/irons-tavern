@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { generateScalingTests } from './generate-scaling-tests';
 

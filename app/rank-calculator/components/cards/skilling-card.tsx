@@ -4,7 +4,7 @@ import {
   DiaryTier,
   maximumTotalLevel,
   minimumTotalLevel,
-} from '@/types/osrs';
+} from '@/app/schemas/osrs';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';

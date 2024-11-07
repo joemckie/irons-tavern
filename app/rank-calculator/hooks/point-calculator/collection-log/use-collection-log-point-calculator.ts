@@ -1,4 +1,4 @@
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { useMaxCollectionLogPoints } from './use-max-collection-log-points';
 import { useCollectionLogSlotPoints } from './use-collection-log-slot-points';
 

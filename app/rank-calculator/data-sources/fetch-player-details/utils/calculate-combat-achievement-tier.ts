@@ -1,4 +1,4 @@
-import { CombatAchievementTier } from '@/types/osrs';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
 import { getCaIdMap } from '../get-combat-achievement-id-map';
 import { getCombatAchievementTierThresholds } from '../get-combat-achievement-tier-thresholds';
 

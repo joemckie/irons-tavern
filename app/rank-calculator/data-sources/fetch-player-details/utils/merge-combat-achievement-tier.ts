@@ -1,4 +1,4 @@
-import { CombatAchievementTier } from '@/types/osrs';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
 
 export function mergeCombatAchievementTier(
   playerDetailsTier: CombatAchievementTier | null,

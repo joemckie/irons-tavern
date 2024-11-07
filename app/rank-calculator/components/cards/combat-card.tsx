@@ -1,6 +1,6 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { CombatAchievementTier } from '@/types/osrs';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';

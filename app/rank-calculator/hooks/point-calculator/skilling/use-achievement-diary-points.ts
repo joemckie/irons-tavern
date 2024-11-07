@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
-import { DiaryLocation, DiaryTier } from '@/types/osrs';
-import { achievementDiaryTierPoints } from '@/types/rank-calculator';
+import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
+import { achievementDiaryTierPoints } from '@/app/schemas/rank-calculator';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 

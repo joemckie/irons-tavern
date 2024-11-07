@@ -1,5 +1,5 @@
 import { constants } from '@/config/constants';
-import { CollectionLogResponse } from '@/types/collection-log';
+import { CollectionLogResponse } from '@/app/schemas/collection-log';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getCollectionLog(player: string) {

@@ -1,9 +1,9 @@
 import { constants } from '@/config/constants';
-import { combatAchievementTierPoints } from '@/types/osrs';
+import { combatAchievementTierPoints } from '@/app/schemas/osrs';
 import {
   CombatAchievementJson,
   CombatAchievementListResponse,
-} from '@/types/wiki';
+} from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getCaIdMap() {

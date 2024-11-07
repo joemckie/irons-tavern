@@ -1,6 +1,6 @@
 import { constants } from '@/config/constants';
-import { CombatAchievementTier } from '@/types/osrs';
-import { CombatAchievementTierThresholdResponse } from '@/types/wiki';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
+import { CombatAchievementTierThresholdResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getCombatAchievementTierThresholds(): Promise<Record<

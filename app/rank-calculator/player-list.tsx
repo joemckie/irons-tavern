@@ -1,6 +1,6 @@
 'use client';
 
-import { Player } from '@/types/player';
+import { Player } from '@/app/schemas/player';
 import { useOptimisticAction } from 'next-safe-action/hooks';
 import {
   Box,

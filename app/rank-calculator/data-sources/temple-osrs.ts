@@ -1,7 +1,7 @@
 'use server';
 
 import { constants } from '@/config/constants';
-import { TempleOSRSPlayerStats } from '@/types/temple-api';
+import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 
 export async function fetchTemplePlayerStats(player: string, bosses: boolean) {

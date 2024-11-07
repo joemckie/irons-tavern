@@ -1,14 +1,14 @@
-import { CollectionLogItemMap } from '@/types/collection-log';
+import { CollectionLogItemMap } from '@/app/schemas/collection-log';
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
   isCustomItem,
   isQuestItem,
   Item,
-} from '@/types/items';
-import { MiniQuest, Quest } from '@/types/osrs';
-import { AchievementDiaryMap } from '@/types/rank-calculator';
-import { LevelMap, QuestStatus } from '@/types/wiki';
+} from '@/app/schemas/items';
+import { MiniQuest, Quest } from '@/app/schemas/osrs';
+import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
+import { LevelMap, QuestStatus } from '@/app/schemas/wiki';
 
 interface IsItemAcquiredData {
   collectionLogItems: CollectionLogItemMap | null;
