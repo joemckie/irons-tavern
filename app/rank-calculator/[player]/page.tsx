@@ -1,5 +1,5 @@
+import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 import { FormWrapper } from './form-wrapper';
-import { getPlayerDetails } from '../utils/get-player-details';
 
 interface Params {
   player: string;
@@ -11,7 +11,11 @@ export default async function RankCalculatorPage({
   params: Promise<Params>;
 }) {
   const { player } = await params;
-  const playerDetails = await getPlayerDetails(decodeURIComponent(player));
+  const playerDetails = await fetchPlayerDetails(decodeURIComponent(player));
 
-  return <FormWrapper formData={playerDetails} />;
+  if (!playerDetails.success) {
+    return <p>An error occurred</p>;
+  }
+
+  return <FormWrapper formData={playerDetails.data} />;
 }

@@ -3,7 +3,6 @@ import {
   CollectionLogItemMap,
   CollectionLogItem,
 } from '@/types/collection-log';
-import { PlayerData } from '@/types/rank-calculator';
 import { itemList } from '@/data/item-list';
 import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
@@ -24,24 +23,37 @@ import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
-const emptyResponse = {
-  achievementDiaries: null,
-  acquiredItems: null,
-  joinDate: null,
-  collectionLogCount: null,
-  collectionLogTotal: null,
-  combatAchievementTier: null,
-  ehb: null,
-  ehp: null,
-  totalLevel: null,
-  playerName: null,
+export const emptyResponse = {
+  achievementDiaries: {
+    'Kourend & Kebos': 'None',
+    'Lumbridge & Draynor': 'None',
+    'Western Provinces': 'None',
+    Ardougne: 'None',
+    Desert: 'None',
+    Falador: 'None',
+    Fremennik: 'None',
+    Kandarin: 'None',
+    Karamja: 'None',
+    Morytania: 'None',
+    Varrock: 'None',
+    Wilderness: 'None',
+  },
+  acquiredItems: {},
+  joinDate: new Date(),
+  collectionLogCount: 0,
+  collectionLogTotal: 0,
+  combatAchievementTier: 'None',
+  ehb: 0,
+  ehp: 0,
+  totalLevel: 0,
+  playerName: '',
   rankStructure: 'Standard',
   proofLink: null,
-} satisfies PlayerData;
+} satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 
 export async function fetchPlayerDetails(
   player: string,
-): Promise<ApiResponse<PlayerData>> {
+): Promise<ApiResponse<Omit<RankCalculatorSchema, 'rank' | 'points'>>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -158,21 +170,28 @@ export async function fetchPlayerDetails(
       previousSubmission?.proofLink ??
       (collectionLogData ? `https://collectionlog.net/log/${player}` : null);
 
+    const acquiredItemsMap = [
+      ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
+    ].reduce<Record<string, boolean>>(
+      (acc, val) => ({ ...acc, [val]: true }),
+      {},
+    );
+
     return {
       success: true,
       error: null,
       data: {
-        achievementDiaries: mergeAchievementDiaries(
-          achievementDiaries,
-          previousSubmission?.achievementDiaries ?? null,
-        ),
-        acquiredItems: [
-          ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
-        ],
-        combatAchievementTier: mergeCombatAchievementTier(
-          combatAchievementTier,
-          previousSubmission?.combatAchievementTier ?? null,
-        ),
+        achievementDiaries:
+          mergeAchievementDiaries(
+            achievementDiaries,
+            previousSubmission?.achievementDiaries ?? null,
+          ) ?? emptyResponse.achievementDiaries,
+        acquiredItems: acquiredItemsMap,
+        combatAchievementTier:
+          mergeCombatAchievementTier(
+            combatAchievementTier,
+            previousSubmission?.combatAchievementTier ?? null,
+          ) ?? 'None',
         collectionLogCount: Math.max(
           collectionLogCount ?? 0,
           previousSubmission?.collectionLogCount ?? 0,
@@ -180,15 +199,15 @@ export async function fetchPlayerDetails(
         ehb:
           ehb || previousSubmission?.ehb
             ? Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0))
-            : null,
+            : 0,
         ehp:
           ehp || previousSubmission?.ehp
             ? Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0))
-            : null,
+            : 0,
         totalLevel:
           totalLevel || previousSubmission?.totalLevel
             ? Math.max(totalLevel ?? 0, previousSubmission?.totalLevel ?? 0)
-            : null,
+            : 0,
         collectionLogTotal: collectionLogTotal ?? 0,
         joinDate,
         playerName: rsn,

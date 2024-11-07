@@ -5,7 +5,7 @@
 import { server } from '@/mocks/server';
 import { http, HttpResponse, PathParams } from 'msw';
 import { constants } from '@/config/constants';
-import { AchievementDiaryMap, PlayerData } from '@/types/rank-calculator';
+import { AchievementDiaryMap } from '@/types/rank-calculator';
 import { merge, set } from 'lodash';
 import { WikiSyncResponse } from '@/types/wiki';
 import { CollectionLogResponse } from '@/types/collection-log';
@@ -25,7 +25,7 @@ import {
 } from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/types/player';
-import { fetchPlayerDetails } from './fetch-player-details';
+import { emptyResponse, fetchPlayerDetails } from './fetch-player-details';
 import { ClanMember } from '../../../api/update-member-list/route';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
@@ -135,10 +135,14 @@ it('returns no achievement diaries if there is no WikiSync data and no previous 
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.error).toBeNull();
-  expect(result.data.achievementDiaries).toBeNull();
+  expect(result.data.achievementDiaries).toEqual(
+    emptyResponse.achievementDiaries,
+  );
 });
 
 it('returns the highest achievement diary values from the previous submission and API data', async () => {
@@ -187,7 +191,9 @@ it('returns the highest achievement diary values from the previous submission an
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.error).toBeNull();
   expect(result.data.achievementDiaries).toMatchObject<
@@ -253,13 +259,15 @@ it('merges the acquired items from the previous submission and API data', async 
         }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.data.acquiredItems).toEqual([
-    'Bandos chestplate',
-    'Bandos boots',
-    'Bandos hilt',
-  ]);
+  expect(result.data.acquiredItems).toEqual({
+    'Bandos chestplate': true,
+    'Bandos boots': true,
+    'Bandos hilt': true,
+  });
 });
 
 it('returns the combat achievement tier from the API data if it is higher than the previous submission', async () => {
@@ -296,7 +304,9 @@ it('returns the combat achievement tier from the API data if it is higher than t
         ),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.combatAchievementTier).toEqual('Grandmaster');
 });
@@ -323,7 +333,9 @@ it('returns the combat achievement tier from the previous submission if it is hi
         }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.combatAchievementTier).toEqual('Hard');
 });
@@ -355,7 +367,9 @@ it('returns the collection log count from the previous submission if it is highe
         ),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.collectionLogCount).toEqual(100);
 });
@@ -387,7 +401,9 @@ it('returns the collection log count from the API data if it is higher than the 
         ),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.collectionLogCount).toEqual(1000);
 });
@@ -412,7 +428,9 @@ it('returns the ehb from the API data if it is higher than the previous submissi
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(100);
 });
@@ -437,7 +455,9 @@ it('returns the ehb from the previous submission if it is higher than the API da
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(100);
 });
@@ -462,7 +482,9 @@ it('returns the ehp from the API data if it is higher than the previous submissi
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehp).toEqual(100);
 });
@@ -487,7 +509,9 @@ it('returns the ehp from the previous submission if it is higher than the API da
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehp).toEqual(100);
 });
@@ -512,7 +536,9 @@ it('returns the total level from the API data if it is higher than the previous 
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.totalLevel).toEqual(1000);
 });
@@ -537,7 +563,9 @@ it('returns the total level from the previous submission if it is higher than th
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.totalLevel).toEqual(1000);
 });
@@ -562,7 +590,9 @@ it('returns the collection log total items from the API data', async () => {
         ),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.collectionLogTotal).toEqual(1234);
 });
@@ -582,7 +612,9 @@ it('returns the join date from the account record', async () => {
       >({}, formData.midGamePlayer),
     }),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.joinDate).toEqual(new Date('2020-01-01').toISOString());
 });
@@ -599,7 +631,9 @@ it('returns the player name from the account record', async () => {
       previousSubmission: formData.midGamePlayer,
     }),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.playerName).toEqual('player');
 });
@@ -612,7 +646,9 @@ it('returns the player name from the query parameters if not found in member lis
       previousSubmission: formData.midGamePlayer,
     }),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.playerName).toEqual(player);
 });
@@ -631,37 +667,31 @@ it('returns the rank structure from the previous submission if found', async () 
       }),
     }),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.rankStructure).toEqual('Admin');
 });
 
 it('returns the default rank structure if no previous submission is found', async () => {
   const { player } = setup();
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.rankStructure).toEqual('Standard');
 });
 
 it('returns an empty response if no third party data is found', async () => {
   const { player } = setup();
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
-  const emptyResponse = {
-    achievementDiaries: null,
-    acquiredItems: null,
-    joinDate: null,
-    collectionLogCount: null,
-    collectionLogTotal: null,
-    combatAchievementTier: null,
-    ehb: null,
-    ehp: null,
-    totalLevel: null,
-    playerName: null,
-    rankStructure: 'Standard',
-    proofLink: null,
-  } satisfies PlayerData;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result).toMatchObject<ApiSuccess<PlayerData>>({
+  expect(result).toMatchObject<
+    ApiSuccess<Omit<RankCalculatorSchema, 'rank' | 'points'>>
+  >({
     success: true,
     error: null,
     data: emptyResponse,
@@ -689,7 +719,9 @@ it('returns the correct efficiency values for GIM accounts', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(12);
   expect(result.data.ehp).toEqual(34);
@@ -716,7 +748,9 @@ it('returns the correct efficiency values for UIM accounts', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(90);
@@ -743,7 +777,9 @@ it('returns the correct efficiency values for HCIM accounts', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(78);
@@ -770,7 +806,9 @@ it('returns the correct efficiency values for ironman accounts', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(56);
   expect(result.data.ehp).toEqual(78);
@@ -797,10 +835,12 @@ it('returns no efficiency values for unknown accounts', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.data.ehb).toEqual(null);
-  expect(result.data.ehp).toEqual(null);
+  expect(result.data.ehb).toEqual(0);
+  expect(result.data.ehp).toEqual(0);
 });
 
 it('rounds the ehb value', async () => {
@@ -816,7 +856,9 @@ it('rounds the ehb value', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehb).toEqual(91);
 });
@@ -834,7 +876,9 @@ it('rounds the ehp value', async () => {
       }),
     ),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.ehp).toEqual(13);
 });
@@ -858,12 +902,14 @@ it('handles errors when the player stats API is not available', async () => {
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.success).toBe(true);
-  expect(result.data.ehb).toBe(null);
-  expect(result.data.ehp).toBe(null);
-  expect(result.data.totalLevel).toBe(null);
+  expect(result.success).toEqual(true);
+  expect(result.data.ehb).toEqual(0);
+  expect(result.data.ehp).toEqual(0);
+  expect(result.data.totalLevel).toEqual(0);
 });
 
 it('handles errors when the WikiSync API is not available', async () => {
@@ -885,21 +931,25 @@ it('handles errors when the WikiSync API is not available', async () => {
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.success).toBe(true);
-  expect(result.data).toMatchObject<Partial<PlayerData>>({
+  expect(result.success).toEqual(true);
+  expect(result.data).toMatchObject<
+    Partial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
+  >({
     // Quest items are derived from WikiSync so these should not be present
-    acquiredItems: expect.not.arrayContaining([
-      'Book of the dead',
-      'Barrows gloves',
-    ]),
-    achievementDiaries: null,
-    combatAchievementTier: null,
+    acquiredItems: expect.not.objectContaining({
+      'Book of the dead': true,
+      'Barrows gloves': true,
+    }),
+    achievementDiaries: {},
+    combatAchievementTier: 'None',
   });
   // Regular items are derived from the collection log so these should be present
   expect(result.data.acquiredItems).toEqual(
-    expect.arrayContaining(['Bandos hilt']),
+    expect.objectContaining({ 'Bandos hilt': true }),
   );
 });
 
@@ -922,18 +972,22 @@ it('handles errors when the Collection Log API is not available', async () => {
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.success).toBe(true);
-  expect(result.data).toMatchObject<Partial<PlayerData>>({
+  expect(result.success).toEqual(true);
+  expect(result.data).toMatchObject<
+    Partial<Omit<RankCalculatorSchema, 'rank' | 'points'>>
+  >({
     // Regular items are derived from the collection log so these should not be present
-    acquiredItems: expect.not.arrayContaining(['Bandos hilt']),
+    acquiredItems: expect.not.objectContaining({ 'Bandos hilt': true }),
     collectionLogCount: 0,
     collectionLogTotal: 0,
   });
   // Quest items are derived from WikiSync so these should be present
   expect(result.data.acquiredItems).toEqual(
-    expect.arrayContaining(['Book of the dead']),
+    expect.objectContaining({ 'Book of the dead': true }),
   );
 });
 
@@ -953,10 +1007,12 @@ it('returns no combat achievement tier if there is a network error when requesti
     http.get(`${constants.wiki.baseUrl}/api.php`, () => HttpResponse.error()),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
-  expect(result.success).toBe(true);
-  expect(result.data.combatAchievementTier).toBeNull();
+  expect(result.success).toEqual(true);
+  expect(result.data.combatAchievementTier).toEqual('None');
 });
 
 it('returns the proof link from the previous submission if found', async () => {
@@ -973,7 +1029,9 @@ it('returns the proof link from the previous submission if found', async () => {
       }),
     }),
   );
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.proofLink).toEqual('https://google.com');
 });
@@ -988,7 +1046,9 @@ it('returns the collection log link if no previous submission is found and colle
     ),
   );
 
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.proofLink).toEqual(
     `https://collectionlog.net/log/${player}`,
@@ -997,7 +1057,9 @@ it('returns the collection log link if no previous submission is found and colle
 
 it('returns no proof link if no previous submission is found and no collection log data is available', async () => {
   const { player } = setup();
-  const result = (await fetchPlayerDetails(player)) as ApiSuccess<PlayerData>;
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
 
   expect(result.data.proofLink).toBeNull();
 });
