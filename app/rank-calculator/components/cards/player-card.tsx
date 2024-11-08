@@ -56,11 +56,7 @@ export function PlayerCard() {
           </Text>
         }
         center={<Input {...register('proofLink')} size="1" hasError={false} />}
-        right={
-          <Text size="2" color="gray">
-            Test
-          </Text>
-        }
+        right={<Text size="2" color="gray" />}
       />
     </DataCard.Root>
   );
