@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import { useController } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 interface EditableTextProps extends TextField.RootProps {
   name: string;
@@ -13,15 +13,12 @@ export function EditableText({
   name,
   'aria-label': ariaLabel,
   required,
+  disabled,
   ...restProps
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const { field } = useController({
-    name,
-    rules: {
-      required,
-    },
-  });
+  const { register } = useFormContext();
+  const value = useWatch({ name });
 
   if (isEditing) {
     return (
@@ -30,8 +27,11 @@ export function EditableText({
         aria-label={ariaLabel}
         role="textbox"
         required={required}
+        {...register(name, {
+          required,
+          valueAsNumber: restProps.type === 'number',
+        })}
         {...restProps}
-        {...field}
         autoFocus
       >
         <TextField.Slot side="right">
@@ -50,11 +50,11 @@ export function EditableText({
   return (
     <Flex justify="center" gap="2" width="100%" align="center">
       <Text aria-label={ariaLabel} size="2">
-        {field.value}
+        {value}
       </Text>
-      {!field.disabled && (
+      {!disabled && (
         <IconButton
-          disabled={field.disabled}
+          disabled={disabled}
           onClick={() => setIsEditing(true)}
           size="1"
           variant="ghost"

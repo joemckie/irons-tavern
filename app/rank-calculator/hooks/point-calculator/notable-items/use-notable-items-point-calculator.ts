@@ -1,6 +1,7 @@
 import { useWatch } from 'react-hook-form';
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import Decimal from 'decimal.js-light';
+import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useGetItems } from '../../use-get-items';
 import { useMaxNotableItemsPoints } from './use-max-notable-items-points';
@@ -26,7 +27,7 @@ export function useNotableItemsPointCalculator() {
         (categoryAcc, val) => ({
           categoryItemPointMap: {
             ...categoryAcc.categoryItemPointMap,
-            [val.name.replaceAll("'", '')]: val.points,
+            [stripEntityName(val.name)]: val.points,
           },
         }),
         {

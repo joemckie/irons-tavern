@@ -113,7 +113,7 @@ export async function fetchPlayerDetails(
             item.obtained
               ? {
                   ...acc,
-                  [item.name]: item.quantity,
+                  [stripEntityName(item.name)]: item.quantity,
                 }
               : acc,
           {},
@@ -155,6 +155,7 @@ export async function fetchPlayerDetails(
                 levels,
                 musicTracks,
                 combatAchievements,
+                totalLevel,
               }),
             )
             .map(({ name }) => stripEntityName(name))
@@ -173,7 +174,7 @@ export async function fetchPlayerDetails(
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
     ].reduce<Record<string, boolean>>(
-      (acc, val) => ({ ...acc, [val]: true }),
+      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
       {},
     );
 

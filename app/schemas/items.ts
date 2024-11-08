@@ -8,6 +8,12 @@ export const BaseItem = z.object({
   image: z.string(),
   name: z.string(),
   points: z.number(),
+  /**
+   * Automatic items can be updated by the form as the user fills it in
+   *
+   * e.g. achievement diary cape, max cape
+   * */
+  isAutomatic: z.literal(true).optional(),
 });
 
 export type BaseItem = z.infer<typeof BaseItem>;
@@ -45,8 +51,9 @@ export const CustomItem = BaseItem.extend({
       z.object({
         achievementDiaries: AchievementDiaryMap.nullable(),
         collectionLogItems: CollectionLogItemMap.nullable(),
-        levels: LevelMap.nullable(),
-        musicTracks: z.record(z.string(), z.boolean()).nullable(),
+        levels: LevelMap.nullable().optional(),
+        musicTracks: z.record(z.string(), z.boolean()).nullable().optional(),
+        totalLevel: z.union([z.number(), z.string()]).nullable(),
       }),
     )
     .returns(z.boolean()),

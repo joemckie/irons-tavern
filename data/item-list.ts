@@ -1,4 +1,5 @@
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
+import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import {
   BaseItem,
   CollectionLogItem,
@@ -9,7 +10,7 @@ import {
   QuestItem,
   RequiredItem,
 } from '@/app/schemas/items';
-import { Quest } from '@/app/schemas/osrs';
+import { maximumTotalLevel, Quest } from '@/app/schemas/osrs';
 import { HolidayTrack } from '@/app/schemas/wiki';
 
 type SingleItemOptions = Omit<
@@ -23,6 +24,7 @@ function singleItem({
   clogName,
   image = formatWikiImageUrl(clogName ?? name),
   requiredAmount = 1,
+  isAutomatic,
 }: SingleItemOptions) {
   return {
     image,
@@ -34,6 +36,7 @@ function singleItem({
         clogName: clogName ?? name,
       },
     ],
+    isAutomatic,
   } satisfies CollectionLogItem;
 }
 
@@ -50,6 +53,7 @@ function compoundItem({
   points,
   requiredItems,
   requiredLevels,
+  isAutomatic,
 }: CompoundItemOptions) {
   return {
     image,
@@ -71,6 +75,7 @@ function compoundItem({
       };
     }) as NonEmptyArray<RequiredItem>,
     requiredLevels,
+    isAutomatic,
   } satisfies CollectionLogItem;
 }
 
@@ -79,12 +84,14 @@ function combatAchievementItem({
   image = formatWikiImageUrl(name),
   points,
   requiredCombatAchievements,
+  isAutomatic,
 }: OptionalKeys<CombatAchievementItem, 'image'>) {
   return {
     image,
     name,
     points,
     requiredCombatAchievements,
+    isAutomatic,
   } satisfies CombatAchievementItem;
 }
 
@@ -93,12 +100,14 @@ function questItem({
   image = formatWikiImageUrl(name),
   points,
   requiredQuests,
+  isAutomatic,
 }: OptionalKeys<QuestItem, 'image'>) {
   return {
     image,
     name,
     points,
     requiredQuests,
+    isAutomatic,
   } satisfies QuestItem;
 }
 
@@ -106,11 +115,14 @@ function manualItem({
   name,
   image = formatWikiImageUrl(name),
   points,
+
+  isAutomatic,
 }: OptionalKeys<BaseItem, 'image'>) {
   return {
     image,
     name,
     points,
+    isAutomatic,
   } satisfies BaseItem;
 }
 
@@ -119,12 +131,14 @@ function customItem({
   name,
   image = formatWikiImageUrl(name),
   points,
+  isAutomatic,
 }: OptionalKeys<CustomItem, 'image'>) {
   return {
     image,
     isAcquired,
     name,
     points,
+    isAutomatic,
   } satisfies CustomItem;
 }
 
@@ -141,25 +155,26 @@ export const itemList: ItemCategoryMap = {
               )
             : false;
         },
+        isAutomatic: true,
       }),
       customItem({
         name: 'Max Cape',
         points: 7000,
-        isAcquired({ levels }) {
-          return levels
-            ? Object.values(levels).every((level) => level === 99)
-            : false;
+        isAcquired({ totalLevel }) {
+          return totalLevel === maximumTotalLevel;
         },
+        isAutomatic: true,
       }),
       customItem({
         name: 'Infernal Max Cape',
         points: 2000,
-        isAcquired({ levels, collectionLogItems }) {
-          return levels && collectionLogItems
-            ? Object.values(levels).every((level) => level === 99) &&
-                collectionLogItems['Infernal cape'] > 0
-            : false;
+        isAcquired({ totalLevel, collectionLogItems }) {
+          return Boolean(
+            totalLevel === maximumTotalLevel &&
+              (collectionLogItems?.[stripEntityName('Infernal cape')] ?? 0) > 0,
+          );
         },
+        isAutomatic: true,
       }),
       manualItem({
         name: "Dizana's Max Cape",

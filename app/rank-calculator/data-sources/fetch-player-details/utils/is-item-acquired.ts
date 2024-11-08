@@ -12,11 +12,12 @@ import { LevelMap, QuestStatus } from '@/app/schemas/wiki';
 
 interface IsItemAcquiredData {
   collectionLogItems: CollectionLogItemMap | null;
-  quests: Record<Quest | MiniQuest, QuestStatus> | null;
+  quests?: Record<Quest | MiniQuest, QuestStatus> | null;
   achievementDiaries: AchievementDiaryMap | null;
-  levels: LevelMap | null;
-  musicTracks: Record<string, boolean> | null;
-  combatAchievements: number[] | null;
+  levels?: LevelMap | null;
+  totalLevel: number | null;
+  musicTracks?: Record<string, boolean> | null;
+  combatAchievements?: number[] | null;
 }
 
 export function isItemAcquired(
@@ -26,6 +27,7 @@ export function isItemAcquired(
     quests,
     achievementDiaries,
     levels,
+    totalLevel,
     musicTracks,
     combatAchievements,
   }: IsItemAcquiredData,
@@ -54,6 +56,7 @@ export function isItemAcquired(
       collectionLogItems,
       levels,
       musicTracks,
+      totalLevel,
     });
   }
 

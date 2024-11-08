@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
-import { maximumSkillLevel, maximumTotalLevel } from '@/app/schemas/osrs';
 import { Decimal } from 'decimal.js-light';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
+import { maximumSkillLevel, maximumTotalLevel } from '@/app/schemas/osrs';
 import { useMaxTotalLevelPoints } from './use-max-total-level-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
@@ -15,6 +15,10 @@ export function useTotalLevelPoints() {
   });
 
   const scaling = useCalculatorScaling();
+
+  if (!totalLevel) {
+    return 0;
+  }
 
   const steps = maximumTotalLevel / maximumSkillLevel + 1; // Remove +1 when Sailing is released
 
