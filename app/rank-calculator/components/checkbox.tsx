@@ -2,7 +2,7 @@ import {
   Checkbox as BaseCheckbox,
   CheckboxProps as BaseCheckboxProps,
 } from '@radix-ui/themes';
-import { forwardRef, startTransition, useState } from 'react';
+import { forwardRef, startTransition, useEffect } from 'react';
 import {
   FieldPath,
   FieldValues,
@@ -27,14 +27,12 @@ export const Checkbox = forwardRef<
     },
     name: props.name,
   });
-  const [prevChecked, setPrevChecked] = useState(props.checked);
 
-  if (props.checked !== prevChecked) {
+  useEffect(() => {
     startTransition(() => {
-      setPrevChecked(props.checked);
-      field.onChange(props.checked);
+      setValue(props.name, props.checked);
     });
-  }
+  }, [props.name, props.checked, setValue]);
 
   return (
     <BaseCheckbox
