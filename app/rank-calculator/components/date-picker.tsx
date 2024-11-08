@@ -72,7 +72,7 @@ export function DatePicker({
       {...props}
       {...field}
       selected={field.value}
-      dateFormat="dd-MM-yyyy"
+      dateFormat="dd/MM/yyyy"
       maxDate={new Date()}
       customInput={
         customInput ?? <Input hasError={!!fieldState.error} size={size} />

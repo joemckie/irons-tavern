@@ -14,9 +14,9 @@ import { Input } from '../../components/input';
 import { Label } from '../../components/label';
 import { DatePicker } from '../../components/date-picker';
 import { PlayerNameInput } from './components/player-name-input';
-import { AddPlayerSchema } from './actions/add-player-validation';
 import { addPlayerAction } from './actions/add-player-action';
 import { fetchPlayerJoinDateAction } from './actions/fetch-player-join-date-action';
+import { AddPlayerSchema } from './actions/add-player-schema';
 
 interface AddPlayerFormProps {
   members: string[];
@@ -25,8 +25,9 @@ interface AddPlayerFormProps {
 export function AddPlayerForm({ members }: AddPlayerFormProps) {
   const router = useRouter();
   const {
-    action: { isExecuting, execute },
+    action: { isExecuting },
     form,
+    handleSubmitWithAction,
   } = useHookFormAction(addPlayerAction, zodResolver(AddPlayerSchema), {
     actionProps: {
       onError({ error }) {
@@ -34,7 +35,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
           toast.error('Failed to save player!');
         }
       },
-      async onSuccess({ data }) {
+      onSuccess({ data }) {
         if (data?.playerName) {
           toast.success(`Player saved successfully!`);
 
@@ -69,7 +70,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form action={execute}>
+      <form onSubmit={handleSubmitWithAction}>
         <Flex
           height="100vh"
           align="center"
@@ -97,7 +98,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                   <DatePicker
                     name="joinDate"
                     required
-                    placeholderText="dd-mm-yyyy"
+                    placeholderText="dd/mm/yyyy"
                     size="3"
                     customInput={
                       <Input
