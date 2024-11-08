@@ -7,7 +7,7 @@ import {
 } from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
 import { useController } from 'react-hook-form';
-import { AriaAttributes } from 'react';
+import { AriaAttributes, startTransition } from 'react';
 
 interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
   name: string;
@@ -33,7 +33,14 @@ export function Select({
       : null;
 
   return (
-    <Ariakit.SelectProvider setValue={field.onChange} value={field.value ?? ''}>
+    <Ariakit.SelectProvider
+      setValue={(value) =>
+        startTransition(() => {
+          field.onChange(value);
+        })
+      }
+      value={field.value ?? ''}
+    >
       <Button {...props} asChild variant="ghost" className="rt-SelectTrigger">
         <Ariakit.Select {...field}>
           {field.value}

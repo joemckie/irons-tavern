@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -19,6 +19,10 @@ export function EditableText({
   const [isEditing, setIsEditing] = useState(false);
   const { register } = useFormContext();
   const value = useWatch({ name });
+  const field = register(name, {
+    required,
+    valueAsNumber: restProps.type === 'number',
+  });
 
   if (isEditing) {
     return (
@@ -27,11 +31,13 @@ export function EditableText({
         aria-label={ariaLabel}
         role="textbox"
         required={required}
-        {...register(name, {
-          required,
-          valueAsNumber: restProps.type === 'number',
-        })}
+        {...field}
         {...restProps}
+        onChange={(e) => {
+          startTransition(() => {
+            field.onChange(e);
+          });
+        }}
         autoFocus
       >
         <TextField.Slot side="right">
