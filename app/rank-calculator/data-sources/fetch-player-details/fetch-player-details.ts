@@ -197,18 +197,12 @@ export async function fetchPlayerDetails(
           collectionLogCount ?? 0,
           previousSubmission?.collectionLogCount ?? 0,
         ),
-        ehb:
-          ehb || previousSubmission?.ehb
-            ? Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0))
-            : 0,
-        ehp:
-          ehp || previousSubmission?.ehp
-            ? Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0))
-            : 0,
-        totalLevel:
-          totalLevel || previousSubmission?.totalLevel
-            ? Math.max(totalLevel ?? 0, previousSubmission?.totalLevel ?? 0)
-            : 0,
+        ehb: Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0)),
+        ehp: Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0)),
+        totalLevel: Math.max(
+          totalLevel ?? 0,
+          previousSubmission?.totalLevel ?? 0,
+        ),
         collectionLogTotal: collectionLogTotal ?? 0,
         joinDate,
         playerName: rsn,
