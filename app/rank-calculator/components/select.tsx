@@ -35,7 +35,10 @@ export function Select({
   return (
     <Ariakit.SelectProvider setValue={field.onChange} value={field.value ?? ''}>
       <Button {...props} asChild variant="ghost" className="rt-SelectTrigger">
-        <Ariakit.Select {...field} />
+        <Ariakit.Select {...field}>
+          {field.value}
+          {!field.disabled && <Ariakit.SelectArrow />}
+        </Ariakit.Select>
       </Button>
       <Ariakit.SelectPopover
         gutter={4}
