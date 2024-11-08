@@ -1,6 +1,6 @@
 import { get } from 'get-wild';
 import {
-  CollectionLogItemMap,
+  AcquiredItemMap,
   CollectionLogItem,
 } from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
@@ -108,7 +108,7 @@ export async function fetchPlayerDetails(
       ? get<CollectionLogItem[]>(
           collectionLogData,
           'collectionLog.tabs.*.*.items',
-        ).reduce<CollectionLogItemMap>(
+        ).reduce<AcquiredItemMap>(
           (acc, item) =>
             item.obtained
               ? {
@@ -149,7 +149,7 @@ export async function fetchPlayerDetails(
             .flatMap(({ items }) => items)
             .filter((item) =>
               isItemAcquired(item, {
-                collectionLogItems,
+                acquiredItems: collectionLogItems,
                 quests,
                 achievementDiaries,
                 levels,

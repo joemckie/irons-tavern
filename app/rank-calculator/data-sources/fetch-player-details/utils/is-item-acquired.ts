@@ -1,4 +1,4 @@
-import { CollectionLogItemMap } from '@/app/schemas/collection-log';
+import { AcquiredItemMap } from '@/app/schemas/collection-log';
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
@@ -11,7 +11,7 @@ import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
 import { LevelMap, QuestStatus } from '@/app/schemas/wiki';
 
 interface IsItemAcquiredData {
-  collectionLogItems: CollectionLogItemMap | null;
+  acquiredItems: AcquiredItemMap | null;
   quests?: Record<Quest | MiniQuest, QuestStatus> | null;
   achievementDiaries: AchievementDiaryMap | null;
   levels?: LevelMap | null;
@@ -23,7 +23,7 @@ interface IsItemAcquiredData {
 export function isItemAcquired(
   item: Item,
   {
-    collectionLogItems,
+    acquiredItems,
     quests,
     achievementDiaries,
     levels,
@@ -32,9 +32,9 @@ export function isItemAcquired(
     combatAchievements,
   }: IsItemAcquiredData,
 ) {
-  if (collectionLogItems && isCollectionLogItem(item)) {
+  if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
-      ({ amount, clogName }) => (collectionLogItems?.[clogName] ?? 0) >= amount,
+      ({ amount, clogName }) => acquiredItems?.[clogName] >= amount,
     );
   }
 
@@ -53,7 +53,7 @@ export function isItemAcquired(
   if (isCustomItem(item)) {
     return item.isAcquired({
       achievementDiaries,
-      collectionLogItems,
+      acquiredItems,
       levels,
       musicTracks,
       totalLevel,

@@ -28,7 +28,7 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
   });
   const acquired = isItemAcquired(item, {
     achievementDiaries,
-    collectionLogItems: Object.fromEntries(
+    acquiredItems: Object.fromEntries(
       Object.entries(acquiredItems).map(([key, value]) => [key, Number(value)]),
     ),
     totalLevel,

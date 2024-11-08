@@ -44,6 +44,6 @@ export interface CollectionLogError {
   error: string;
 }
 
-export const CollectionLogItemMap = z.record(z.string(), z.number());
+export const AcquiredItemMap = z.record(z.string(), z.number());
 
-export type CollectionLogItemMap = z.infer<typeof CollectionLogItemMap>;
+export type AcquiredItemMap = z.infer<typeof AcquiredItemMap>;
