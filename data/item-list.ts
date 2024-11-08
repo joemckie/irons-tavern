@@ -168,17 +168,25 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: 'Infernal Max Cape',
         points: 2000,
-        isAcquired({ totalLevel, collectionLogItems }) {
+        isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
             totalLevel === maximumTotalLevel &&
-              (collectionLogItems?.[stripEntityName('Infernal cape')] ?? 0) > 0,
+              (acquiredItems?.[stripEntityName('Infernal cape')] ?? 0) > 0,
           );
         },
         isAutomatic: true,
       }),
-      manualItem({
+      customItem({
         name: "Dizana's Max Cape",
         points: 2000,
+        isAcquired({ totalLevel, acquiredItems }) {
+          return Boolean(
+            totalLevel === maximumTotalLevel &&
+              (acquiredItems?.[stripEntityName("Blessed dizana's quiver")] ??
+                0) > 0,
+          );
+        },
+        isAutomatic: true,
       }),
     ],
   },
