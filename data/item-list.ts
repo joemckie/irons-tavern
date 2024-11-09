@@ -148,6 +148,7 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: 'Achievement Diary Cape',
         points: 1000,
+        image: formatWikiImageUrl('Achievement diary cape (t) detail'),
         isAcquired({ achievementDiaries }) {
           return achievementDiaries
             ? Object.values(achievementDiaries).every(
@@ -160,6 +161,7 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: 'Max Cape',
         points: 7000,
+        image: formatWikiImageUrl('Max cape detail'),
         isAcquired({ totalLevel }) {
           return totalLevel === maximumTotalLevel;
         },
@@ -168,6 +170,7 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: 'Infernal Max Cape',
         points: 2000,
+        image: formatWikiImageUrl('Infernal max cape detail'),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
             totalLevel === maximumTotalLevel &&
@@ -179,6 +182,7 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: "Dizana's Max Cape",
         points: 2000,
+        image: formatWikiImageUrl("Dizana's max cape detail"),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
             totalLevel === maximumTotalLevel &&
@@ -191,6 +195,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Abyssal Sire': {
+    image: formatWikiImageUrl('Abyssal orphan (follower)', 'category'),
     items: [
       compoundItem({
         name: 'Abyssal bludgeon',
@@ -204,6 +209,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Alchemical Hydra': {
+    image: formatWikiImageUrl('Alchemical Hydra (serpentine)', 'category'),
     items: [
       compoundItem({
         name: 'Brimstone ring',
@@ -262,18 +268,22 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Cerberus: {
+    image: formatWikiImageUrl('Hellpuppy detail', 'category'),
     items: [
       singleItem({
         name: 'Primordial crystal',
         points: 60,
+        image: formatWikiImageUrl('Primordial boots'),
       }),
       singleItem({
         name: 'Pegasian crystal',
         points: 40,
+        image: formatWikiImageUrl('Pegasian boots'),
       }),
       singleItem({
         name: 'Eternal crystal',
         points: 30,
+        image: formatWikiImageUrl('Eternal boots'),
       }),
       singleItem({
         name: 'Smouldering stone',
@@ -282,14 +292,17 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Chambers of Xeric': {
+    image: formatWikiImageUrl('Olmlet chathead', 'category'),
     items: [
       singleItem({
         name: 'Dexterous prayer scroll',
         points: 80,
+        image: formatWikiImageUrl('Rigour'),
       }),
       singleItem({
         name: 'Arcane prayer scroll',
         points: 50,
+        image: formatWikiImageUrl('Augury'),
       }),
       singleItem({
         name: 'Twisted buckler',
@@ -389,6 +402,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Dagannoth Kings': {
+    image: formatWikiImageUrl('Dagannoth Prime', 'category'),
     items: [
       singleItem({
         name: 'Archers ring',
@@ -409,6 +423,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Demonic Gorillas': {
+    image: formatWikiImageUrl('Demonic gorilla', 'category'),
     items: [
       compoundItem({
         name: 'Heavy ballista',
@@ -434,6 +449,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Desert Treasure 2': {
+    image: formatWikiImageUrl('Ancient icon detail', 'category'),
     items: [
       singleItem({
         name: "Awakener's orb",
@@ -535,6 +551,7 @@ export const itemList: ItemCategoryMap = {
       combatAchievementItem({
         name: 'Ancient blood ornament kit',
         points: 2000,
+        image: formatWikiImageUrl('Sanguine torva full helm detail'),
         requiredCombatAchievements: [
           490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
           499, // https://oldschool.runescape.wiki/w/Whispered
@@ -545,6 +562,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Fortis Colosseum': {
+    image: formatWikiImageUrl('Smol heredit detail', 'category'),
     items: [
       singleItem({
         name: 'Sunfire fanatic helm',
@@ -577,6 +595,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'General Graardor': {
+    image: formatWikiImageUrl('Pet general graardor detail', 'category'),
     items: [
       singleItem({
         name: 'Bandos chestplate',
@@ -597,6 +616,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Grotesque Guardians': {
+    image: formatWikiImageUrl('Noon', 'category'),
     items: [
       singleItem({
         name: 'Granite gloves',
@@ -630,6 +650,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   "Kree'arra": {
+    image: formatWikiImageUrl("Kree'arra chathead", 'category'),
     items: [
       singleItem({
         name: 'Armadyl helmet',
@@ -650,6 +671,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   "K'ril Tsutsaroth": {
+    image: formatWikiImageUrl("K'ril Tsutsaroth chathead", 'category'),
     items: [
       singleItem({
         name: 'Steam battlestaff',
@@ -678,6 +700,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'The Gauntlet': {
+    image: formatWikiImageUrl('Corrupted Youngllef chathead', 'category'),
     items: [
       singleItem({
         name: 'Crystal weapon seed',
@@ -702,6 +725,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Theatre of Blood': {
+    image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
     items: [
       singleItem({
         name: 'Avernic defender hilt',
@@ -748,6 +772,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Thermonuclear Smoke Devil': {
+    image: formatWikiImageUrl('Pet smoke devil chathead', 'category'),
     items: [
       singleItem({
         name: 'Occult necklace',
@@ -760,6 +785,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Tormented Demons': {
+    image: formatWikiImageUrl('Tormented Demon (1)', 'category'),
     items: [
       compoundItem({
         name: 'Burning claws',
@@ -777,6 +803,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'TzHaar Challenges': {
+    image: formatWikiImageUrl('TzKal-Zuk', 'category'),
     items: [
       singleItem({
         name: 'Fire cape',
@@ -789,6 +816,7 @@ export const itemList: ItemCategoryMap = {
       combatAchievementItem({
         name: '6 Jads',
         points: 100,
+        image: formatWikiImageUrl('TzTok-Jad'),
         requiredCombatAchievements: [
           363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
         ],
@@ -796,6 +824,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Vorkath: {
+    image: formatWikiImageUrl('Vorki detail', 'category'),
     items: [
       singleItem({
         name: "Vorkath's head",
@@ -808,11 +837,13 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Zulrah: {
+    image: formatWikiImageUrl('Snakeling (tanzanite)', 'category'),
     items: [
       singleItem({
         name: 'Toxic blowpipe',
         clogName: 'Tanzanite fang',
         points: 80,
+        image: formatWikiImageUrl('Toxic blowpipe'),
         requiredLevels: {
           Fletching: 73,
         },
@@ -824,6 +855,7 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Serpentine visage',
         points: 60,
+        image: formatWikiImageUrl('Serpentine helm'),
       }),
       singleItem({
         name: 'Tanzanite mutagen',
@@ -836,6 +868,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'The Nightmare': {
+    image: formatWikiImageUrl('Little nightmare chathead', 'category'),
     items: [
       singleItem({
         name: 'Nightmare staff',
@@ -876,6 +909,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Nex: {
+    image: formatWikiImageUrl('Nexling detail', 'category'),
     items: [
       singleItem({
         name: 'Zaryte vambraces',
@@ -888,16 +922,19 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Torva full helm',
         clogName: 'Torva full helm (damaged)',
+        image: formatWikiImageUrl('Torva full helm'),
         points: 120,
       }),
       singleItem({
         name: 'Torva platebody',
         clogName: 'Torva platebody (damaged)',
+        image: formatWikiImageUrl('Torva platebody'),
         points: 120,
       }),
       singleItem({
         name: 'Torva platelegs',
         clogName: 'Torva platelegs (damaged)',
+        image: formatWikiImageUrl('Torva platelegs'),
         points: 120,
       }),
       singleItem({
@@ -907,6 +944,10 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Tombs of Amascut': {
+    image: formatWikiImageUrl(
+      'Tombs of Amascut - Expert Mode icon',
+      'category',
+    ),
     items: [
       singleItem({
         name: 'Thread of elidinis',
@@ -988,6 +1029,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Perilous Moons': {
+    image: formatWikiImageUrl('Blood Moon', 'category'),
     items: [
       singleItem({
         name: 'Eclipse atlatl',
@@ -1040,6 +1082,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Phantom Muspah': {
+    image: formatWikiImageUrl('Phantom Muspah (shielded)', 'category'),
     items: [
       singleItem({
         name: 'Ancient sceptre',
@@ -1058,10 +1101,13 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Wilderness items': {
+    image:
+      'https://oldschool.runescape.wiki/images/Pkskull_%28Steam_Emoticon%29.png',
     items: [
       questItem({
         name: 'Mage Arena 2 cape',
         points: 20,
+        image: formatWikiImageUrl('Imbued zamorak cape'),
         requiredQuests: ['Mage Arena II'],
       }),
       compoundItem({
@@ -1104,9 +1150,9 @@ export const itemList: ItemCategoryMap = {
       }),
       compoundItem({
         name: 'Obelisk',
+        points: 100,
         image:
           'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
-        points: 100,
         requiredItems: [['Ancient crystal', 4]],
         requiredLevels: {
           Construction: 72,
@@ -1151,6 +1197,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Major Slayer Items': {
+    image: formatWikiImageUrl('Slayer icon (detail)', 'category'),
     items: [
       manualItem({
         name: 'Slayer helmet (i)',
@@ -1174,11 +1221,13 @@ export const itemList: ItemCategoryMap = {
         name: 'Boots of brimstone',
         clogName: "Drake's claw",
         points: 20,
+        image: formatWikiImageUrl('Boots of brimstone'),
       }),
       singleItem({
         name: 'Neitiznot faceguard',
         clogName: 'Basilisk jaw',
         points: 30,
+        image: formatWikiImageUrl('Neitiznot faceguard'),
       }),
       singleItem({
         name: 'Abyssal whip',
@@ -1207,21 +1256,25 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Visages: {
+    image: formatWikiImageUrl('Draconic visage detail', 'category'),
     items: [
       singleItem({
         name: 'Dragonfire shield',
         clogName: 'Draconic visage',
         points: 150,
+        image: formatWikiImageUrl('Dragonfire shield'),
       }),
       singleItem({
         name: 'Dragonfire ward',
         clogName: 'Skeletal visage',
         points: 200,
+        image: formatWikiImageUrl('Dragonfire ward'),
       }),
       singleItem({
         name: 'Ancient wyvern shield',
         clogName: 'Wyvern visage',
         points: 200,
+        image: formatWikiImageUrl('Ancient wyvern shield'),
       }),
     ],
   },
@@ -1256,6 +1309,7 @@ export const itemList: ItemCategoryMap = {
       compoundItem({
         name: 'Graceful set',
         points: 20,
+        image: formatWikiImageUrl('Graceful hood'),
         requiredItems: [
           'Graceful hood',
           'Graceful top',
@@ -1272,6 +1326,7 @@ export const itemList: ItemCategoryMap = {
       customItem({
         name: 'Music cape',
         points: 80,
+        image: formatWikiImageUrl('Music cape detail'),
         isAcquired({ musicTracks }) {
           return musicTracks
             ? Object.entries(musicTracks)
@@ -1286,6 +1341,7 @@ export const itemList: ItemCategoryMap = {
       questItem({
         name: 'Quest cape',
         points: 80,
+        image: formatWikiImageUrl('Quest point cape detail'),
         requiredQuests: Quest.options,
       }),
       singleItem({
@@ -1322,6 +1378,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Jars: {
+    image: formatWikiImageUrl('Jar of venom', 'category'),
     items: [
       singleItem({
         name: 'Jar of chemicals (Hydra)',
@@ -1396,71 +1453,87 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   Pets: {
-    items: Object.entries({
-      'Abyssal orphan': 100,
-      'Abyssal protector': 150,
-      'Baby chinchompa': 150,
-      'Baby mole': 50,
-      Baron: 110,
-      Beaver: 150,
-      Bloodhound: 400,
-      Butch: 130,
-      'Callisto cub': 80,
-      'Chompy chick': 10,
-      'Giant squirrel': 200,
-      Hellpuppy: 80,
-      Herbi: 120,
-      Heron: 150,
-      'Ikkle hydra': 140,
-      'Jal-nib-rek': 200,
-      'Kalphite princess': 100,
-      "Lil' creator": 100,
-      "Lil'viathan": 140,
-      "Lil' zik": 200,
-      'Little nightmare': 300,
-      Muphin: 80,
-      Nexling: 250,
-      Nid: 70,
-      Noon: 120,
-      Olmlet: 400,
-      'Pet chaos elemental': 20,
-      'Pet dagannoth prime': 100,
-      'Pet dagannoth rex': 100,
-      'Pet dagannoth supreme': 100,
-      'Pet dark core': 400,
-      'Pet general graardor': 150,
-      'Pet kraken': 50,
-      "Pet kree'arra": 200,
-      "Pet k'ril Tsutsaroth": 150,
-      'Pet penance queen': 500,
-      'Pet smoke devil': 60,
-      'Pet snakeling': 120,
-      'Pet zilyana': 200,
-      Phoenix: 150,
-      'Prince black dragon': 80,
-      Quetzin: 150,
-      'Rift guardian': 300,
-      'Rock golem': 200,
-      Rocky: 100,
-      "Scorpia's offspring": 60,
-      Scurry: 50,
-      Skotos: 40,
-      Smolcano: 160,
-      'Smol heredit': 150,
-      Sraracha: 70,
-      Tangleroot: 400,
-      'Tiny tempor': 200,
-      "Tumeken's guardian": 200,
-      'Tzrek-jad': 140,
-      'Venenatis spiderling': 80,
-      "Vet'ion jr.": 100,
-      Vorki: 120,
-      Wisp: 120,
-      Youngllef: 160,
-    }).map<Item>(([name, points]) =>
+    image: formatWikiImageUrl('Nid', 'category'),
+    items: (
+      Object.entries({
+        'Abyssal orphan': [100],
+        'Abyssal protector': [150],
+        'Baby chinchompa': [
+          150,
+          formatWikiImageUrl('Baby chinchompa (gold) chathead'),
+        ],
+        'Baby mole': [50],
+        Baron: [110],
+        Beaver: [150],
+        Bloodhound: [400],
+        Butch: [130],
+        'Callisto cub': [80],
+        'Chompy chick': [10],
+        'Giant squirrel': [200],
+        Hellpuppy: [80],
+        Herbi: [120],
+        Heron: [150],
+        'Ikkle hydra': [
+          140,
+          formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
+        ],
+        'Jal-nib-rek': [200],
+        'Kalphite princess': [100],
+        "Lil' creator": [100],
+        "Lil'viathan": [140],
+        "Lil' zik": [200],
+        'Little nightmare': [300],
+        Muphin: [80, formatWikiImageUrl('Muphin (shielded) chathead')],
+        Nexling: [250],
+        Nid: [70],
+        Noon: [120],
+        Olmlet: [400],
+        'Pet chaos elemental': [20],
+        'Pet dagannoth prime': [100],
+        'Pet dagannoth rex': [100],
+        'Pet dagannoth supreme': [100],
+        'Pet dark core': [400],
+        'Pet general graardor': [150],
+        'Pet kraken': [50],
+        "Pet kree'arra": [200],
+        "Pet k'ril Tsutsaroth": [
+          150,
+          formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
+        ],
+        'Pet penance queen': [500],
+        'Pet smoke devil': [60],
+        'Pet snakeling': [120],
+        'Pet zilyana': [200],
+        Phoenix: [150],
+        'Prince black dragon': [80],
+        Quetzin: [150],
+        'Rift guardian': [
+          300,
+          formatWikiImageUrl('Rift guardian (follower, fire)'),
+        ],
+        'Rock golem': [200],
+        Rocky: [100],
+        "Scorpia's offspring": [60],
+        Scurry: [50],
+        Skotos: [40],
+        Smolcano: [160],
+        'Smol heredit': [150],
+        Sraracha: [70],
+        Tangleroot: [400],
+        'Tiny tempor': [200],
+        "Tumeken's guardian": [200],
+        'Tzrek-jad': [140],
+        'Venenatis spiderling': [80],
+        "Vet'ion jr.": [100],
+        Vorki: [120],
+        Wisp: [120],
+        Youngllef: [160],
+      }) as [string, [number] | [number, string]][]
+    ).map<Item>(([name, [points, image = formatWikiImageUrl(name)]]) =>
       singleItem({
         name,
         points,
+        image,
       }),
     ) as NonEmptyArray<Item>,
   },

@@ -18,7 +18,11 @@ interface CategoryProps {
 }
 
 export const Category = memo(
-  ({ title, items, image = formatWikiImageUrl(title) }: CategoryProps) => {
+  ({
+    title,
+    items,
+    image = formatWikiImageUrl(title, 'category'),
+  }: CategoryProps) => {
     const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
       name: items.map(
         ({ name }) => `acquiredItems.${stripEntityName(name)}` as const,
@@ -35,6 +39,8 @@ export const Category = memo(
               alt={`${title} icon`}
               src={image}
               size="3"
+              height={40}
+              width={40}
               fallback={parseInitials(title)}
             />
             <Box>

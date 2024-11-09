@@ -12,7 +12,11 @@ export function ItemList() {
       <ScrollArea>
         {categories.map(([title, category]) => (
           <Box key={title} pl="3" pr="4">
-            <Category items={category.items} title={title} />
+            <Category
+              items={category.items}
+              title={title}
+              image={category.image}
+            />
           </Box>
         ))}
       </ScrollArea>
