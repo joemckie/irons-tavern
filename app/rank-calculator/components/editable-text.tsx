@@ -21,7 +21,13 @@ export function EditableText({
   const value = useWatch({ name });
   const field = register(name, {
     required,
-    valueAsNumber: restProps.type === 'number',
+    setValueAs(newValue) {
+      if (restProps.type === 'number') {
+        return !newValue ? 0 : Number(newValue);
+      }
+
+      return newValue;
+    },
   });
 
   if (isEditing) {
