@@ -203,7 +203,7 @@ export async function fetchPlayerDetails(
           totalLevel ?? 0,
           previousSubmission?.totalLevel ?? 0,
         ),
-        collectionLogTotal: collectionLogTotal ?? 0,
+        collectionLogTotal: collectionLogTotal ?? 1560,
         joinDate,
         playerName: rsn,
         rankStructure: previousSubmission?.rankStructure ?? 'Standard',
