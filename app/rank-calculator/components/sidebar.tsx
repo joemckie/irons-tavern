@@ -12,10 +12,8 @@ export function Sidebar() {
     <Box
       asChild
       p="3"
+      pr={{ md: '0' }}
       gridArea="sidebar"
-      style={{
-        borderRight: '1px solid var(--gray-5)',
-      }}
       height={{ md: mainHeightCss }}
     >
       <ScrollArea>

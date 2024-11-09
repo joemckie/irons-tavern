@@ -10,12 +10,10 @@ export function RightSidebar() {
     <Box
       asChild
       p="3"
+      pl={{ md: '0' }}
       gridArea="right-sidebar"
       gridRow={{
         md: 'span 2',
-      }}
-      style={{
-        borderLeft: '1px solid var(--gray-5)',
       }}
       height={{ md: mainHeightCss }}
     >
