@@ -274,17 +274,14 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Primordial crystal',
         points: 60,
-        image: formatWikiImageUrl('Primordial boots'),
       }),
       singleItem({
         name: 'Pegasian crystal',
         points: 40,
-        image: formatWikiImageUrl('Pegasian boots'),
       }),
       singleItem({
         name: 'Eternal crystal',
         points: 30,
-        image: formatWikiImageUrl('Eternal boots'),
       }),
       singleItem({
         name: 'Smouldering stone',
