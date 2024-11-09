@@ -38,14 +38,14 @@ const templePlayerStatsHandler = http.get(
           templePlayerStats.endGamePlayerFixture,
         );
       default:
-        throw new Error(`No mock provided for ${request.url}`);
+        return passthrough();
     }
   },
 );
 
 const collectionLogHandler = http.get<{ player: string }>(
   `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
-  async ({ params, request }) => {
+  async ({ params }) => {
     await delay();
 
     switch (decodeURIComponent(params.player).toLowerCase()) {
@@ -63,14 +63,14 @@ const collectionLogHandler = http.get<{ player: string }>(
           collectionLog.endGamePlayerFixture,
         );
       default:
-        throw new Error(`No mock provided for ${request.url}`);
+        return passthrough();
     }
   },
 );
 
 const wikiSyncHandler = http.get<{ player: string }>(
   `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
-  async ({ params, request }) => {
+  async ({ params }) => {
     await delay();
 
     switch (decodeURIComponent(params.player).toLowerCase()) {
@@ -88,7 +88,7 @@ const wikiSyncHandler = http.get<{ player: string }>(
           wikiSync.endGamePlayerFixture,
         );
       default:
-        throw new Error(`No mock provided for ${request.url}`);
+        return passthrough();
     }
   },
 );
