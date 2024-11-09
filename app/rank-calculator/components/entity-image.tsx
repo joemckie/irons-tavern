@@ -14,8 +14,8 @@ export function EntityImage({
   src,
   size = '2',
   variant = 'soft',
-  height = 33,
-  width = 33,
+  height = 32,
+  width = 32,
   fallback,
 }: EntityImageProps) {
   const [showFallback, setShowFallback] = useState(false);

@@ -144,6 +144,7 @@ function customItem({
 
 export const itemList: ItemCategoryMap = {
   'Automatic Items': {
+    image: formatWikiImageUrl('Black cog detail', 'category'),
     items: [
       customItem({
         name: 'Achievement Diary Cape',
@@ -1279,6 +1280,7 @@ export const itemList: ItemCategoryMap = {
     ],
   },
   'Misc Items': {
+    image: formatWikiImageUrl('Inventory', 'category'),
     items: [
       questItem({
         name: 'Barrows gloves',
