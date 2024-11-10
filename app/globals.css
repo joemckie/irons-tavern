@@ -224,3 +224,7 @@ img.rt-AvatarImage {
 .Toastify__toast-theme--dark {
   background: var(--gray-4) !important;
 }
+
+.rt-TooltipArrow {
+  margin-top: -1px;
+}
