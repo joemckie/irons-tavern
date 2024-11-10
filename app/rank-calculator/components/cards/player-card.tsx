@@ -1,4 +1,4 @@
-import { Separator, Text } from '@radix-ui/themes';
+import { Flex, Separator, Text } from '@radix-ui/themes';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { format } from 'date-fns';
 import { DataCard } from '../data-card';
@@ -38,9 +38,16 @@ export function PlayerCard() {
             Join Date
           </Text>
         }
-        center={
+        right={
           <Text aria-label="Join date" size="2">
             {format(joinDate, 'dd MMM yyyy')}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Scaling
           </Text>
         }
         right={
@@ -49,15 +56,14 @@ export function PlayerCard() {
           </Text>
         }
       />
-      <DataCard.Row
-        left={
-          <Text color="gray" size="2">
-            Proof Link
-          </Text>
-        }
-        center={<Input {...register('proofLink')} size="1" hasError={false} />}
-        right={<Text size="2" color="gray" />}
-      />
+      <Flex gap="4" align="center">
+        <Text color="gray" size="2">
+          Proof Link
+        </Text>
+        <Flex asChild justify="end" flexShrink="1" flexGrow="1" flexBasis="0">
+          <Input {...register('proofLink')} size="1" hasError={false} />
+        </Flex>
+      </Flex>
     </DataCard.Root>
   );
 }
