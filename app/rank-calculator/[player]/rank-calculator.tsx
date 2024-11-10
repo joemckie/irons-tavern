@@ -28,14 +28,13 @@ export function RankCalculator({
           `,
         }}
         columns={{
-          initial: 'repeat(auto-fit, minmax(400px, 1fr))',
           md: `
             [sidebar] minmax(200px, 1fr)
             [main] minmax(0, 2fr)
             [right-sidebar] minmax(200px, 1fr)
         `,
         }}
-        rows="54px 1fr"
+        rows="62px 1fr"
       >
         <Navigation />
         <Sidebar />

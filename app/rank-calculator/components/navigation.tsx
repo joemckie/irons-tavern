@@ -35,17 +35,24 @@ export function Navigation() {
         zIndex: 100,
       }}
     >
-      <nav role="navigation">
-        <Flex align="center" justify="between">
-          <Flex direction="row" gap="2" align="center">
+      <Flex align="center" justify="between" asChild>
+        <nav role="navigation">
+          <Flex direction="row" gap="4" align="center">
             <Image
               alt={`${rank} icon`}
               src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
               width={22}
               height={22}
             />
-            <Text weight="bold" size="2" style={{ lineHeight: 'normal' }}>
-              {`Rank: ${rankName} / ${formatNumber(pointsAwarded)} points`}
+            <Text size="2" as="div">
+              <Text as="div">
+                <Text weight="medium">Rank:</Text>{' '}
+                <Text color="gray">{rankName}</Text>
+              </Text>
+              <Text as="div">
+                <Text weight="medium">Points:</Text>{' '}
+                <Text color="gray">{formatNumber(pointsAwarded)}</Text>
+              </Text>
             </Text>
           </Flex>
           <Button
@@ -56,8 +63,8 @@ export function Navigation() {
           >
             Submit
           </Button>
-        </Flex>
-      </nav>
+        </nav>
+      </Flex>
     </Box>
   );
 }
