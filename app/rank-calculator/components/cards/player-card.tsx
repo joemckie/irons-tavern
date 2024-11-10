@@ -21,12 +21,12 @@ export function PlayerCard() {
     <DataCard.Root>
       <DataCard.Row
         left={
-          <Text role="heading" weight="bold" size="2">
+          <Text role="heading" weight="medium" size="2">
             Player
           </Text>
         }
         right={
-          <Text aria-label="Player name" weight="bold" size="2">
+          <Text aria-label="Player name" weight="medium" size="2">
             {decodeURIComponent(playerName)}
           </Text>
         }

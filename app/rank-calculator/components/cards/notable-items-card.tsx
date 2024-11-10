@@ -27,13 +27,17 @@ export function NotableItemsCard() {
               height={18}
               width={18}
             />
-            <Text role="heading" weight="bold" size="2">
+            <Text role="heading" weight="medium" size="2">
               Notable items
             </Text>
           </Flex>
         }
         right={
-          <Text aria-label="Total notable items points" weight="bold" size="2">
+          <Text
+            aria-label="Total notable items points"
+            weight="medium"
+            size="2"
+          >
             {formatNumber(pointsAwarded)}
           </Text>
         }

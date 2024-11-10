@@ -35,13 +35,13 @@ export function SkillingCard() {
               height={18}
               width={18}
             />
-            <Text role="heading" weight="bold" size="2">
+            <Text role="heading" weight="medium" size="2">
               Skilling
             </Text>
           </Flex>
         }
         right={
-          <Text aria-label="Total skilling points" weight="bold" size="2">
+          <Text aria-label="Total skilling points" weight="medium" size="2">
             {formatNumber(pointsAwarded)}
           </Text>
         }

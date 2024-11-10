@@ -45,7 +45,7 @@ export const Category = memo(
             />
             <Box>
               <Box>
-                <Text size="2" weight="bold">
+                <Text size="2" weight="medium">
                   {title}
                 </Text>
               </Box>
@@ -59,7 +59,7 @@ export const Category = memo(
           <Text
             aria-label={`${title} percentage complete`}
             color={percentComplete === '100%' ? 'green' : undefined}
-            weight="bold"
+            weight="medium"
             size="4"
           >
             {percentComplete}
@@ -73,13 +73,19 @@ export const Category = memo(
         <Table.Root size="1">
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell align="right">
-                Acquired?
-              </Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell width="100px" align="right">
-                Points
-              </Table.ColumnHeaderCell>
+              <Text asChild weight="medium">
+                <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
+              </Text>
+              <Text asChild weight="medium">
+                <Table.ColumnHeaderCell align="right">
+                  Acquired?
+                </Table.ColumnHeaderCell>
+              </Text>
+              <Text asChild weight="medium">
+                <Table.ColumnHeaderCell width="100px" align="right">
+                  Points
+                </Table.ColumnHeaderCell>
+              </Text>
             </Table.Row>
           </Table.Header>
           <Table.Body>
