@@ -10,42 +10,48 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { debounce } from 'lodash';
 import { useAction } from 'next-safe-action/hooks';
-import { Input } from '../../components/input';
-import { Label } from '../../components/label';
-import { DatePicker } from '../../components/date-picker';
+import { Player } from '@/app/schemas/player';
+import { Input } from '../../../components/input';
+import { Label } from '../../../components/label';
+import { DatePicker } from '../../../components/date-picker';
 import { PlayerNameInput } from './components/player-name-input';
-import { addPlayerAction } from './actions/add-player-action';
-import { fetchPlayerJoinDateAction } from '../actions/fetch-player-join-date-action';
-import { AddPlayerSchema } from './actions/add-player-schema';
+import { editPlayerAction } from './actions/edit-player-action';
+import { fetchPlayerJoinDateAction } from '../../actions/fetch-player-join-date-action';
+import { EditPlayerSchema } from './actions/edit-player-schema';
 
-interface AddPlayerFormProps {
+interface EditPlayerFormProps {
   members: string[];
+  playerRecord: Player;
 }
 
-export function AddPlayerForm({ members }: AddPlayerFormProps) {
+export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
   const router = useRouter();
+  const boundEditPlayerAction = editPlayerAction.bind(null, playerRecord.rsn);
   const {
     action: { isExecuting },
     form,
     handleSubmitWithAction,
-  } = useHookFormAction(addPlayerAction, zodResolver(AddPlayerSchema), {
+  } = useHookFormAction(boundEditPlayerAction, zodResolver(EditPlayerSchema), {
     actionProps: {
       onError({ error }) {
+        console.log(error);
         if (error.serverError) {
-          toast.error('Failed to save player!');
+          toast.error('Failed to edit player!');
         }
       },
-      onSuccess({ data }) {
-        if (data?.playerName) {
-          toast.success(`Player saved successfully!`);
+      onSuccess() {
+        toast.success(`Player edited successfully!`);
 
-          router.push(`/rank-calculator/${data.playerName.toLowerCase()}`);
-        }
+        router.push(`/rank-calculator`);
       },
     },
     formProps: {
       mode: 'onSubmit',
       criteriaMode: 'all',
+      defaultValues: {
+        joinDate: new Date(playerRecord.joinDate),
+        playerName: playerRecord.rsn,
+      },
     },
   });
   const { isDirty, errors } = form.formState;
@@ -81,7 +87,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
           my="0"
           mx="auto"
         >
-          <Heading size="5">New rank application</Heading>
+          <Heading size="5">Editing {playerRecord.rsn}</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">
               <PlayerNameInput
@@ -96,7 +102,6 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
-                    disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required
                     placeholderText="dd/mm/yyyy"
@@ -147,7 +152,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                     loading={isExecuting}
                     size="3"
                   >
-                    Next
+                    Save
                   </Button>
                 </Box>
               </Flex>

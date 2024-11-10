@@ -1,6 +1,6 @@
 'use server';
 
-import { userOSRSAccountsKey } from '@/config/redis';
+import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
@@ -12,12 +12,10 @@ export const deletePlayerAccountAction = authActionClient
   })
   .schema(z.string())
   .action(async ({ parsedInput: playerName, ctx: { userId } }) => {
-    const result = await redis.hdel(
-      userOSRSAccountsKey(userId),
-      playerName.toLowerCase(),
-    );
+    await Promise.all([
+      redis.del(userRankSubmissionsKey(userId, playerName)),
+      redis.hdel(userOSRSAccountsKey(userId), playerName.toLowerCase()),
+    ]);
 
-    if (result) {
-      revalidatePath('/rank-calculator');
-    }
+    revalidatePath('/rank-calculator');
   });

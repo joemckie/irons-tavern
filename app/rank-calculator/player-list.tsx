@@ -10,9 +10,10 @@ import {
   Heading,
   IconButton,
   Text,
+  Tooltip,
 } from '@radix-ui/themes';
 import { format } from 'date-fns';
-import { ChevronRightIcon } from '@radix-ui/react-icons';
+import { ChevronRightIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
 import { deletePlayerAccountAction } from './actions/delete-player-account-action';
@@ -64,17 +65,28 @@ export function PlayerList({ accounts }: PlayerListProps) {
                   deletePlayerAccountAction={execute}
                   playerName={rsn}
                 />
-                <IconButton asChild>
-                  <Link href={`/rank-calculator/${rsn.toLowerCase()}`}>
-                    <ChevronRightIcon />
-                  </Link>
-                </IconButton>
+                <Tooltip content="Edit">
+                  <IconButton asChild variant="soft" color="gray">
+                    <Link
+                      href={`/rank-calculator/players/edit/${rsn.toLowerCase()}`}
+                    >
+                      <Pencil1Icon />
+                    </Link>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip content="Go to calculator">
+                  <IconButton asChild>
+                    <Link href={`/rank-calculator/${rsn.toLowerCase()}`}>
+                      <ChevronRightIcon />
+                    </Link>
+                  </IconButton>
+                </Tooltip>
               </Flex>
             </Flex>
           </Card>
         ))}
         <Button asChild size="3">
-          <Link href="/rank-calculator/players/add">Start new application</Link>
+          <Link href="/rank-calculator/players/add">Add new player</Link>
         </Button>
       </Flex>
     </Flex>

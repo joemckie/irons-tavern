@@ -14,7 +14,7 @@ export const RankCalculatorSchema = zfd.formData({
     z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
   ),
   achievementDiaries: z.record(DiaryLocation, DiaryTier),
-  joinDate: z.date(),
+  joinDate: z.coerce.date(),
   collectionLogCount: z.number().nonnegative(),
   collectionLogTotal: z.number().nonnegative(),
   combatAchievementTier: CombatAchievementTier,
