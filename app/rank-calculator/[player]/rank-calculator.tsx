@@ -35,6 +35,7 @@ export function RankCalculator({
         `,
         }}
         rows="62px 1fr"
+        gapX="3"
       >
         <Navigation />
         <Sidebar />
