@@ -9,16 +9,16 @@ export function Sidebar() {
   const mainHeightCss = usePageHeight();
 
   return (
-    <Box
-      asChild
-      p="3"
-      pr={{ md: '0' }}
-      pb={{ initial: '0', md: '3' }}
-      gridArea="sidebar"
-      height={{ md: mainHeightCss }}
-    >
+    <Box asChild gridArea="sidebar" height={{ md: mainHeightCss }}>
       <ScrollArea>
-        <Flex gap="4" direction="column" asChild>
+        <Flex
+          gap="4"
+          direction="column"
+          asChild
+          p="3"
+          pr={{ md: '0' }}
+          pb={{ initial: '0', md: '3' }}
+        >
           <aside>
             <RankProgressCard />
             <CombatCard />
