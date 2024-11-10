@@ -9,6 +9,7 @@ import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calcula
 import { getRankName } from '../../utils/get-rank-name';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
+import { RankStructureInfoModal } from '../rank-structure-info-modal';
 
 export function RankProgressCard() {
   const {
@@ -122,6 +123,7 @@ export function RankProgressCard() {
               />
             }
           />
+          <RankStructureInfoModal />
         </Flex>
       </Card>
     </>
