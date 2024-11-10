@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Box, Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
+import { Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
@@ -37,7 +37,7 @@ export function RankProgressCard() {
   }, [pointsAwarded, setValue]);
 
   return (
-    <Box>
+    <>
       <input
         {...register('rank', { value: rankName })}
         defaultValue={rankName}
@@ -124,6 +124,6 @@ export function RankProgressCard() {
           />
         </Flex>
       </Card>
-    </Box>
+    </>
   );
 }
