@@ -28,7 +28,7 @@ export function RankStructureInfoModal() {
           View rank structure
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content maxWidth="400px">
+      <Dialog.Content maxWidth="400px" aria-describedby={undefined}>
         <Dialog.Title size="3">{rankStructure}</Dialog.Title>
         <Inset side="x">
           <Table.Root size="1">
