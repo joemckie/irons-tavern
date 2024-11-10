@@ -11,6 +11,7 @@ export function RightSidebar() {
       asChild
       p="3"
       pl={{ md: '0' }}
+      pb={{ initial: '0', md: '3' }}
       gridArea="right-sidebar"
       gridRow={{
         md: 'span 2',
@@ -18,12 +19,12 @@ export function RightSidebar() {
       height={{ md: mainHeightCss }}
     >
       <ScrollArea>
-        <aside>
-          <Flex gap="4" direction="column">
+        <Flex asChild gap="4" direction="column">
+          <aside>
             <PlayerCard />
             <SkillingCard />
-          </Flex>
-        </aside>
+          </aside>
+        </Flex>
       </ScrollArea>
     </Box>
   );

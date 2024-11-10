@@ -13,18 +13,19 @@ export function Sidebar() {
       asChild
       p="3"
       pr={{ md: '0' }}
+      pb={{ initial: '0', md: '3' }}
       gridArea="sidebar"
       height={{ md: mainHeightCss }}
     >
       <ScrollArea>
-        <aside>
-          <Flex gap="4" direction="column">
+        <Flex gap="4" direction="column" asChild>
+          <aside>
             <RankProgressCard />
             <CombatCard />
             <CollectionLogCard />
             <NotableItemsCard />
-          </Flex>
-        </aside>
+          </aside>
+        </Flex>
       </ScrollArea>
     </Box>
   );
