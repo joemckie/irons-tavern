@@ -52,24 +52,37 @@ export function RankProgressCard() {
         <Flex direction="column" gap="3">
           <DataCard.Row
             left={
-              <Text aria-label="Total points" color="gray" size="2">
-                {formatNumber(pointsAwarded)}
-              </Text>
-            }
-            center={
-              <Text size="2" role="heading" weight="bold">
-                Rank
-              </Text>
+              <Flex direction="column">
+                <Text size="2" color="gray" id="total-points-label">
+                  Total points
+                </Text>
+                <Text
+                  aria-labelledby="total-points-label"
+                  size="3"
+                  weight="medium"
+                >
+                  {formatNumber(pointsAwarded)}
+                </Text>
+              </Flex>
             }
             right={
-              <Text aria-label="Points to next rank" color="gray" size="2">
-                {getPointsRemainingLabel(pointsRemaining)}
-              </Text>
+              <Flex direction="column" align="end">
+                <Text size="2" color="gray" id="points-to-next-rank-label">
+                  Points to next rank
+                </Text>
+                <Text
+                  aria-labelledby="points-to-next-rank-label"
+                  size="3"
+                  weight="medium"
+                >
+                  {getPointsRemainingLabel(pointsRemaining)}
+                </Text>
+              </Flex>
             }
           />
           <Progress size="3" value={pointsAwardedPercentage * 100} />
           <Flex justify="between">
-            <Flex gap="2">
+            <Flex gap="2" align="center">
               <Text aria-label="Current rank" color="gray" size="2">
                 {rankName}
               </Text>
@@ -80,7 +93,7 @@ export function RankProgressCard() {
                 height={22}
               />
             </Flex>
-            <Flex gap="2">
+            <Flex gap="2" align="center">
               {nextRank && (
                 <Image
                   alt={`${nextRank} icon`}
