@@ -49,6 +49,18 @@ export function SkillingCard() {
       <Separator size="4" />
       <DataCard.Row
         left={
+          <Text color="gray" weight="medium" size="2">
+            Category
+          </Text>
+        }
+        right={
+          <Text color="gray" weight="medium" size="2">
+            Points
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
           <Text color="gray" size="2">
             EHP
           </Text>
