@@ -11,7 +11,7 @@ export function ItemList() {
     <Flex asChild gridArea="main" height={{ md: mainHeightCss }}>
       <ScrollArea>
         {categories.map(([title, category]) => (
-          <Box key={title} pl="3" pr="4">
+          <Box key={title} px="3">
             <Category
               items={category.items}
               title={title}
