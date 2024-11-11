@@ -58,10 +58,11 @@ export function DatePicker({
 }: DatePickerProps &
   Pick<
     BaseDatePickerProps,
-    'customInput' | 'isClearable' | 'placeholderText' | 'required'
+    'customInput' | 'isClearable' | 'placeholderText' | 'required' | 'disabled'
   >) {
   const { field, fieldState } = useController({
     name,
+    disabled: props.disabled,
     rules: {
       required: props.required,
     },

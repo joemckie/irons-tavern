@@ -5,9 +5,10 @@ import { useRank } from '../hooks/use-rank';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { getRankName } from '../utils/get-rank-name';
 import { formatNumber } from '../utils/format-number';
+import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 export function Navigation() {
-  const { isValid, isSubmitting } = useFormState();
+  const { isValid, isSubmitting } = useFormState<RankCalculatorSchema>();
   const { pointsAwarded } = useRankCalculator();
   const { rank } = useRank(pointsAwarded);
   const rankName = getRankName(rank);

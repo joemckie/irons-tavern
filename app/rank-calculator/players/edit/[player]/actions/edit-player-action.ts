@@ -56,11 +56,17 @@ export const editPlayerAction = authActionClient
           previousPlayerName.toLowerCase(),
         );
 
-        // Change the rank submissions key to match the new player name
-        pipeline.rename(
+        const rankSubmissionsKeyExists = await redis.exists(
           userRankSubmissionsKey(userId, previousPlayerName.toLowerCase()),
-          userRankSubmissionsKey(userId, playerName.toLowerCase()),
         );
+
+        // If it exists, change the rank submissions key to match the new player name
+        if (rankSubmissionsKeyExists) {
+          pipeline.renamenx(
+            userRankSubmissionsKey(userId, previousPlayerName.toLowerCase()),
+            userRankSubmissionsKey(userId, playerName.toLowerCase()),
+          );
+        }
       }
 
       // Set the new player record

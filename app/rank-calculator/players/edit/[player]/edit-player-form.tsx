@@ -102,6 +102,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
+                    disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required
                     placeholderText="dd/mm/yyyy"

@@ -40,7 +40,7 @@ export default async function RankCalculatorEditPlayerPage({
   const { player } = await params;
   const playerRecord = await redis.hget<Player>(
     userOSRSAccountsKey(session.user.id),
-    player.toLowerCase(),
+    decodeURIComponent(player).toLowerCase(),
   );
 
   if (!playerRecord) {

@@ -35,12 +35,10 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
           toast.error('Failed to save player!');
         }
       },
-      onSuccess({ data }) {
-        if (data?.playerName) {
-          toast.success(`Player saved successfully!`);
+      onSuccess() {
+        toast.success(`Player saved successfully!`);
 
-          router.push(`/rank-calculator/${data.playerName.toLowerCase()}`);
-        }
+        router.push(`/rank-calculator`);
       },
     },
     formProps: {
@@ -81,7 +79,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
           my="0"
           mx="auto"
         >
-          <Heading size="5">New rank application</Heading>
+          <Heading size="5">Add new player</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">
               <PlayerNameInput
@@ -147,7 +145,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                     loading={isExecuting}
                     size="3"
                   >
-                    Next
+                    Save
                   </Button>
                 </Box>
               </Flex>
