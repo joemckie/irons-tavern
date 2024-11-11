@@ -1,10 +1,18 @@
 'use client';
 
-import { Box, Button, Flex, Heading, Spinner, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Callout,
+  Flex,
+  Heading,
+  Spinner,
+  Text,
+} from '@radix-ui/themes';
 import { FormProvider } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
-import { CalendarIcon } from '@radix-ui/react-icons';
+import { CalendarIcon, CircleBackslashIcon } from '@radix-ui/react-icons';
 import { toast } from 'react-toastify';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -87,6 +95,20 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
           my="0"
           mx="auto"
         >
+          {playerRecord.isNameInvalid && (
+            <Callout.Root variant="soft" color="red">
+              <Callout.Icon>
+                <CircleBackslashIcon />
+              </Callout.Icon>
+              <Callout.Text>
+                Your player name has become invalid (this is usually due to a
+                name change).
+              </Callout.Text>
+              <Callout.Text>
+                Please update it to regain access to the calculator.
+              </Callout.Text>
+            </Callout.Root>
+          )}
           <Heading size="5">Editing {playerRecord.rsn}</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">

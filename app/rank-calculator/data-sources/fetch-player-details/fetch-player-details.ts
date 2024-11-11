@@ -12,6 +12,7 @@ import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/auth';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
+import { redirect } from 'next/navigation';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { getCollectionLog } from './get-collection-log';
@@ -22,6 +23,7 @@ import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tie
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { validatePlayerExists } from '../../players/validation/player-validation';
 
 export const emptyResponse = {
   achievementDiaries: {
@@ -60,19 +62,38 @@ export async function fetchPlayerDetails(
     throw new Error('No user session');
   }
 
+  const playerRecord = await redis.hget<Player>(
+    userOSRSAccountsKey(session.user.id),
+    player.toLowerCase(),
+  );
+
+  if (!playerRecord) {
+    throw new Error('Unable to find player record');
+  }
+
+  if (playerRecord.isNameInvalid) {
+    redirect(`/rank-calculator/players/edit/${player}`);
+  }
+
+  const isPlayerNameValid = validatePlayerExists(player);
+
+  if (!isPlayerNameValid) {
+    // Flag the account as having an invalid name, and force the user to edit it
+    await redis.hset<Player>(userOSRSAccountsKey(session.user.id), {
+      [player.toLowerCase()]: {
+        ...playerRecord,
+        isNameInvalid: true,
+      },
+    });
+
+    redirect(`/rank-calculator/players/edit/${player}`);
+  }
+
   try {
-    const playerRecord = await redis.hget<Player>(
-      userOSRSAccountsKey(session.user.id),
-      player.toLowerCase(),
-    );
     const latestRankSubmissionId: string | null = await redis.lindex(
       userRankSubmissionsKey(session.user.id, player),
       0,
     );
-
-    if (!playerRecord) {
-      throw new Error('Unable to find player record');
-    }
 
     const { joinDate, rsn } = playerRecord;
     const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
