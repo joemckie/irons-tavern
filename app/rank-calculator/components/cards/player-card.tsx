@@ -51,7 +51,7 @@ export function PlayerCard() {
           </Text>
         }
         right={
-          <Text aria-label="Point scaling" size="2" color="gray">
+          <Text aria-label="Point scaling" size="2">
             {formatPercentage(scaling)}
           </Text>
         }

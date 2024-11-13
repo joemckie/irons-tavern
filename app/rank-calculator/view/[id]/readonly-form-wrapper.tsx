@@ -12,7 +12,6 @@ export function ReadonlyFormWrapper({ formData }: FormWrapperProps) {
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     values: formData,
     disabled: true,
-    shouldUnregister: false,
   });
 
   return (
