@@ -1,6 +1,6 @@
 import { useState, useTransition } from 'react';
 import { Button, Dialog, Flex, Inset, Table } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { rankThresholds } from '@/config/ranks';
 import { Rank } from '@/config/enums';
 import Image from 'next/image';
@@ -11,8 +11,9 @@ import { formatNumber } from '../utils/format-number';
 export function RankStructureInfoModal() {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const { getValues } = useFormContext<RankCalculatorSchema>();
-  const rankStructure = getValues('rankStructure');
+  const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
+    name: 'rankStructure',
+  });
 
   return (
     <Dialog.Root
