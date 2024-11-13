@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
@@ -16,6 +16,7 @@ interface AutomaticItemProps {
 export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
   const scaling = useCalculatorScaling();
   const scaledItemPoints = Math.floor(item.points * scaling);
+  const { formState } = useFormContext<RankCalculatorSchema>();
   const achievementDiaries = useWatch<
     RankCalculatorSchema,
     'achievementDiaries'
@@ -26,13 +27,18 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
   const acquiredItems = useWatch<RankCalculatorSchema, 'acquiredItems'>({
     name: 'acquiredItems',
   });
-  const acquired = isItemAcquired(item, {
-    achievementDiaries,
-    acquiredItems: Object.fromEntries(
-      Object.entries(acquiredItems).map(([key, value]) => [key, Number(value)]),
-    ),
-    totalLevel,
-  });
+  const acquired = formState.disabled
+    ? !!acquiredItems[item.name]
+    : isItemAcquired(item, {
+        achievementDiaries,
+        acquiredItems: Object.fromEntries(
+          Object.entries(acquiredItems).map(([key, value]) => [
+            key,
+            Number(value),
+          ]),
+        ),
+        totalLevel,
+      });
 
   return (
     <Table.Row key={item.name} align="center">
