@@ -13,7 +13,6 @@ export function EditableText({
   name,
   'aria-label': ariaLabel,
   required,
-  disabled,
   ...restProps
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +35,6 @@ export function EditableText({
         size="1"
         aria-label={ariaLabel}
         role="textbox"
-        required={required}
         {...field}
         {...restProps}
         onChange={(e) => {
@@ -64,13 +62,8 @@ export function EditableText({
       <Text aria-label={ariaLabel} size="2">
         {value}
       </Text>
-      {!disabled && (
-        <IconButton
-          disabled={disabled}
-          onClick={() => setIsEditing(true)}
-          size="1"
-          variant="ghost"
-        >
+      {!field.disabled && (
+        <IconButton onClick={() => setIsEditing(true)} size="1" variant="ghost">
           <Pencil1Icon />
         </IconButton>
       )}
