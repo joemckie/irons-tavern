@@ -44,6 +44,8 @@ async function getLatestMemberList() {
   }
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();
   const memberList = await getLatestMemberList();
