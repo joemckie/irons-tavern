@@ -23,17 +23,19 @@ export const editPlayerAction = authActionClient
       bindArgsParsedInputs: [previousPlayerName],
       ctx: { userId },
     }) => {
-      const isUsernameUnique = await assertUniquePlayerRecord(
-        userId,
-        playerName,
-      );
+      if (previousPlayerName !== playerName) {
+        const isUsernameUnique = await assertUniquePlayerRecord(
+          userId,
+          playerName,
+        );
 
-      if (!isUsernameUnique) {
-        returnValidationErrors(EditPlayerSchema, {
-          playerName: {
-            _errors: ['You have already registered this account'],
-          },
-        });
+        if (!isUsernameUnique) {
+          returnValidationErrors(EditPlayerSchema, {
+            playerName: {
+              _errors: ['You have already registered this account'],
+            },
+          });
+        }
       }
 
       const [playerMeta, playerStats] = await Promise.all([
