@@ -31,7 +31,7 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
   // If the form is in read-only mode, take the value from the form data
   // else determine it from the user input
   const acquired = formState.disabled
-    ? !!acquiredItems[item.name]
+    ? !!acquiredItems[stripEntityName(item.name)]
     : isItemAcquired(item, {
         achievementDiaries,
         acquiredItems: Object.fromEntries(
