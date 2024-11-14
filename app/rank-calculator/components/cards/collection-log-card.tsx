@@ -17,8 +17,10 @@ export function CollectionLogCard() {
     collectionLogSlotPoints,
   } = useCollectionLogPointCalculator();
   const {
+    getValues,
     formState: { defaultValues },
   } = useFormContext<RankCalculatorSchema>();
+  const collectionLogTotal = getValues('collectionLogTotal');
 
   return (
     <DataCard.Root>
@@ -71,6 +73,8 @@ export function CollectionLogCard() {
             name="collectionLogCount"
             type="number"
             required
+            min={0}
+            max={collectionLogTotal}
             defaultValue={defaultValues?.collectionLogCount}
           />
         }

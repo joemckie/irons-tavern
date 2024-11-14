@@ -76,6 +76,7 @@ export function SkillingCard() {
             name="ehp"
             required
             type="number"
+            min={0}
             defaultValue={defaultValues?.ehp}
           />
         }

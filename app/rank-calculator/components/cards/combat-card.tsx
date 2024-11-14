@@ -70,6 +70,7 @@ export function CombatCard() {
             name="ehb"
             type="number"
             required
+            min={0}
             defaultValue={defaultValues?.ehb}
           />
         }
