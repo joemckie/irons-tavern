@@ -27,6 +27,9 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
   const acquiredItems = useWatch<RankCalculatorSchema, 'acquiredItems'>({
     name: 'acquiredItems',
   });
+
+  // If the form is in read-only mode, take the value from the form data
+  // else determine it from the user input
   const acquired = formState.disabled
     ? !!acquiredItems[item.name]
     : isItemAcquired(item, {
