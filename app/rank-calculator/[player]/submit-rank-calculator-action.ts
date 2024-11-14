@@ -5,6 +5,7 @@ import { rankSubmissionKey, userRankSubmissionsKey } from '@/config/redis';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import { constants } from '@/config/constants';
+import { pickBy } from 'lodash';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
@@ -25,13 +26,17 @@ export const submitRankCalculatorAction = authActionClient
         throw new Error('No discord channel ID provided');
       }
 
+      const formattedData = {
+        ...data,
+        acquiredItems: pickBy(data.acquiredItems, (val) => val),
+      } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
       const submissionId = randomUUID();
       const submissionTransaction = redis.multi();
 
       submissionTransaction.json.set(
         rankSubmissionKey(submissionId),
         '$',
-        data,
+        formattedData,
         { nx: true },
       );
 
