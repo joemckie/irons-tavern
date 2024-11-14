@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import { useFormState } from 'react-hook-form';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRank } from '../hooks/use-rank';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { getRankName } from '../utils/get-rank-name';
@@ -57,14 +58,19 @@ export function Navigation() {
               </Text>
             </Text>
           </Flex>
-          <Button
-            role="button"
-            loading={isSubmitting}
-            disabled={!isValid || isSubmitting}
-            variant="surface"
-          >
-            Submit
-          </Button>
+          <Flex gap="2">
+            <Button asChild variant="outline" color="gray">
+              <Link href="/rank-calculator">Back</Link>
+            </Button>
+            <Button
+              role="button"
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
+              variant="surface"
+            >
+              Submit
+            </Button>
+          </Flex>
         </nav>
       </Flex>
     </Box>
