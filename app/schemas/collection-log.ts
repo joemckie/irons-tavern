@@ -1,12 +1,9 @@
 import { z } from 'zod';
 
 export const CollectionLogItem = z.object({
-  id: z.number(),
   name: z.string(),
   quantity: z.number().nonnegative(),
   obtained: z.boolean(),
-  obtainedAt: z.string().nullable(),
-  sequence: z.number(),
 });
 
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;

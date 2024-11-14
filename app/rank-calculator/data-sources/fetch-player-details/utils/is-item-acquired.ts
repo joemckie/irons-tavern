@@ -1,3 +1,4 @@
+import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { AcquiredItemMap } from '@/app/schemas/collection-log';
 import {
   isCollectionLogItem,
@@ -34,7 +35,8 @@ export function isItemAcquired(
 ) {
   if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
-      ({ amount, clogName }) => acquiredItems?.[clogName] >= amount,
+      ({ amount, clogName }) =>
+        acquiredItems?.[stripEntityName(clogName)] >= amount,
     );
   }
 

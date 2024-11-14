@@ -204,7 +204,7 @@ it('returns the highest achievement diary values from the previous submission an
   });
 });
 
-fit('merges the acquired items from the previous submission and API data', async () => {
+it('merges the acquired items from the previous submission and API data', async () => {
   const { player } = setup();
 
   server.use(
@@ -268,6 +268,67 @@ fit('merges the acquired items from the previous submission and API data', async
     'Bandos chestplate': true,
     'Bandos boots': true,
     'Bandos hilt': true,
+    'Vetion jr': true,
+  });
+});
+
+it('handles punctuation in entity names when determining acquiry status', async () => {
+  const { player } = setup();
+
+  server.use(
+    generateRedisMock(player, {
+      previousSubmission: {
+        acquiredItems: {
+          "Vet'ion jr.": true,
+        },
+      } satisfies DeepPartial<RankCalculatorSchema>,
+    }),
+    http.get(
+      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      () =>
+        HttpResponse.json<DeepPartial<CollectionLogResponse>>({
+          ...collectionLog.midGamePlayerFixture,
+          collectionLog: {
+            ...collectionLog.midGamePlayerFixture.collectionLog,
+            tabs: {
+              Bosses: {
+                'Alchemical Hydra': {
+                  items: [
+                    {
+                      name: "Hydra's claw",
+                      quantity: 1,
+                      obtained: true,
+                    },
+                    {
+                      name: "Hydra's fang",
+                      quantity: 7,
+                      obtained: true,
+                    },
+                    {
+                      name: "Hydra's eye",
+                      quantity: 7,
+                      obtained: true,
+                    },
+                    {
+                      name: "Hydra's heart",
+                      quantity: 6,
+                      obtained: true,
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        }),
+    ),
+  );
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
+
+  expect(result.data.acquiredItems).toEqual({
+    'Brimstone ring': true,
+    'Hydras claw': true,
     'Vetion jr': true,
   });
 });
