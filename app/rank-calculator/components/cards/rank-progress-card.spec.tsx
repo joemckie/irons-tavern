@@ -1,3 +1,4 @@
+import { getImageProps } from 'next/image';
 import { render, screen } from '@/test-utils/testing-library';
 import * as formDataMocks from '@/mocks/misc/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
@@ -19,7 +20,7 @@ generateScaledPlayerTests(
         </MockFormProvider>,
       );
 
-      await screen.findByRole('heading', { name: /^rank$/i });
+      await screen.findByText(/^total points$/i);
     });
 
     it('renders the total points', () => {
@@ -48,9 +49,16 @@ generateScaledPlayerTests(
 
     it('renders the current rank icon', () => {
       const matcher = new RegExp(`^${expected.rank} icon$`);
+      const { props: imageProps } = getImageProps({
+        alt: '',
+        src: getRankImageUrl(expected.rank),
+        width: 22,
+        height: 22,
+      });
+
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(getRankImageUrl(expected.rank)),
+        expect.stringContaining(imageProps.src),
       );
     });
 
@@ -62,9 +70,16 @@ generateScaledPlayerTests(
 
     it('renders the next rank icon', () => {
       const matcher = new RegExp(`^${expected.nextRank} icon$`);
+      const { props: imageProps } = getImageProps({
+        alt: '',
+        src: getRankImageUrl(expected.nextRank),
+        width: 22,
+        height: 22,
+      });
+
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(getRankImageUrl(expected.nextRank)),
+        expect.stringContaining(imageProps.src),
       );
     });
 

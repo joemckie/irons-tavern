@@ -12,6 +12,7 @@ import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/auth';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
+import { constants } from '@/config/constants';
 import { redirect } from 'next/navigation';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
@@ -234,7 +235,7 @@ export async function fetchPlayerDetails(
           totalLevel ?? 0,
           previousSubmission?.totalLevel ?? 0,
         ),
-        collectionLogTotal: collectionLogTotal ?? 1560,
+        collectionLogTotal: collectionLogTotal ?? constants.collectionLogTotal,
         joinDate,
         playerName: rsn,
         rankStructure: previousSubmission?.rankStructure ?? 'Standard',

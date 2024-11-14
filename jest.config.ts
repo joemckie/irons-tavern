@@ -20,10 +20,6 @@ const config = {
     customExportConditions: ['node'],
   },
   modulePaths: [compilerOptions.baseUrl],
-  moduleNameMapper: {
-    '@auth/upstash-redis-adapter':
-      'node_modules/@auth/upstash-redis-adapter/index.js',
-  },
 } satisfies Config;
 
 const buildConfig = async () => {

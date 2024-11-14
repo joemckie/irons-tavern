@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@ariakit/react": "^0.4.13",
-    "@auth/upstash-redis-adapter": "^2.7.2",
     "@discordjs/rest": "^2.4.0",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^3.9.1",

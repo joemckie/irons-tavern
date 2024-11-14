@@ -983,7 +983,7 @@ it('handles errors when the Collection Log API is not available', async () => {
     // Regular items are derived from the collection log so these should not be present
     acquiredItems: expect.not.objectContaining({ 'Bandos hilt': true }),
     collectionLogCount: 0,
-    collectionLogTotal: 0,
+    collectionLogTotal: constants.collectionLogTotal,
   });
   // Quest items are derived from WikiSync so these should be present
   expect(result.data.acquiredItems).toEqual(

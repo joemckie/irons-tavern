@@ -88,42 +88,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@auth/core@npm:0.37.3":
-  version: 0.37.3
-  resolution: "@auth/core@npm:0.37.3"
-  dependencies:
-    "@panva/hkdf": "npm:^1.2.1"
-    cookie: "npm:1.0.1"
-    jose: "npm:^5.9.6"
-    oauth4webapi: "npm:^3.1.1"
-    preact: "npm:10.24.3"
-    preact-render-to-string: "npm:6.5.11"
-  peerDependencies:
-    "@simplewebauthn/browser": ^9.0.1
-    "@simplewebauthn/server": ^9.0.2
-    nodemailer: ^6.8.0
-  peerDependenciesMeta:
-    "@simplewebauthn/browser":
-      optional: true
-    "@simplewebauthn/server":
-      optional: true
-    nodemailer:
-      optional: true
-  checksum: 10c0/331850b05978a5e605a457e2fbaa4d8c6f0df910e48954cde4981b632e48aa43b4dc2c18535f219d152cc102eecf1aa7db78e930d217c24dbcc458fcc86c8598
-  languageName: node
-  linkType: hard
-
-"@auth/upstash-redis-adapter@npm:^2.7.2":
-  version: 2.7.3
-  resolution: "@auth/upstash-redis-adapter@npm:2.7.3"
-  dependencies:
-    "@auth/core": "npm:0.37.3"
-  peerDependencies:
-    "@upstash/redis": ^1.0.1
-  checksum: 10c0/44460cfffac914d00150bc503135425531d84a5be8fb4acc17b9dc5c3660b1e69bc691a7ff8b978565d0d243721c106947d539fc5e01600227e404d8fcfa7d7f
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.25.9, @babel/code-frame@npm:^7.26.0":
   version: 7.26.2
   resolution: "@babel/code-frame@npm:7.26.2"
@@ -5273,13 +5237,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:1.0.1":
-  version: 1.0.1
-  resolution: "cookie@npm:1.0.1"
-  checksum: 10c0/80afdcad7fe9cab7a0ea1802629f6f4cf9ff957e9489daa7a813e3ac4ca842b0e5ab3f8e6a6ddc1f3f5c771b81c229afd6f0f3c083025d68c48d214ea8fb1097
-  languageName: node
-  linkType: hard
-
 "cookie@npm:^0.5.0":
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
@@ -7265,7 +7222,6 @@ __metadata:
   resolution: "inactivity-checker@workspace:."
   dependencies:
     "@ariakit/react": "npm:^0.4.13"
-    "@auth/upstash-redis-adapter": "npm:^2.7.2"
     "@discordjs/rest": "npm:^2.4.0"
     "@hookform/error-message": "npm:^2.0.1"
     "@hookform/resolvers": "npm:^3.9.1"
@@ -8361,7 +8317,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^5.9.3, jose@npm:^5.9.6":
+"jose@npm:^5.9.3":
   version: 5.9.6
   resolution: "jose@npm:5.9.6"
   checksum: 10c0/d6bcd8c7d655b5cda8e182952a76f0c093347f5476d74795405bb91563f7ab676f61540310dd4b1531c60d685335ceb600571a409551d2cbd2ab3e9f9fbf1e4d
@@ -9310,7 +9266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth4webapi@npm:^3.0.0, oauth4webapi@npm:^3.1.1":
+"oauth4webapi@npm:^3.0.0":
   version: 3.1.2
   resolution: "oauth4webapi@npm:3.1.2"
   checksum: 10c0/9661df38aa1ad3c71d63831538277d877606c272dd76f5ba7c263d826d48521d62e678fe8dde5cbe6d1673457a1afbf3fbf44aa1adea480d25e37fd73ce01907
@@ -9903,26 +9859,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"preact-render-to-string@npm:6.5.11":
-  version: 6.5.11
-  resolution: "preact-render-to-string@npm:6.5.11"
-  peerDependencies:
-    preact: ">=10"
-  checksum: 10c0/a68b704c1343756022fb41322154b45e39f6021b940cbc97e86c292627d017d019700339a17d67b42c308b14fc5323fc120c798f785d6a3e993c8f273610bfe2
-  languageName: node
-  linkType: hard
-
 "preact@npm:10.11.3":
   version: 10.11.3
   resolution: "preact@npm:10.11.3"
   checksum: 10c0/44f342de226a89b53a7156fad0d4192bfc8233a5cc3eb46162f53d3c0c1c2956222d997927c7dff20f52c3592f112cefec5adac64f0477cbd8370fb39126ef7b
-  languageName: node
-  linkType: hard
-
-"preact@npm:10.24.3":
-  version: 10.24.3
-  resolution: "preact@npm:10.24.3"
-  checksum: 10c0/c863df6d7be6a660480189762d8a8f2d4148733fc2bb9efbd9d2fd27315d2c7ede850a16077d716c91666c915c0349bd3c9699733e4f08457226a0519f408761
   languageName: node
   linkType: hard
 

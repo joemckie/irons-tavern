@@ -30,4 +30,5 @@ export const constants = {
     redirectUri: encodeURI(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI ?? ''),
     token: process.env.DISCORD_TOKEN,
   },
+  collectionLogTotal: 1561 as const,
 };
