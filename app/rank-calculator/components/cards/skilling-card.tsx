@@ -6,6 +6,7 @@ import {
   minimumTotalLevel,
 } from '@/app/schemas/osrs';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -13,6 +14,7 @@ import { useSkillingPointCalculator } from '../../hooks/point-calculator/skillin
 import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function SkillingCard() {
   const {
@@ -23,6 +25,9 @@ export function SkillingCard() {
     achievementDiariesPoints,
     ehpPoints,
   } = useSkillingPointCalculator();
+  const {
+    formState: { defaultValues },
+  } = useFormContext<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -71,6 +76,7 @@ export function SkillingCard() {
             name="ehp"
             required
             type="number"
+            defaultValue={defaultValues?.ehp}
           />
         }
         right={
@@ -97,6 +103,7 @@ export function SkillingCard() {
             type="number"
             min={minimumTotalLevel}
             max={maximumTotalLevel}
+            defaultValue={defaultValues?.totalLevel}
           />
         }
         right={

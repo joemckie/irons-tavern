@@ -8,7 +8,10 @@ import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-vali
 import { Input } from '../input';
 
 export function PlayerCard() {
-  const { register } = useFormContext<RankCalculatorSchema>();
+  const {
+    register,
+    formState: { defaultValues },
+  } = useFormContext<RankCalculatorSchema>();
   const playerName = useWatch<RankCalculatorSchema, 'playerName'>({
     name: 'playerName',
   });
@@ -61,7 +64,12 @@ export function PlayerCard() {
           Proof Link
         </Text>
         <Flex asChild justify="end" flexShrink="1" flexGrow="1" flexBasis="0">
-          <Input {...register('proofLink')} size="1" hasError={false} />
+          <Input
+            {...register('proofLink')}
+            defaultValue={defaultValues?.proofLink ?? ''}
+            size="1"
+            hasError={false}
+          />
         </Flex>
       </Flex>
     </DataCard.Root>

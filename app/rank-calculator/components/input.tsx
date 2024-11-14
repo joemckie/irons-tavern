@@ -9,7 +9,7 @@ interface InputProps extends TextField.RootProps {
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ children, hasError, leftIcon, rightIcon, ...props }, forwardedRef) => (
+  ({ hasError, leftIcon, rightIcon, ...props }, forwardedRef) => (
     <TextField.Root
       {...props}
       onKeyDown={disableEnterSubmission}
@@ -17,9 +17,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       role="textbox"
       color={hasError ? 'red' : undefined}
     >
-      {leftIcon && <TextField.Slot>{leftIcon}</TextField.Slot>}
-      {children}
-      {rightIcon && <TextField.Slot>{rightIcon}</TextField.Slot>}
+      {leftIcon && <TextField.Slot side="left">{leftIcon}</TextField.Slot>}
+      {rightIcon && <TextField.Slot side="right">{rightIcon}</TextField.Slot>}
     </TextField.Root>
   ),
 );

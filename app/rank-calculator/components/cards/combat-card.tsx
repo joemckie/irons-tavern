@@ -1,5 +1,6 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 import { CombatAchievementTier } from '@/app/schemas/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
@@ -8,6 +9,7 @@ import { useCombatPointCalculator } from '../../hooks/point-calculator/combat/us
 import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function CombatCard() {
   const {
@@ -17,6 +19,9 @@ export function CombatCard() {
     combatAchievementTierPoints,
     ehbPoints,
   } = useCombatPointCalculator();
+  const {
+    formState: { defaultValues },
+  } = useFormContext<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -65,6 +70,7 @@ export function CombatCard() {
             name="ehb"
             type="number"
             required
+            defaultValue={defaultValues?.ehb}
           />
         }
         right={

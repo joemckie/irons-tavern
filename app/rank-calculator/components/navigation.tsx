@@ -1,5 +1,6 @@
+import { startTransition } from 'react';
 import { Box, Button, Flex, Text } from '@radix-ui/themes';
-import { useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRank } from '../hooks/use-rank';
@@ -10,7 +11,10 @@ import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validat
 import { getRankImageUrl } from '../utils/get-rank-image-url';
 
 export function Navigation() {
-  const { isValid, isSubmitting } = useFormState<RankCalculatorSchema>();
+  const {
+    reset,
+    formState: { isValid, isSubmitting, isDirty },
+  } = useFormContext<RankCalculatorSchema>();
   const { pointsAwarded } = useRankCalculator();
   const { rank } = useRank(pointsAwarded);
   const rankName = getRankName(rank);
@@ -61,6 +65,19 @@ export function Navigation() {
           <Flex gap="2">
             <Button asChild variant="outline" color="gray">
               <Link href="/rank-calculator">Back</Link>
+            </Button>
+            <Button
+              variant="outline"
+              color="gray"
+              type="button"
+              disabled={!isDirty}
+              onClick={() => {
+                startTransition(() => {
+                  reset();
+                });
+              }}
+            >
+              Reset
             </Button>
             <Button
               role="button"

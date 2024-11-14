@@ -4,7 +4,7 @@ import { startTransition, useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { disableEnterSubmission } from '../utils/disable-enter-submission';
+import { Input } from './input';
 
 interface EditableTextProps extends TextField.RootProps {
   name: string;
@@ -32,10 +32,10 @@ export function EditableText({
 
   if (isEditing) {
     return (
-      <TextField.Root
+      <Input
+        hasError={false}
         size="1"
         aria-label={ariaLabel}
-        role="textbox"
         {...field}
         {...restProps}
         onChange={(e) => {
@@ -43,10 +43,7 @@ export function EditableText({
             field.onChange(e);
           });
         }}
-        onKeyDown={disableEnterSubmission}
-        autoFocus
-      >
-        <TextField.Slot side="right">
+        rightIcon={
           <IconButton
             size="1"
             variant="ghost"
@@ -54,8 +51,9 @@ export function EditableText({
           >
             <CheckIcon height="14" width="14" />
           </IconButton>
-        </TextField.Slot>
-      </TextField.Root>
+        }
+        autoFocus
+      />
     );
   }
 

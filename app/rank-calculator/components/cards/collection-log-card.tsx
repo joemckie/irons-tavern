@@ -1,11 +1,13 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
+import { useFormContext } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
 import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
+import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function CollectionLogCard() {
   const {
@@ -14,6 +16,9 @@ export function CollectionLogCard() {
     pointsRemaining,
     collectionLogSlotPoints,
   } = useCollectionLogPointCalculator();
+  const {
+    formState: { defaultValues },
+  } = useFormContext<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -66,6 +71,7 @@ export function CollectionLogCard() {
             name="collectionLogCount"
             type="number"
             required
+            defaultValue={defaultValues?.collectionLogCount}
           />
         }
         right={
