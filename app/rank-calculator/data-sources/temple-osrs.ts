@@ -16,7 +16,7 @@ export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
 
     return TempleOSRSPlayerStats.parse(await playerStatsResponse.json()).data;
   } catch {
-    Sentry.captureMessage('TempleOSRS player stats not found');
+    Sentry.captureMessage('TempleOSRS player stats not found', 'info');
 
     return null;
   }

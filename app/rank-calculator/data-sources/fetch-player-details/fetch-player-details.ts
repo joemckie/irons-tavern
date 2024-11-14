@@ -71,6 +71,8 @@ export async function fetchPlayerDetails(
     throw new Error('Unable to find player record');
   }
 
+  Sentry.setTag('has-player-record', true);
+
   if (playerRecord.isNameInvalid) {
     redirect(`/rank-calculator/players/edit/${player}`);
   }
@@ -109,6 +111,14 @@ export async function fetchPlayerDetails(
     const hasThirdPartyData = Boolean(
       wikiSyncData || collectionLogData || templeData,
     );
+
+    Sentry.setTags({
+      'has-wikisync-data': !!wikiSyncData,
+      'has-collection-log-data': !!collectionLogData,
+      'has-temple-data': !!templeData,
+      'has-previous-submission': !!previousSubmission,
+      'has-third-party-data': hasThirdPartyData,
+    });
 
     if (!hasThirdPartyData && !previousSubmission) {
       return {
