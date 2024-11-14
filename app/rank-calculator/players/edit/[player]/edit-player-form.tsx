@@ -66,7 +66,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
 
   const {
     execute: executeFetchPlayerJoinDate,
-    isExecuting: isFetchPlayerJoinDateExecuting,
+    isIdle: isFetchPlayerJoinDateIdle,
   } = useAction(fetchPlayerJoinDateAction, {
     onSettled({ result }) {
       if (result.data) {
@@ -124,7 +124,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
-                    disabled={isFetchPlayerJoinDateExecuting}
+                    disabled={!isFetchPlayerJoinDateIdle}
                     name="joinDate"
                     required
                     placeholderText="dd/mm/yyyy"
@@ -135,9 +135,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                         hasError={!!errors.joinDate}
                         leftIcon={<CalendarIcon />}
                         rightIcon={
-                          isFetchPlayerJoinDateExecuting ? (
-                            <Spinner />
-                          ) : undefined
+                          isFetchPlayerJoinDateIdle ? undefined : <Spinner />
                         }
                       />
                     }
