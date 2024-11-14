@@ -270,7 +270,7 @@ it('handles punctuation in entity names when determining acquiry status', async 
     generateRedisMock(player, {
       previousSubmission: {
         acquiredItems: {
-          "Vet'ion jr.": true,
+          'Vetion jr': true,
         },
       } satisfies DeepPartial<RankCalculatorSchema>,
     }),
@@ -283,6 +283,15 @@ it('handles punctuation in entity names when determining acquiry status', async 
             ...collectionLog.midGamePlayerFixture.collectionLog,
             tabs: {
               Bosses: {
+                'Fortis Colosseum': {
+                  items: [
+                    {
+                      name: "Dizana's quiver (uncharged)",
+                      quantity: 4,
+                      obtained: true,
+                    },
+                  ],
+                },
                 'Alchemical Hydra': {
                   items: [
                     {
@@ -321,6 +330,7 @@ it('handles punctuation in entity names when determining acquiry status', async 
     'Brimstone ring': true,
     'Hydras claw': true,
     'Vetion jr': true,
+    'Dizanas quiver': true,
   });
 });
 

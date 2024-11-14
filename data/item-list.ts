@@ -584,6 +584,7 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: "Dizana's quiver",
+        clogName: "Dizana's quiver (uncharged)",
         points: 3500,
       }),
       manualItem({
