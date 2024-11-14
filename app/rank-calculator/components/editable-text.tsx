@@ -4,6 +4,7 @@ import { startTransition, useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { disableEnterSubmission } from '../utils/disable-enter-submission';
 
 interface EditableTextProps extends TextField.RootProps {
   name: string;
@@ -42,6 +43,7 @@ export function EditableText({
             field.onChange(e);
           });
         }}
+        onKeyDown={disableEnterSubmission}
         autoFocus
       >
         <TextField.Slot side="right">
