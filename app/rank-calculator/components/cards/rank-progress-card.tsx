@@ -25,12 +25,12 @@ export function RankProgressCard() {
   const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
 
   useEffect(() => {
-    if (rankName !== getValues('rank')) {
-      setValue('rank', rankName, {
+    if (rank !== getValues('rank')) {
+      setValue('rank', rank, {
         shouldDirty: true,
       });
     }
-  }, [rankName, setValue, getValues]);
+  }, [rank, setValue, getValues]);
 
   useEffect(() => {
     setValue('points', pointsAwarded, {
@@ -41,8 +41,8 @@ export function RankProgressCard() {
   return (
     <>
       <input
-        {...register('rank', { value: rankName })}
-        defaultValue={rankName}
+        {...register('rank', { value: rank })}
+        defaultValue={rank}
         type="hidden"
       />
       <input
