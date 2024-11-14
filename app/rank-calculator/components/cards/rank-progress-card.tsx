@@ -10,6 +10,7 @@ import { getRankName } from '../../utils/get-rank-name';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankStructureInfoModal } from '../rank-structure-info-modal';
+import { getRankImageUrl } from '../../utils/get-rank-image-url';
 
 export function RankProgressCard() {
   const {
@@ -89,7 +90,7 @@ export function RankProgressCard() {
               </Text>
               <Image
                 alt={`${rank} icon`}
-                src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
+                src={getRankImageUrl(rank)}
                 width={22}
                 height={22}
               />
@@ -98,7 +99,7 @@ export function RankProgressCard() {
               {nextRank && (
                 <Image
                   alt={`${nextRank} icon`}
-                  src={`/icons/${nextRank.replaceAll(' ', '_').toLowerCase()}.png`}
+                  src={getRankImageUrl(nextRank)}
                   height={22}
                   width={22}
                 />

@@ -11,6 +11,8 @@ import { authActionClient } from '@/app/safe-action';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
+import { getRankName } from '../utils/get-rank-name';
+import { getRankImageUrl } from '../utils/get-rank-image-url';
 
 export const submitRankCalculatorAction = authActionClient
   .metadata({
@@ -52,12 +54,12 @@ export const submitRankCalculatorAction = authActionClient
             {
               title: `${data.playerName} rank application`,
               thumbnail: {
-                url: 'https://irons-tavern-inactivity-checker.vercel.app/icons/owner.png',
+                url: getRankImageUrl(rank, true),
               },
               fields: [
                 {
                   name: 'Rank',
-                  value: rank,
+                  value: getRankName(rank),
                   inline: true,
                 },
                 {

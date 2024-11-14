@@ -6,6 +6,7 @@ import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator
 import { getRankName } from '../utils/get-rank-name';
 import { formatNumber } from '../utils/format-number';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { getRankImageUrl } from '../utils/get-rank-image-url';
 
 export function Navigation() {
   const { isValid, isSubmitting } = useFormState<RankCalculatorSchema>();
@@ -41,7 +42,7 @@ export function Navigation() {
           <Flex direction="row" gap="4" align="center">
             <Image
               alt={`${rank} icon`}
-              src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
+              src={getRankImageUrl(rank)}
               width={22}
               height={22}
             />

@@ -6,6 +6,7 @@ import { constants } from '@/config/constants';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
+import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
@@ -109,7 +110,7 @@ export default async function InactivityCheckerPage() {
                       {rank && (
                         <Image
                           alt={`${rank} icon`}
-                          src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
+                          src={getRankImageUrl(rank)}
                           height={24}
                           width={24}
                         />

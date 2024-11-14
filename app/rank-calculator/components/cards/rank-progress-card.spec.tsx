@@ -6,6 +6,7 @@ import { rankExpectedValues } from '@/fixtures/rank-calculator/rank-expected-val
 import { RankProgressCard } from './rank-progress-card';
 import { getRankName } from '../../utils/get-rank-name';
 import { formatNumber } from '../../utils/format-number';
+import { getRankImageUrl } from '../../utils/get-rank-image-url';
 
 generateScaledPlayerTests(
   formDataMocks,
@@ -49,9 +50,7 @@ generateScaledPlayerTests(
       const matcher = new RegExp(`^${expected.rank} icon$`);
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(
-          `${expected.rank.replaceAll(' ', '_').toLowerCase()}.png`,
-        ),
+        expect.stringContaining(getRankImageUrl(expected.rank)),
       );
     });
 
@@ -65,9 +64,7 @@ generateScaledPlayerTests(
       const matcher = new RegExp(`^${expected.nextRank} icon$`);
       expect(screen.getByAltText(matcher)).toHaveAttribute(
         'src',
-        expect.stringContaining(
-          `${expected.nextRank.replaceAll(' ', '_').toLowerCase()}.png`,
-        ),
+        expect.stringContaining(getRankImageUrl(expected.nextRank)),
       );
     });
 

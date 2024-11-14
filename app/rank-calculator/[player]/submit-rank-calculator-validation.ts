@@ -8,6 +8,7 @@ import {
 } from '@/app/schemas/osrs';
 import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/app/schemas/rank-calculator';
+import { Rank } from '@/config/enums';
 
 export const RankCalculatorSchema = zfd.formData({
   acquiredItems: z.record(
@@ -23,7 +24,7 @@ export const RankCalculatorSchema = zfd.formData({
   totalLevel: z.number().min(skillsCount),
   playerName: PlayerName,
   rankStructure: RankStructure,
-  rank: z.string(),
+  rank: Rank,
   points: z.number().nonnegative(),
   proofLink: z.union([z.string().url().nullish(), z.literal('')]),
 });

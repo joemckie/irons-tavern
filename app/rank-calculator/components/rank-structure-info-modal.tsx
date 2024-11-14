@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { getRankName } from '../utils/get-rank-name';
 import { formatNumber } from '../utils/format-number';
+import { getRankImageUrl } from '../utils/get-rank-image-url';
 
 export function RankStructureInfoModal() {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,7 @@ export function RankStructureInfoModal() {
                     <Table.Cell>
                       <Image
                         alt={`${rank} icon`}
-                        src={`/icons/${rank.replaceAll(' ', '_').toLowerCase()}.png`}
+                        src={getRankImageUrl(rank as Rank)}
                         height={22}
                         width={22}
                       />
