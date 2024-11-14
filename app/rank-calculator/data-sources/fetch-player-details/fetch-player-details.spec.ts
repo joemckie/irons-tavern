@@ -204,7 +204,7 @@ it('returns the highest achievement diary values from the previous submission an
   });
 });
 
-it('merges the acquired items from the previous submission and API data', async () => {
+fit('merges the acquired items from the previous submission and API data', async () => {
   const { player } = setup();
 
   server.use(
@@ -213,6 +213,7 @@ it('merges the acquired items from the previous submission and API data', async 
         acquiredItems: {
           'Bandos hilt': true,
           'Bandos boots': false,
+          "Vet'ion jr.": true,
         },
       } satisfies DeepPartial<RankCalculatorSchema>,
     }),
@@ -267,6 +268,7 @@ it('merges the acquired items from the previous submission and API data', async 
     'Bandos chestplate': true,
     'Bandos boots': true,
     'Bandos hilt': true,
+    'Vetion jr': true,
   });
 });
 
