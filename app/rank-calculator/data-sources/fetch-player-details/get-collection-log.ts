@@ -9,8 +9,8 @@ export async function getCollectionLog(player: string) {
     );
 
     return CollectionLogResponse.parse(await collectionLogResponse.json());
-  } catch (error) {
-    Sentry.captureException(error);
+  } catch {
+    Sentry.captureMessage('Collection Log data not found');
 
     return null;
   }

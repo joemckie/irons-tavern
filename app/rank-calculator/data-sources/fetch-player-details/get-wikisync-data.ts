@@ -15,8 +15,8 @@ export async function getWikiSyncData(player: string) {
     );
 
     return WikiSyncResponse.parse(await wikiSyncResponse.json());
-  } catch (error) {
-    Sentry.captureException(error);
+  } catch {
+    Sentry.captureMessage('WikiSync data not found');
 
     return null;
   }
