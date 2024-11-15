@@ -26,6 +26,7 @@ export async function fetchPlayerMeta(player: string) {
     return {
       joinDate,
       rsn: playerMeta?.rsn ?? player,
+      rank: playerMeta?.rank,
     };
   } catch (error) {
     Sentry.captureException(error);
