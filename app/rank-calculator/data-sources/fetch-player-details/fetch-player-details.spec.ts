@@ -25,6 +25,7 @@ import {
 } from '@/config/redis';
 import { RedisPipelineJsonGetResponse } from '@/types/database';
 import { Player } from '@/app/schemas/player';
+import { Rank } from '@/config/enums';
 import { emptyResponse, fetchPlayerDetails } from './fetch-player-details';
 import { ClanMember } from '../../../api/update-member-list/route';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
@@ -681,6 +682,29 @@ it('returns the join date from the account record', async () => {
   >;
 
   expect(result.data.joinDate).toEqual(new Date('2020-01-01').toISOString());
+});
+
+it('returns the current rank from the account record', async () => {
+  const { player } = setup();
+
+  server.use(
+    generateRedisMock(player, {
+      accountRecord: {
+        joinDate: new Date(),
+        rsn: player,
+        rank: Rank.enum.Owner,
+      },
+      previousSubmission: merge<
+        unknown,
+        Omit<RankCalculatorSchema, 'rank' | 'points'>
+      >({}, formData.midGamePlayer),
+    }),
+  );
+  const result = (await fetchPlayerDetails(player)) as ApiSuccess<
+    Omit<RankCalculatorSchema, 'rank' | 'points'>
+  >;
+
+  expect(result.data.currentRank).toEqual('Owner');
 });
 
 it('returns the player name from the account record', async () => {

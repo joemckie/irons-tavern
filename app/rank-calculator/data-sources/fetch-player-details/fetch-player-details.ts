@@ -4,7 +4,11 @@ import {
   CollectionLogItem,
 } from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
-import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
+import {
+  rankSubmissionStatusKey,
+  userOSRSAccountsKey,
+  userRankSubmissionsKey,
+} from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/data-sources/temple-osrs';
@@ -13,6 +17,7 @@ import { auth } from '@/auth';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { constants } from '@/config/constants';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { redirect } from 'next/navigation';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
@@ -25,6 +30,11 @@ import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { validatePlayerExists } from '../../players/validation/player-validation';
+
+interface PlayerDetailsResponse
+  extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
+  previousSubmissionStatus: RankSubmissionStatus | null;
+}
 
 export const emptyResponse = {
   achievementDiaries: {
@@ -52,11 +62,12 @@ export const emptyResponse = {
   playerName: '',
   rankStructure: 'Standard',
   proofLink: null,
-} satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  previousSubmissionStatus: null,
+} satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
   player: string,
-): Promise<ApiResponse<Omit<RankCalculatorSchema, 'rank' | 'points'>>> {
+): Promise<ApiResponse<PlayerDetailsResponse>> {
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -98,16 +109,26 @@ export async function fetchPlayerDetails(
       0,
     );
 
-    const { joinDate, rsn } = playerRecord;
-    const [wikiSyncData, collectionLogData, templeData, previousSubmission] =
-      await Promise.all([
-        getWikiSyncData(player),
-        getCollectionLog(player),
-        fetchTemplePlayerStats(player, true),
-        latestRankSubmissionId
-          ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
-          : null,
-      ]);
+    const { joinDate, rsn, rank: currentRank } = playerRecord;
+    const [
+      wikiSyncData,
+      collectionLogData,
+      templeData,
+      previousSubmission,
+      previousSubmissionStatus,
+    ] = await Promise.all([
+      getWikiSyncData(player),
+      getCollectionLog(player),
+      fetchTemplePlayerStats(player, true),
+      latestRankSubmissionId
+        ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
+        : null,
+      latestRankSubmissionId
+        ? redis.get<RankSubmissionStatus>(
+            rankSubmissionStatusKey(latestRankSubmissionId),
+          )
+        : null,
+    ]);
 
     const hasThirdPartyData = Boolean(
       wikiSyncData || collectionLogData || templeData,
@@ -240,6 +261,8 @@ export async function fetchPlayerDetails(
         playerName: rsn,
         rankStructure: previousSubmission?.rankStructure ?? 'Standard',
         proofLink,
+        currentRank,
+        previousSubmissionStatus,
       },
     };
   } catch (error) {
