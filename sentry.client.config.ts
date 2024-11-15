@@ -3,6 +3,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
+import * as Spotlight from '@spotlightjs/spotlight';
 
 Sentry.init({
   dsn: 'https://77f5ba1f2b4e815c44752e252807996a@o4508227878191104.ingest.de.sentry.io/4508227880026192',
@@ -31,3 +32,7 @@ Sentry.init({
 
   enabled: process.env.NODE_ENV === 'production',
 });
+
+if (process.env.NODE_ENV === 'development') {
+  Spotlight.init();
+}

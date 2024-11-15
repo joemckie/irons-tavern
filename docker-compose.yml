@@ -1,4 +1,8 @@
 services:
+  spotlight:
+    image: ghcr.io/getsentry/spotlight:latest
+    ports:
+      - '8969:8969/tcp'
   redis:
     image: redis/redis-stack
     ports:

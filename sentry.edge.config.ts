@@ -15,4 +15,6 @@ Sentry.init({
   debug: false,
 
   enabled: process.env.NODE_ENV === 'production',
+
+  spotlight: process.env.NODE_ENV === 'development',
 });

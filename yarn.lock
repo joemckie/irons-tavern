@@ -3555,6 +3555,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@spotlightjs/overlay@npm:2.6.0":
+  version: 2.6.0
+  resolution: "@spotlightjs/overlay@npm:2.6.0"
+  checksum: 10c0/b4c08009bcf922b366289be497b21fc20c726d654c467129580c659335fa84958e6739b1df37afceec609d11bd09392ea986a25cf8af6b5c637a5afc181694d2
+  languageName: node
+  linkType: hard
+
+"@spotlightjs/sidecar@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@spotlightjs/sidecar@npm:1.8.0"
+  dependencies:
+    kleur: "npm:^4.1.5"
+    launch-editor: "npm:^2.8.0"
+    source-map: "npm:^0.7.4"
+  bin:
+    spotlight-sidecar: server.js
+  checksum: 10c0/bd7196787869192ca0e6d475e65fe270513903cf0508b09b6c8ae5299aa1a00f88590babf3a71d5f2680bbdcf7d1da48e64f0ba375836a9bd86a12806c77f035
+  languageName: node
+  linkType: hard
+
+"@spotlightjs/spotlight@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@spotlightjs/spotlight@npm:2.5.0"
+  dependencies:
+    "@spotlightjs/overlay": "npm:2.6.0"
+    "@spotlightjs/sidecar": "npm:1.8.0"
+    import-meta-resolve: "npm:^4.1.0"
+  bin:
+    spotlight: bin/run.js
+  checksum: 10c0/ae89df8ccb1e60f18ae9b872278e638b80dd524375111e1598211e129421335bfecf75211256674f2381ca6076d370e8da4271bd9fea6753ba59b1b5a9baf2c3
+  languageName: node
+  linkType: hard
+
 "@stylistic/eslint-plugin@npm:^2.6.4":
   version: 2.10.1
   resolution: "@stylistic/eslint-plugin@npm:2.10.1"
@@ -7210,6 +7243,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"import-meta-resolve@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "import-meta-resolve@npm:4.1.0"
+  checksum: 10c0/42f3284b0460635ddf105c4ad99c6716099c3ce76702602290ad5cbbcd295700cbc04e4bdf47bacf9e3f1a4cec2e1ff887dabc20458bef398f9de22ddff45ef5
+  languageName: node
+  linkType: hard
+
 "imurmurhash@npm:^0.1.4":
   version: 0.1.4
   resolution: "imurmurhash@npm:0.1.4"
@@ -7230,6 +7270,7 @@ __metadata:
     "@radix-ui/react-icons": "npm:^1.3.0"
     "@radix-ui/themes": "npm:^3.1.4"
     "@sentry/nextjs": "npm:^8"
+    "@spotlightjs/spotlight": "npm:^2.5.0"
     "@stylistic/eslint-plugin": "npm:^2.6.4"
     "@tanstack/react-query": "npm:^5.52.1"
     "@testing-library/cypress": "npm:^10.0.2"
@@ -8538,6 +8579,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kleur@npm:^4.1.5":
+  version: 4.1.5
+  resolution: "kleur@npm:4.1.5"
+  checksum: 10c0/e9de6cb49657b6fa70ba2d1448fd3d691a5c4370d8f7bbf1c2f64c24d461270f2117e1b0afe8cb3114f13bbd8e51de158c2a224953960331904e636a5e4c0f2a
+  languageName: node
+  linkType: hard
+
 "language-subtag-registry@npm:^0.3.20":
   version: 0.3.23
   resolution: "language-subtag-registry@npm:0.3.23"
@@ -8551,6 +8599,16 @@ __metadata:
   dependencies:
     language-subtag-registry: "npm:^0.3.20"
   checksum: 10c0/9ab911213c4bd8bd583c850201c17794e52cb0660d1ab6e32558aadc8324abebf6844e46f92b80a5d600d0fbba7eface2c207bfaf270a1c7fd539e4c3a880bff
+  languageName: node
+  linkType: hard
+
+"launch-editor@npm:^2.8.0":
+  version: 2.9.1
+  resolution: "launch-editor@npm:2.9.1"
+  dependencies:
+    picocolors: "npm:^1.0.0"
+    shell-quote: "npm:^1.8.1"
+  checksum: 10c0/891f1d136ed8e4ea12e16c196a0d2e07f23c7b983e3ab532b2be1775fb244909581507cce97c50f9d5ca92680b53e4a75c72ddcf20184aa6c4da6ebbe87703f5
   languageName: node
   linkType: hard
 
@@ -10666,6 +10724,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shell-quote@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "shell-quote@npm:1.8.1"
+  checksum: 10c0/8cec6fd827bad74d0a49347057d40dfea1e01f12a6123bf82c4649f3ef152fc2bc6d6176e6376bffcd205d9d0ccb4f1f9acae889384d20baff92186f01ea455a
+  languageName: node
+  linkType: hard
+
 "shimmer@npm:^1.2.1":
   version: 1.2.1
   resolution: "shimmer@npm:1.2.1"
@@ -10793,6 +10858,13 @@ __metadata:
   version: 0.6.1
   resolution: "source-map@npm:0.6.1"
   checksum: 10c0/ab55398007c5e5532957cb0beee2368529618ac0ab372d789806f5718123cc4367d57de3904b4e6a4170eb5a0b0f41373066d02ca0735a0c4d75c7d328d3e011
+  languageName: node
+  linkType: hard
+
+"source-map@npm:^0.7.4":
+  version: 0.7.4
+  resolution: "source-map@npm:0.7.4"
+  checksum: 10c0/dc0cf3768fe23c345ea8760487f8c97ef6fca8a73c83cd7c9bf2fde8bc2c34adb9c0824d6feb14bc4f9e37fb522e18af621543f1289038a66ac7586da29aa7dc
   languageName: node
   linkType: hard
 
