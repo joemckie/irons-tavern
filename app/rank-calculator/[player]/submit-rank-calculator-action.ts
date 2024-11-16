@@ -39,18 +39,13 @@ export const submitRankCalculatorAction = authActionClient
       ctx: { userId },
       bindArgsParsedInputs: [currentRank],
     }) => {
-      const { channelId } = constants.discord;
-
-      if (!channelId) {
-        throw new Error('No discord channel ID provided');
-      }
-
       if (rank === currentRank) {
         returnValidationErrors(RankCalculatorSchema, {
           _errors: ['You already have this rank!'],
         });
       }
 
+      const { channelId } = constants.discord;
       const submissionId = randomUUID();
       const { id: discordMessageId } = await sendDiscordMessage(
         {

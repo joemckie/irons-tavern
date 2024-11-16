@@ -31,10 +31,6 @@ export const config = {
     async jwt({ profile, token, account }) {
       const { guildId } = constants.discord;
 
-      if (!guildId) {
-        throw new Error('No Discord guild ID provided');
-      }
-
       if (profile?.id) {
         token.id = profile.id;
       }
@@ -61,8 +57,6 @@ export const config = {
           Sentry.captureException(error);
         }
       }
-
-      throw new Error();
 
       return token;
     },

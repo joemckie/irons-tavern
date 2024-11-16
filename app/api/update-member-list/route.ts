@@ -16,14 +16,6 @@ interface ClanExport {
 }
 
 export async function POST(request: NextRequest) {
-  if (
-    !constants.temple.groupId ||
-    !constants.temple.groupKey ||
-    !constants.temple.groupName
-  ) {
-    throw new Error('Temple group key or ID not provided');
-  }
-
   const body: ClanExport = await request.json();
   const { members, leaders } = body.clanMemberMaps.reduce(
     (acc, member) => {

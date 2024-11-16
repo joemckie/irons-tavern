@@ -1,4 +1,43 @@
-export const constants = {
+import { z } from 'zod';
+import { Rank } from './enums';
+
+const ConfigSchema = z.object({
+  collectionLogBaseUrl: z.literal('https://api.collectionlog.net'),
+  publicUrl: z.string(),
+  zeplo: z.object({
+    apiKey: z.string(),
+    url: z.string(),
+  }),
+  temple: z.object({
+    groupName: z.string(),
+    groupId: z.string(),
+    groupKey: z.string(),
+    baseUrl: z.literal('https://templeosrs.com'),
+    privateGroup: z.string(),
+  }),
+  ranks: z.object({
+    leaders: z.array(Rank).nonempty(),
+    unranked: Rank,
+  }),
+  wiki: z.object({
+    baseUrl: z.literal('https://oldschool.runescape.wiki'),
+  }),
+  wikiSync: z.object({
+    baseUrl: z.literal('https://sync.runescape.wiki'),
+  }),
+  redisUrl: z.string(),
+  discord: z.object({
+    baseUrl: z.literal('https://discord.com/api/v10'),
+    clientId: z.string(),
+    clientSecret: z.string(),
+    token: z.string(),
+    guildId: z.string(),
+    channelId: z.string(),
+  }),
+  collectionLogTotal: z.literal(1561),
+});
+
+export const constants = ConfigSchema.parse({
   collectionLogBaseUrl: 'https://api.collectionlog.net' as const,
   publicUrl: process.env.NEXT_PUBLIC_URL,
   zeplo: {
@@ -27,10 +66,9 @@ export const constants = {
     baseUrl: 'https://discord.com/api/v10' as const,
     clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
-    redirectUri: encodeURI(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI ?? ''),
     token: process.env.DISCORD_TOKEN,
     guildId: process.env.DISCORD_GUILD_ID,
     channelId: process.env.DISCORD_CHANNEL_ID,
   },
   collectionLogTotal: 1561 as const,
-};
+});
