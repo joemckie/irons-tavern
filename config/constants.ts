@@ -28,8 +28,6 @@ const ConfigSchema = z.object({
   redisUrl: z.string(),
   discord: z.object({
     baseUrl: z.literal('https://discord.com/api/v10'),
-    clientId: z.string(),
-    clientSecret: z.string(),
     token: z.string(),
     guildId: z.string(),
     channelId: z.string(),
@@ -64,8 +62,6 @@ export const constants = ConfigSchema.parse({
   redisUrl: process.env.KV_REST_API_URL,
   discord: {
     baseUrl: 'https://discord.com/api/v10' as const,
-    clientId: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
-    clientSecret: process.env.DISCORD_CLIENT_SECRET,
     token: process.env.DISCORD_TOKEN,
     guildId: process.env.DISCORD_GUILD_ID,
     channelId: process.env.DISCORD_CHANNEL_ID,
