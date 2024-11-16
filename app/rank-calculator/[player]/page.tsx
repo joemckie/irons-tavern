@@ -22,5 +22,7 @@ export default async function RankCalculatorPage({
     return <p>An error occurred</p>;
   }
 
-  return <FormWrapper formData={playerDetails.data} />;
+  const { currentRank, ...formData } = playerDetails.data;
+
+  return <FormWrapper formData={formData} currentRank={currentRank} />;
 }

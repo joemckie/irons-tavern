@@ -17,6 +17,8 @@ import { authActionClient } from '@/app/safe-action';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { discord } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
+import { Rank } from '@/config/enums';
+import { returnValidationErrors } from 'next-safe-action';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
@@ -27,11 +29,24 @@ export const submitRankCalculatorAction = authActionClient
   .metadata({
     actionName: 'submit-rank-calculator',
   })
+  .bindArgsSchemas<[currentRank: Zod.ZodOptional<typeof Rank>]>([
+    Rank.optional(),
+  ])
   .schema(RankCalculatorSchema)
   .action(
-    async ({ parsedInput: { rank, points, ...data }, ctx: { userId } }) => {
+    async ({
+      parsedInput: { rank, points, ...data },
+      ctx: { userId },
+      bindArgsParsedInputs: [currentRank],
+    }) => {
       if (!process.env.DISCORD_CHANNEL_ID) {
         throw new Error('No discord channel ID provided');
+      }
+
+      if (rank === currentRank) {
+        returnValidationErrors(RankCalculatorSchema, {
+          _errors: ['You already have this rank!'],
+        });
       }
 
       const submissionId = randomUUID();

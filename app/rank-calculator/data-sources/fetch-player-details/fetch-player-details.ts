@@ -14,6 +14,7 @@ import { ApiResponse } from '@/types/api';
 import { fetchTemplePlayerStats } from '@/app/rank-calculator/data-sources/temple-osrs';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/auth';
+import { Rank } from '@/config/enums';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { constants } from '@/config/constants';
@@ -34,6 +35,7 @@ import { validatePlayerExists } from '../../players/validation/player-validation
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
   previousSubmissionStatus: RankSubmissionStatus | null;
+  currentRank?: Rank;
 }
 
 export const emptyResponse = {
