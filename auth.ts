@@ -3,7 +3,8 @@ import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import * as Sentry from '@sentry/nextjs';
 import { APIGuild, Routes } from 'discord-api-types/v10';
-import { discord } from './discord';
+import { discordUserClient } from './discord';
+import { constants } from './config/constants';
 
 declare module 'next-auth' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -27,20 +28,41 @@ export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   callbacks: {
     /* eslint-disable no-param-reassign */
-    async jwt({ profile, token }) {
+    async jwt({ profile, token, account }) {
+      const { guildId } = constants.discord;
+
+      if (!guildId) {
+        throw new Error('No Discord guild ID provided');
+      }
+
       if (profile?.id) {
         token.id = profile.id;
-
-        const response = (await discord.get(Routes.userGuilds())) as APIGuild[];
-        const { permissions } =
-          response.find(({ id }) => id === process.env.DISCORD_GUILD_ID) ?? {};
-
-        if (!permissions) {
-          throw new Error('No permissions found for user');
-        }
-
-        token.permissions = permissions;
       }
+
+      if (account?.access_token) {
+        try {
+          const userGuildsResponse = (await discordUserClient(
+            account.access_token,
+          ).get(Routes.userGuilds(), {
+            authPrefix: 'Bearer',
+          })) as APIGuild[];
+
+          const { permissions } =
+            userGuildsResponse.find(({ id }) => id === guildId) ?? {};
+
+          if (!permissions) {
+            throw new Error('No permissions found for user');
+          }
+
+          token.permissions = permissions;
+        } catch (error) {
+          console.error(error);
+
+          Sentry.captureException(error);
+        }
+      }
+
+      throw new Error();
 
       return token;
     },
@@ -67,7 +89,7 @@ export const config = {
   providers: [
     Discord<DiscordProfile>({
       authorization:
-        'https://discord.com/api/oauth2/authorize?scope=identify+guilds.members.read',
+        'https://discord.com/api/oauth2/authorize?scope=identify+guilds+guilds.members.read',
     }),
   ],
 } satisfies NextAuthConfig;

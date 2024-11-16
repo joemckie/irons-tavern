@@ -29,6 +29,8 @@ export const constants = {
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     redirectUri: encodeURI(process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI ?? ''),
     token: process.env.DISCORD_TOKEN,
+    guildId: process.env.DISCORD_GUILD_ID,
+    channelId: process.env.DISCORD_CHANNEL_ID,
   },
   collectionLogTotal: 1561 as const,
 };

@@ -15,7 +15,7 @@ import { format } from 'date-fns';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { discord } from '@/discord';
+import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { returnValidationErrors } from 'next-safe-action';
@@ -39,7 +39,9 @@ export const submitRankCalculatorAction = authActionClient
       ctx: { userId },
       bindArgsParsedInputs: [currentRank],
     }) => {
-      if (!process.env.DISCORD_CHANNEL_ID) {
+      const { channelId } = constants.discord;
+
+      if (!channelId) {
         throw new Error('No discord channel ID provided');
       }
 
@@ -97,7 +99,7 @@ export const submitRankCalculatorAction = authActionClient
             },
           ],
         },
-        process.env.DISCORD_CHANNEL_ID,
+        channelId,
       );
 
       const formattedData = {
@@ -132,11 +134,8 @@ export const submitRankCalculatorAction = authActionClient
       const submissionResult = await submissionTransaction.exec();
 
       if (!submissionResult) {
-        await discord.delete(
-          Routes.channelMessage(
-            process.env.DISCORD_CHANNEL_ID,
-            discordMessageId,
-          ),
+        await discordBotClient.delete(
+          Routes.channelMessage(channelId, discordMessageId),
         );
 
         return {
