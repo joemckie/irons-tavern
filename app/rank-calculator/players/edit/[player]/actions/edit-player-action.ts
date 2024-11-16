@@ -6,6 +6,7 @@ import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { returnValidationErrors } from 'next-safe-action';
 import { Player, PlayerName } from '@/app/schemas/player';
+import { Rank } from '@/config/enums';
 import { fetchPlayerMeta } from '../../../../data-sources/fetch-player-meta';
 import { fetchTemplePlayerStats } from '../../../../data-sources/temple-osrs';
 import { EditPlayerSchema } from './edit-player-schema';
@@ -16,11 +17,13 @@ export const editPlayerAction = authActionClient
     actionName: 'edit-player',
   })
   .schema(EditPlayerSchema)
-  .bindArgsSchemas<[previousPlayerName: z.ZodString]>([PlayerName])
+  .bindArgsSchemas<
+    [previousPlayerName: z.ZodString, currentRank: Zod.ZodOptional<typeof Rank>]
+  >([PlayerName, Rank.optional()])
   .action(
     async ({
       parsedInput: { joinDate, playerName },
-      bindArgsParsedInputs: [previousPlayerName],
+      bindArgsParsedInputs: [previousPlayerName, currentRank],
       ctx: { userId },
     }) => {
       if (previousPlayerName !== playerName) {
@@ -76,6 +79,7 @@ export const editPlayerAction = authActionClient
         [maybeFormattedPlayerName.toLowerCase()]: {
           joinDate,
           rsn: maybeFormattedPlayerName,
+          rank: currentRank,
         },
       });
 
