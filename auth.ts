@@ -58,7 +58,11 @@ export const config = {
   },
   /* eslint-enable no-param-reassign */
   logger: {
-    error: Sentry.captureException,
+    error: (error) => {
+      console.error(error);
+
+      Sentry.captureException(error);
+    },
   },
   providers: [
     Discord<DiscordProfile>({
