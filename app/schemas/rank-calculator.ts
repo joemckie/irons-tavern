@@ -41,3 +41,7 @@ export const achievementDiaryTierPoints = {
     return 1000;
   },
 } satisfies Record<DiaryTier, number>;
+
+export const RankSubmissionStatus = z.enum(['Pending', 'Accepted', 'Rejected']);
+
+export type RankSubmissionStatus = z.infer<typeof RankSubmissionStatus>;
