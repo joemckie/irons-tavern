@@ -1,20 +1,17 @@
-import { startTransition } from 'react';
-import { Box, Button, Flex, Text } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
+import { ReactNode } from 'react';
+import { Box, Flex, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRank } from '../hooks/use-rank';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { getRankName } from '../utils/get-rank-name';
 import { formatNumber } from '../utils/format-number';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { getRankImageUrl } from '../utils/get-rank-image-url';
 
-export function Navigation() {
-  const {
-    reset,
-    formState: { isValid, isSubmitting, isDirty },
-  } = useFormContext<RankCalculatorSchema>();
+interface NavigationProps {
+  actions: ReactNode;
+}
+
+export function Navigation({ actions }: NavigationProps) {
   const { pointsAwarded } = useRankCalculator();
   const { rank } = useRank(pointsAwarded);
   const rankName = getRankName(rank);
@@ -62,32 +59,7 @@ export function Navigation() {
               </Text>
             </Text>
           </Flex>
-          <Flex gap="2">
-            <Button asChild variant="outline" color="gray">
-              <Link href="/rank-calculator">Back</Link>
-            </Button>
-            <Button
-              variant="outline"
-              color="gray"
-              type="button"
-              disabled={!isDirty}
-              onClick={() => {
-                startTransition(() => {
-                  reset();
-                });
-              }}
-            >
-              Reset
-            </Button>
-            <Button
-              role="button"
-              loading={isSubmitting}
-              disabled={!isValid || isSubmitting}
-              variant="surface"
-            >
-              Submit
-            </Button>
-          </Flex>
+          <Flex gap="2">{actions}</Flex>
         </nav>
       </Flex>
     </Box>

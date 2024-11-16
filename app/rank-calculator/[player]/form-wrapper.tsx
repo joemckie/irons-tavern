@@ -9,6 +9,7 @@ import { Rank } from '@/config/enums';
 import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
+import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -49,7 +50,10 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
 
   return (
     <FormProvider {...form}>
-      <RankCalculator submitRankCalculatorAction={handleSubmitWithAction} />
+      <RankCalculator
+        submitRankCalculatorAction={handleSubmitWithAction}
+        navigationActions={<RankCalculatorNavigationActions />}
+      />
     </FormProvider>
   );
 }

@@ -1,18 +1,20 @@
 import { rankSubmissionKey } from '@/config/redis';
 import { Flex, Heading } from '@radix-ui/themes';
 import { redis } from '@/redis';
+import { auth } from '@/auth';
+import { PermissionCalculator } from '@bloomlabs/permission-calculator';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export default async function ViewSubmissionPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ submissionId: string }>;
 }) {
-  const { id } = await params;
+  const { submissionId } = await params;
   const submission = await redis.json.get<
     Omit<RankCalculatorSchema, 'rank' | 'points'>
-  >(rankSubmissionKey(id));
+  >(rankSubmissionKey(submissionId));
 
   if (!submission) {
     return (
@@ -22,5 +24,15 @@ export default async function ViewSubmissionPage({
     );
   }
 
-  return <ReadonlyFormWrapper formData={submission} />;
+  const user = await auth();
+  const permissions = new PermissionCalculator(
+    BigInt(user?.user?.permissions ?? ''),
+  );
+
+  return (
+    <ReadonlyFormWrapper
+      formData={submission}
+      userHasManageRolesPermission={permissions.has('MANAGE_ROLES')}
+    />
+  );
 }
