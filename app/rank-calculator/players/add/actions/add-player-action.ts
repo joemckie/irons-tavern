@@ -63,7 +63,6 @@ export const addPlayerAction = authActionClient
         {
           joinDate,
           rsn: maybeFormattedPlayerName,
-          rank: playerMeta?.rank,
         },
       );
 

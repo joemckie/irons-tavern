@@ -34,7 +34,11 @@ interface EditPlayerFormProps {
 
 export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
   const router = useRouter();
-  const boundEditPlayerAction = editPlayerAction.bind(null, playerRecord.rsn);
+  const boundEditPlayerAction = editPlayerAction.bind(
+    null,
+    playerRecord.rsn,
+    playerRecord.rank,
+  );
   const {
     action: { isExecuting },
     form,
@@ -42,7 +46,6 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
   } = useHookFormAction(boundEditPlayerAction, zodResolver(EditPlayerSchema), {
     actionProps: {
       onError({ error }) {
-        console.log(error);
         if (error.serverError) {
           toast.error('Failed to edit player!');
         }
