@@ -53,9 +53,7 @@ export function ReadonlyFormWrapper({
     if (isModeratorActionsAvailable) {
       return (
         <ViewSubmissionNavigationActions
-          rankStructure={formData.rankStructure}
           onStatusChange={setSubmissionStatus}
-          submissionStatus={submissionStatus}
           playerName={formData.playerName}
         />
       );

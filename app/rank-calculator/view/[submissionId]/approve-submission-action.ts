@@ -5,33 +5,54 @@ import { discordBotClient } from '@/discord';
 import { APIGuildMember, Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis } from '@/redis';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { rankSubmissionMetadataKey, userOSRSAccountsKey } from '@/config/redis';
+import {
+  RankStructure,
+  RankSubmissionStatus,
+} from '@/app/schemas/rank-calculator';
+import {
+  rankSubmissionKey,
+  rankSubmissionMetadataKey,
+  userOSRSAccountsKey,
+} from '@/config/redis';
 import { discordRoles } from '@/config/discord-roles';
 import { Player } from '@/app/schemas/player';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
-import { ModerateSubmissionSchema } from './moderate-submission-schema';
+import { ApproveSubmissionSchema } from './moderate-submission-schema';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
+import { getRankName } from '../../utils/get-rank-name';
 
 export const approveSubmissionAction = authActionClient
   .metadata({
     actionName: 'approve-submission',
   })
-  .schema(ModerateSubmissionSchema)
+  .schema(ApproveSubmissionSchema)
   .action(
     async ({
-      parsedInput: {
-        submissionId,
-        rankStructure,
-        rank,
-        submissionStatus,
-        playerName,
-      },
+      parsedInput: { submissionId, rank },
       ctx: { permissions, userId },
     }) => {
+      const submissionStatus = (await redis.hget(
+        rankSubmissionMetadataKey(submissionId),
+        'status',
+      )) as RankSubmissionStatus;
+
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');
       }
+
+      const submissionData = await redis.json.get<{
+        '$.playerName': [string];
+        '$.rankStructure': [RankStructure];
+      }>(rankSubmissionKey(submissionId), '$.rankStructure', '$.playerName');
+
+      if (!submissionData) {
+        throw new Error('Unable to find rank structure for application');
+      }
+
+      const {
+        '$.playerName': [playerName],
+        '$.rankStructure': [rankStructure],
+      } = submissionData;
 
       if (
         !userCanModerateSubmission(permissions, rankStructure, submissionStatus)
@@ -99,7 +120,7 @@ export const approveSubmissionAction = authActionClient
 
       await sendDiscordMessage(
         {
-          content: `<@${submittedBy}>\n\nYour application has been approved by <@${userId}> and your rank has been updated on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
+          content: `<@${submittedBy}>\n\nYour application has been approved by <@${userId}> and you have been assigned the ${getRankName(rank)} rank on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
         },
         messageId,
       );
@@ -119,7 +140,7 @@ export const approveSubmissionAction = authActionClient
         rankSubmissionMetadataKey(submissionId),
         {
           status: 'Approved',
-          approvedBy: userId,
+          actionedBy: userId,
         },
       );
 
