@@ -97,6 +97,16 @@ export const submitRankCalculatorAction = authActionClient
         channelId,
       );
 
+      await discordBotClient.post(Routes.threads(channelId, discordMessageId), {
+        body: {
+          name: `${data.playerName} - ${getRankName(rank)}`,
+        },
+      });
+
+      await discordBotClient.put(
+        Routes.threadMembers(discordMessageId, userId),
+      );
+
       const formattedData = {
         ...data,
         acquiredItems: pickBy(data.acquiredItems, (val) => val),
@@ -120,6 +130,7 @@ export const submitRankCalculatorAction = authActionClient
         discordMessageId,
         status: 'Pending',
         submittedBy: userId,
+        submittedAt: new Date(),
       } satisfies RankSubmissionMetadata);
 
       const submissionResult = await submissionTransaction.exec();

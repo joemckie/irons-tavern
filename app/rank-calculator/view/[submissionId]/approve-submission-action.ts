@@ -10,6 +10,7 @@ import { rankSubmissionMetadataKey } from '@/config/redis';
 import { discordRoles } from '@/config/discord-roles';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ModerateSubmissionSchema } from './moderate-submission-schema';
+import { sendDiscordMessage } from '../../utils/send-discord-message';
 
 export const approveSubmissionAction = authActionClient
   .metadata({
@@ -79,6 +80,13 @@ export const approveSubmissionAction = authActionClient
           ),
         ),
       ]);
+
+      await sendDiscordMessage(
+        {
+          content: `<@${submittedBy}>\n\nYour application has been approved and your rank has been updated on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
+        },
+        messageId,
+      );
 
       await redis.hset<RankSubmissionStatus>(
         rankSubmissionMetadataKey(submissionId),
