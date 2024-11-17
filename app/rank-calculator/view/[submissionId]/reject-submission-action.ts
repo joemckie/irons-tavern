@@ -39,14 +39,8 @@ export const rejectSubmissionAction = authActionClient
         throw new Error('Unable to find rank structure for application');
       }
 
-      const [rankStructure] = submissionData;
-
-      if (
-        !userCanModerateSubmission(permissions, rankStructure, submissionStatus)
-      ) {
-        throw new Error(
-          'You do not have permission to approve this submission',
-        );
+      if (!userCanModerateSubmission(permissions, submissionStatus)) {
+        throw new Error('You do not have permission to reject this submission');
       }
 
       const messageId = await redis.hget<string>(

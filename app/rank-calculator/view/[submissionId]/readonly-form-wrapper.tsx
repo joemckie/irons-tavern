@@ -26,7 +26,6 @@ export function ReadonlyFormWrapper({
   );
   const isModeratorActionsAvailable = userCanModerateSubmission(
     userPermissions,
-    formData.rankStructure,
     submissionStatus,
   );
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
@@ -34,7 +33,7 @@ export function ReadonlyFormWrapper({
     values: formData,
   });
 
-  function getNavigationActions() {
+  function renderNavigationActions() {
     const textColourMap = {
       Approved: 'green',
       Pending: undefined,
@@ -79,7 +78,7 @@ export function ReadonlyFormWrapper({
   return (
     <FormProvider {...methods}>
       <RankCalculator
-        navigationActions={getNavigationActions()}
+        navigationActions={renderNavigationActions()}
         submitRankCalculatorAction={() => {}}
       />
     </FormProvider>

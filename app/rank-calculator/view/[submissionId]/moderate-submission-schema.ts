@@ -9,4 +9,4 @@ export const ApproveSubmissionSchema = ModerateSubmissionSchema.extend({
   rank: Rank,
 });
 
-export const RejectSubmissionSchema = ModerateSubmissionSchema.extend({});
+export const RejectSubmissionSchema = ModerateSubmissionSchema;

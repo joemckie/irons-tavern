@@ -2,7 +2,7 @@
 
 import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
-import { APIGuildMember, Routes } from 'discord-api-types/v10';
+import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis } from '@/redis';
 import {
@@ -14,12 +14,12 @@ import {
   rankSubmissionMetadataKey,
   userOSRSAccountsKey,
 } from '@/config/redis';
-import { discordRoles } from '@/config/discord-roles';
 import { Player } from '@/app/schemas/player';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ApproveSubmissionSchema } from './moderate-submission-schema';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
 import { getRankName } from '../../utils/get-rank-name';
+import { assignRankDiscordRole } from './utils/assign-rank-discord-role';
 
 export const approveSubmissionAction = authActionClient
   .metadata({
@@ -29,7 +29,7 @@ export const approveSubmissionAction = authActionClient
   .action(
     async ({
       parsedInput: { submissionId, rank },
-      ctx: { permissions, userId },
+      ctx: { permissions, userId: approverId },
     }) => {
       const submissionStatus = (await redis.hget(
         rankSubmissionMetadataKey(submissionId),
@@ -54,9 +54,7 @@ export const approveSubmissionAction = authActionClient
         '$.rankStructure': [rankStructure],
       } = submissionData;
 
-      if (
-        !userCanModerateSubmission(permissions, rankStructure, submissionStatus)
-      ) {
+      if (!userCanModerateSubmission(permissions, submissionStatus)) {
         throw new Error(
           'You do not have permission to approve this submission',
         );
@@ -67,7 +65,7 @@ export const approveSubmissionAction = authActionClient
         'discordMessageId',
       );
 
-      const submittedBy = await redis.hget<string>(
+      const submitterId = await redis.hget<string>(
         rankSubmissionMetadataKey(submissionId),
         'submittedBy',
       );
@@ -76,11 +74,11 @@ export const approveSubmissionAction = authActionClient
         throw new Error('No message found for submission');
       }
 
-      if (!submittedBy) {
+      if (!submitterId) {
         throw new Error('Unable to find submitter ID');
       }
 
-      const { channelId, guildId } = serverConstants.discord;
+      const { channelId } = serverConstants.discord;
 
       await discordBotClient.put(
         Routes.channelMessageOwnReaction(
@@ -90,44 +88,25 @@ export const approveSubmissionAction = authActionClient
         ),
       );
 
-      const { roles } = (await discordBotClient.get(
-        Routes.guildMember(guildId, submittedBy),
-      )) as APIGuildMember;
-
-      // It's not possible to remove multiple roles in a single call,
-      // so we filter the roles to avoid making 10+ requests each time
-      // Also exclude the current rank as it can cause race conditions by removing and adding it again
-      const appliedRankRoles = Object.entries(discordRoles).filter(
-        ([rankName, roleId]) => rankName !== rank && roles.includes(roleId),
-      );
-
-      // Remove all existing rank roles
-      await Promise.all([
-        appliedRankRoles.map(([, roleId]) =>
-          discordBotClient.delete(
-            Routes.guildMemberRole(guildId, submittedBy, roleId),
-          ),
-        ),
-      ]);
-
-      const approvedRole = discordRoles[rank as keyof typeof discordRoles];
-
-      if (!roles.includes(approvedRole)) {
-        // Apply the approved role
-        await discordBotClient.put(
-          Routes.guildMemberRole(guildId, submittedBy, approvedRole),
+      if (rankStructure === 'Standard') {
+        await assignRankDiscordRole(rank, submitterId);
+        await sendDiscordMessage(
+          {
+            content: `<@${submitterId}>\n\nYour application has been approved by <@${approverId}> and you have been assigned the ${getRankName(rank)} rank on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
+          },
+          messageId,
+        );
+      } else {
+        await sendDiscordMessage(
+          {
+            content: `<@${submitterId}>\n\nYour application has been approved by <@${approverId}>.\n\nPlease reach out to a mod to update your ranks!`,
+          },
+          messageId,
         );
       }
 
-      await sendDiscordMessage(
-        {
-          content: `<@${submittedBy}>\n\nYour application has been approved by <@${userId}> and you have been assigned the ${getRankName(rank)} rank on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
-        },
-        messageId,
-      );
-
       const playerRecord = (await redis.hget(
-        userOSRSAccountsKey(submittedBy),
+        userOSRSAccountsKey(submitterId),
         playerName.toLowerCase(),
       )) as Player;
 
@@ -141,11 +120,11 @@ export const approveSubmissionAction = authActionClient
         rankSubmissionMetadataKey(submissionId),
         {
           status: 'Approved',
-          actionedBy: userId,
+          actionedBy: approverId,
         },
       );
 
-      transaction.hset<Player>(userOSRSAccountsKey(userId), {
+      transaction.hset<Player>(userOSRSAccountsKey(submitterId), {
         [playerName.toLowerCase()]: {
           ...playerRecord,
           rank,
