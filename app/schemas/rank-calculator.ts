@@ -51,7 +51,7 @@ export const RankSubmissionMetadata = z.object({
   discordMessageId: z.string(),
   submittedBy: z.string(),
   submittedAt: z.date(),
-  actionedBy: z.string(),
+  actionedBy: z.string().nullable(),
 });
 
 export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;

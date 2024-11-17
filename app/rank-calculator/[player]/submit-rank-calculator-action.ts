@@ -131,6 +131,7 @@ export const submitRankCalculatorAction = authActionClient
         status: 'Pending',
         submittedBy: userId,
         submittedAt: new Date(),
+        actionedBy: null,
       } satisfies RankSubmissionMetadata);
 
       const submissionResult = await submissionTransaction.exec();
