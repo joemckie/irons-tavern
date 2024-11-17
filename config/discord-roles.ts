@@ -1,4 +1,4 @@
-import { Rank } from './enums';
+import { standardRanks } from './ranks';
 
 export const discordRoles = {
   Blisterwood: '1275200966181916792',
@@ -15,4 +15,4 @@ export const discordRoles = {
   Water: '846392447629262868',
   Pine: '845833173416804392',
   Air: '1275198438971146240',
-} satisfies AtLeastOne<Record<Rank, string>>;
+} satisfies Record<keyof typeof standardRanks, string>;
