@@ -1,6 +1,6 @@
 import 'server-only';
 import { ResponseLike, REST } from '@discordjs/rest';
-import { constants } from './config/constants';
+import { serverConstants } from './config/constants.server';
 
 function createDiscordClient() {
   return new REST({
@@ -12,7 +12,7 @@ function createDiscordClient() {
 }
 
 export const discordBotClient = createDiscordClient().setToken(
-  constants.discord.token,
+  serverConstants.discord.token,
 );
 
 export const discordUserClient = (accessToken: string) =>

@@ -1,4 +1,4 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 
 export const formatWikiImageUrl = (
   entityName: string,
@@ -7,5 +7,5 @@ export const formatWikiImageUrl = (
   const imageName = encodeURIComponent(entityName.replaceAll(' ', '_'));
   const size = type === 'category' ? 80 : 64;
 
-  return `${constants.wiki.baseUrl}/images/thumb/${imageName}.png/${size}px-${imageName}.png`;
+  return `${clientConstants.wiki.baseUrl}/images/thumb/${imageName}.png/${size}px-${imageName}.png`;
 };

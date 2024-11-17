@@ -1,4 +1,4 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { CombatAchievementTier } from '@/app/schemas/osrs';
 import { CombatAchievementTierThresholdResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
@@ -26,7 +26,7 @@ export async function getCombatAchievementTierThresholds(): Promise<Record<
 
   try {
     const response = await fetch(
-      `${constants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
+      `${clientConstants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
     );
 
     const data = CombatAchievementTierThresholdResponse.parse(

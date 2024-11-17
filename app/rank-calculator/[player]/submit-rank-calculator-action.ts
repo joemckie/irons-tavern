@@ -9,7 +9,8 @@ import {
 } from '@/config/redis';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { pickBy } from 'lodash';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
@@ -45,7 +46,7 @@ export const submitRankCalculatorAction = authActionClient
         });
       }
 
-      const { channelId } = constants.discord;
+      const { channelId } = serverConstants.discord;
       const submissionId = randomUUID();
       const { id: discordMessageId } = await sendDiscordMessage(
         {
@@ -88,7 +89,7 @@ export const submitRankCalculatorAction = authActionClient
                 },
                 {
                   name: 'View link',
-                  value: `[Click to view submission](${constants.publicUrl}/rank-calculator/view/${submissionId})`,
+                  value: `[Click to view submission](${clientConstants.publicUrl}/rank-calculator/view/${submissionId})`,
                 },
               ],
             },

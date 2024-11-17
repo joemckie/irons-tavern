@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST() {
   const response = await fetch(
-    `${constants.temple.baseUrl}/api/group_member_info.php?id=${constants.temple.groupId}`,
+    `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
   const players: GroupMemberInfoResponse = await response.json();
 
@@ -24,20 +25,20 @@ export async function POST() {
   const requests = filteredPlayers.map((player, i) => ({
     // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
     // so we need to wait for six seconds before checking the next player
-    url: `${constants.publicUrl}/api/check-player?player=${encodeURI(player.player)}&_delay=${i * 6}`,
+    url: `${clientConstants.publicUrl}/api/check-player?player=${encodeURI(player.player)}&_delay=${i * 6}`,
     method: 'GET',
   }));
 
   // After all checks have been completed, clear the cache to ensure the new data is displayed
   requests.push({
-    url: `${constants.publicUrl}/api/revalidate-path?path=/&_delay=${requests.length * 6}`,
+    url: `${clientConstants.publicUrl}/api/revalidate-path?path=/&_delay=${requests.length * 6}`,
     method: 'GET',
   });
 
   console.log('Sending requests to Zeplo');
 
   const queueResponse = await fetch(
-    `${constants.zeplo.url}/bulk?_token=${constants.zeplo.apiKey}`,
+    `${serverConstants.zeplo.url}/bulk?_token=${serverConstants.zeplo.apiKey}`,
     {
       method: 'POST',
       body: JSON.stringify(requests),

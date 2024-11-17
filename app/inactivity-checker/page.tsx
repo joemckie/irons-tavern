@@ -2,7 +2,8 @@ import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
@@ -10,7 +11,7 @@ import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
-    `${constants.temple.baseUrl}/api/group_member_info.php?id=${constants.temple.groupId}`,
+    `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
   return response.json();
@@ -53,7 +54,7 @@ export default async function InactivityCheckerPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-slate-800 ">
-      <h1 className="text-xl mb-4">{constants.temple.groupName}</h1>
+      <h1 className="text-xl mb-4">{serverConstants.temple.groupName}</h1>
       <table className="table-auto border-collapse">
         <thead>
           <tr className="text-left">

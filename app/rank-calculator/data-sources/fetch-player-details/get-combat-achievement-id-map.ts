@@ -1,4 +1,4 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { combatAchievementTierPoints } from '@/app/schemas/osrs';
 import {
   CombatAchievementJson,
@@ -23,7 +23,7 @@ export async function getCaIdMap() {
 
   try {
     const allCombatAchievementsResponse = await fetch(
-      `${constants.wiki.baseUrl}/api.php?${params}`,
+      `${clientConstants.wiki.baseUrl}/api.php?${params}`,
     );
 
     const data = CombatAchievementListResponse.parse(

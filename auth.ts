@@ -4,7 +4,7 @@ import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import * as Sentry from '@sentry/nextjs';
 import { APIGuild, Routes } from 'discord-api-types/v10';
 import { discordUserClient } from './discord';
-import { constants } from './config/constants';
+import { serverConstants } from './config/constants.server';
 
 declare module 'next-auth' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -29,7 +29,7 @@ export const config = {
   callbacks: {
     /* eslint-disable no-param-reassign */
     async jwt({ profile, token, account }) {
-      const { guildId } = constants.discord;
+      const { guildId } = serverConstants.discord;
 
       if (profile?.id) {
         token.id = profile.id;
