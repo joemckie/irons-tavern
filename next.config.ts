@@ -3,6 +3,9 @@ import { NextConfig } from 'next';
 
 export default withSentryConfig<NextConfig>(
   {
+    experimental: {
+      webpackMemoryOptimizations: true,
+    },
     images: {
       remotePatterns: [
         {
