@@ -36,6 +36,7 @@ beforeEach(() => {
 
 it('saves the submission to the database', async () => {
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: '100000',
@@ -59,6 +60,7 @@ it('returns an error if the save was not successful', async () => {
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,
@@ -81,6 +83,7 @@ xit('returns an error if a network error occurs whilst saving the submission', a
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,
@@ -105,6 +108,7 @@ it('returns an error if a network error occurs whilst sending the discord messag
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,
