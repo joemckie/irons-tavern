@@ -35,6 +35,7 @@ export const authActionClient = actionClient.use(async ({ next }) => {
   return next({
     ctx: {
       userId: session.user.id,
+      permissions: session.user.permissions,
     },
   });
 });
