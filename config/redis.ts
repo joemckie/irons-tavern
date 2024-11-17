@@ -22,5 +22,5 @@ export function rankSubmissionStatusKey(id: string) {
 }
 
 export function rankSubmissionDiscordMessageIdKey(id: string) {
-  return `${id}:discord-message-id` as const;
+  return `${rankSubmissionKey(id)}:discord-message-id` as const;
 }

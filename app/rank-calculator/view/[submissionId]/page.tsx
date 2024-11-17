@@ -2,9 +2,9 @@ import { rankSubmissionKey } from '@/config/redis';
 import { Flex, Heading } from '@radix-ui/themes';
 import { redis } from '@/redis';
 import { auth } from '@/auth';
-import { PermissionCalculator } from '@bloomlabs/permission-calculator';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 
 export default async function ViewSubmissionPage({
   params,
@@ -25,14 +25,14 @@ export default async function ViewSubmissionPage({
   }
 
   const user = await auth();
-  const permissions = new PermissionCalculator(
-    BigInt(user?.user?.permissions ?? ''),
-  );
 
   return (
     <ReadonlyFormWrapper
       formData={submission}
-      userHasManageRolesPermission={permissions.has('MANAGE_ROLES')}
+      userCanModerateSubmission={userCanModerateSubmission(
+        user!.user?.permissions,
+        submission.rankStructure,
+      )}
     />
   );
 }
