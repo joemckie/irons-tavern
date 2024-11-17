@@ -79,20 +79,23 @@ export const approveSubmissionAction = authActionClient
         roles.includes(roleId),
       );
 
+      // Remove all existing rank roles
       await Promise.all([
-        ...appliedRankRoles.map((roleId) =>
+        appliedRankRoles.map((roleId) =>
           discordBotClient.delete(
             Routes.guildMemberRole(guildId, submittedBy, roleId),
           ),
         ),
-        discordBotClient.put(
-          Routes.guildMemberRole(
-            guildId,
-            submittedBy,
-            discordRoles[rank as keyof typeof discordRoles],
-          ),
-        ),
       ]);
+
+      // Apply the approved role
+      await discordBotClient.put(
+        Routes.guildMemberRole(
+          guildId,
+          submittedBy,
+          discordRoles[rank as keyof typeof discordRoles],
+        ),
+      );
 
       await sendDiscordMessage(
         {
