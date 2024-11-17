@@ -96,27 +96,28 @@ export const approveSubmissionAction = authActionClient
 
       // It's not possible to remove multiple roles in a single call,
       // so we filter the roles to avoid making 10+ requests each time
-      const appliedRankRoles = Object.values(discordRoles).filter((roleId) =>
-        roles.includes(roleId),
+      // Also exclude the current rank as it can cause race conditions by removing and adding it again
+      const appliedRankRoles = Object.entries(discordRoles).filter(
+        ([rankName, roleId]) => rankName !== rank && roles.includes(roleId),
       );
 
       // Remove all existing rank roles
       await Promise.all([
-        appliedRankRoles.map((roleId) =>
+        appliedRankRoles.map(([, roleId]) =>
           discordBotClient.delete(
             Routes.guildMemberRole(guildId, submittedBy, roleId),
           ),
         ),
       ]);
 
-      // Apply the approved role
-      await discordBotClient.put(
-        Routes.guildMemberRole(
-          guildId,
-          submittedBy,
-          discordRoles[rank as keyof typeof discordRoles],
-        ),
-      );
+      const approvedRole = discordRoles[rank as keyof typeof discordRoles];
+
+      if (!roles.includes(approvedRole)) {
+        // Apply the approved role
+        await discordBotClient.put(
+          Routes.guildMemberRole(guildId, submittedBy, approvedRole),
+        );
+      }
 
       await sendDiscordMessage(
         {
