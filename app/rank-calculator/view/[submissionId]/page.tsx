@@ -1,10 +1,10 @@
-import { rankSubmissionKey } from '@/config/redis';
+import { rankSubmissionKey, rankSubmissionMetadataKey } from '@/config/redis';
 import { Flex, Heading } from '@radix-ui/themes';
 import { redis } from '@/redis';
 import { auth } from '@/auth';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
-import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 
 export default async function ViewSubmissionPage({
   params,
@@ -12,9 +12,15 @@ export default async function ViewSubmissionPage({
   params: Promise<{ submissionId: string }>;
 }) {
   const { submissionId } = await params;
-  const submission = await redis.json.get<
-    Omit<RankCalculatorSchema, 'rank' | 'points'>
-  >(rankSubmissionKey(submissionId));
+  const [submission, submissionStatus] = await Promise.all([
+    redis.json.get<Omit<RankCalculatorSchema, 'rank' | 'points'>>(
+      rankSubmissionKey(submissionId),
+    ),
+    redis.hget<RankSubmissionStatus>(
+      rankSubmissionMetadataKey(submissionId),
+      'status',
+    ),
+  ]);
 
   if (!submission) {
     return (
@@ -24,15 +30,17 @@ export default async function ViewSubmissionPage({
     );
   }
 
+  if (!submissionStatus) {
+    throw new Error('Unable to determine submission status');
+  }
+
   const user = await auth();
 
   return (
     <ReadonlyFormWrapper
       formData={submission}
-      userCanModerateSubmission={userCanModerateSubmission(
-        user!.user?.permissions,
-        submission.rankStructure,
-      )}
+      initialSubmissionStatus={submissionStatus}
+      userPermissions={user?.user?.permissions}
     />
   );
 }

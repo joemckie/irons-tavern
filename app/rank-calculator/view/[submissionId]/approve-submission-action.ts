@@ -19,10 +19,16 @@ export const approveSubmissionAction = authActionClient
   .schema(ModerateSubmissionSchema)
   .action(
     async ({
-      parsedInput: { submissionId, rankStructure, rank },
+      parsedInput: { submissionId, rankStructure, rank, submissionStatus },
       ctx: { permissions },
     }) => {
-      if (!userCanModerateSubmission(permissions, rankStructure)) {
+      if (submissionStatus !== 'Pending') {
+        throw new Error('Submission does not need to be moderated!');
+      }
+
+      if (
+        !userCanModerateSubmission(permissions, rankStructure, submissionStatus)
+      ) {
         throw new Error(
           'You do not have permission to approve this submission',
         );
