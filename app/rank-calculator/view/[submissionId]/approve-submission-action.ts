@@ -7,6 +7,7 @@ import { serverConstants } from '@/config/constants.server';
 import { redis } from '@/redis';
 import {
   RankStructure,
+  RankSubmissionMetadata,
   RankSubmissionStatus,
 } from '@/app/schemas/rank-calculator';
 import {
@@ -31,10 +32,33 @@ export const approveSubmissionAction = authActionClient
       parsedInput: { submissionId, rank },
       ctx: { permissions, userId: approverId },
     }) => {
-      const submissionStatus = (await redis.hget(
+      if (!userCanModerateSubmission(permissions)) {
+        throw new Error(
+          'You do not have permission to approve this submission',
+        );
+      }
+
+      const metadata = await redis.hmget<
+        Pick<
+          RankSubmissionMetadata,
+          'discordMessageId' | 'submittedBy' | 'status'
+        >
+      >(
         rankSubmissionMetadataKey(submissionId),
         'status',
-      )) as RankSubmissionStatus;
+        'discordMessageId',
+        'submittedBy',
+      );
+
+      if (!metadata) {
+        throw new Error('Unable to find submission metadata');
+      }
+
+      const {
+        discordMessageId: messageId,
+        submittedBy: submitterId,
+        status: submissionStatus,
+      } = metadata;
 
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');
@@ -46,7 +70,7 @@ export const approveSubmissionAction = authActionClient
       }>(rankSubmissionKey(submissionId), '$.rankStructure', '$.playerName');
 
       if (!submissionData) {
-        throw new Error('Unable to find rank structure for application');
+        throw new Error('Unable to find submission data for application');
       }
 
       const {
@@ -54,35 +78,9 @@ export const approveSubmissionAction = authActionClient
         '$.rankStructure': [rankStructure],
       } = submissionData;
 
-      if (!userCanModerateSubmission(permissions, submissionStatus)) {
-        throw new Error(
-          'You do not have permission to approve this submission',
-        );
-      }
-
-      const messageId = await redis.hget<string>(
-        rankSubmissionMetadataKey(submissionId),
-        'discordMessageId',
-      );
-
-      const submitterId = await redis.hget<string>(
-        rankSubmissionMetadataKey(submissionId),
-        'submittedBy',
-      );
-
-      if (!messageId) {
-        throw new Error('No message found for submission');
-      }
-
-      if (!submitterId) {
-        throw new Error('Unable to find submitter ID');
-      }
-
-      const { channelId } = serverConstants.discord;
-
       await discordBotClient.put(
         Routes.channelMessageOwnReaction(
-          channelId,
+          serverConstants.discord.channelId,
           messageId,
           encodeURIComponent('☑️'),
         ),

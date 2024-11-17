@@ -24,10 +24,9 @@ export function ReadonlyFormWrapper({
   const [submissionStatus, setSubmissionStatus] = useState(
     initialSubmissionStatus,
   );
-  const isModeratorActionsAvailable = userCanModerateSubmission(
-    userPermissions,
-    submissionStatus,
-  );
+  const isModeratorActionsAvailable =
+    userCanModerateSubmission(userPermissions) &&
+    submissionStatus === 'Pending';
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
     values: formData,
