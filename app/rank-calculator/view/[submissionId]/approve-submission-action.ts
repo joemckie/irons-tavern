@@ -6,8 +6,9 @@ import { APIGuildMember, Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis } from '@/redis';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { rankSubmissionMetadataKey } from '@/config/redis';
+import { rankSubmissionMetadataKey, userOSRSAccountsKey } from '@/config/redis';
 import { discordRoles } from '@/config/discord-roles';
+import { Player } from '@/app/schemas/player';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ModerateSubmissionSchema } from './moderate-submission-schema';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
@@ -19,8 +20,14 @@ export const approveSubmissionAction = authActionClient
   .schema(ModerateSubmissionSchema)
   .action(
     async ({
-      parsedInput: { submissionId, rankStructure, rank, submissionStatus },
-      ctx: { permissions },
+      parsedInput: {
+        submissionId,
+        rankStructure,
+        rank,
+        submissionStatus,
+        playerName,
+      },
+      ctx: { permissions, userId },
     }) => {
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');
@@ -89,15 +96,42 @@ export const approveSubmissionAction = authActionClient
 
       await sendDiscordMessage(
         {
-          content: `<@${submittedBy}>\n\nYour application has been approved and your rank has been updated on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
+          content: `<@${submittedBy}>\n\nYour application has been approved by <@${userId}> and your rank has been updated on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
         },
         messageId,
       );
 
-      await redis.hset<RankSubmissionStatus>(
+      const playerRecord = (await redis.hget(
+        userOSRSAccountsKey(submittedBy),
+        playerName.toLowerCase(),
+      )) as Player;
+
+      if (!playerRecord) {
+        throw new Error('Unable to find player record!');
+      }
+
+      const transaction = redis.multi();
+
+      transaction.hset<RankSubmissionStatus | string>(
         rankSubmissionMetadataKey(submissionId),
-        { status: 'Approved' },
+        {
+          status: 'Approved',
+          approvedBy: userId,
+        },
       );
+
+      transaction.hset<Player>(userOSRSAccountsKey(userId), {
+        [playerName.toLowerCase()]: {
+          ...playerRecord,
+          rank,
+        },
+      });
+
+      const result = await transaction.exec();
+
+      if (!result) {
+        throw new Error('Unable to persist approval to database');
+      }
 
       return {
         success: true,

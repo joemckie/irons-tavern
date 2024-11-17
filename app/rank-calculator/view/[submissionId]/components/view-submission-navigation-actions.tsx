@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Button } from '@radix-ui/themes';
 import { useParams } from 'next/navigation';
 import { useAction } from 'next-safe-action/hooks';
@@ -13,38 +14,34 @@ interface ViewSubmissionNavigationActionsProps {
   rankStructure: RankStructure;
   onStatusChange: (status: RankSubmissionStatus) => void;
   submissionStatus: RankSubmissionStatus;
+  playerName: string;
 }
 
 export function ViewSubmissionNavigationActions({
   rankStructure,
   onStatusChange,
   submissionStatus,
+  playerName,
 }: ViewSubmissionNavigationActionsProps) {
   const { submissionId } = useParams<{ submissionId: string }>();
   const { rank } = useRankCalculator();
 
   const {
-    executeAsync: approveSubmission,
+    execute: approveSubmission,
     isExecuting: isApproveSubmissionExecuting,
+    status: approveSubmissionStatus,
   } = useAction(approveSubmissionAction);
 
-  const handleApproveClick = async () => {
-    const result = await approveSubmission({
-      rank,
-      rankStructure,
-      submissionId,
-      submissionStatus,
-    });
-
-    if (!result?.data?.success) {
+  useEffect(() => {
+    if (approveSubmissionStatus === 'hasErrored') {
       toast.error('Unable to approve submission!');
     }
 
-    if (result?.data?.success) {
+    if (approveSubmissionStatus === 'hasSucceeded') {
       toast.success('Submission approved!');
       onStatusChange('Approved');
     }
-  };
+  }, [approveSubmissionStatus, onStatusChange]);
 
   return (
     <>
@@ -57,7 +54,15 @@ export function ViewSubmissionNavigationActions({
         type="button"
         variant="surface"
         color="green"
-        onClick={handleApproveClick}
+        onClick={() => {
+          approveSubmission({
+            rank,
+            rankStructure,
+            submissionId,
+            submissionStatus,
+            playerName,
+          });
+        }}
       >
         Approve
       </Button>

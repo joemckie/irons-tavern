@@ -56,6 +56,7 @@ export function ReadonlyFormWrapper({
           rankStructure={formData.rankStructure}
           onStatusChange={setSubmissionStatus}
           submissionStatus={submissionStatus}
+          playerName={formData.playerName}
         />
       );
     }

@@ -1,3 +1,4 @@
+import { PlayerName } from '@/app/schemas/player';
 import {
   RankStructure,
   RankSubmissionStatus,
@@ -7,6 +8,7 @@ import { z } from 'zod';
 
 export const ModerateSubmissionSchema = z.object({
   submissionId: z.string().uuid(),
+  playerName: PlayerName,
   rankStructure: RankStructure,
   rank: Rank,
   submissionStatus: RankSubmissionStatus,
