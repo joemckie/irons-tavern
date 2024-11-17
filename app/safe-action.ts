@@ -10,6 +10,9 @@ export const actionClient = createSafeActionClient({
     });
   },
 })
+  .use(async ({ next, metadata }) =>
+    Sentry.withServerActionInstrumentation(metadata.actionName, next),
+  )
   .use(async ({ next, clientInput, metadata }) => {
     const result = await next();
 
@@ -20,10 +23,7 @@ export const actionClient = createSafeActionClient({
     }
 
     return result;
-  })
-  .use(async ({ next, metadata }) =>
-    Sentry.withServerActionInstrumentation(metadata.actionName, next),
-  );
+  });
 
 export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await auth();
