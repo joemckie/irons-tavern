@@ -2,9 +2,8 @@
 
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import {
-  rankSubmissionDiscordMessageIdKey,
   rankSubmissionKey,
-  rankSubmissionStatusKey,
+  rankSubmissionMetadataKey,
   userRankSubmissionsKey,
 } from '@/config/redis';
 import { randomUUID } from 'crypto';
@@ -15,7 +14,7 @@ import { pickBy } from 'lodash';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
@@ -117,15 +116,11 @@ export const submitRankCalculatorAction = authActionClient
         rankSubmissionKey(submissionId),
       );
 
-      submissionTransaction.set<RankSubmissionStatus>(
-        rankSubmissionStatusKey(rankSubmissionKey(submissionId)),
-        'Pending',
-      );
-
-      submissionTransaction.set<string>(
-        rankSubmissionDiscordMessageIdKey(rankSubmissionKey(submissionId)),
+      submissionTransaction.hset(rankSubmissionMetadataKey(submissionId), {
         discordMessageId,
-      );
+        status: 'Pending',
+        submittedBy: userId,
+      } satisfies RankSubmissionMetadata);
 
       const submissionResult = await submissionTransaction.exec();
 

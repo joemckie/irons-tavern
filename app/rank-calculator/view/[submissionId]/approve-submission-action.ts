@@ -5,7 +5,8 @@ import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis } from '@/redis';
-import { rankSubmissionDiscordMessageIdKey } from '@/config/redis';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import { rankSubmissionMetadataKey } from '@/config/redis';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ModerateSubmissionSchema } from './moderate-submission-schema';
 
@@ -25,8 +26,9 @@ export const approveSubmissionAction = authActionClient
         );
       }
 
-      const messageId = await redis.get<string>(
-        rankSubmissionDiscordMessageIdKey(submissionId),
+      const messageId = await redis.hget<string>(
+        rankSubmissionMetadataKey(submissionId),
+        'discordMessageId',
       );
 
       if (!messageId) {
@@ -39,6 +41,11 @@ export const approveSubmissionAction = authActionClient
           messageId,
           encodeURIComponent('☑️'),
         ),
+      );
+
+      await redis.hset<RankSubmissionStatus>(
+        rankSubmissionMetadataKey(submissionId),
+        { status: 'Approved' },
       );
 
       return {

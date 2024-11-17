@@ -42,6 +42,14 @@ export const achievementDiaryTierPoints = {
   },
 } satisfies Record<DiaryTier, number>;
 
-export const RankSubmissionStatus = z.enum(['Pending', 'Accepted', 'Rejected']);
+export const RankSubmissionStatus = z.enum(['Pending', 'Approved', 'Rejected']);
 
 export type RankSubmissionStatus = z.infer<typeof RankSubmissionStatus>;
+
+export const RankSubmissionMetadata = z.object({
+  status: RankSubmissionStatus,
+  discordMessageId: z.string(),
+  submittedBy: z.string(),
+});
+
+export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;

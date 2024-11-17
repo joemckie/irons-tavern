@@ -17,10 +17,6 @@ export function rankSubmissionKey(id: string) {
   return `${RedisKeyNamespace.RankSubmission}:${id}` as const;
 }
 
-export function rankSubmissionStatusKey(id: string) {
-  return `${id}:status` as const;
-}
-
-export function rankSubmissionDiscordMessageIdKey(id: string) {
-  return `${rankSubmissionKey(id)}:discord-message-id` as const;
+export function rankSubmissionMetadataKey(id: string) {
+  return `${rankSubmissionKey(id)}:metadata` as const;
 }

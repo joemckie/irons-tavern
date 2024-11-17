@@ -5,7 +5,7 @@ import {
 } from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
 import {
-  rankSubmissionStatusKey,
+  rankSubmissionMetadataKey,
   userOSRSAccountsKey,
   userRankSubmissionsKey,
 } from '@/config/redis';
@@ -126,8 +126,9 @@ export async function fetchPlayerDetails(
         ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
         : null,
       latestRankSubmissionId
-        ? redis.get<RankSubmissionStatus>(
-            rankSubmissionStatusKey(latestRankSubmissionId),
+        ? redis.hget<RankSubmissionStatus>(
+            rankSubmissionMetadataKey(latestRankSubmissionId),
+            'status',
           )
         : null,
     ]);
