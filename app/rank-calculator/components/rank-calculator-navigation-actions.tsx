@@ -63,7 +63,7 @@ export function RankCalculatorNavigationActions() {
             </DropdownMenu.Item>
             <DropdownMenu.Separator />
             <DropdownMenu.Item color="red">
-              Reset account data
+              Reset submission data
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
