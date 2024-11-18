@@ -28,9 +28,9 @@ import { formatPercentage } from '../utils/format-percentage';
 import { getRankName } from '../utils/get-rank-name';
 import { getRankImageUrl } from '../utils/get-rank-image-url';
 
-export const submitRankCalculatorAction = authActionClient
+export const publishRankSubmissionAction = authActionClient
   .metadata({
-    actionName: 'submit-rank-calculator',
+    actionName: 'publish-rank-submission',
   })
   .bindArgsSchemas<
     [currentRank: Zod.ZodOptional<typeof Rank>, playerName: typeof PlayerName]

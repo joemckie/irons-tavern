@@ -13,7 +13,7 @@ import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { submitRankCalculatorAction } from '../[player]/submit-rank-calculator-action';
+import { publishRankSubmissionAction } from '../[player]/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 
 interface RankCalculatorNavigationActionsProps {
@@ -29,8 +29,8 @@ export function RankCalculatorNavigationActions({
   const { isValid, isSubmitting, isDirty } = useFormState();
   const [isResetTransitioning, startTransition] = useTransition();
   const { pointsAwarded: totalPoints, rank } = useRankCalculator();
-  const { execute: submitRankCalculator } = useAction(
-    submitRankCalculatorAction.bind(null, currentRank, playerName),
+  const { execute: publishRankSubmission } = useAction(
+    publishRankSubmissionAction.bind(null, currentRank, playerName),
     {
       onSuccess() {
         toast.success('Rank application submitted!');
@@ -86,13 +86,13 @@ export function RankCalculatorNavigationActions({
           >
             <DropdownMenu.Item
               onClick={() => {
-                submitRankCalculator({
+                publishRankSubmission({
                   totalPoints,
                   rank,
                 });
               }}
             >
-              Save and apply
+              Apply for rank
             </DropdownMenu.Item>
             <DropdownMenu.Separator />
             <DropdownMenu.Item color="red">
