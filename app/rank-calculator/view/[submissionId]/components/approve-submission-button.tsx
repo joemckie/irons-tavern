@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
@@ -28,21 +28,25 @@ export function ApproveSubmissionButton({
   const isStandardRankStructure = rankStructure === 'Standard';
 
   const {
-    execute: approveSubmission,
+    executeAsync: approveSubmission,
     isExecuting: isApproveSubmissionExecuting,
-    status: approveSubmissionStatus,
   } = useAction(approveSubmissionAction);
 
-  useEffect(() => {
-    if (approveSubmissionStatus === 'hasErrored') {
-      toast.error('Unable to approve submission!');
-    }
+  const handleApproveClick = async () => {
+    const result = await approveSubmission({
+      submissionId,
+      rank,
+    });
 
-    if (approveSubmissionStatus === 'hasSucceeded') {
+    if (result?.data?.success) {
       toast.success('Submission approved!');
       onApproveSuccess();
+
+      return;
     }
-  }, [approveSubmissionStatus, onApproveSuccess]);
+
+    toast.error('Unable to approve submission!');
+  };
 
   return (
     <AlertDialog.Root
@@ -89,14 +93,7 @@ export function ApproveSubmissionButton({
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action
-            onClick={() => {
-              approveSubmission({
-                submissionId,
-                rank,
-              });
-            }}
-          >
+          <AlertDialog.Action onClick={handleApproveClick}>
             <Button
               loading={isApproveSubmissionExecuting}
               variant="solid"

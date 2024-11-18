@@ -4,11 +4,8 @@ import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
-import { redis } from '@/redis';
-import {
-  RankSubmissionMetadata,
-  RankSubmissionStatus,
-} from '@/app/schemas/rank-calculator';
+import { redis, redisRaw } from '@/redis';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { rankSubmissionMetadataKey } from '@/config/redis';
 import dedent from 'dedent';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
@@ -26,27 +23,18 @@ export const rejectSubmissionAction = authActionClient
         throw new Error('You do not have permission to reject this submission');
       }
 
-      const metadata = await redis.hmget<
-        Pick<
-          RankSubmissionMetadata,
-          'discordMessageId' | 'submittedBy' | 'status'
-        >
-      >(
+      const metadata = (await redisRaw.hmget(
         rankSubmissionMetadataKey(submissionId),
         'status',
         'discordMessageId',
         'submittedBy',
-      );
+      )) as unknown as [RankSubmissionStatus, string, string];
 
       if (!metadata) {
         throw new Error('Unable to find submission metadata');
       }
 
-      const {
-        discordMessageId: messageId,
-        submittedBy: submitterId,
-        status: submissionStatus,
-      } = metadata;
+      const [submissionStatus, messageId, submitterId] = metadata;
 
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');

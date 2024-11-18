@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
@@ -16,21 +16,24 @@ export function RejectSubmissionButton({
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
   const [isRejectDialogTransitioning, startTransition] = useTransition();
   const {
-    execute: rejectSubmission,
+    executeAsync: rejectSubmission,
     isExecuting: isRejectSubmissionExecuting,
-    status: rejectSubmissionStatus,
   } = useAction(rejectSubmissionAction);
 
-  useEffect(() => {
-    if (rejectSubmissionStatus === 'hasErrored') {
-      toast.error('Unable to reject submission');
-    }
+  const handleRejectClick = async () => {
+    const result = await rejectSubmission({
+      submissionId,
+    });
 
-    if (rejectSubmissionStatus === 'hasSucceeded') {
+    if (result?.data?.success) {
       toast.success('Submission rejected');
       onRejectSuccess();
+
+      return;
     }
-  }, [rejectSubmissionStatus, onRejectSuccess]);
+
+    toast.error('Unable to reject submission');
+  };
 
   return (
     <AlertDialog.Root
@@ -65,13 +68,7 @@ export function RejectSubmissionButton({
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action
-            onClick={() => {
-              rejectSubmission({
-                submissionId,
-              });
-            }}
-          >
+          <AlertDialog.Action onClick={handleRejectClick}>
             <Button
               loading={isRejectSubmissionExecuting}
               variant="solid"
