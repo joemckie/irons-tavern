@@ -10,6 +10,7 @@ import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
+import { Navigation } from '../components/navigation';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -52,7 +53,12 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
     <FormProvider {...form}>
       <RankCalculator
         submitRankCalculatorAction={handleSubmitWithAction}
-        navigationActions={<RankCalculatorNavigationActions />}
+        navigation={
+          <Navigation
+            actions={<RankCalculatorNavigationActions />}
+            shouldRenderBackButton
+          />
+        }
       />
     </FormProvider>
   );

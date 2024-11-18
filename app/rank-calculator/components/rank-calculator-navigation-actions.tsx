@@ -1,7 +1,6 @@
 'use client';
 
-import { Button } from '@radix-ui/themes';
-import Link from 'next/link';
+import { Button, ChevronDownIcon, Flex, IconButton } from '@radix-ui/themes';
 import { startTransition } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
@@ -14,9 +13,6 @@ export function RankCalculatorNavigationActions() {
 
   return (
     <>
-      <Button asChild variant="outline" color="gray">
-        <Link href="/rank-calculator">Back</Link>
-      </Button>
       <Button
         variant="outline"
         color="gray"
@@ -30,14 +26,24 @@ export function RankCalculatorNavigationActions() {
       >
         Reset
       </Button>
-      <Button
-        role="button"
-        loading={isSubmitting}
-        disabled={!isValid || isSubmitting}
-        variant="surface"
-      >
-        Submit
-      </Button>
+      <Flex gap="1px">
+        <Button
+          role="button"
+          loading={isSubmitting}
+          disabled={!isValid || isSubmitting}
+          variant="soft"
+          style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+        >
+          Save
+        </Button>
+        <IconButton
+          variant="soft"
+          type="button"
+          style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+        >
+          <ChevronDownIcon />
+        </IconButton>
+      </Flex>
     </>
   );
 }
