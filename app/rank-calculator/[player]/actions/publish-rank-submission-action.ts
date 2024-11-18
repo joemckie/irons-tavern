@@ -23,10 +23,10 @@ import { discordBotClient } from '@/discord';
 import { ChannelType, Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { PlayerName } from '@/app/schemas/player';
-import { calculateScaling } from '../utils/calculate-scaling';
-import { formatPercentage } from '../utils/format-percentage';
-import { getRankName } from '../utils/get-rank-name';
-import { getRankImageUrl } from '../utils/get-rank-image-url';
+import { calculateScaling } from '../../utils/calculate-scaling';
+import { formatPercentage } from '../../utils/format-percentage';
+import { getRankName } from '../../utils/get-rank-name';
+import { getRankImageUrl } from '../../utils/get-rank-image-url';
 
 export const publishRankSubmissionAction = authActionClient
   .metadata({

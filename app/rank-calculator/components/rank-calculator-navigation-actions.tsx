@@ -13,7 +13,7 @@ import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { publishRankSubmissionAction } from '../[player]/publish-rank-submission-action';
+import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 
 interface RankCalculatorNavigationActionsProps {

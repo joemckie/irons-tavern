@@ -13,7 +13,7 @@ import { mockUUID } from '@/test-utils/mock-uuid';
 import * as auth from '@/auth';
 import { serialize } from 'object-to-formdata';
 import * as discordFixtures from '@/mocks/discord';
-import { publishRankSubmissionAction } from './publish-rank-submission-action';
+import { publishRankSubmissionAction } from './actions/publish-rank-submission-action';
 
 beforeEach(() => {
   jest.spyOn(auth, 'auth').mockReturnValue({

@@ -3,7 +3,7 @@
 import { userDraftRankSubmissionKey } from '@/config/redis';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
-import { RankCalculatorSchema } from './submit-rank-calculator-validation';
+import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
 
 export const saveDraftRankSubmissionAction = authActionClient
   .metadata({

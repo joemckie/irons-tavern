@@ -10,7 +10,7 @@ import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { Navigation } from '../components/navigation';
-import { saveDraftRankSubmissionAction } from './save-draft-rank-submission-action';
+import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
