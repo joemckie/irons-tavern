@@ -28,7 +28,7 @@ export function RankCalculatorNavigationActions({
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
   const { isValid, isSubmitting, isDirty } = useFormState();
-  const [isResetTransitioning, startResetTransition] = useTransition();
+  const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
   const { pointsAwarded: totalPoints, rank } = useRankCalculator();
   const [
@@ -50,71 +50,65 @@ export function RankCalculatorNavigationActions({
   );
 
   return (
-    <>
+    <Flex gap="1px">
       <Button
-        loading={isResetTransitioning}
+        role="button"
+        loading={isSubmitting}
+        disabled={!isDirty || !isValid || isSubmitting}
         variant="soft"
-        color="gray"
-        type="button"
-        disabled={!isDirty}
-        onClick={() => {
-          startResetTransition(() => {
-            reset();
-          });
-        }}
+        type="submit"
+        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
       >
-        Reset
+        Save
       </Button>
-      <Flex gap="1px">
-        <Button
-          role="button"
-          loading={isSubmitting}
-          disabled={!isDirty || !isValid || isSubmitting}
-          variant="soft"
-          type="submit"
-          style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-        >
-          Save
-        </Button>
-        <DropdownMenu.Root modal={false}>
-          <DropdownMenu.Trigger>
-            <IconButton
-              variant="soft"
-              type="button"
-              style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-            >
-              <ChevronDownIcon />
-            </IconButton>
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content color="gray" variant="soft">
-            <DropdownMenu.Item
-              onClick={() => {
-                publishRankSubmission({
-                  totalPoints,
-                  rank,
-                });
-              }}
-            >
-              Apply for rank
-            </DropdownMenu.Item>
-            <DropdownMenu.Separator />
-            <DropdownMenu.Item
-              color="red"
-              onSelect={() => {
-                startDeleteDialogTransition(() => {
-                  setIsDeleteSubmissionDataDialogOpen(true);
-                });
-              }}
-            >
-              Reset submission data
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
-        <DeleteSubmissionDataDialog
-          open={isDeleteSubmissionDataDialogOpen}
-          onOpenChange={setIsDeleteSubmissionDataDialogOpen}
-        />
-      </Flex>
-    </>
+      <DropdownMenu.Root modal={false}>
+        <DropdownMenu.Trigger>
+          <IconButton
+            variant="soft"
+            type="button"
+            style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+          >
+            <ChevronDownIcon />
+          </IconButton>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content color="gray" variant="soft">
+          <DropdownMenu.Item
+            onClick={() => {
+              publishRankSubmission({
+                totalPoints,
+                rank,
+              });
+            }}
+          >
+            Apply for rank
+          </DropdownMenu.Item>
+          <DropdownMenu.Item
+            disabled={!isDirty}
+            onClick={() => {
+              startResetTransition(() => {
+                reset();
+              });
+            }}
+          >
+            Reset form defaults
+          </DropdownMenu.Item>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item
+            color="red"
+            onSelect={() => {
+              startDeleteDialogTransition(() => {
+                setIsDeleteSubmissionDataDialogOpen(true);
+              });
+            }}
+          >
+            Delete data
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+      <DeleteSubmissionDataDialog
+        open={isDeleteSubmissionDataDialogOpen}
+        onOpenChange={setIsDeleteSubmissionDataDialogOpen}
+      />
+    </Flex>
   );
 }
