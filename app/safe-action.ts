@@ -6,11 +6,17 @@ import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { auth } from '@/auth';
 
+export class ActionError extends Error {}
+
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
     console.error(`Action error: ${error.message}`);
 
     Sentry.captureException(error);
+
+    if (error instanceof ActionError) {
+      return error.message;
+    }
 
     return DEFAULT_SERVER_ERROR_MESSAGE;
   },

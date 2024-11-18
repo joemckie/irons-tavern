@@ -1,6 +1,6 @@
 'use server';
 
-import { authActionClient } from '@/app/safe-action';
+import { ActionError, authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
@@ -20,7 +20,9 @@ export const rejectSubmissionAction = authActionClient
   .action(
     async ({ parsedInput: { submissionId }, ctx: { permissions, userId } }) => {
       if (!userCanModerateSubmission(permissions)) {
-        throw new Error('You do not have permission to reject this submission');
+        throw new ActionError(
+          'You do not have permission to reject this submission',
+        );
       }
 
       const metadata = (await redisRaw.hmget(
@@ -31,13 +33,13 @@ export const rejectSubmissionAction = authActionClient
       )) as unknown as [RankSubmissionStatus, string, string];
 
       if (!metadata) {
-        throw new Error('Unable to find submission metadata');
+        throw new ActionError('Unable to find submission metadata');
       }
 
       const [submissionStatus, messageId, submitterId] = metadata;
 
       if (submissionStatus !== 'Pending') {
-        throw new Error('Submission does not need to be moderated!');
+        throw new ActionError('Submission does not need to be moderated!');
       }
 
       await discordBotClient.put(

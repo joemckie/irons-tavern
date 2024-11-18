@@ -1,7 +1,6 @@
 'use client';
 
 import { FormProvider } from 'react-hook-form';
-import { mapToHookFormErrors } from '@next-safe-action/adapter-react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
@@ -26,18 +25,9 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
         onSuccess() {
           toast.success('Draft saved!');
         },
-        onError({ error: { validationErrors, serverError } }) {
-          const errorMap = mapToHookFormErrors<typeof RankCalculatorSchema>(
-            validationErrors,
-            { joinBy: '\n' },
-          );
-
-          if (errorMap?.root) {
-            toast.error(errorMap.root.message);
-          }
-
+        onError({ error: { serverError } }) {
           if (serverError) {
-            toast.error('Failed to save draft!');
+            toast.error(serverError);
           }
         },
       },

@@ -19,8 +19,10 @@ export function RejectSubmissionButton({
     execute: rejectSubmission,
     isExecuting: isRejectSubmissionExecuting,
   } = useAction(rejectSubmissionAction, {
-    onError() {
-      toast.error('Unable to reject submission');
+    onError({ error: { serverError } }) {
+      if (serverError) {
+        toast.error(serverError);
+      }
     },
     onSuccess() {
       toast.success('Submission rejected');

@@ -43,7 +43,7 @@ export function RankCalculatorNavigationActions({
       },
       onError({ error: { serverError } }) {
         if (serverError) {
-          toast.error('Failed to submit application!');
+          toast.error(serverError);
         }
       },
     },

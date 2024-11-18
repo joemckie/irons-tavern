@@ -30,9 +30,9 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
     handleSubmitWithAction,
   } = useHookFormAction(addPlayerAction, zodResolver(AddPlayerSchema), {
     actionProps: {
-      onError({ error }) {
-        if (error.serverError) {
-          toast.error('Failed to save player!');
+      onError({ error: { serverError } }) {
+        if (serverError) {
+          toast.error(serverError);
         }
       },
       onSuccess() {

@@ -31,8 +31,10 @@ export function ApproveSubmissionButton({
     execute: approveSubmission,
     isExecuting: isApproveSubmissionExecuting,
   } = useAction(approveSubmissionAction, {
-    onError() {
-      toast.error('Unable to approve submission!');
+    onError({ error: { serverError } }) {
+      if (serverError) {
+        toast.error(serverError);
+      }
     },
     onSuccess() {
       toast.success('Submission approved!');

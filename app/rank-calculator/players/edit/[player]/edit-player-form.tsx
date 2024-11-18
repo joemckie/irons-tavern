@@ -45,9 +45,9 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
     handleSubmitWithAction,
   } = useHookFormAction(boundEditPlayerAction, zodResolver(EditPlayerSchema), {
     actionProps: {
-      onError({ error }) {
-        if (error.serverError) {
-          toast.error('Failed to edit player!');
+      onError({ error: { serverError } }) {
+        if (serverError) {
+          toast.error(serverError);
         }
       },
       onSuccess() {

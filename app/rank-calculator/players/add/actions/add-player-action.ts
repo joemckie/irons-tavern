@@ -2,7 +2,7 @@
 
 import { userOSRSAccountsKey } from '@/config/redis';
 import { redis } from '@/redis';
-import { authActionClient } from '@/app/safe-action';
+import { ActionError, authActionClient } from '@/app/safe-action';
 import { returnValidationErrors } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/app/schemas/player';
@@ -67,7 +67,7 @@ export const addPlayerAction = authActionClient
       );
 
       if (!result) {
-        throw new Error('Error creating player account record');
+        throw new ActionError('Error creating player account record');
       }
 
       return {

@@ -21,8 +21,10 @@ export function DeleteSubmissionDataDialog({
     executeAsync: deleteSubmissionData,
     isExecuting: isDeleteSubmissionDataExecuting,
   } = useAction(deleteSubmissionDataAction, {
-    onError() {
-      toast.error('Error deleting submission data');
+    onError({ error: { serverError } }) {
+      if (serverError) {
+        toast.error(serverError);
+      }
     },
     onSuccess() {
       toast.success('Submission data deleted!');

@@ -14,7 +14,7 @@ import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
-import { authActionClient } from '@/app/safe-action';
+import { authActionClient, ActionError } from '@/app/safe-action';
 import {
   RankStructure,
   RankSubmissionMetadata,
@@ -57,7 +57,7 @@ export const publishRankSubmissionAction = authActionClient
       );
 
       if (!savedData) {
-        throw new Error('No saved data!');
+        throw new ActionError('No saved data!');
       }
 
       const {
@@ -66,7 +66,7 @@ export const publishRankSubmissionAction = authActionClient
       } = savedData;
 
       if (rank === currentRank) {
-        throw new Error('You already have this rank!');
+        throw new ActionError('You already have this rank!');
       }
 
       const { channelId } = serverConstants.discord;
