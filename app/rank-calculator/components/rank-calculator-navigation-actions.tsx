@@ -12,6 +12,7 @@ import { useFormContext, useFormState } from 'react-hook-form';
 import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
@@ -80,7 +81,7 @@ export function RankCalculatorNavigationActions({
               });
             }}
           >
-            Apply for rank
+            Apply for promotion
           </DropdownMenu.Item>
           <DropdownMenu.Item
             disabled={!isDirty}
@@ -91,6 +92,13 @@ export function RankCalculatorNavigationActions({
             }}
           >
             Reset form defaults
+          </DropdownMenu.Item>
+          <DropdownMenu.Item asChild>
+            <Link
+              href={`/rank-calculator/players/edit/${playerName.toLowerCase()}`}
+            >
+              Edit player
+            </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Separator />
           <DropdownMenu.Item
