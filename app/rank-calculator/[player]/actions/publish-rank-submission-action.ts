@@ -47,6 +47,10 @@ export const publishRankSubmissionAction = authActionClient
       bindArgsParsedInputs: [currentRank, playerName],
       parsedInput: { totalPoints, rank },
     }) => {
+      if (rank === currentRank) {
+        throw new ActionError('You already have this rank!');
+      }
+
       const savedData = await redis.json.get<{
         '$.rankStructure': [RankStructure];
         '$.joinDate': [Date];
@@ -64,10 +68,6 @@ export const publishRankSubmissionAction = authActionClient
         '$.joinDate': [joinDate],
         '$.rankStructure': [rankStructure],
       } = savedData;
-
-      if (rank === currentRank) {
-        throw new ActionError('You already have this rank!');
-      }
 
       const { channelId } = serverConstants.discord;
       const submissionId = randomUUID();
