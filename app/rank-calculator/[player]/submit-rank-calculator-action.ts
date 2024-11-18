@@ -16,7 +16,7 @@ import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
 import { discordBotClient } from '@/discord';
-import { Routes } from 'discord-api-types/v10';
+import { ChannelType, Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { returnValidationErrors } from 'next-safe-action';
 import { calculateScaling } from '../utils/calculate-scaling';
@@ -100,6 +100,7 @@ export const submitRankCalculatorAction = authActionClient
       await discordBotClient.post(Routes.threads(channelId, discordMessageId), {
         body: {
           name: `${data.playerName} - ${getRankName(rank)}`,
+          type: ChannelType.PublicThread,
         },
       });
 
