@@ -80,10 +80,7 @@ export function RankCalculatorNavigationActions({
               <ChevronDownIcon />
             </IconButton>
           </DropdownMenu.Trigger>
-          <DropdownMenu.Content
-            style={{ borderTopRightRadius: 0 }}
-            variant="soft"
-          >
+          <DropdownMenu.Content variant="soft">
             <DropdownMenu.Item
               onClick={() => {
                 publishRankSubmission({
