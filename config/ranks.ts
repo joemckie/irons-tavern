@@ -21,26 +21,28 @@ export const rankNames: Partial<Record<Rank, string>> = {
   Blisterwood: 'Hollow',
 };
 
+export const standardRanks = {
+  Air: 0,
+  Pine: 1,
+  Water: 3000,
+  Oak: 9000,
+  Earth: 17000,
+  Willow: 28000,
+  Nature: 42000,
+  Maple: 59000,
+  Law: 80000,
+  Yew: 106000,
+  Achiever: 137000,
+  Elite: 180000,
+  Diseased: 222000,
+  Blisterwood: 272000,
+} satisfies AtLeastOne<Record<Rank, number>>;
+
 export const rankThresholds: Record<
   RankStructure,
   Partial<Record<Rank, number>>
 > = {
-  Standard: {
-    Air: 0,
-    Pine: 1,
-    Water: 3000,
-    Oak: 9000,
-    Earth: 17000,
-    Willow: 28000,
-    Nature: 42000,
-    Maple: 59000,
-    Law: 80000,
-    Yew: 106000,
-    Achiever: 137000,
-    Elite: 180000,
-    Diseased: 222000,
-    Blisterwood: 272000,
-  },
+  Standard: standardRanks,
   'Bingo Winner': {
     'Gnome Child': 0,
   },

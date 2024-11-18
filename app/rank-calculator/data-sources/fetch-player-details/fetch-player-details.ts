@@ -5,7 +5,7 @@ import {
 } from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
 import {
-  rankSubmissionStatusKey,
+  rankSubmissionMetadataKey,
   userOSRSAccountsKey,
   userRankSubmissionsKey,
 } from '@/config/redis';
@@ -17,7 +17,7 @@ import { auth } from '@/auth';
 import { Rank } from '@/config/enums';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { redirect } from 'next/navigation';
 import { isItemAcquired } from './utils/is-item-acquired';
@@ -126,8 +126,9 @@ export async function fetchPlayerDetails(
         ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
         : null,
       latestRankSubmissionId
-        ? redis.get<RankSubmissionStatus>(
-            rankSubmissionStatusKey(latestRankSubmissionId),
+        ? redis.hget<RankSubmissionStatus>(
+            rankSubmissionMetadataKey(latestRankSubmissionId),
+            'status',
           )
         : null,
     ]);
@@ -258,7 +259,8 @@ export async function fetchPlayerDetails(
           totalLevel ?? 0,
           previousSubmission?.totalLevel ?? 0,
         ),
-        collectionLogTotal: collectionLogTotal ?? constants.collectionLogTotal,
+        collectionLogTotal:
+          collectionLogTotal ?? clientConstants.collectionLog.totalItems,
         joinDate,
         playerName: rsn,
         rankStructure: previousSubmission?.rankStructure ?? 'Standard',

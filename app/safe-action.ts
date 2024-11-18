@@ -1,9 +1,19 @@
-import { createSafeActionClient } from 'next-safe-action';
+import {
+  createSafeActionClient,
+  DEFAULT_SERVER_ERROR_MESSAGE,
+} from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { auth } from '@/auth';
 
 export const actionClient = createSafeActionClient({
+  handleServerError(error) {
+    console.error(`Action error: ${error.message}`);
+
+    Sentry.captureException(error);
+
+    return DEFAULT_SERVER_ERROR_MESSAGE;
+  },
   defineMetadataSchema() {
     return z.object({
       actionName: z.string(),
@@ -35,6 +45,7 @@ export const authActionClient = actionClient.use(async ({ next }) => {
   return next({
     ctx: {
       userId: session.user.id,
+      permissions: session.user.permissions,
     },
   });
 });

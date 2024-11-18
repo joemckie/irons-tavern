@@ -1,4 +1,5 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
@@ -44,7 +45,7 @@ const templePlayerStatsHandler = http.get(
 );
 
 const collectionLogHandler = http.get<{ player: string }>(
-  `${constants.collectionLogBaseUrl}/collectionlog/user/:player`,
+  `${clientConstants.collectionLog.baseUrl}/collectionlog/user/:player`,
   async ({ params }) => {
     await delay();
 
@@ -69,7 +70,7 @@ const collectionLogHandler = http.get<{ player: string }>(
 );
 
 const wikiSyncHandler = http.get<{ player: string }>(
-  `${constants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
+  `${clientConstants.wikiSync.baseUrl}/runelite/player/:player/STANDARD`,
   async ({ params }) => {
     await delay();
 
@@ -94,7 +95,7 @@ const wikiSyncHandler = http.get<{ player: string }>(
 );
 
 const wikiApiHandler = http.get(
-  `${constants.wiki.baseUrl}/api.php`,
+  `${clientConstants.wiki.baseUrl}/api.php`,
   ({ request }) => {
     if (request.url.includes('Combat+Achievement+JSON')) {
       return HttpResponse.json(combatAchievementListFixture);
@@ -116,13 +117,13 @@ const memberListHandler = http.get(
 const passthroughHandlers = [
   'https://*.googleapis.com/*',
   'https://*.gstatic.com/*',
-  `${constants.publicUrl}/api/*`,
+  `${clientConstants.publicUrl}/api/*`,
   'https://oldschool.runescape.wiki/images/*',
   'https://templeosrs.com/api/group_member_info.php',
   'https://discord.com/api/users/@me',
   'https://discord.com/api/oauth2/token',
   'https://discord.com/api/v10/channels/*/messages',
-  `${constants.redisUrl}/*`,
+  `${serverConstants.redisUrl}/*`,
   'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
   'https://*.sentry.io/*',
   'https://telemetry.nextjs.org/*',

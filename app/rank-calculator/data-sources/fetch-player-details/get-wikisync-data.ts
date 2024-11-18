@@ -1,11 +1,11 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getWikiSyncData(player: string) {
   try {
     const wikiSyncResponse = await fetch(
-      `${constants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
+      `${clientConstants.wikiSync.baseUrl}/runelite/player/${player}/STANDARD`,
       {
         headers: {
           // User agent is required or the API returns a 400

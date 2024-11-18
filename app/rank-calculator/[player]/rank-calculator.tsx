@@ -1,4 +1,9 @@
-import { BaseSyntheticEvent, startTransition, Suspense } from 'react';
+import {
+  BaseSyntheticEvent,
+  ReactNode,
+  startTransition,
+  Suspense,
+} from 'react';
 import { Grid, Text } from '@radix-ui/themes';
 import { Navigation } from '../components/navigation';
 import { Sidebar } from '../components/sidebar';
@@ -7,10 +12,12 @@ import { ItemList } from '../components/item-list';
 
 interface RankCalculatorProps {
   submitRankCalculatorAction: (e: BaseSyntheticEvent) => void;
+  navigationActions: ReactNode;
 }
 
 export function RankCalculator({
   submitRankCalculatorAction,
+  navigationActions,
 }: RankCalculatorProps) {
   return (
     <form
@@ -43,7 +50,7 @@ export function RankCalculator({
         rows="62px 1fr"
         gapX="3"
       >
-        <Navigation />
+        <Navigation actions={navigationActions} />
         <Sidebar />
         <RightSidebar />
         <Suspense fallback={<Text>Loading</Text>}>

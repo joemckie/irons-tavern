@@ -2,7 +2,8 @@
  * @jest-environment node
  */
 
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { server } from '@/mocks/server';
 import * as formData from '@/mocks/misc/form-data';
 import { http, HttpResponse } from 'msw';
@@ -23,7 +24,7 @@ beforeEach(() => {
 
   server.use(
     http.post(
-      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      `${clientConstants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
       () => HttpResponse.json(discordFixtures.sendMessageFixture),
     ),
   );
@@ -35,6 +36,7 @@ beforeEach(() => {
 
 it('saves the submission to the database', async () => {
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: '100000',
@@ -52,12 +54,13 @@ it('saves the submission to the database', async () => {
 it('returns an error if the save was not successful', async () => {
   server.use(
     http.post(
-      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      `${clientConstants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
       () => HttpResponse.error(),
     ),
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,
@@ -74,10 +77,13 @@ xit('returns an error if a network error occurs whilst saving the submission', a
   jest.spyOn(console, 'error').mockImplementationOnce(jest.fn);
 
   server.use(
-    http.post(`${constants.redisUrl}/pipeline`, () => HttpResponse.error()),
+    http.post(`${serverConstants.redisUrl}/pipeline`, () =>
+      HttpResponse.error(),
+    ),
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,
@@ -96,12 +102,13 @@ it('returns an error if a network error occurs whilst sending the discord messag
 
   server.use(
     http.post(
-      `${constants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
+      `${clientConstants.discord.baseUrl}${Routes.channelMessages('discord-channel-id')}`,
       () => HttpResponse.error(),
     ),
   );
 
   const result = await submitRankCalculatorAction(
+    'Air',
     serialize({
       ...formData.midGamePlayer,
       points: 100000,

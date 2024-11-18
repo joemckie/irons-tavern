@@ -1,11 +1,11 @@
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { CollectionLogResponse } from '@/app/schemas/collection-log';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getCollectionLog(player: string) {
   try {
     const collectionLogResponse = await fetch(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${player}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${player}`,
     );
 
     return CollectionLogResponse.parse(await collectionLogResponse.json());

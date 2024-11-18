@@ -2,20 +2,20 @@
 
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import {
-  rankSubmissionDiscordMessageIdKey,
   rankSubmissionKey,
-  rankSubmissionStatusKey,
+  rankSubmissionMetadataKey,
   userRankSubmissionsKey,
 } from '@/config/redis';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { pickBy } from 'lodash';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { discord } from '@/discord';
+import { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
+import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { returnValidationErrors } from 'next-safe-action';
@@ -39,16 +39,13 @@ export const submitRankCalculatorAction = authActionClient
       ctx: { userId },
       bindArgsParsedInputs: [currentRank],
     }) => {
-      if (!process.env.DISCORD_CHANNEL_ID) {
-        throw new Error('No discord channel ID provided');
-      }
-
       if (rank === currentRank) {
         returnValidationErrors(RankCalculatorSchema, {
           _errors: ['You already have this rank!'],
         });
       }
 
+      const { channelId } = serverConstants.discord;
       const submissionId = randomUUID();
       const { id: discordMessageId } = await sendDiscordMessage(
         {
@@ -91,13 +88,23 @@ export const submitRankCalculatorAction = authActionClient
                 },
                 {
                   name: 'View link',
-                  value: `[Click to view submission](${constants.publicUrl}/rank-calculator/view/${submissionId})`,
+                  value: `[Click to view submission](${clientConstants.publicUrl}/rank-calculator/view/${submissionId})`,
                 },
               ],
             },
           ],
         },
-        process.env.DISCORD_CHANNEL_ID,
+        channelId,
+      );
+
+      await discordBotClient.post(Routes.threads(channelId, discordMessageId), {
+        body: {
+          name: `${data.playerName} - ${getRankName(rank)}`,
+        },
+      });
+
+      await discordBotClient.put(
+        Routes.threadMembers(discordMessageId, userId),
       );
 
       const formattedData = {
@@ -119,24 +126,19 @@ export const submitRankCalculatorAction = authActionClient
         rankSubmissionKey(submissionId),
       );
 
-      submissionTransaction.set<RankSubmissionStatus>(
-        rankSubmissionStatusKey(rankSubmissionKey(submissionId)),
-        'Pending',
-      );
-
-      submissionTransaction.set<string>(
-        rankSubmissionDiscordMessageIdKey(rankSubmissionKey(submissionId)),
+      submissionTransaction.hset(rankSubmissionMetadataKey(submissionId), {
         discordMessageId,
-      );
+        status: 'Pending',
+        submittedBy: userId,
+        submittedAt: new Date(),
+        actionedBy: null,
+      } satisfies RankSubmissionMetadata);
 
       const submissionResult = await submissionTransaction.exec();
 
       if (!submissionResult) {
-        await discord.delete(
-          Routes.channelMessage(
-            process.env.DISCORD_CHANNEL_ID,
-            discordMessageId,
-          ),
+        await discordBotClient.delete(
+          Routes.channelMessage(channelId, discordMessageId),
         );
 
         return {

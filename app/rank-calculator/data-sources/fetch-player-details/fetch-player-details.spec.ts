@@ -4,7 +4,8 @@
 
 import { server } from '@/mocks/server';
 import { http, HttpResponse, PathParams } from 'msw';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
+import { serverConstants } from '@/config/constants.server';
 import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
 import { merge, set } from 'lodash';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
@@ -49,7 +50,7 @@ function generateRedisMock(
     PathParams,
     [[string, string]],
     RedisPipelineJsonGetResponse
-  >(`${constants.redisUrl}/pipeline`, async ({ request }) => {
+  >(`${serverConstants.redisUrl}/pipeline`, async ({ request }) => {
     const [[type, key]] = await request.json();
     const previousSubmissionId = 'previous-submission-id';
 
@@ -100,11 +101,11 @@ function setup() {
     ),
     generateRedisMock(player),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.emptyResponseFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.emptyResponseFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -128,7 +129,7 @@ it('returns no achievement diaries if there is no WikiSync data and no previous 
 
   server.use(
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           collectionLog.midGamePlayerFixture,
@@ -163,7 +164,7 @@ it('returns the highest achievement diary values from the previous submission an
       }),
     }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>(
           set(
@@ -219,7 +220,7 @@ it('merges the acquired items from the previous submission and API data', async 
       } satisfies DeepPartial<RankCalculatorSchema>,
     }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<DeepPartial<CollectionLogResponse>>({
           ...collectionLog.midGamePlayerFixture,
@@ -276,7 +277,7 @@ it('handles punctuation in entity names when determining acquiry status', async 
       } satisfies DeepPartial<RankCalculatorSchema>,
     }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<DeepPartial<CollectionLogResponse>>({
           ...collectionLog.midGamePlayerFixture,
@@ -349,7 +350,7 @@ it('returns the combat achievement tier from the API data if it is higher than t
       }),
     }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>(
           merge<unknown, WikiSyncResponse, DeepPartial<WikiSyncResponse>>(
@@ -390,7 +391,7 @@ it('returns the combat achievement tier from the previous submission if it is hi
       }),
     }),
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () =>
         HttpResponse.json<WikiSyncResponse>({
           ...wikiSync.midGamePlayerFixture,
@@ -417,7 +418,7 @@ it('returns the collection log count from the previous submission if it is highe
       >({}, formData.midGamePlayer, { collectionLogCount: 100 }),
     }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -451,7 +452,7 @@ it('returns the collection log count from the API data if it is higher than the 
       >({}, formData.midGamePlayer, { collectionLogCount: 123 }),
     }),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -640,7 +641,7 @@ it('returns the collection log total items from the API data', async () => {
 
   server.use(
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () =>
         HttpResponse.json<CollectionLogResponse>(
           merge<
@@ -978,11 +979,11 @@ it('handles errors when the player stats API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.midGamePlayerFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -1007,11 +1008,11 @@ it('handles errors when the WikiSync API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.error(),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.midGamePlayerFixture),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -1048,11 +1049,11 @@ it('handles errors when the Collection Log API is not available', async () => {
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.error(),
     ),
     http.get('https://templeosrs.com/api/player_stats.php', () =>
@@ -1071,7 +1072,7 @@ it('handles errors when the Collection Log API is not available', async () => {
     // Regular items are derived from the collection log so these should not be present
     acquiredItems: expect.not.objectContaining({ 'Bandos hilt': true }),
     collectionLogCount: 0,
-    collectionLogTotal: constants.collectionLogTotal,
+    collectionLogTotal: clientConstants.collectionLog.totalItems,
   });
   // Quest items are derived from WikiSync so these should be present
   expect(result.data.acquiredItems).toEqual(
@@ -1089,10 +1090,12 @@ it('returns no combat achievement tier if there is a network error when requesti
 
   server.use(
     http.get(
-      `${constants.wikiSync.baseUrl}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
+      `${clientConstants}/runelite/player/${encodeURIComponent(player)}/STANDARD`,
       () => HttpResponse.json(wikiSync.midGamePlayerFixture),
     ),
-    http.get(`${constants.wiki.baseUrl}/api.php`, () => HttpResponse.error()),
+    http.get(`${clientConstants.wiki.baseUrl}/api.php`, () =>
+      HttpResponse.error(),
+    ),
   );
 
   const result = (await fetchPlayerDetails(player)) as ApiSuccess<
@@ -1129,7 +1132,7 @@ it('returns the collection log link if no previous submission is found and colle
 
   server.use(
     http.get(
-      `${constants.collectionLogBaseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
+      `${clientConstants.collectionLog.baseUrl}/collectionlog/user/${encodeURIComponent(player)}`,
       () => HttpResponse.json(collectionLog.midGamePlayerFixture),
     ),
   );

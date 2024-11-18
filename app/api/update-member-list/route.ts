@@ -1,8 +1,9 @@
 import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { Rank } from '@/config/enums';
 import { GroupUpdateRequest } from '@/app/schemas/temple-api';
+import { serverConstants } from '@/config/constants.server';
 
 export interface ClanMember {
   rsn: string;
@@ -16,18 +17,10 @@ interface ClanExport {
 }
 
 export async function POST(request: NextRequest) {
-  if (
-    !constants.temple.groupId ||
-    !constants.temple.groupKey ||
-    !constants.temple.groupName
-  ) {
-    throw new Error('Temple group key or ID not provided');
-  }
-
   const body: ClanExport = await request.json();
   const { members, leaders } = body.clanMemberMaps.reduce(
     (acc, member) => {
-      if (constants.ranks.leaders.includes(member.rank)) {
+      if (clientConstants.ranks.leaders.includes(member.rank)) {
         return {
           ...acc,
           leaders: acc.leaders.concat(member.rsn),
@@ -48,19 +41,21 @@ export async function POST(request: NextRequest) {
   const templeUpdateData = {
     'clan-checkbox': 'on',
     clan: '100',
-    id: constants.temple.groupId,
-    key: constants.temple.groupKey,
-    name: constants.temple.groupName,
+    id: serverConstants.temple.groupId,
+    key: serverConstants.temple.groupKey,
+    name: serverConstants.temple.groupName,
     leaders: leaders.toString(),
     members: members.toString(),
-    ...(constants.temple.privateGroup && { 'private-group-checkbox': 'on' }),
+    ...(serverConstants.temple.privateGroup && {
+      'private-group-checkbox': 'on',
+    }),
   } satisfies GroupUpdateRequest;
 
   console.log('Updating member list');
 
   await Promise.all([
     // Sync our Temple page with the new member list
-    fetch(`${constants.temple.baseUrl}/groups/edit.php`, {
+    fetch(`${clientConstants.temple.baseUrl}/groups/edit.php`, {
       method: 'POST',
       body: new URLSearchParams(templeUpdateData),
     }),
@@ -69,7 +64,7 @@ export async function POST(request: NextRequest) {
       access: 'public',
     }),
     // Check all players in the new member list
-    fetch(`${constants.publicUrl}/api/check-all-players`, {
+    fetch(`${clientConstants.publicUrl}/api/check-all-players`, {
       method: 'POST',
     }),
   ]);

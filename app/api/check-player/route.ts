@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { constants } from '@/config/constants';
+import { clientConstants } from '@/config/constants.client';
 import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   }
 
   const playerInfoRequest = await fetch(
-    `${constants.temple.baseUrl}/api/player_info.php?player=${player}`,
+    `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
   );
   const playerInfo: PlayerInfoResponse = await playerInfoRequest.json();
   const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       console.log(`Checking ${player}`);
 
       await fetch(
-        `${constants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+        `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
       );
     }
 
