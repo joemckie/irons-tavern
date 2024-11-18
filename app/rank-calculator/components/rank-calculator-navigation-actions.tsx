@@ -40,7 +40,7 @@ export function RankCalculatorNavigationActions() {
           variant="soft"
           style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
         >
-          {isDirty ? 'Save' : 'Submit'}
+          {isDirty ? 'Save' : 'Apply'}
         </Button>
         <DropdownMenu.Root modal={false}>
           <DropdownMenu.Trigger>
@@ -56,7 +56,9 @@ export function RankCalculatorNavigationActions() {
             style={{ borderTopRightRadius: 0 }}
             variant="soft"
           >
-            <DropdownMenu.Item>Save and submit</DropdownMenu.Item>
+            <DropdownMenu.Item disabled={!isDirty}>
+              Save and apply
+            </DropdownMenu.Item>
             <DropdownMenu.Separator />
             <DropdownMenu.Item color="red">
               Reset account data
