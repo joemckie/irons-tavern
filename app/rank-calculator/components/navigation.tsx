@@ -70,8 +70,8 @@ export function Navigation({
                   <Image
                     alt={`${rank} icon`}
                     src={getRankImageUrl(rank)}
-                    width={22}
-                    height={22}
+                    width={18}
+                    height={18}
                   />
                 </Box>
               </Flex>
