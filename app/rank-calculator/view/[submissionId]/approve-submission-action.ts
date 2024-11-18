@@ -4,10 +4,9 @@ import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
-import { redis } from '@/redis';
+import { redis, redisRaw } from '@/redis';
 import {
   RankStructure,
-  RankSubmissionMetadata,
   RankSubmissionStatus,
 } from '@/app/schemas/rank-calculator';
 import {
@@ -16,6 +15,7 @@ import {
   userOSRSAccountsKey,
 } from '@/config/redis';
 import { Player } from '@/app/schemas/player';
+import dedent from 'dedent';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ApproveSubmissionSchema } from './moderate-submission-schema';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
@@ -38,27 +38,20 @@ export const approveSubmissionAction = authActionClient
         );
       }
 
-      const metadata = await redis.hmget<
-        Pick<
-          RankSubmissionMetadata,
-          'discordMessageId' | 'submittedBy' | 'status'
-        >
-      >(
+      const metadata = (await redisRaw.hmget(
         rankSubmissionMetadataKey(submissionId),
         'status',
         'discordMessageId',
         'submittedBy',
-      );
+      )) as unknown as [RankSubmissionStatus, string, string];
 
       if (!metadata) {
         throw new Error('Unable to find submission metadata');
       }
 
-      const {
-        discordMessageId: messageId,
-        submittedBy: submitterId,
-        status: submissionStatus,
-      } = metadata;
+      const [submissionStatus, messageId, submitterId] = metadata;
+
+      console.log(messageId, typeof messageId);
 
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');
@@ -90,14 +83,26 @@ export const approveSubmissionAction = authActionClient
         await assignRankDiscordRole(rank, submitterId);
         await sendDiscordMessage(
           {
-            content: `<@${submitterId}>\n\nYour application has been approved by <@${approverId}> and you have been assigned the ${getRankName(rank)} rank on Discord.\n\nPlease reach out to a mod to update your in-game rank!`,
+            content: dedent`
+              <@${submitterId}>
+
+              Your application has been approved by <@${approverId}> and you have been assigned the ${getRankName(rank)} rank on Discord.
+
+              Please reach out to a mod to update your in-game rank!
+            `,
           },
           messageId,
         );
       } else {
         await sendDiscordMessage(
           {
-            content: `<@${submitterId}>\n\nYour application has been approved by <@${approverId}>.\n\nPlease reach out to a mod to update your ranks!`,
+            content: dedent`
+              <@${submitterId}>
+
+              Your application has been approved by <@${approverId}>.
+
+              Please reach out to a mod to update your ranks!
+            `,
           },
           messageId,
         );

@@ -5582,7 +5582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dedent@npm:^1.0.0":
+"dedent@npm:^1.0.0, dedent@npm:^1.5.3":
   version: 1.5.3
   resolution: "dedent@npm:1.5.3"
   peerDependencies:
@@ -7328,6 +7328,7 @@ __metadata:
     cypress: "npm:^13.15.0"
     date-fns: "npm:^4.1.0"
     decimal.js-light: "npm:^2.5.1"
+    dedent: "npm:^1.5.3"
     discord-api-types: "npm:^0.37.103"
     eslint: "npm:^8"
     eslint-config-airbnb: "npm:^19.0.4"

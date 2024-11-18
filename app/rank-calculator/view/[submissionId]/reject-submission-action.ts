@@ -10,6 +10,7 @@ import {
   RankSubmissionStatus,
 } from '@/app/schemas/rank-calculator';
 import { rankSubmissionMetadataKey } from '@/config/redis';
+import dedent from 'dedent';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
 import { RejectSubmissionSchema } from './moderate-submission-schema';
@@ -61,7 +62,13 @@ export const rejectSubmissionAction = authActionClient
 
       await sendDiscordMessage(
         {
-          content: `<@${submitterId}>\n\nYour application has been rejected by <@${userId}>.\n\nPlease reach out if you have any questions.`,
+          content: dedent`
+            <@${submitterId}>
+
+            Your application has been rejected by <@${userId}>.
+            
+            Please reach out if you have any questions.
+          `,
         },
         messageId,
       );
