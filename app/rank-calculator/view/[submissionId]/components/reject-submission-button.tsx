@@ -16,24 +16,17 @@ export function RejectSubmissionButton({
   const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
   const [isRejectDialogTransitioning, startTransition] = useTransition();
   const {
-    executeAsync: rejectSubmission,
+    execute: rejectSubmission,
     isExecuting: isRejectSubmissionExecuting,
-  } = useAction(rejectSubmissionAction);
-
-  const handleRejectClick = async () => {
-    const result = await rejectSubmission({
-      submissionId,
-    });
-
-    if (result?.data?.success) {
+  } = useAction(rejectSubmissionAction, {
+    onError() {
+      toast.error('Unable to reject submission');
+    },
+    onSuccess() {
       toast.success('Submission rejected');
       onRejectSuccess();
-
-      return;
-    }
-
-    toast.error('Unable to reject submission');
-  };
+    },
+  });
 
   return (
     <AlertDialog.Root
@@ -68,7 +61,13 @@ export function RejectSubmissionButton({
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={handleRejectClick}>
+          <AlertDialog.Action
+            onClick={() => {
+              rejectSubmission({
+                submissionId,
+              });
+            }}
+          >
             <Button
               loading={isRejectSubmissionExecuting}
               variant="solid"

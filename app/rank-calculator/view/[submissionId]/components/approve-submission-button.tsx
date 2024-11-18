@@ -28,25 +28,17 @@ export function ApproveSubmissionButton({
   const isStandardRankStructure = rankStructure === 'Standard';
 
   const {
-    executeAsync: approveSubmission,
+    execute: approveSubmission,
     isExecuting: isApproveSubmissionExecuting,
-  } = useAction(approveSubmissionAction);
-
-  const handleApproveClick = async () => {
-    const result = await approveSubmission({
-      submissionId,
-      rank,
-    });
-
-    if (result?.data?.success) {
+  } = useAction(approveSubmissionAction, {
+    onError() {
+      toast.error('Unable to approve submission!');
+    },
+    onSuccess() {
       toast.success('Submission approved!');
       onApproveSuccess();
-
-      return;
-    }
-
-    toast.error('Unable to approve submission!');
-  };
+    },
+  });
 
   return (
     <AlertDialog.Root
@@ -93,7 +85,14 @@ export function ApproveSubmissionButton({
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={handleApproveClick}>
+          <AlertDialog.Action
+            onClick={() => {
+              approveSubmission({
+                submissionId,
+                rank,
+              });
+            }}
+          >
             <Button
               loading={isApproveSubmissionExecuting}
               variant="solid"
