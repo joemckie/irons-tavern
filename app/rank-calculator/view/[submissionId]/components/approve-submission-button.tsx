@@ -62,7 +62,7 @@ export function ApproveSubmissionButton({
           loading={isApproveDialogTransitioning}
           role="button"
           type="button"
-          variant="surface"
+          variant="soft"
           color="green"
         >
           Approve

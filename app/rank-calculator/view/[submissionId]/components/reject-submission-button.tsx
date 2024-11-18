@@ -47,7 +47,7 @@ export function RejectSubmissionButton({
       <AlertDialog.Trigger>
         <Button
           loading={isRejectDialogTransitioning}
-          variant="surface"
+          variant="soft"
           color="red"
           type="button"
         >

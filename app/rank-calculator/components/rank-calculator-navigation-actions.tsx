@@ -7,7 +7,7 @@ import {
   Flex,
   IconButton,
 } from '@radix-ui/themes';
-import { startTransition } from 'react';
+import { useTransition } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
@@ -16,11 +16,13 @@ export function RankCalculatorNavigationActions() {
     reset,
     formState: { isValid, isSubmitting, isDirty },
   } = useFormContext<RankCalculatorSchema>();
+  const [isResetTransitioning, startTransition] = useTransition();
 
   return (
     <>
       <Button
-        variant="outline"
+        loading={isResetTransitioning}
+        variant="soft"
         color="gray"
         type="button"
         disabled={!isDirty}
