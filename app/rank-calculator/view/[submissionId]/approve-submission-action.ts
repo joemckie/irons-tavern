@@ -51,8 +51,6 @@ export const approveSubmissionAction = authActionClient
 
       const [submissionStatus, messageId, submitterId] = metadata;
 
-      console.log(messageId, typeof messageId);
-
       if (submissionStatus !== 'Pending') {
         throw new Error('Submission does not need to be moderated!');
       }
