@@ -10,12 +10,15 @@ import {
 import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
+import { pickBy } from 'lodash';
 
 export const RankCalculatorSchema = zfd
   .formData({
-    acquiredItems: z.record(
-      z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
-    ),
+    acquiredItems: z
+      .record(
+        z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
+      )
+      .transform((data) => pickBy(data, (val) => val)),
     achievementDiaries: z.record(DiaryLocation, DiaryTier),
     joinDate: z.coerce.date(),
     collectionLogCount: z.coerce.number().nonnegative(),

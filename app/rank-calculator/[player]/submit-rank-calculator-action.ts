@@ -1,27 +1,30 @@
 'use server';
 
+import { z } from 'zod';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
 import {
   rankSubmissionKey,
   rankSubmissionMetadataKey,
+  userDraftRankSubmissionKey,
   userRankSubmissionsKey,
 } from '@/config/redis';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { pickBy } from 'lodash';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
-import { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
+import {
+  RankStructure,
+  RankSubmissionMetadata,
+} from '@/app/schemas/rank-calculator';
 import { discordBotClient } from '@/discord';
 import { ChannelType, Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
-import { returnValidationErrors } from 'next-safe-action';
+import { PlayerName } from '@/app/schemas/player';
 import { calculateScaling } from '../utils/calculate-scaling';
 import { formatPercentage } from '../utils/format-percentage';
-import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { getRankName } from '../utils/get-rank-name';
 import { getRankImageUrl } from '../utils/get-rank-image-url';
 
@@ -29,20 +32,41 @@ export const submitRankCalculatorAction = authActionClient
   .metadata({
     actionName: 'submit-rank-calculator',
   })
-  .bindArgsSchemas<[currentRank: Zod.ZodOptional<typeof Rank>]>([
-    Rank.optional(),
-  ])
-  .schema(RankCalculatorSchema)
+  .bindArgsSchemas<
+    [currentRank: Zod.ZodOptional<typeof Rank>, playerName: typeof PlayerName]
+  >([Rank.optional(), PlayerName])
+  .schema(
+    z.object({
+      rank: Rank,
+      totalPoints: z.number().nonnegative(),
+    }),
+  )
   .action(
     async ({
-      parsedInput: { rank, points, ...data },
       ctx: { userId },
-      bindArgsParsedInputs: [currentRank],
+      bindArgsParsedInputs: [currentRank, playerName],
+      parsedInput: { totalPoints, rank },
     }) => {
+      const savedData = await redis.json.get<{
+        '$.rankStructure': [RankStructure];
+        '$.joinDate': [Date];
+      }>(
+        userDraftRankSubmissionKey(userId, playerName),
+        '$.rankStructure',
+        '$.joinDate',
+      );
+
+      if (!savedData) {
+        throw new Error('No saved data!');
+      }
+
+      const {
+        '$.joinDate': [joinDate],
+        '$.rankStructure': [rankStructure],
+      } = savedData;
+
       if (rank === currentRank) {
-        returnValidationErrors(RankCalculatorSchema, {
-          _errors: ['You already have this rank!'],
-        });
+        throw new Error('You already have this rank!');
       }
 
       const { channelId } = serverConstants.discord;
@@ -51,7 +75,7 @@ export const submitRankCalculatorAction = authActionClient
         {
           embeds: [
             {
-              title: `${data.playerName} rank application`,
+              title: `${playerName} rank application`,
               thumbnail: {
                 url: getRankImageUrl(rank, true),
               },
@@ -63,22 +87,22 @@ export const submitRankCalculatorAction = authActionClient
                 },
                 {
                   name: 'Rank structure',
-                  value: data.rankStructure,
+                  value: rankStructure,
                   inline: true,
                 },
                 {
                   name: 'Total points',
-                  value: formatNumber(points),
+                  value: formatNumber(totalPoints),
                   inline: true,
                 },
                 {
                   name: 'Join date',
-                  value: format(data.joinDate, 'dd MMM yyyy'),
+                  value: format(joinDate, 'dd MMM yyyy'),
                   inline: true,
                 },
                 {
                   name: 'Scaling',
-                  value: formatPercentage(calculateScaling(data.joinDate)),
+                  value: formatPercentage(calculateScaling(joinDate)),
                   inline: true,
                 },
                 {
@@ -99,7 +123,7 @@ export const submitRankCalculatorAction = authActionClient
 
       await discordBotClient.post(Routes.threads(channelId, discordMessageId), {
         body: {
-          name: `${data.playerName} - ${getRankName(rank)}`,
+          name: `${playerName} - ${getRankName(rank)}`,
           type: ChannelType.PublicThread,
         },
       });
@@ -108,22 +132,15 @@ export const submitRankCalculatorAction = authActionClient
         Routes.threadMembers(discordMessageId, userId),
       );
 
-      const formattedData = {
-        ...data,
-        acquiredItems: pickBy(data.acquiredItems, (val) => val),
-      } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
-
       const submissionTransaction = redis.multi();
 
-      submissionTransaction.json.set(
+      submissionTransaction.copy(
+        userDraftRankSubmissionKey(userId, playerName),
         rankSubmissionKey(submissionId),
-        '$',
-        formattedData,
-        { nx: true },
       );
 
       submissionTransaction.lpush(
-        userRankSubmissionsKey(userId, data.playerName),
+        userRankSubmissionsKey(userId, playerName),
         rankSubmissionKey(submissionId),
       );
 

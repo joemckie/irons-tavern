@@ -8,15 +8,40 @@ import {
   IconButton,
 } from '@radix-ui/themes';
 import { useTransition } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
+import { Rank } from '@/config/enums';
+import { useAction } from 'next-safe-action/hooks';
+import { toast } from 'react-toastify';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { submitRankCalculatorAction } from '../[player]/submit-rank-calculator-action';
+import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 
-export function RankCalculatorNavigationActions() {
-  const {
-    reset,
-    formState: { isValid, isSubmitting, isDirty },
-  } = useFormContext<RankCalculatorSchema>();
+interface RankCalculatorNavigationActionsProps {
+  currentRank?: Rank;
+  playerName: string;
+}
+
+export function RankCalculatorNavigationActions({
+  currentRank,
+  playerName,
+}: RankCalculatorNavigationActionsProps) {
+  const { reset } = useFormContext<RankCalculatorSchema>();
+  const { isValid, isSubmitting, isDirty } = useFormState();
   const [isResetTransitioning, startTransition] = useTransition();
+  const { pointsAwarded: totalPoints, rank } = useRankCalculator();
+  const { execute: submitRankCalculator } = useAction(
+    submitRankCalculatorAction.bind(null, currentRank, playerName),
+    {
+      onSuccess() {
+        toast.success('Rank application submitted!');
+      },
+      onError({ error: { serverError } }) {
+        if (serverError) {
+          toast.error('Failed to submit application!');
+        }
+      },
+    },
+  );
 
   return (
     <>
@@ -38,11 +63,12 @@ export function RankCalculatorNavigationActions() {
         <Button
           role="button"
           loading={isSubmitting}
-          disabled={!isValid || isSubmitting}
+          disabled={!isDirty || !isValid || isSubmitting}
           variant="soft"
+          type="submit"
           style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
         >
-          {isDirty ? 'Save' : 'Apply'}
+          Save
         </Button>
         <DropdownMenu.Root modal={false}>
           <DropdownMenu.Trigger>
@@ -58,7 +84,14 @@ export function RankCalculatorNavigationActions() {
             style={{ borderTopRightRadius: 0 }}
             variant="soft"
           >
-            <DropdownMenu.Item disabled={!isDirty}>
+            <DropdownMenu.Item
+              onClick={() => {
+                submitRankCalculator({
+                  totalPoints,
+                  rank,
+                });
+              }}
+            >
               Save and apply
             </DropdownMenu.Item>
             <DropdownMenu.Separator />

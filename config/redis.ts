@@ -1,6 +1,8 @@
 enum RedisKeyNamespace {
   RankSubmission = 'rank-submission',
   RankSubmissions = 'rank-submissions',
+  DraftRankSubmission = 'draft-rank-submission',
+  SubmissionMetadata = 'metadata',
   OsrsAccounts = 'osrs-accounts',
   User = 'user',
 }
@@ -17,6 +19,10 @@ export function rankSubmissionKey(id: string) {
   return `${RedisKeyNamespace.RankSubmission}:${id}` as const;
 }
 
+export function userDraftRankSubmissionKey(userId: string, playerName: string) {
+  return `${RedisKeyNamespace.User}:${userId}:${RedisKeyNamespace.DraftRankSubmission}:${playerName.toLowerCase()}` as const;
+}
+
 export function rankSubmissionMetadataKey(id: string) {
-  return `${rankSubmissionKey(id)}:metadata` as const;
+  return `${rankSubmissionKey(id)}:${RedisKeyNamespace.SubmissionMetadata}` as const;
 }

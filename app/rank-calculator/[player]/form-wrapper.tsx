@@ -6,11 +6,11 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { Rank } from '@/config/enums';
-import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { Navigation } from '../components/navigation';
+import { saveDraftRankSubmissionAction } from './save-draft-rank-submission-action';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -19,12 +19,12 @@ interface FormWrapperProps {
 
 export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   const { handleSubmitWithAction, form } = useHookFormAction(
-    submitRankCalculatorAction.bind(null, currentRank),
+    saveDraftRankSubmissionAction,
     zodResolver(RankCalculatorSchema),
     {
       actionProps: {
         onSuccess() {
-          toast.success('Rank application submitted!');
+          toast.success('Draft saved!');
         },
         onError({ error: { validationErrors, serverError } }) {
           const errorMap = mapToHookFormErrors<typeof RankCalculatorSchema>(
@@ -37,7 +37,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
           }
 
           if (serverError) {
-            toast.error('Form submission failed!');
+            toast.error('Failed to save draft!');
           }
         },
       },
@@ -55,7 +55,12 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
         submitRankCalculatorAction={handleSubmitWithAction}
         navigation={
           <Navigation
-            actions={<RankCalculatorNavigationActions />}
+            actions={
+              <RankCalculatorNavigationActions
+                currentRank={currentRank}
+                playerName={formData.playerName}
+              />
+            }
             shouldRenderBackButton
           />
         }
