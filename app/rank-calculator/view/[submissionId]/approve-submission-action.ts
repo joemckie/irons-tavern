@@ -71,15 +71,14 @@ export const approveSubmissionAction = authActionClient
         '$.rankStructure': [rankStructure],
       } = submissionData;
 
-      await discordBotClient.put(
-        Routes.channelMessageOwnReaction(
-          serverConstants.discord.channelId,
-          messageId,
-          encodeURIComponent('☑️'),
-        ),
-      );
-
       if (rankStructure === 'Standard') {
+        await discordBotClient.put(
+          Routes.channelMessageOwnReaction(
+            serverConstants.discord.channelId,
+            messageId,
+            encodeURIComponent('☑️'),
+          ),
+        );
         await assignRankDiscordRole(rank, submitterId);
         await sendDiscordMessage(
           {
