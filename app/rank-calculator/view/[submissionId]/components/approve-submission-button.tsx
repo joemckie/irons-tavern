@@ -80,7 +80,7 @@ export function ApproveSubmissionButton({
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action
-            onClick={async () => {
+            onClick={() => {
               actionToastMessage(
                 approveSubmission({
                   submissionId,
