@@ -12,6 +12,7 @@ import { useFormContext, useFormState } from 'react-hook-form';
 import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
@@ -66,6 +67,12 @@ export function RankCalculatorNavigationActions({
         <DropdownMenu.Content color="gray" variant="soft">
           <DropdownMenu.Item
             onClick={() => {
+              if (isDirty) {
+                toast.error('Please save your data first!');
+
+                return;
+              }
+
               actionToastMessage(
                 publishRankSubmission({
                   totalPoints,
