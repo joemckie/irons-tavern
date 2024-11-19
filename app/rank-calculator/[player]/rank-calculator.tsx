@@ -1,9 +1,4 @@
-import {
-  BaseSyntheticEvent,
-  ReactNode,
-  startTransition,
-  Suspense,
-} from 'react';
+import { BaseSyntheticEvent, ReactNode, Suspense } from 'react';
 import { Grid, Text } from '@radix-ui/themes';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
@@ -19,13 +14,7 @@ export function RankCalculator({
   navigation,
 }: RankCalculatorProps) {
   return (
-    <form
-      onSubmit={(e) => {
-        startTransition(() => {
-          submitRankCalculatorAction(e);
-        });
-      }}
-    >
+    <form onSubmit={submitRankCalculatorAction}>
       <Grid
         areas={{
           initial: `

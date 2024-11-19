@@ -12,8 +12,8 @@ import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
 import { pickBy } from 'lodash';
 
-export const RankCalculatorSchema = zfd
-  .formData({
+export const RankCalculatorSchema = z
+  .object({
     acquiredItems: z
       .record(
         z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
