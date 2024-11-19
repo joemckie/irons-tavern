@@ -65,7 +65,7 @@ export function RankCalculatorNavigationActions({
         Save
       </Button>
       <DropdownMenu.Root modal={false}>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger disabled={isSubmitting}>
           <IconButton
             variant="soft"
             type="button"
