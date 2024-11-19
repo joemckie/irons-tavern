@@ -5,6 +5,7 @@ import { userDraftRankSubmissionKey } from '@/config/redis';
 import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { PlayerName } from '@/app/schemas/player';
+import { revalidatePath } from 'next/cache';
 
 export const deleteSubmissionDataAction = authActionClient
   .metadata({
@@ -15,12 +16,25 @@ export const deleteSubmissionDataAction = authActionClient
       playerName: PlayerName,
     }),
   )
-  .action(async ({ parsedInput: { playerName }, ctx: { userId } }) => {
-    const result = await redis.del(
-      userDraftRankSubmissionKey(userId, playerName),
-    );
+  .action(
+    async ({ parsedInput: { playerName }, ctx: { userId } }) => {
+      const result = await redis.del(
+        userDraftRankSubmissionKey(userId, playerName),
+      );
 
-    return {
-      success: !!result,
-    };
-  });
+      if (result) {
+        revalidatePath(`/rank-calculator/${playerName}`);
+
+        return {
+          success: true,
+        };
+      }
+
+      return {
+        success: false,
+      };
+    },
+    {
+      throwServerError: true,
+    },
+  );

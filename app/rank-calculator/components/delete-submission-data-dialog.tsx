@@ -1,10 +1,9 @@
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'react-toastify';
 import { useFormContext } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { deleteSubmissionDataAction } from '../[player]/actions/delete-submission-data-action';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { actionToastMessage } from '../utils/action-toast-message';
 
 type DeleteSubmissionDataDialogProps = Pick<
   AlertDialog.RootProps,
@@ -15,22 +14,11 @@ export function DeleteSubmissionDataDialog({
   open,
   onOpenChange,
 }: DeleteSubmissionDataDialogProps) {
-  const router = useRouter();
   const { getValues } = useFormContext<RankCalculatorSchema>();
   const {
     executeAsync: deleteSubmissionData,
     isExecuting: isDeleteSubmissionDataExecuting,
-  } = useAction(deleteSubmissionDataAction, {
-    onError({ error: { serverError } }) {
-      if (serverError) {
-        toast.error(serverError);
-      }
-    },
-    onSuccess() {
-      toast.success('Submission data deleted!');
-      router.refresh();
-    },
-  });
+  } = useAction(deleteSubmissionDataAction);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -53,10 +41,13 @@ export function DeleteSubmissionDataDialog({
             loading={isDeleteSubmissionDataExecuting}
             variant="solid"
             color="red"
-            onClick={async () => {
-              await deleteSubmissionData({
-                playerName: getValues('playerName'),
-              });
+            onClick={() => {
+              actionToastMessage(
+                deleteSubmissionData({
+                  playerName: getValues('playerName'),
+                }),
+                { success: 'Submission data deleted!' },
+              );
 
               onOpenChange?.(false);
             }}

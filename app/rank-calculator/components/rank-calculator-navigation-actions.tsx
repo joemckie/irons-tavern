@@ -11,13 +11,12 @@ import { useState, useTransition } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
 import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'react-toastify';
 import Link from 'next/link';
-import { DEFAULT_SERVER_ERROR_MESSAGE } from 'next-safe-action';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { DeleteSubmissionDataDialog } from './delete-submission-data-dialog';
+import { actionToastMessage } from '../utils/action-toast-message';
 
 interface RankCalculatorNavigationActionsProps {
   currentRank?: Rank;
@@ -67,24 +66,12 @@ export function RankCalculatorNavigationActions({
         <DropdownMenu.Content color="gray" variant="soft">
           <DropdownMenu.Item
             onClick={() => {
-              toast.promise(
+              actionToastMessage(
                 publishRankSubmission({
                   totalPoints,
                   rank,
                 }),
-                {
-                  pending: 'Applying for rank...',
-                  error: {
-                    render({ data }) {
-                      if (data instanceof Error) {
-                        return data.message;
-                      }
-
-                      return DEFAULT_SERVER_ERROR_MESSAGE;
-                    },
-                  },
-                  success: 'Rank application submitted!',
-                },
+                { success: 'Rank application submitted!' },
               );
             }}
           >
