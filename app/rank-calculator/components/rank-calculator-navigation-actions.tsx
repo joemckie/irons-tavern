@@ -8,7 +8,7 @@ import {
   IconButton,
 } from '@radix-ui/themes';
 import { useState, useTransition } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
@@ -27,10 +27,9 @@ export function RankCalculatorNavigationActions({
   currentRank,
   playerName,
 }: RankCalculatorNavigationActionsProps) {
-  const {
-    reset,
-    formState: { isValid, isDirty, isSubmitting },
-  } = useFormContext<RankCalculatorSchema>();
+  const { reset } = useFormContext<RankCalculatorSchema>();
+  const { isValid, isDirty, isSubmitting } =
+    useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
   const { pointsAwarded: totalPoints, rank } = useRankCalculator();

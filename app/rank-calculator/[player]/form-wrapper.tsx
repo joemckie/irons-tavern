@@ -22,8 +22,10 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
     zodResolver(RankCalculatorSchema),
     {
       actionProps: {
-        onSuccess() {
+        onSuccess({ input }) {
           toast.success('Draft saved!');
+
+          form.reset(input);
         },
         onError({ error: { serverError } }) {
           if (serverError) {

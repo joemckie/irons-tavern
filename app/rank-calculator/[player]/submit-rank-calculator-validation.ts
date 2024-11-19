@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { zfd } from 'zod-form-data';
 import {
   CombatAchievementTier,
   DiaryLocation,
@@ -15,9 +14,7 @@ import { pickBy } from 'lodash';
 export const RankCalculatorSchema = z
   .object({
     acquiredItems: z
-      .record(
-        z.union([zfd.checkbox({ trueValue: 'true' }), z.boolean().optional()]),
-      )
+      .record(z.boolean().optional())
       .transform((data) => pickBy(data, (val) => val)),
     achievementDiaries: z.record(DiaryLocation, DiaryTier),
     joinDate: z.coerce.date(),
