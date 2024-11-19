@@ -4,9 +4,9 @@ import { useAction } from 'next-safe-action/hooks';
 import { useRankCalculator } from '@/app/rank-calculator/hooks/point-calculator/use-rank-calculator';
 import { useParams } from 'next/navigation';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import { toast } from 'react-toastify';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
+import { actionToastMessage } from '@/app/rank-calculator/utils/action-toast-message';
 import { approveSubmissionAction } from '../approve-submission-action';
 
 interface ApproveSubmissionButtonProps {
@@ -30,17 +30,7 @@ export function ApproveSubmissionButton({
   const {
     executeAsync: approveSubmission,
     isExecuting: isApproveSubmissionExecuting,
-  } = useAction(approveSubmissionAction, {
-    onSuccess() {
-      toast.success('Submission approved!');
-      onApproveSuccess();
-    },
-    onError({ error: { serverError } }) {
-      if (serverError) {
-        toast.error(serverError);
-      }
-    },
-  });
+  } = useAction(approveSubmissionAction);
 
   return (
     <AlertDialog.Root open={isDialogOpen}>
@@ -91,10 +81,21 @@ export function ApproveSubmissionButton({
           </AlertDialog.Cancel>
           <AlertDialog.Action
             onClick={async () => {
-              await approveSubmission({
-                submissionId,
-                rank,
-              });
+              actionToastMessage(
+                approveSubmission({
+                  submissionId,
+                  rank,
+                }),
+                {
+                  success: {
+                    render() {
+                      onApproveSuccess();
+
+                      return 'Submission approved!';
+                    },
+                  },
+                },
+              );
 
               setIsDialogOpen(false);
             }}
