@@ -28,7 +28,7 @@ export function RankCalculatorNavigationActions({
   playerName,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
-  const { isValid, isDirty, isSubmitting } =
+  const { isValid, isDirty, isSubmitting, isSubmitSuccessful } =
     useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
@@ -46,7 +46,7 @@ export function RankCalculatorNavigationActions({
       <Button
         role="button"
         loading={isSubmitting}
-        disabled={!isDirty || !isValid || isSubmitting}
+        disabled={(isSubmitSuccessful && !isDirty) || !isValid || isSubmitting}
         variant="soft"
         type="submit"
         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}

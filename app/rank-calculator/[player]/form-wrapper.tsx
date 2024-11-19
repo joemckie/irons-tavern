@@ -28,9 +28,6 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
         defaultValues: formData,
         criteriaMode: 'all',
         mode: 'onBlur',
-        resetOptions: {
-          keepIsSubmitted: true,
-        },
       },
     },
   );
@@ -46,7 +43,9 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
             pending: 'Saving draft...',
             success: {
               render() {
-                form.reset(form.getValues());
+                form.reset(form.getValues(), {
+                  keepIsSubmitSuccessful: true,
+                });
 
                 return 'Draft saved!';
               },
