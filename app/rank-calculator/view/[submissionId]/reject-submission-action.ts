@@ -73,4 +73,7 @@ export const rejectSubmissionAction = authActionClient
         success: true,
       };
     },
+    {
+      throwServerError: true,
+    },
   );

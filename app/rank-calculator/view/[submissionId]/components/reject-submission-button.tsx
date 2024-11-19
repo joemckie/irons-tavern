@@ -2,7 +2,7 @@ import { useState, useTransition } from 'react';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
 import { useParams } from 'next/navigation';
-import { toast } from 'react-toastify';
+import { actionToastMessage } from '@/app/rank-calculator/utils/action-toast-message';
 import { rejectSubmissionAction } from '../reject-submission-action';
 
 interface RejectSubmissionButtonProps {
@@ -18,17 +18,7 @@ export function RejectSubmissionButton({
   const {
     executeAsync: rejectSubmission,
     isExecuting: isRejectSubmissionExecuting,
-  } = useAction(rejectSubmissionAction, {
-    onSuccess() {
-      toast.success('Submission rejected!');
-      onRejectSuccess();
-    },
-    onError({ error: { serverError } }) {
-      if (serverError) {
-        toast.error(serverError);
-      }
-    },
-  });
+  } = useAction(rejectSubmissionAction);
 
   return (
     <AlertDialog.Root open={isDialogOpen}>
@@ -67,9 +57,20 @@ export function RejectSubmissionButton({
           </AlertDialog.Cancel>
           <AlertDialog.Action
             onClick={async () => {
-              await rejectSubmission({
-                submissionId,
-              });
+              actionToastMessage(
+                rejectSubmission({
+                  submissionId,
+                }),
+                {
+                  success: {
+                    render() {
+                      onRejectSuccess();
+
+                      return 'Submission rejected!';
+                    },
+                  },
+                },
+              );
 
               setIsDialogOpen(false);
             }}
