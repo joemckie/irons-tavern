@@ -13,6 +13,7 @@ import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import { toast } from 'react-toastify';
 import Link from 'next/link';
+import { DEFAULT_SERVER_ERROR_MESSAGE } from 'next-safe-action';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
@@ -37,18 +38,8 @@ export function RankCalculatorNavigationActions({
     isDeleteSubmissionDataDialogOpen,
     setIsDeleteSubmissionDataDialogOpen,
   ] = useState(false);
-  const { execute: publishRankSubmission } = useAction(
+  const { executeAsync: publishRankSubmission } = useAction(
     publishRankSubmissionAction.bind(null, currentRank, playerName),
-    {
-      onSuccess() {
-        toast.success('Rank application submitted!');
-      },
-      onError({ error: { serverError } }) {
-        if (serverError) {
-          toast.error(serverError);
-        }
-      },
-    },
   );
 
   return (
@@ -76,10 +67,25 @@ export function RankCalculatorNavigationActions({
         <DropdownMenu.Content color="gray" variant="soft">
           <DropdownMenu.Item
             onClick={() => {
-              publishRankSubmission({
-                totalPoints,
-                rank,
-              });
+              toast.promise(
+                publishRankSubmission({
+                  totalPoints,
+                  rank,
+                }),
+                {
+                  pending: 'Applying for rank...',
+                  error: {
+                    render({ data }) {
+                      if (data instanceof Error) {
+                        return data.message;
+                      }
+
+                      return DEFAULT_SERVER_ERROR_MESSAGE;
+                    },
+                  },
+                  success: 'Rank application submitted!',
+                },
+              );
             }}
           >
             Apply for promotion

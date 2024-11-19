@@ -14,7 +14,7 @@ import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { format } from 'date-fns';
 import { redis } from '@/redis';
-import { authActionClient, ActionError } from '@/app/safe-action';
+import { authActionClient } from '@/app/safe-action';
 import {
   RankStructure,
   RankSubmissionMetadata,
@@ -23,6 +23,7 @@ import { discordBotClient } from '@/discord';
 import { ChannelType, Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { PlayerName } from '@/app/schemas/player';
+import { ActionError } from '@/app/action-error';
 import { calculateScaling } from '../../utils/calculate-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
@@ -167,5 +168,8 @@ export const publishRankSubmissionAction = authActionClient
       return {
         success: true,
       };
+    },
+    {
+      throwServerError: true,
     },
   );

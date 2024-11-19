@@ -1,6 +1,6 @@
 'use server';
 
-import { ActionError, authActionClient } from '@/app/safe-action';
+import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
@@ -8,6 +8,7 @@ import { redis, redisRaw } from '@/redis';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { rankSubmissionMetadataKey } from '@/config/redis';
 import dedent from 'dedent';
+import { ActionError } from '@/app/action-error';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
 import { RejectSubmissionSchema } from './moderate-submission-schema';

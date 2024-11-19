@@ -5,8 +5,7 @@ import {
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { auth } from '@/auth';
-
-export class ActionError extends Error {}
+import { ActionError } from './action-error';
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {

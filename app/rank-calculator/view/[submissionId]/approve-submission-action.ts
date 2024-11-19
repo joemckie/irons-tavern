@@ -1,10 +1,11 @@
 'use server';
 
-import { ActionError, authActionClient } from '@/app/safe-action';
+import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis, redisRaw } from '@/redis';
+import { ActionError } from '@/app/action-error';
 import {
   RankStructure,
   RankSubmissionStatus,
