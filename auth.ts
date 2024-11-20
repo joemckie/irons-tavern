@@ -27,7 +27,12 @@ declare module 'next-auth/jwt' {
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   callbacks: {
-    async signIn({ account }) {
+    async signIn({ account, profile }) {
+      Sentry.setUser({
+        id: profile?.id ?? 'Unknown ID',
+        username: profile?.name ?? 'Unknown username',
+      });
+
       if (!account?.access_token) {
         throw new Error('Access token not found');
       }
