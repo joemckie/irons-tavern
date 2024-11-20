@@ -88,8 +88,11 @@ export function ApproveSubmissionButton({
                 }),
                 {
                   success: {
-                    onOpen: onApproveSuccess,
-                    render: 'Submission approved!',
+                    render() {
+                      onApproveSuccess();
+
+                      return 'Submission approved!';
+                    },
                   },
                 },
               );

@@ -63,8 +63,11 @@ export function RejectSubmissionButton({
                 }),
                 {
                   success: {
-                    onOpen: onRejectSuccess,
-                    render: 'Submission rejected!',
+                    render() {
+                      onRejectSuccess();
+
+                      return 'Submission rejected!';
+                    },
                   },
                 },
               );

@@ -2,7 +2,7 @@ import {
   DEFAULT_SERVER_ERROR_MESSAGE,
   SafeActionResult,
 } from 'next-safe-action';
-import { toast, ToastPromiseParams } from 'react-toastify';
+import { toast, ToastPromiseParams, UpdateOptions } from 'react-toastify';
 import { Schema } from 'zod';
 
 export async function handleToastUpdates<
@@ -22,6 +22,11 @@ export async function handleToastUpdates<
   },
 ) {
   const toastId = toast.loading(params.pending ?? 'Please wait...');
+  const defaultToastProps = {
+    isLoading: false,
+    autoClose: null,
+    closeButton: null,
+  } satisfies Partial<UpdateOptions<Data>>;
 
   try {
     const result = await actionFn;
@@ -30,8 +35,7 @@ export async function handleToastUpdates<
       return toast.update(toastId, {
         render: result.serverError,
         type: 'error',
-        isLoading: false,
-        autoClose: null,
+        ...defaultToastProps,
       });
     }
 
@@ -39,8 +43,7 @@ export async function handleToastUpdates<
       return toast.update(toastId, {
         render: 'Validation error',
         type: 'error',
-        isLoading: false,
-        autoClose: null,
+        ...defaultToastProps,
       });
     }
 
@@ -48,15 +51,13 @@ export async function handleToastUpdates<
       ...(typeof params.success === 'object' ? params.success : {}),
       ...(typeof params.success === 'string' ? { render: params.success } : {}),
       type: 'success',
-      isLoading: false,
-      autoClose: null,
+      ...defaultToastProps,
     });
   } catch {
     return toast.update(toastId, {
       render: DEFAULT_SERVER_ERROR_MESSAGE,
       type: 'error',
-      isLoading: false,
-      autoClose: null,
+      ...defaultToastProps,
     });
   }
 }
