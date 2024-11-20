@@ -48,7 +48,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
             pending: 'Saving draft...',
             success: {
               render() {
-                form.reset(form.getValues(), {
+                form.reset(values, {
                   keepIsSubmitSuccessful: true,
                 });
                 
