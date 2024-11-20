@@ -5,8 +5,8 @@ import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Rank } from '@/config/enums';
 import { RankCalculator } from './rank-calculator';
-import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
+import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
