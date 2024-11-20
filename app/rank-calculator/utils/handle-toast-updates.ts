@@ -31,8 +31,12 @@ export async function handleToastUpdates<
   try {
     const result = await actionFn;
 
+    if (!result) {
+      throw new Error('Nothing returned from action');
+    }
+
     if (result?.serverError) {
-      return toast.update(toastId, {
+      toast.update(toastId, {
         render: result.serverError,
         type: 'error',
         ...defaultToastProps,
@@ -40,24 +44,32 @@ export async function handleToastUpdates<
     }
 
     if (result?.validationErrors || result?.bindArgsValidationErrors) {
-      return toast.update(toastId, {
+      toast.update(toastId, {
         render: 'Validation error',
         type: 'error',
         ...defaultToastProps,
       });
     }
 
-    return toast.update(toastId, {
-      ...(typeof params.success === 'object' ? params.success : {}),
-      ...(typeof params.success === 'string' ? { render: params.success } : {}),
-      type: 'success',
-      ...defaultToastProps,
-    });
+    if (result?.data) {
+      toast.update(toastId, {
+        ...(typeof params.success === 'object' ? params.success : {}),
+        ...(typeof params.success === 'string'
+          ? { render: params.success }
+          : {}),
+        type: 'success',
+        ...defaultToastProps,
+      });
+    }
+
+    return result;
   } catch {
-    return toast.update(toastId, {
+    toast.update(toastId, {
       render: DEFAULT_SERVER_ERROR_MESSAGE,
       type: 'error',
       ...defaultToastProps,
     });
+
+    return {};
   }
 }
