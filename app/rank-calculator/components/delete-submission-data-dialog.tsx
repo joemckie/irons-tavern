@@ -3,7 +3,7 @@ import { useAction } from 'next-safe-action/hooks';
 import { useFormContext } from 'react-hook-form';
 import { deleteSubmissionDataAction } from '../[player]/actions/delete-submission-data-action';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { actionToastMessage } from '../utils/action-toast-message';
+import { handleToastUpdates } from '../utils/handle-toast-updates';
 
 type DeleteSubmissionDataDialogProps = Pick<
   AlertDialog.RootProps,
@@ -42,7 +42,7 @@ export function DeleteSubmissionDataDialog({
             variant="solid"
             color="red"
             onClick={() => {
-              actionToastMessage(
+              handleToastUpdates(
                 deleteSubmissionData({
                   playerName: getValues('playerName'),
                 }),

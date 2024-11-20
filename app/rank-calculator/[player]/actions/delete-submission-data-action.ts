@@ -16,25 +16,20 @@ export const deleteSubmissionDataAction = authActionClient
       playerName: PlayerName,
     }),
   )
-  .action(
-    async ({ parsedInput: { playerName }, ctx: { userId } }) => {
-      const result = await redis.del(
-        userDraftRankSubmissionKey(userId, playerName),
-      );
+  .action(async ({ parsedInput: { playerName }, ctx: { userId } }) => {
+    const result = await redis.del(
+      userDraftRankSubmissionKey(userId, playerName),
+    );
 
-      if (result) {
-        revalidatePath(`/rank-calculator/${playerName}`);
-
-        return {
-          success: true,
-        };
-      }
+    if (result) {
+      revalidatePath(`/rank-calculator/${playerName}`);
 
       return {
-        success: false,
+        success: true,
       };
-    },
-    {
-      throwServerError: true,
-    },
-  );
+    }
+
+    return {
+      success: false,
+    };
+  });

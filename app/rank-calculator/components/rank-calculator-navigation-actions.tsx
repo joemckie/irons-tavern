@@ -17,19 +17,21 @@ import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validat
 import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { DeleteSubmissionDataDialog } from './delete-submission-data-dialog';
-import { actionToastMessage } from '../utils/action-toast-message';
+import { handleToastUpdates } from '../utils/handle-toast-updates';
 
 interface RankCalculatorNavigationActionsProps {
   currentRank?: Rank;
   playerName: string;
+  disableSubmit: boolean;
 }
 
 export function RankCalculatorNavigationActions({
   currentRank,
   playerName,
+  disableSubmit,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
-  const { isValid, isDirty, isSubmitting, isSubmitSuccessful } =
+  const { isValid, isDirty, isSubmitSuccessful } =
     useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
@@ -46,8 +48,8 @@ export function RankCalculatorNavigationActions({
     <Flex gap="1px">
       <Button
         role="button"
-        loading={isSubmitting}
-        disabled={(isSubmitSuccessful && !isDirty) || !isValid || isSubmitting}
+        loading={disableSubmit}
+        disabled={(isSubmitSuccessful && !isDirty) || !isValid || disableSubmit}
         variant="soft"
         type="submit"
         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
@@ -55,7 +57,7 @@ export function RankCalculatorNavigationActions({
         Save
       </Button>
       <DropdownMenu.Root modal={false}>
-        <DropdownMenu.Trigger disabled={isSubmitting}>
+        <DropdownMenu.Trigger disabled={disableSubmit}>
           <IconButton
             variant="soft"
             type="button"
@@ -73,7 +75,7 @@ export function RankCalculatorNavigationActions({
                 return;
               }
 
-              actionToastMessage(
+              handleToastUpdates(
                 publishRankSubmission({
                   totalPoints,
                   rank,

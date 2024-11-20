@@ -9,7 +9,7 @@ import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
-import { actionToastMessage } from '../utils/action-toast-message';
+import { handleToastUpdates } from '../utils/handle-toast-updates';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -19,7 +19,11 @@ interface FormWrapperProps {
 export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   const {
     form,
-    action: { executeAsync: saveDraftRankSubmission },
+    action: {
+      executeAsync: saveDraftRankSubmission,
+      isExecuting,
+      isTransitioning,
+    },
   } = useHookFormAction(
     saveDraftRankSubmissionAction,
     zodResolver(RankCalculatorSchema),
@@ -31,7 +35,6 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
       },
     },
   );
-  const { handleSubmit } = form;
 
   return (
     <FormProvider {...form}>
@@ -39,14 +42,12 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
         submitRankCalculatorAction={(e) => {
           e.preventDefault();
 
-          actionToastMessage(handleSubmit(saveDraftRankSubmission)(e), {
+          const values = form.getValues();
+
+          handleToastUpdates(saveDraftRankSubmission(values), {
             pending: 'Saving draft...',
             success: {
               render() {
-                form.reset(form.getValues(), {
-                  keepIsSubmitSuccessful: true,
-                });
-
                 return 'Draft saved!';
               },
             },
@@ -58,6 +59,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
               <RankCalculatorNavigationActions
                 currentRank={currentRank}
                 playerName={formData.playerName}
+                disableSubmit={isExecuting || isTransitioning}
               />
             }
             shouldRenderBackButton

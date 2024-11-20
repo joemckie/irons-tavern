@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
-import { actionToastMessage } from '@/app/rank-calculator/utils/action-toast-message';
+import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
 import { approveSubmissionAction } from '../approve-submission-action';
 
 interface ApproveSubmissionButtonProps {
@@ -81,18 +81,15 @@ export function ApproveSubmissionButton({
           </AlertDialog.Cancel>
           <AlertDialog.Action
             onClick={() => {
-              actionToastMessage(
+              handleToastUpdates(
                 approveSubmission({
                   submissionId,
                   rank,
                 }),
                 {
                   success: {
-                    render() {
-                      onApproveSuccess();
-
-                      return 'Submission approved!';
-                    },
+                    onOpen: onApproveSuccess,
+                    render: 'Submission approved!',
                   },
                 },
               );

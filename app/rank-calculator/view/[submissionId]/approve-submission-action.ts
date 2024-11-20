@@ -142,7 +142,4 @@ export const approveSubmissionAction = authActionClient
         success: true,
       };
     },
-    {
-      throwServerError: true,
-    },
   );

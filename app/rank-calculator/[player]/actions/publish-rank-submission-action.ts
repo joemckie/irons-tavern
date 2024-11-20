@@ -169,7 +169,4 @@ export const publishRankSubmissionAction = authActionClient
         success: true,
       };
     },
-    {
-      throwServerError: true,
-    },
   );
