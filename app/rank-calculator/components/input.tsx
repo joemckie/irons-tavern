@@ -12,7 +12,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ hasError, leftIcon, rightIcon, ...props }, forwardedRef) => (
     <TextField.Root
       {...props}
-      onKeyDown={disableEnterSubmission}
+      onKeyDown={(e) => {
+        disableEnterSubmission(e);
+        props.onKeyDown?.(e);
+      }}
       ref={forwardedRef}
       role="textbox"
       color={hasError ? 'red' : undefined}
