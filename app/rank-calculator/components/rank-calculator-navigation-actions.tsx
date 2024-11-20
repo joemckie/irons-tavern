@@ -45,7 +45,7 @@ export function RankCalculatorNavigationActions({
   );
 
   return (
-    <Flex gap="1px">
+    <Flex>
       <Button
         role="button"
         loading={isSubmitting || isActionActive}
@@ -64,6 +64,7 @@ export function RankCalculatorNavigationActions({
       <DropdownMenu.Root modal={false}>
         <DropdownMenu.Trigger disabled={isSubmitting || isActionActive}>
           <IconButton
+            className="save-dropdown-button"
             variant="soft"
             type="button"
             style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
