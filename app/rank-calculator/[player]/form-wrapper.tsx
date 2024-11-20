@@ -36,34 +36,36 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
     },
   );
 
+  const submitRankCalculator = form.handleSubmit(async (data) => {
+    const promise = saveDraftRankSubmission(data);
+
+    handleToastUpdates(saveDraftRankSubmission(data), {
+      pending: 'Saving draft...',
+      success: {
+        render() {
+          form.reset(data, {
+            keepIsSubmitSuccessful: true,
+          });
+
+          return 'Draft saved!';
+        },
+      },
+    });
+
+    return promise;
+  });
+
   return (
     <FormProvider {...form}>
       <RankCalculator
-        submitRankCalculatorAction={(e) => {
-          e.preventDefault();
-
-          const values = form.getValues();
-
-          handleToastUpdates(saveDraftRankSubmission(values), {
-            pending: 'Saving draft...',
-            success: {
-              render() {
-                form.reset(values, {
-                  keepIsSubmitSuccessful: true,
-                });
-                
-                return 'Draft saved!';
-              },
-            },
-          });
-        }}
+        submitRankCalculatorAction={submitRankCalculator}
         navigation={
           <Navigation
             actions={
               <RankCalculatorNavigationActions
                 currentRank={currentRank}
                 playerName={formData.playerName}
-                disableSubmit={isExecuting || isTransitioning}
+                isActionActive={isExecuting || isTransitioning}
               />
             }
             shouldRenderBackButton

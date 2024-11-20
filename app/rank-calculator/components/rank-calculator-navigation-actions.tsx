@@ -22,16 +22,16 @@ import { handleToastUpdates } from '../utils/handle-toast-updates';
 interface RankCalculatorNavigationActionsProps {
   currentRank?: Rank;
   playerName: string;
-  disableSubmit: boolean;
+  isActionActive: boolean;
 }
 
 export function RankCalculatorNavigationActions({
   currentRank,
   playerName,
-  disableSubmit,
+  isActionActive,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
-  const { isValid, isDirty, isSubmitSuccessful } =
+  const { isValid, isDirty, isSubmitSuccessful, isSubmitting } =
     useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
@@ -48,8 +48,13 @@ export function RankCalculatorNavigationActions({
     <Flex gap="1px">
       <Button
         role="button"
-        loading={disableSubmit}
-        disabled={(isSubmitSuccessful && !isDirty) || !isValid || disableSubmit}
+        loading={isSubmitting || isActionActive}
+        disabled={
+          (isSubmitSuccessful && !isDirty) ||
+          !isValid ||
+          isSubmitting ||
+          isActionActive
+        }
         variant="soft"
         type="submit"
         style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
@@ -57,7 +62,7 @@ export function RankCalculatorNavigationActions({
         Save
       </Button>
       <DropdownMenu.Root modal={false}>
-        <DropdownMenu.Trigger disabled={disableSubmit}>
+        <DropdownMenu.Trigger disabled={isSubmitting || isActionActive}>
           <IconButton
             variant="soft"
             type="button"
