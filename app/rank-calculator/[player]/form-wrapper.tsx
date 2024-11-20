@@ -39,7 +39,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   const submitRankCalculator = form.handleSubmit(async (data) => {
     const promise = saveDraftRankSubmission(data);
 
-    handleToastUpdates(saveDraftRankSubmission(data), {
+    handleToastUpdates(promise, {
       pending: 'Saving draft...',
       success: {
         render() {
