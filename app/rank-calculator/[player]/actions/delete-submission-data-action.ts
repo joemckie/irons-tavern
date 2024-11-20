@@ -6,6 +6,8 @@ import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import { PlayerName } from '@/app/schemas/player';
 import { revalidatePath } from 'next/cache';
+import { ActionError } from '@/app/action-error';
+import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
 
 export const deleteSubmissionDataAction = authActionClient
   .metadata({
@@ -21,15 +23,12 @@ export const deleteSubmissionDataAction = authActionClient
       userDraftRankSubmissionKey(userId, playerName),
     );
 
-    if (result) {
-      revalidatePath(`/rank-calculator/${playerName}`);
-
-      return {
-        success: true,
-      };
+    if (!result) {
+      throw new ActionError('No data found!');
     }
 
-    return {
-      success: false,
-    };
+    revalidatePath(`/rank-calculator/${playerName.toLowerCase()}`);
+
+    // Return fresh player details with which to reset the form
+    return fetchPlayerDetails(playerName);
   });

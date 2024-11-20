@@ -14,7 +14,7 @@ export function DeleteSubmissionDataDialog({
   open,
   onOpenChange,
 }: DeleteSubmissionDataDialogProps) {
-  const { getValues } = useFormContext<RankCalculatorSchema>();
+  const { getValues, reset } = useFormContext<RankCalculatorSchema>();
   const {
     executeAsync: deleteSubmissionData,
     isExecuting: isDeleteSubmissionDataExecuting,
@@ -46,7 +46,19 @@ export function DeleteSubmissionDataDialog({
                 deleteSubmissionData({
                   playerName: getValues('playerName'),
                 }),
-                { success: 'Submission data deleted!' },
+                {
+                  success: {
+                    render({ data }) {
+                      if (data.success) {
+                        const { data: freshPlayerDetails } = data;
+
+                        reset(freshPlayerDetails);
+                      }
+
+                      return 'Submission data deleted!';
+                    },
+                  },
+                },
               );
 
               onOpenChange?.(false);

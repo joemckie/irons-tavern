@@ -59,6 +59,7 @@ export async function handleToastUpdates<
           : {}),
         type: 'success',
         ...defaultToastProps,
+        data: result.data,
       });
     }
 
