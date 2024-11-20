@@ -27,6 +27,29 @@ declare module 'next-auth/jwt' {
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
   callbacks: {
+    async signIn({ account }) {
+      if (!account?.access_token) {
+        throw new Error('Access token not found');
+      }
+
+      const { guildId } = serverConstants.discord;
+
+      const userGuildsResponse = (await discordUserClient(
+        account.access_token,
+      ).get(Routes.userGuilds(), {
+        authPrefix: 'Bearer',
+      })) as APIGuild[];
+
+      const guild = userGuildsResponse.find(({ id }) => id === guildId);
+
+      if (!guild) {
+        throw new Error(
+          'You must be a member of Irons Tavern to use this application!',
+        );
+      }
+
+      return true;
+    },
     /* eslint-disable no-param-reassign */
     async jwt({ profile, token, account }) {
       const { guildId } = serverConstants.discord;
