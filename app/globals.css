@@ -228,3 +228,19 @@ img.rt-AvatarImage {
 .rt-TooltipArrow {
   margin-top: -1px;
 }
+
+.save-dropdown-button {
+  position: relative !important;
+}
+
+.save-dropdown-button:before {
+  --height: 60%;
+
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: var(--height);
+  top: calc(var(--height) / 2) %;
+  left: 0;
+  background-color: var(--accent-a5);
+}
