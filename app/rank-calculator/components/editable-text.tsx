@@ -45,6 +45,7 @@ export function EditableText({
         }}
         rightIcon={
           <IconButton
+            type="button"
             size="1"
             variant="ghost"
             onClick={() => setIsEditing(false)}
@@ -53,6 +54,11 @@ export function EditableText({
           </IconButton>
         }
         autoFocus
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            setIsEditing(false);
+          }
+        }}
       />
     );
   }
@@ -63,7 +69,12 @@ export function EditableText({
         {value}
       </Text>
       {!field.disabled && (
-        <IconButton onClick={() => setIsEditing(true)} size="1" variant="ghost">
+        <IconButton
+          type="button"
+          onClick={() => setIsEditing(true)}
+          size="1"
+          variant="ghost"
+        >
           <Pencil1Icon />
         </IconButton>
       )}
