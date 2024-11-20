@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,14 +14,9 @@ import { handleToastUpdates } from '../utils/handle-toast-updates';
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
   currentRank?: Rank;
-  hasSavedData: boolean;
 }
 
-export function FormWrapper({
-  formData,
-  currentRank,
-  hasSavedData,
-}: FormWrapperProps) {
+export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   const {
     form,
     action: {
@@ -41,17 +35,6 @@ export function FormWrapper({
       },
     },
   );
-
-  const [prevHasSavedData, setPrevHasSavedData] = useState(hasSavedData);
-
-  useEffect(() => {
-    if (prevHasSavedData && !hasSavedData) {
-      // Resets the form when the user deletes their data
-      form.reset(formData);
-
-      setPrevHasSavedData(false);
-    }
-  }, [prevHasSavedData, hasSavedData, form, formData]);
 
   const submitRankCalculator = form.handleSubmit(async (data) =>
     handleToastUpdates(saveDraftRankSubmission(data), {

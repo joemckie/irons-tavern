@@ -33,7 +33,6 @@ import { validatePlayerExists } from '../../players/validation/player-validation
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
   currentRank?: Rank;
-  hasSavedData: boolean;
 }
 
 export const emptyResponse = {
@@ -62,7 +61,6 @@ export const emptyResponse = {
   playerName: '',
   rankStructure: 'Standard',
   proofLink: null,
-  hasSavedData: false,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -246,7 +244,6 @@ export async function fetchPlayerDetails(
         rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
         currentRank,
-        hasSavedData: !!savedData,
       },
     };
   } catch (error) {

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/navigation';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
 import { useFormContext } from 'react-hook-form';
@@ -15,8 +14,7 @@ export function DeleteSubmissionDataDialog({
   open,
   onOpenChange,
 }: DeleteSubmissionDataDialogProps) {
-  const router = useRouter();
-  const { getValues } = useFormContext<RankCalculatorSchema>();
+  const { getValues, reset } = useFormContext<RankCalculatorSchema>();
   const {
     executeAsync: deleteSubmissionData,
     isExecuting: isDeleteSubmissionDataExecuting,
@@ -50,8 +48,12 @@ export function DeleteSubmissionDataDialog({
                 }),
                 {
                   success: {
-                    render() {
-                      router.refresh();
+                    render({ data }) {
+                      if (data.success) {
+                        const { data: freshPlayerDetails } = data;
+
+                        reset(freshPlayerDetails);
+                      }
 
                       return 'Submission data deleted!';
                     },
