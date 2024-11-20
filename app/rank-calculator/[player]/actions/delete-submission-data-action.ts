@@ -22,7 +22,7 @@ export const deleteSubmissionDataAction = authActionClient
     );
 
     if (result) {
-      revalidatePath(`/rank-calculator/${playerName}`);
+      revalidatePath(`/rank-calculator/${playerName.toLowerCase()}`);
 
       return {
         success: true,
