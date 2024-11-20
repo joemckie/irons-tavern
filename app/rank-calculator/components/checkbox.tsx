@@ -2,48 +2,37 @@ import {
   Checkbox as BaseCheckbox,
   CheckboxProps as BaseCheckboxProps,
 } from '@radix-ui/themes';
-import { forwardRef, startTransition, useEffect } from 'react';
-import {
-  FieldPath,
-  FieldValues,
-  useController,
-  useFormContext,
-} from 'react-hook-form';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { useEffect } from 'react';
+import { FieldPath, FieldValues, useController } from 'react-hook-form';
 
 interface CheckboxProps<T extends FieldValues = FieldValues>
   extends Omit<BaseCheckboxProps, 'ref' | 'color'> {
   name: FieldPath<T>;
 }
 
-export const Checkbox = forwardRef<
-  HTMLButtonElement,
-  CheckboxProps<RankCalculatorSchema>
->((props, forwardedRef) => {
-  const { setValue } = useFormContext<RankCalculatorSchema>();
+export function Checkbox(props: CheckboxProps) {
+  const { required, name, checked } = props;
   const { field } = useController({
     rules: {
-      required: props.required,
+      required,
     },
-    name: props.name,
+    name,
+    defaultValue: checked,
   });
 
   useEffect(() => {
-    startTransition(() => {
-      setValue(props.name, props.checked);
-    });
-  }, [props.name, props.checked, setValue]);
+    if (field.value !== checked) {
+      field.onChange(checked);
+    }
+  }, [field, checked]);
 
   return (
     <BaseCheckbox
       {...props}
       {...field}
       onCheckedChange={(value) => {
-        setValue(props.name, value);
+        field.onChange(value);
       }}
-      ref={forwardedRef}
     />
   );
-});
-
-Checkbox.displayName = 'Checkbox';
+}
