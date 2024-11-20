@@ -1,5 +1,5 @@
-import { BaseSyntheticEvent, ReactNode, Suspense } from 'react';
-import { Grid, Text } from '@radix-ui/themes';
+import { BaseSyntheticEvent, ReactNode } from 'react';
+import { Grid } from '@radix-ui/themes';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
@@ -41,9 +41,7 @@ export function RankCalculator({
         {navigation}
         <Sidebar />
         <RightSidebar />
-        <Suspense fallback={<Text>Loading</Text>}>
-          <ItemList />
-        </Suspense>
+        <ItemList />
       </Grid>
     </form>
   );

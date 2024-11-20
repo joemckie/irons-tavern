@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { Item } from '@/app/schemas/items';
@@ -30,18 +30,22 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
 
   // If the form is in read-only mode, take the value from the form data
   // else determine it from the user input
-  const acquired = formState.disabled
-    ? !!acquiredItems[stripEntityName(item.name)]
-    : isItemAcquired(item, {
-        achievementDiaries,
-        acquiredItems: Object.fromEntries(
-          Object.entries(acquiredItems).map(([key, value]) => [
-            key,
-            Number(value),
-          ]),
-        ),
-        totalLevel,
-      });
+  const isAcquired = useMemo(
+    () =>
+      formState.disabled
+        ? !!acquiredItems[stripEntityName(item.name)]
+        : isItemAcquired(item, {
+            achievementDiaries,
+            acquiredItems: Object.fromEntries(
+              Object.entries(acquiredItems).map(([key, value]) => [
+                key,
+                Number(value),
+              ]),
+            ),
+            totalLevel,
+          }),
+    [achievementDiaries, acquiredItems, formState.disabled, item, totalLevel],
+  );
 
   return (
     <Table.Row key={item.name} align="center">
@@ -58,7 +62,7 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
       <Table.Cell align="right">
         <Checkbox
           disabled
-          checked={acquired}
+          checked={isAcquired}
           name={`acquiredItems.${stripEntityName(item.name)}`}
         />
       </Table.Cell>
@@ -67,7 +71,7 @@ export const MemoisedAutomaticItem = memo(({ item }: AutomaticItemProps) => {
         align="right"
         width="100px"
       >
-        {`${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
+        {`${isAcquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
       </Table.Cell>
     </Table.Row>
   );
