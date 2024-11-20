@@ -13,7 +13,7 @@ import { mockUUID } from '@/test-utils/mock-uuid';
 import * as auth from '@/auth';
 import { serialize } from 'object-to-formdata';
 import * as discordFixtures from '@/mocks/discord';
-import { submitRankCalculatorAction } from './submit-rank-calculator-action';
+import { publishRankSubmissionAction } from './actions/publish-rank-submission-action';
 
 beforeEach(() => {
   jest.spyOn(auth, 'auth').mockReturnValue({
@@ -35,7 +35,7 @@ beforeEach(() => {
 });
 
 it('saves the submission to the database', async () => {
-  const result = await submitRankCalculatorAction(
+  const result = await publishRankSubmissionAction(
     'Air',
     serialize({
       ...formData.midGamePlayer,
@@ -59,7 +59,7 @@ it('returns an error if the save was not successful', async () => {
     ),
   );
 
-  const result = await submitRankCalculatorAction(
+  const result = await publishRankSubmissionAction(
     'Air',
     serialize({
       ...formData.midGamePlayer,
@@ -82,7 +82,7 @@ xit('returns an error if a network error occurs whilst saving the submission', a
     ),
   );
 
-  const result = await submitRankCalculatorAction(
+  const result = await publishRankSubmissionAction(
     'Air',
     serialize({
       ...formData.midGamePlayer,
@@ -107,7 +107,7 @@ it('returns an error if a network error occurs whilst sending the discord messag
     ),
   );
 
-  const result = await submitRankCalculatorAction(
+  const result = await publishRankSubmissionAction(
     'Air',
     serialize({
       ...formData.midGamePlayer,

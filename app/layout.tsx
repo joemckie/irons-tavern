@@ -41,6 +41,7 @@ export default function RootLayout({
             pauseOnFocusLoss
             bodyClassName="rt-Text rt-r-size-2"
             autoClose={8000}
+            position="top-center"
           />
         </Theme>
       </body>

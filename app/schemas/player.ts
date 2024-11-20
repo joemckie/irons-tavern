@@ -3,6 +3,8 @@ import { z } from 'zod';
 
 export const PlayerName = z.string().max(12, 'Player name is too long');
 
+export type PlayerName = z.infer<typeof PlayerName>;
+
 export const Player = z.object({
   isNameInvalid: z.literal(true).optional(),
   joinDate: z.date(),

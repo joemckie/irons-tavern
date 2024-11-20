@@ -1,12 +1,12 @@
 import { useState, useTransition } from 'react';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'react-toastify';
 import { useRankCalculator } from '@/app/rank-calculator/hooks/point-calculator/use-rank-calculator';
 import { useParams } from 'next/navigation';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
+import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
 import { approveSubmissionAction } from '../approve-submission-action';
 
 interface ApproveSubmissionButtonProps {
@@ -18,8 +18,8 @@ export function ApproveSubmissionButton({
   playerName,
   onApproveSuccess,
 }: ApproveSubmissionButtonProps) {
-  const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
-  const [isApproveDialogTransitioning, startTransition] = useTransition();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogTransitioning, startTransition] = useTransition();
   const { rank } = useRankCalculator();
   const { submissionId } = useParams<{ submissionId: string }>();
   const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
@@ -32,38 +32,20 @@ export function ApproveSubmissionButton({
     isExecuting: isApproveSubmissionExecuting,
   } = useAction(approveSubmissionAction);
 
-  const handleApproveClick = async () => {
-    const result = await approveSubmission({
-      submissionId,
-      rank,
-    });
-
-    if (result?.data?.success) {
-      toast.success('Submission approved!');
-      onApproveSuccess();
-
-      return;
-    }
-
-    toast.error('Unable to approve submission!');
-  };
-
   return (
-    <AlertDialog.Root
-      open={isApproveDialogOpen}
-      onOpenChange={(open) => {
-        startTransition(() => {
-          setIsApproveDialogOpen(open);
-        });
-      }}
-    >
+    <AlertDialog.Root open={isDialogOpen}>
       <AlertDialog.Trigger>
         <Button
-          loading={isApproveDialogTransitioning}
+          loading={isDialogTransitioning}
           role="button"
           type="button"
-          variant="surface"
+          variant="soft"
           color="green"
+          onClick={() => {
+            startTransition(() => {
+              setIsDialogOpen(true);
+            });
+          }}
         >
           Approve
         </Button>
@@ -88,12 +70,36 @@ export function ApproveSubmissionButton({
           <Text>No in-game ranks will be changed.</Text>
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
-          <AlertDialog.Cancel>
+          <AlertDialog.Cancel
+            onClick={() => {
+              setIsDialogOpen(false);
+            }}
+          >
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={handleApproveClick}>
+          <AlertDialog.Action
+            onClick={() => {
+              handleToastUpdates(
+                approveSubmission({
+                  submissionId,
+                  rank,
+                }),
+                {
+                  success: {
+                    render() {
+                      onApproveSuccess();
+
+                      return 'Submission approved!';
+                    },
+                  },
+                },
+              );
+
+              setIsDialogOpen(false);
+            }}
+          >
             <Button
               loading={isApproveSubmissionExecuting}
               variant="solid"

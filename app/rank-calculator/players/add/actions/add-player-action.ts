@@ -6,6 +6,7 @@ import { authActionClient } from '@/app/safe-action';
 import { returnValidationErrors } from 'next-safe-action';
 import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/app/schemas/player';
+import { ActionError } from '@/app/action-error';
 import { fetchPlayerMeta } from '../../../data-sources/fetch-player-meta';
 import { fetchTemplePlayerStats } from '../../../data-sources/temple-osrs';
 import { AddPlayerSchema } from './add-player-schema';
@@ -67,7 +68,7 @@ export const addPlayerAction = authActionClient
       );
 
       if (!result) {
-        throw new Error('Error creating player account record');
+        throw new ActionError('Error creating player account record');
       }
 
       return {

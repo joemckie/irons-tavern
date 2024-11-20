@@ -5,7 +5,6 @@ import { FormProvider } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { ErrorMessage } from '@hookform/error-message';
 import { CalendarIcon } from '@radix-ui/react-icons';
-import { toast } from 'react-toastify';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { debounce } from 'lodash';
@@ -24,29 +23,22 @@ interface AddPlayerFormProps {
 
 export function AddPlayerForm({ members }: AddPlayerFormProps) {
   const router = useRouter();
-  const {
-    action: { isExecuting },
-    form,
-    handleSubmitWithAction,
-  } = useHookFormAction(addPlayerAction, zodResolver(AddPlayerSchema), {
-    actionProps: {
-      onError({ error }) {
-        if (error.serverError) {
-          toast.error('Failed to save player!');
-        }
+  const { form, handleSubmitWithAction } = useHookFormAction(
+    addPlayerAction,
+    zodResolver(AddPlayerSchema),
+    {
+      actionProps: {
+        onSuccess() {
+          router.push(`/rank-calculator`);
+        },
       },
-      onSuccess() {
-        toast.success(`Player saved successfully!`);
-
-        router.push(`/rank-calculator`);
+      formProps: {
+        mode: 'onSubmit',
+        criteriaMode: 'all',
       },
     },
-    formProps: {
-      mode: 'onSubmit',
-      criteriaMode: 'all',
-    },
-  });
-  const { isDirty, errors } = form.formState;
+  );
+  const { isDirty, errors, isSubmitting } = form.formState;
 
   const {
     execute: executeFetchPlayerJoinDate,
@@ -141,8 +133,8 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
               <Flex flexGrow="1">
                 <Box asChild width="100%">
                   <Button
-                    disabled={!isDirty || isExecuting}
-                    loading={isExecuting}
+                    disabled={!isDirty || isSubmitting}
+                    loading={isSubmitting}
                     size="3"
                   >
                     Save

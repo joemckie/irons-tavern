@@ -33,8 +33,10 @@ export function PlayerList({ accounts }: PlayerListProps) {
 
         return newAccounts;
       },
-      onError() {
-        toast.error('Failed to delete player!');
+      onError({ error: { serverError } }) {
+        if (serverError) {
+          toast.error(serverError);
+        }
       },
     },
   );

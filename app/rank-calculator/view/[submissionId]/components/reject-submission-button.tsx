@@ -1,8 +1,8 @@
 import { useState, useTransition } from 'react';
 import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
 import { useAction } from 'next-safe-action/hooks';
-import { toast } from 'react-toastify';
 import { useParams } from 'next/navigation';
+import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
 import { rejectSubmissionAction } from '../reject-submission-action';
 
 interface RejectSubmissionButtonProps {
@@ -13,43 +13,26 @@ export function RejectSubmissionButton({
   onRejectSuccess,
 }: RejectSubmissionButtonProps) {
   const { submissionId } = useParams<{ submissionId: string }>();
-  const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
-  const [isRejectDialogTransitioning, startTransition] = useTransition();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogTransitioning, startTransition] = useTransition();
   const {
     executeAsync: rejectSubmission,
     isExecuting: isRejectSubmissionExecuting,
   } = useAction(rejectSubmissionAction);
 
-  const handleRejectClick = async () => {
-    const result = await rejectSubmission({
-      submissionId,
-    });
-
-    if (result?.data?.success) {
-      toast.success('Submission rejected');
-      onRejectSuccess();
-
-      return;
-    }
-
-    toast.error('Unable to reject submission');
-  };
-
   return (
-    <AlertDialog.Root
-      open={isRejectDialogOpen}
-      onOpenChange={(open) => {
-        startTransition(() => {
-          setIsRejectDialogOpen(open);
-        });
-      }}
-    >
+    <AlertDialog.Root open={isDialogOpen}>
       <AlertDialog.Trigger>
         <Button
-          loading={isRejectDialogTransitioning}
-          variant="surface"
+          loading={isDialogTransitioning}
+          variant="soft"
           color="red"
           type="button"
+          onClick={() => {
+            startTransition(() => {
+              setIsDialogOpen(true);
+            });
+          }}
         >
           Reject
         </Button>
@@ -63,12 +46,35 @@ export function RejectSubmissionButton({
           <Text>In-game and Discord ranks will not be changed.</Text>
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
-          <AlertDialog.Cancel>
+          <AlertDialog.Cancel
+            onClick={() => {
+              setIsDialogOpen(false);
+            }}
+          >
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action onClick={handleRejectClick}>
+          <AlertDialog.Action
+            onClick={() => {
+              handleToastUpdates(
+                rejectSubmission({
+                  submissionId,
+                }),
+                {
+                  success: {
+                    render() {
+                      onRejectSuccess();
+
+                      return 'Submission rejected!';
+                    },
+                  },
+                },
+              );
+
+              setIsDialogOpen(false);
+            }}
+          >
             <Button
               loading={isRejectSubmissionExecuting}
               variant="solid"

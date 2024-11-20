@@ -39,37 +39,37 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
     playerRecord.rsn,
     playerRecord.rank,
   );
-  const {
-    action: { isExecuting },
-    form,
-    handleSubmitWithAction,
-  } = useHookFormAction(boundEditPlayerAction, zodResolver(EditPlayerSchema), {
-    actionProps: {
-      onError({ error }) {
-        if (error.serverError) {
-          toast.error('Failed to edit player!');
-        }
-      },
-      onSuccess() {
-        toast.success(`Player edited successfully!`);
+  const { form, handleSubmitWithAction } = useHookFormAction(
+    boundEditPlayerAction,
+    zodResolver(EditPlayerSchema),
+    {
+      actionProps: {
+        onError({ error }) {
+          if (error.serverError) {
+            toast.error('Failed to edit player!');
+          }
+        },
+        onSuccess() {
+          toast.success(`Player edited successfully!`);
 
-        router.push(`/rank-calculator`);
+          router.push(`/rank-calculator`);
+        },
+      },
+      formProps: {
+        mode: 'onSubmit',
+        criteriaMode: 'all',
+        defaultValues: {
+          joinDate: new Date(playerRecord.joinDate),
+          playerName: playerRecord.rsn,
+        },
       },
     },
-    formProps: {
-      mode: 'onSubmit',
-      criteriaMode: 'all',
-      defaultValues: {
-        joinDate: new Date(playerRecord.joinDate),
-        playerName: playerRecord.rsn,
-      },
-    },
-  });
-  const { isDirty, errors } = form.formState;
+  );
+  const { isDirty, errors, isSubmitting } = form.formState;
 
   const {
     execute: executeFetchPlayerJoinDate,
-    isIdle: isFetchPlayerJoinDateIdle,
+    isExecuting: isFetchPlayerJoinDateExecuting,
   } = useAction(fetchPlayerJoinDateAction, {
     onSettled({ result }) {
       if (result.data) {
@@ -127,7 +127,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                 </Text>
                 <Box asChild width="100%">
                   <DatePicker
-                    disabled={!isFetchPlayerJoinDateIdle}
+                    disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required
                     placeholderText="dd/mm/yyyy"
@@ -138,7 +138,9 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                         hasError={!!errors.joinDate}
                         leftIcon={<CalendarIcon />}
                         rightIcon={
-                          isFetchPlayerJoinDateIdle ? undefined : <Spinner />
+                          isFetchPlayerJoinDateExecuting ? (
+                            <Spinner />
+                          ) : undefined
                         }
                       />
                     }
@@ -172,8 +174,8 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
               <Flex flexGrow="1">
                 <Box asChild width="100%">
                   <Button
-                    disabled={!isDirty || isExecuting}
-                    loading={isExecuting}
+                    disabled={!isDirty || isSubmitting}
+                    loading={isSubmitting}
                     size="3"
                   >
                     Save

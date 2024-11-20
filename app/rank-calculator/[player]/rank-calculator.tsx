@@ -1,32 +1,20 @@
-import {
-  BaseSyntheticEvent,
-  ReactNode,
-  startTransition,
-  Suspense,
-} from 'react';
+import { BaseSyntheticEvent, ReactNode, Suspense } from 'react';
 import { Grid, Text } from '@radix-ui/themes';
-import { Navigation } from '../components/navigation';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
 
 interface RankCalculatorProps {
   submitRankCalculatorAction: (e: BaseSyntheticEvent) => void;
-  navigationActions: ReactNode;
+  navigation: ReactNode;
 }
 
 export function RankCalculator({
   submitRankCalculatorAction,
-  navigationActions,
+  navigation,
 }: RankCalculatorProps) {
   return (
-    <form
-      onSubmit={(e) => {
-        startTransition(() => {
-          submitRankCalculatorAction(e);
-        });
-      }}
-    >
+    <form onSubmit={submitRankCalculatorAction}>
       <Grid
         areas={{
           initial: `
@@ -50,7 +38,7 @@ export function RankCalculator({
         rows="62px 1fr"
         gapX="3"
       >
-        <Navigation actions={navigationActions} />
+        {navigation}
         <Sidebar />
         <RightSidebar />
         <Suspense fallback={<Text>Loading</Text>}>

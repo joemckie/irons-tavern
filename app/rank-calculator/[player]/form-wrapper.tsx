@@ -1,15 +1,15 @@
 'use client';
 
 import { FormProvider } from 'react-hook-form';
-import { mapToHookFormErrors } from '@next-safe-action/adapter-react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'react-toastify';
 import { Rank } from '@/config/enums';
-import { submitRankCalculatorAction } from './submit-rank-calculator-action';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
+import { Navigation } from '../components/navigation';
+import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
+import { handleToastUpdates } from '../utils/handle-toast-updates';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -17,29 +17,17 @@ interface FormWrapperProps {
 }
 
 export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
-  const { handleSubmitWithAction, form } = useHookFormAction(
-    submitRankCalculatorAction.bind(null, currentRank),
+  const {
+    form,
+    action: {
+      executeAsync: saveDraftRankSubmission,
+      isExecuting,
+      isTransitioning,
+    },
+  } = useHookFormAction(
+    saveDraftRankSubmissionAction,
     zodResolver(RankCalculatorSchema),
     {
-      actionProps: {
-        onSuccess() {
-          toast.success('Rank application submitted!');
-        },
-        onError({ error: { validationErrors, serverError } }) {
-          const errorMap = mapToHookFormErrors<typeof RankCalculatorSchema>(
-            validationErrors,
-            { joinBy: '\n' },
-          );
-
-          if (errorMap?.root) {
-            toast.error(errorMap.root.message);
-          }
-
-          if (serverError) {
-            toast.error('Form submission failed!');
-          }
-        },
-      },
       formProps: {
         defaultValues: formData,
         criteriaMode: 'all',
@@ -48,11 +36,41 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
     },
   );
 
+  const submitRankCalculator = form.handleSubmit(async (data) => {
+    const promise = saveDraftRankSubmission(data);
+
+    handleToastUpdates(promise, {
+      pending: 'Saving draft...',
+      success: {
+        render() {
+          form.reset(data, {
+            keepIsSubmitSuccessful: true,
+          });
+
+          return 'Draft saved!';
+        },
+      },
+    });
+
+    return promise;
+  });
+
   return (
     <FormProvider {...form}>
       <RankCalculator
-        submitRankCalculatorAction={handleSubmitWithAction}
-        navigationActions={<RankCalculatorNavigationActions />}
+        submitRankCalculatorAction={submitRankCalculator}
+        navigation={
+          <Navigation
+            actions={
+              <RankCalculatorNavigationActions
+                currentRank={currentRank}
+                playerName={formData.playerName}
+                isActionActive={isExecuting || isTransitioning}
+              />
+            }
+            shouldRenderBackButton
+          />
+        }
       />
     </FormProvider>
   );

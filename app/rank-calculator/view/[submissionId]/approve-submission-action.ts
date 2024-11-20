@@ -5,6 +5,7 @@ import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
 import { redis, redisRaw } from '@/redis';
+import { ActionError } from '@/app/action-error';
 import {
   RankStructure,
   RankSubmissionStatus,
@@ -33,7 +34,7 @@ export const approveSubmissionAction = authActionClient
       ctx: { permissions, userId: approverId },
     }) => {
       if (!userCanModerateSubmission(permissions)) {
-        throw new Error(
+        throw new ActionError(
           'You do not have permission to approve this submission',
         );
       }
@@ -46,13 +47,13 @@ export const approveSubmissionAction = authActionClient
       )) as unknown as [RankSubmissionStatus, string, string];
 
       if (!metadata) {
-        throw new Error('Unable to find submission metadata');
+        throw new ActionError('Unable to find submission metadata');
       }
 
       const [submissionStatus, messageId, submitterId] = metadata;
 
       if (submissionStatus !== 'Pending') {
-        throw new Error('Submission does not need to be moderated!');
+        throw new ActionError('Submission does not need to be moderated!');
       }
 
       const submissionData = await redis.json.get<{
@@ -61,7 +62,7 @@ export const approveSubmissionAction = authActionClient
       }>(rankSubmissionKey(submissionId), '$.rankStructure', '$.playerName');
 
       if (!submissionData) {
-        throw new Error('Unable to find submission data for application');
+        throw new ActionError('Unable to find submission data for application');
       }
 
       const {
@@ -111,7 +112,7 @@ export const approveSubmissionAction = authActionClient
       )) as Player;
 
       if (!playerRecord) {
-        throw new Error('Unable to find player record!');
+        throw new ActionError('Unable to find player record!');
       }
 
       const transaction = redis.multi();
@@ -134,7 +135,7 @@ export const approveSubmissionAction = authActionClient
       const result = await transaction.exec();
 
       if (!result) {
-        throw new Error('Unable to persist approval to database');
+        throw new ActionError('Unable to persist approval to database');
       }
 
       return {

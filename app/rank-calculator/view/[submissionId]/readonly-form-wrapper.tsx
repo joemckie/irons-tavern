@@ -9,6 +9,7 @@ import { RankCalculator } from '../../[player]/rank-calculator';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ViewSubmissionNavigationActions } from './components/view-submission-navigation-actions';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
+import { Navigation } from '../../components/navigation';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -77,7 +78,12 @@ export function ReadonlyFormWrapper({
   return (
     <FormProvider {...methods}>
       <RankCalculator
-        navigationActions={renderNavigationActions()}
+        navigation={
+          <Navigation
+            actions={renderNavigationActions()}
+            shouldRenderBackButton={false}
+          />
+        }
         submitRankCalculatorAction={() => {}}
       />
     </FormProvider>

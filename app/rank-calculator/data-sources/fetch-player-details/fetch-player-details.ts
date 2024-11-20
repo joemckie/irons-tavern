@@ -5,9 +5,8 @@ import {
 } from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
 import {
-  rankSubmissionMetadataKey,
+  userDraftRankSubmissionKey,
   userOSRSAccountsKey,
-  userRankSubmissionsKey,
 } from '@/config/redis';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
@@ -18,7 +17,6 @@ import { Rank } from '@/config/enums';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { redirect } from 'next/navigation';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
@@ -34,7 +32,6 @@ import { validatePlayerExists } from '../../players/validation/player-validation
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
-  previousSubmissionStatus: RankSubmissionStatus | null;
   currentRank?: Rank;
 }
 
@@ -64,7 +61,6 @@ export const emptyResponse = {
   playerName: '',
   rankStructure: 'Standard',
   proofLink: null,
-  previousSubmissionStatus: null,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -76,8 +72,10 @@ export async function fetchPlayerDetails(
     throw new Error('No user session');
   }
 
+  const { id: userId } = session.user;
+
   const playerRecord = await redis.hget<Player>(
-    userOSRSAccountsKey(session.user.id),
+    userOSRSAccountsKey(userId),
     player.toLowerCase(),
   );
 
@@ -95,7 +93,7 @@ export async function fetchPlayerDetails(
 
   if (!isPlayerNameValid) {
     // Flag the account as having an invalid name, and force the user to edit it
-    await redis.hset<Player>(userOSRSAccountsKey(session.user.id), {
+    await redis.hset<Player>(userOSRSAccountsKey(userId), {
       [player.toLowerCase()]: {
         ...playerRecord,
         isNameInvalid: true,
@@ -106,31 +104,14 @@ export async function fetchPlayerDetails(
   }
 
   try {
-    const latestRankSubmissionId: string | null = await redis.lindex(
-      userRankSubmissionsKey(session.user.id, player),
-      0,
+    const savedData = await redis.json.get<RankCalculatorSchema>(
+      userDraftRankSubmissionKey(userId, player),
     );
-
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [
-      wikiSyncData,
-      collectionLogData,
-      templeData,
-      previousSubmission,
-      previousSubmissionStatus,
-    ] = await Promise.all([
+    const [wikiSyncData, collectionLogData, templeData] = await Promise.all([
       getWikiSyncData(player),
       getCollectionLog(player),
       fetchTemplePlayerStats(player, true),
-      latestRankSubmissionId
-        ? redis.json.get<RankCalculatorSchema>(latestRankSubmissionId)
-        : null,
-      latestRankSubmissionId
-        ? redis.hget<RankSubmissionStatus>(
-            rankSubmissionMetadataKey(latestRankSubmissionId),
-            'status',
-          )
-        : null,
     ]);
 
     const hasThirdPartyData = Boolean(
@@ -141,11 +122,11 @@ export async function fetchPlayerDetails(
       'has-wikisync-data': !!wikiSyncData,
       'has-collection-log-data': !!collectionLogData,
       'has-temple-data': !!templeData,
-      'has-previous-submission': !!previousSubmission,
+      'has-saved-data': !!savedData,
       'has-third-party-data': hasThirdPartyData,
     });
 
-    if (!hasThirdPartyData && !previousSubmission) {
+    if (!hasThirdPartyData && !savedData) {
       return {
         error: null,
         success: true,
@@ -176,10 +157,10 @@ export async function fetchPlayerDetails(
         )
       : null;
 
-    const collectionLogCount =
-      collectionLogData?.collectionLog.uniqueObtained ?? null;
-    const collectionLogTotal =
-      collectionLogData?.collectionLog.uniqueItems ?? null;
+    const {
+      uniqueItems: collectionLogTotal = null,
+      uniqueObtained: collectionLogCount = null,
+    } = collectionLogData?.collectionLog ?? {};
 
     const {
       achievementDiaries = null,
@@ -217,14 +198,14 @@ export async function fetchPlayerDetails(
             .map(({ name }) => stripEntityName(name))
         : [];
 
-    const previouslyAcquiredItems = previousSubmission
-      ? Object.keys(previousSubmission.acquiredItems).filter(
-          (key) => previousSubmission.acquiredItems[key],
+    const previouslyAcquiredItems = savedData
+      ? Object.keys(savedData.acquiredItems).filter(
+          (key) => savedData.acquiredItems[key],
         )
       : [];
 
     const proofLink =
-      previousSubmission?.proofLink ??
+      savedData?.proofLink ??
       (collectionLogData ? `https://collectionlog.net/log/${player}` : null);
 
     const acquiredItemsMap = [
@@ -241,32 +222,28 @@ export async function fetchPlayerDetails(
         achievementDiaries:
           mergeAchievementDiaries(
             achievementDiaries,
-            previousSubmission?.achievementDiaries ?? null,
+            savedData?.achievementDiaries ?? null,
           ) ?? emptyResponse.achievementDiaries,
         acquiredItems: acquiredItemsMap,
         combatAchievementTier:
           mergeCombatAchievementTier(
             combatAchievementTier,
-            previousSubmission?.combatAchievementTier ?? null,
+            savedData?.combatAchievementTier ?? null,
           ) ?? 'None',
         collectionLogCount: Math.max(
           collectionLogCount ?? 0,
-          previousSubmission?.collectionLogCount ?? 0,
+          savedData?.collectionLogCount ?? 0,
         ),
-        ehb: Math.round(Math.max(ehb ?? 0, previousSubmission?.ehb ?? 0)),
-        ehp: Math.round(Math.max(ehp ?? 0, previousSubmission?.ehp ?? 0)),
-        totalLevel: Math.max(
-          totalLevel ?? 0,
-          previousSubmission?.totalLevel ?? 0,
-        ),
+        ehb: Math.round(Math.max(ehb ?? 0, savedData?.ehb ?? 0)),
+        ehp: Math.round(Math.max(ehp ?? 0, savedData?.ehp ?? 0)),
+        totalLevel: Math.max(totalLevel ?? 0, savedData?.totalLevel ?? 0),
         collectionLogTotal:
           collectionLogTotal ?? clientConstants.collectionLog.totalItems,
         joinDate,
         playerName: rsn,
-        rankStructure: previousSubmission?.rankStructure ?? 'Standard',
+        rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
         currentRank,
-        previousSubmissionStatus,
       },
     };
   } catch (error) {
