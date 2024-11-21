@@ -241,6 +241,10 @@ img.rt-AvatarImage {
   width: 1px;
   height: var(--height);
   top: calc(var(--height) / 2) %;
-  left: 0;
-  background-color: var(--accent-a5);
+  left: -0.5px;
+  background-color: var(--accent-a4);
+}
+
+.save-dropdown-button[disabled]:before {
+  background-color: var(--gray-a4);
 }
