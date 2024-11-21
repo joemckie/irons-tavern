@@ -32,9 +32,6 @@ declare module 'next-auth/jwt' {
 
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
-  pages: {
-    signIn: '/login',
-  },
   callbacks: {
     async signIn({ account, profile }) {
       if (!profile?.id) {
@@ -43,7 +40,7 @@ export const config = {
 
       Sentry.setUser({
         id: profile.id,
-        username: profile?.name ?? 'Unknown username',
+        username: profile?.name ?? 'Unknown',
       });
 
       if (!account?.access_token) {
@@ -60,7 +57,7 @@ export const config = {
           error.code === RESTJSONErrorCodes.UnknownMember
         ) {
           throw new Error(
-            'You must be a member of Irons Tavern to use this application!',
+            `User ${profile.id}: ${profile.name} was not found in Irons Tavern`,
           );
         }
 
@@ -124,7 +121,7 @@ export const config = {
   },
   providers: [
     Discord<DiscordProfile>({
-      authorization: `https://discord.com/api/oauth2/authorize?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}`,
+      authorization: `https://discord.com/api/${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}`,
     }),
   ],
 } satisfies NextAuthConfig;
