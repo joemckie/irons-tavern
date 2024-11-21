@@ -7,5 +7,9 @@ export function useMaxSkillingPoints() {
   const maxDiaryPoints = useMaxDiaryPoints();
   const maxTotalLevelPoints = useMaxTotalLevelPoints();
 
-  return (maxDiaryPoints + maxTotalLevelPoints) * scaling;
+  // Remove this when Sailing is released
+  // It is used to make max points equal 100% pre-Sailing
+  const sailingOffset = 4000;
+
+  return (maxDiaryPoints + maxTotalLevelPoints - sailingOffset) * scaling;
 }
