@@ -56,9 +56,15 @@ export const config = {
           error instanceof DiscordAPIError &&
           error.code === RESTJSONErrorCodes.UnknownMember
         ) {
-          throw new Error(
-            `User ${profile.id}: ${profile.name} was not found in Irons Tavern`,
-          );
+          Sentry.addBreadcrumb({
+            data: {
+              id: profile.id,
+              username: profile.username,
+            },
+            category: 'auth',
+            message: `User attempted to log in but was not found in the Discord server`,
+            level: 'fatal',
+          });
         }
 
         throw error;
