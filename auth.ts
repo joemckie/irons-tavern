@@ -61,7 +61,7 @@ export const config = {
               id: profile.id,
               username: profile.username,
             },
-            category: 'auth',
+            category: 'Auth',
             message: `User attempted to log in but was not found in the Discord server`,
             level: 'fatal',
           });
