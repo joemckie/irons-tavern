@@ -63,7 +63,7 @@ export const config = {
             },
             category: 'Auth',
             message: `User attempted to log in but was not found in the Discord server`,
-            level: 'fatal',
+            level: 'error',
           });
         }
 
