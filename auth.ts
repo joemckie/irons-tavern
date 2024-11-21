@@ -2,8 +2,14 @@ import 'next-auth/jwt';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import * as Sentry from '@sentry/nextjs';
-import { APIGuild, Routes } from 'discord-api-types/v10';
-import { discordUserClient } from './discord';
+import {
+  APIGuild,
+  OAuth2Scopes,
+  Routes,
+  RESTJSONErrorCodes,
+} from 'discord-api-types/v10';
+import { DiscordAPIError } from '@discordjs/rest';
+import { discordBotClient, discordUserClient } from './discord';
 import { serverConstants } from './config/constants.server';
 
 declare module 'next-auth' {
@@ -26,10 +32,17 @@ declare module 'next-auth/jwt' {
 
 export const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     async signIn({ account, profile }) {
+      if (!profile?.id) {
+        throw new Error('Discord user not found');
+      }
+
       Sentry.setUser({
-        id: profile?.id ?? 'Unknown ID',
+        id: profile.id,
         username: profile?.name ?? 'Unknown username',
       });
 
@@ -39,18 +52,19 @@ export const config = {
 
       const { guildId } = serverConstants.discord;
 
-      const userGuildsResponse = (await discordUserClient(
-        account.access_token,
-      ).get(Routes.userGuilds(), {
-        authPrefix: 'Bearer',
-      })) as APIGuild[];
+      try {
+        await discordBotClient.get(Routes.guildMember(guildId, profile.id));
+      } catch (error) {
+        if (
+          error instanceof DiscordAPIError &&
+          error.code === RESTJSONErrorCodes.UnknownMember
+        ) {
+          throw new Error(
+            'You must be a member of Irons Tavern to use this application!',
+          );
+        }
 
-      const guild = userGuildsResponse.find(({ id }) => id === guildId);
-
-      if (!guild) {
-        throw new Error(
-          'You must be a member of Irons Tavern to use this application!',
-        );
+        throw error;
       }
 
       return true;
@@ -110,8 +124,7 @@ export const config = {
   },
   providers: [
     Discord<DiscordProfile>({
-      authorization:
-        'https://discord.com/api/oauth2/authorize?scope=identify+guilds+guilds.members.read',
+      authorization: `https://discord.com/api/oauth2/authorize?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}`,
     }),
   ],
 } satisfies NextAuthConfig;
