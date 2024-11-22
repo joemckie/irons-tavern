@@ -1,7 +1,8 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
+import { useFormState } from 'react-hook-form';
 import { CombatAchievementTier } from '@/app/schemas/osrs';
+import { ErrorMessage } from '@hookform/error-message';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -10,6 +11,7 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { ValidationError } from '../validation-error';
 
 export function CombatCard() {
   const {
@@ -19,9 +21,7 @@ export function CombatCard() {
     combatAchievementTierPoints,
     ehbPoints,
   } = useCombatPointCalculator();
-  const {
-    formState: { defaultValues },
-  } = useFormContext<RankCalculatorSchema>();
+  const { defaultValues, errors } = useFormState<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -84,6 +84,7 @@ export function CombatCard() {
           </Text>
         }
       />
+      <ErrorMessage errors={errors} name="ehb" render={ValidationError} />
       <DataCard.Row
         left={
           <Text color="gray" size="2">
@@ -107,6 +108,11 @@ export function CombatCard() {
             {formatNumber(combatAchievementTierPoints)}
           </Text>
         }
+      />
+      <ErrorMessage
+        errors={errors}
+        name="combatAchievementTier"
+        render={ValidationError}
       />
       <DataCard.Row
         left={

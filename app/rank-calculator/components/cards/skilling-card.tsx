@@ -6,7 +6,8 @@ import {
   minimumTotalLevel,
 } from '@/app/schemas/osrs';
 import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
+import { useFormState } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -15,6 +16,7 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { ValidationError } from '../validation-error';
 
 export function SkillingCard() {
   const {
@@ -25,9 +27,7 @@ export function SkillingCard() {
     achievementDiariesPoints,
     ehpPoints,
   } = useSkillingPointCalculator();
-  const {
-    formState: { defaultValues },
-  } = useFormContext<RankCalculatorSchema>();
+  const { defaultValues, errors } = useFormState<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -90,6 +90,7 @@ export function SkillingCard() {
           </Text>
         }
       />
+      <ErrorMessage errors={errors} name="ehp" render={ValidationError} />
       <DataCard.Row
         left={
           <Text color="gray" size="2">
@@ -113,29 +114,49 @@ export function SkillingCard() {
           </Text>
         }
       />
-      {DiaryLocation.options.map((location) => (
-        <DataCard.Row
-          key={location}
-          left={
-            <Text color="gray" size="2">
-              {location}
-            </Text>
-          }
-          center={
-            <Select
-              aria-label={`${location} diary value`}
-              name={`achievementDiaries.${location}`}
-              placeholder="Choose a tier"
-              options={DiaryTier.options}
+      <ErrorMessage
+        errors={errors}
+        name="totalLevel"
+        render={ValidationError}
+      />
+      {DiaryLocation.options.map((location) => {
+        const fieldName = `achievementDiaries.${location}` as const;
+
+        return (
+          <>
+            <DataCard.Row
+              key={location}
+              left={
+                <Text color="gray" size="2">
+                  {location}
+                </Text>
+              }
+              center={
+                <Select
+                  aria-label={`${location} diary value`}
+                  name={fieldName}
+                  placeholder="Choose a tier"
+                  options={DiaryTier.options}
+                />
+              }
+              right={
+                <Text
+                  aria-label={`${location} diary points`}
+                  color="gray"
+                  size="2"
+                >
+                  {formatNumber(achievementDiariesPoints[location])}
+                </Text>
+              }
             />
-          }
-          right={
-            <Text aria-label={`${location} diary points`} color="gray" size="2">
-              {formatNumber(achievementDiariesPoints[location])}
-            </Text>
-          }
-        />
-      ))}
+            <ErrorMessage
+              errors={errors}
+              name={fieldName}
+              render={ValidationError}
+            />
+          </>
+        );
+      })}
       <DataCard.Row
         left={
           <Text color="gray" size="2">
