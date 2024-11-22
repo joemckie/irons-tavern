@@ -4,7 +4,7 @@ import { useAction } from 'next-safe-action/hooks';
 import { useRankCalculator } from '@/app/rank-calculator/hooks/point-calculator/use-rank-calculator';
 import { useParams } from 'next/navigation';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
 import { approveSubmissionAction } from '../approve-submission-action';
@@ -26,6 +26,7 @@ export function ApproveSubmissionButton({
     name: 'rankStructure',
   });
   const isStandardRankStructure = rankStructure === 'Standard';
+  const { errors } = useFormState();
 
   const {
     executeAsync: approveSubmission,
@@ -53,19 +54,27 @@ export function ApproveSubmissionButton({
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>Approve application</AlertDialog.Title>
         <AlertDialog.Description size="2">
+          {Object.keys(errors).length > 0 && (
+            <>
+              <Text as="p" color="red" weight="bold">
+                WARNING: Differences found between the submission and API
+                responses!
+              </Text>
+              <br />
+            </>
+          )}
           {isStandardRankStructure && (
-            <Text>
+            <Text as="p">
               This application will be approved and {playerName} will
               automatically be assigned the {getRankName(rank)} rank on Discord.
             </Text>
           )}
           {!isStandardRankStructure && (
-            <Text>
+            <Text as="p">
               This application will be approved. Discord ranks must be manually
               assigned for non-standard rank structures.
             </Text>
           )}
-          <br />
           <br />
           <Text>No in-game ranks will be changed.</Text>
         </AlertDialog.Description>
