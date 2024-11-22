@@ -21,12 +21,16 @@ export function Select({
   required,
   ...props
 }: SelectProps) {
-  const { field } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     name: props.name,
     rules: {
       required,
     },
   });
+
   const portalElement =
     typeof document !== 'undefined'
       ? document.getElementById('theme-root')
@@ -43,7 +47,12 @@ export function Select({
     >
       <Button {...props} asChild variant="ghost" className="rt-SelectTrigger">
         <Ariakit.Select {...field}>
-          {field.value}
+          <Text
+            color={error ? 'red' : undefined}
+            weight={error ? 'medium' : undefined}
+          >
+            {field.value}
+          </Text>
           {!field.disabled && <Ariakit.SelectArrow />}
         </Ariakit.Select>
       </Button>
