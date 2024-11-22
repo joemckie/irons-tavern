@@ -1,7 +1,7 @@
 'use client';
 
 import { ForwardRefExoticComponent, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
 import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { Flex, IconProps, Text, TextProps } from '@radix-ui/themes';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
@@ -15,22 +15,27 @@ interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
   initialSubmissionStatus: RankSubmissionStatus;
   userPermissions: string | undefined;
+  diffErrors: FieldErrors;
 }
 
 export function ReadonlyFormWrapper({
   formData,
   initialSubmissionStatus,
   userPermissions,
+  diffErrors,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
     initialSubmissionStatus,
   );
+
   const isModeratorActionsAvailable =
     userCanModerateSubmission(userPermissions) &&
     submissionStatus === 'Pending';
+
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
     values: formData,
+    errors: diffErrors,
   });
 
   function renderNavigationActions() {
@@ -74,6 +79,8 @@ export function ReadonlyFormWrapper({
       </Text>
     );
   }
+
+  console.log(methods.formState.errors);
 
   return (
     <FormProvider {...methods}>

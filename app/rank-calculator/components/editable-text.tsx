@@ -17,7 +17,7 @@ export function EditableText({
   ...restProps
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const { register } = useFormContext();
+  const { register, getFieldState } = useFormContext();
   const value = useWatch({ name });
   const field = register(name, {
     required,
@@ -29,11 +29,12 @@ export function EditableText({
       return newValue;
     },
   });
+  const { error } = getFieldState(name);
 
   if (isEditing) {
     return (
       <Input
-        hasError={false}
+        hasError={!!error}
         size="1"
         aria-label={ariaLabel}
         {...field}
@@ -65,7 +66,12 @@ export function EditableText({
 
   return (
     <Flex justify="center" gap="2" width="100%" align="center">
-      <Text aria-label={ariaLabel} size="2">
+      <Text
+        aria-label={ariaLabel}
+        size="2"
+        color={error ? 'red' : undefined}
+        weight={error ? 'medium' : undefined}
+      >
         {value}
       </Text>
       {!field.disabled && (

@@ -1,10 +1,18 @@
-import { rankSubmissionKey, rankSubmissionMetadataKey } from '@/config/redis';
+import {
+  rankSubmissionDiffKey,
+  rankSubmissionKey,
+  rankSubmissionMetadataKey,
+} from '@/config/redis';
 import { Flex, Heading } from '@radix-ui/themes';
 import { redis } from '@/redis';
 import { auth } from '@/auth';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import {
+  RankSubmissionDiff,
+  RankSubmissionStatus,
+} from '@/app/schemas/rank-calculator';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { calculateDiffErrors } from './utils/calculate-diff-errors';
 
 export default async function ViewSubmissionPage({
   params,
@@ -12,7 +20,7 @@ export default async function ViewSubmissionPage({
   params: Promise<{ submissionId: string }>;
 }) {
   const { submissionId } = await params;
-  const [submission, submissionStatus] = await Promise.all([
+  const [submission, submissionStatus, submissionDiff] = await Promise.all([
     redis.json.get<Omit<RankCalculatorSchema, 'rank' | 'points'>>(
       rankSubmissionKey(submissionId),
     ),
@@ -20,6 +28,7 @@ export default async function ViewSubmissionPage({
       rankSubmissionMetadataKey(submissionId),
       'status',
     ),
+    redis.hgetall<RankSubmissionDiff>(rankSubmissionDiffKey(submissionId)),
   ]);
 
   if (!submission) {
@@ -34,13 +43,20 @@ export default async function ViewSubmissionPage({
     throw new Error('Unable to determine submission status');
   }
 
+  if (!submissionDiff) {
+    throw new Error('Unable to find submission diff');
+  }
+
   const user = await auth();
+
+  const diffErrors = calculateDiffErrors(submissionDiff);
 
   return (
     <ReadonlyFormWrapper
       formData={submission}
       initialSubmissionStatus={submissionStatus}
       userPermissions={user?.user?.permissions}
+      diffErrors={diffErrors}
     />
   );
 }
