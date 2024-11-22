@@ -6,6 +6,7 @@ import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
 import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
+import { ValidationTooltip } from './validation-tooltip';
 
 interface ItemProps {
   acquired: boolean;
@@ -26,12 +27,14 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
             src={item.image}
             fallback="?"
           />
-          <Text
-            color={error ? 'red' : undefined}
-            weight={error ? 'medium' : undefined}
-          >
-            {item.name}
-          </Text>
+          <ValidationTooltip error={error}>
+            <Text
+              color={error ? 'red' : undefined}
+              weight={error ? 'medium' : undefined}
+            >
+              {item.name}
+            </Text>
+          </ValidationTooltip>
         </Flex>
       </Table.Cell>
       <Table.Cell align="right">

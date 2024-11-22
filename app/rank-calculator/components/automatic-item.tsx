@@ -8,6 +8,7 @@ import { EntityImage } from './entity-image';
 import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
 import { isItemAcquired } from '../data-sources/fetch-player-details/utils/is-item-acquired';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { ValidationTooltip } from './validation-tooltip';
 
 interface AutomaticItemProps {
   item: Item;
@@ -58,12 +59,14 @@ export const MemoisedAutomaticItem = memo(
               src={item.image}
               fallback="?"
             />
-            <Text
-              color={error ? 'red' : undefined}
-              weight={error ? 'medium' : undefined}
-            >
-              {item.name}
-            </Text>
+            <ValidationTooltip error={error}>
+              <Text
+                color={error ? 'red' : undefined}
+                weight={error ? 'medium' : undefined}
+              >
+                {item.name}
+              </Text>
+            </ValidationTooltip>
           </Flex>
         </Table.Cell>
         <Table.Cell align="right">
