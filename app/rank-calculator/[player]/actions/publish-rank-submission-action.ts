@@ -32,12 +32,20 @@ import {
   DiaryLocation,
   DiaryTier,
 } from '@/app/schemas/osrs';
+import { itemList } from '@/data/item-list';
+import {
+  isCollectionLogItem,
+  isCombatAchievementItem,
+  isQuestItem,
+  Item,
+} from '@/app/schemas/items';
 import { calculateScaling } from '../../utils/calculate-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
 import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
 import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
+import { stripEntityName } from '../../utils/strip-entity-name';
 
 export const publishRankSubmissionAction = authActionClient
   .metadata({
@@ -158,6 +166,16 @@ export const publishRankSubmissionAction = authActionClient
         Routes.threadMembers(discordMessageId, userId),
       );
 
+      const itemMap = Object.values(itemList)
+        .flatMap(({ items }) => items)
+        .reduce(
+          (acc, item) => ({
+            ...acc,
+            [stripEntityName(item.name)]: item,
+          }),
+          {} as Record<string, Item>,
+        );
+
       const submissionDiff = {
         achievementDiaries:
           hasWikiSyncData && savedData.achievementDiaries && achievementDiaries
@@ -186,15 +204,30 @@ export const publishRankSubmissionAction = authActionClient
                 return acc;
               }, {} as AchievementDiaryMap)
             : null,
-        acquiredItems:
-          hasWikiSyncData || hasCollectionLogData
-            ? Object.values(
-                pickBy(
-                  Object.keys(savedData.acquiredItems),
-                  (key) => !acquiredItems[key],
-                ),
-              )
-            : null,
+        acquiredItems: [
+          ...new Set<string>([
+            ...(hasWikiSyncData
+              ? Object.values(
+                  pickBy(
+                    Object.keys(savedData.acquiredItems),
+                    (key) =>
+                      (isQuestItem(itemMap[key]) ||
+                        isCombatAchievementItem(itemMap[key])) &&
+                      !acquiredItems[key],
+                  ),
+                )
+              : []),
+            ...(hasCollectionLogData
+              ? Object.values(
+                  pickBy(
+                    Object.keys(savedData.acquiredItems),
+                    (key) =>
+                      isCollectionLogItem(itemMap[key]) && !acquiredItems[key],
+                  ),
+                )
+              : []),
+          ]),
+        ],
         combatAchievementTier:
           hasWikiSyncData &&
           // eslint-disable-next-line no-underscore-dangle
