@@ -1,18 +1,29 @@
-import { Tooltip } from '@radix-ui/themes';
+import { Text, TextProps, Tooltip } from '@radix-ui/themes';
 import { PropsWithChildren } from 'react';
 import { FieldError } from 'react-hook-form';
 
-interface ValidationTooltipProps {
+type ValidationTooltipProps = {
   error: FieldError | undefined;
-}
+} & TextProps;
 
 export function ValidationTooltip({
   error,
   children,
+  ...props
 }: PropsWithChildren<ValidationTooltipProps>) {
   if (!error) {
-    return children;
+    return (
+      <Text asChild {...props}>
+        {children}
+      </Text>
+    );
   }
 
-  return <Tooltip content={error.message}>{children}</Tooltip>;
+  return (
+    <Tooltip content={error.message}>
+      <Text asChild color="red" weight="medium" {...props}>
+        {children}
+      </Text>
+    </Tooltip>
+  );
 }

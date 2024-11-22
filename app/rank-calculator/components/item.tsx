@@ -28,12 +28,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
             fallback="?"
           />
           <ValidationTooltip error={error}>
-            <Text
-              color={error ? 'red' : undefined}
-              weight={error ? 'medium' : undefined}
-            >
-              {item.name}
-            </Text>
+            <Text>{item.name}</Text>
           </ValidationTooltip>
         </Flex>
       </Table.Cell>

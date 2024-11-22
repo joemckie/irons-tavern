@@ -68,12 +68,7 @@ export function EditableText({
   return (
     <Flex justify="center" gap="2" width="100%" align="center">
       <ValidationTooltip error={error}>
-        <Text
-          aria-label={ariaLabel}
-          size="2"
-          color={error ? 'red' : undefined}
-          weight={error ? 'medium' : undefined}
-        >
+        <Text aria-label={ariaLabel} size="2">
           {value}
         </Text>
       </ValidationTooltip>
