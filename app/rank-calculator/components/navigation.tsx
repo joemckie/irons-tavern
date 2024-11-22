@@ -81,7 +81,7 @@ export function Navigation({
               </Text>
             </Text>
           </Flex>
-          <Flex justify="end" gap="2">
+          <Flex align="center" justify="end" gap="2">
             {actions}
           </Flex>
         </nav>

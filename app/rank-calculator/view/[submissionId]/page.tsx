@@ -8,7 +8,7 @@ import { redis } from '@/redis';
 import { auth } from '@/auth';
 import {
   RankSubmissionDiff,
-  RankSubmissionStatus,
+  RankSubmissionMetadata,
 } from '@/app/schemas/rank-calculator';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
@@ -20,13 +20,12 @@ export default async function ViewSubmissionPage({
   params: Promise<{ submissionId: string }>;
 }) {
   const { submissionId } = await params;
-  const [submission, submissionStatus, submissionDiff] = await Promise.all([
+  const [submission, submissionMetadata, submissionDiff] = await Promise.all([
     redis.json.get<Omit<RankCalculatorSchema, 'rank' | 'points'>>(
       rankSubmissionKey(submissionId),
     ),
-    redis.hget<RankSubmissionStatus>(
+    redis.hgetall<RankSubmissionMetadata>(
       rankSubmissionMetadataKey(submissionId),
-      'status',
     ),
     redis.hgetall<RankSubmissionDiff>(rankSubmissionDiffKey(submissionId)),
   ]);
@@ -39,8 +38,8 @@ export default async function ViewSubmissionPage({
     );
   }
 
-  if (!submissionStatus) {
-    throw new Error('Unable to determine submission status');
+  if (!submissionMetadata) {
+    throw new Error('Unable to find submission metadata');
   }
 
   if (!submissionDiff) {
@@ -54,9 +53,9 @@ export default async function ViewSubmissionPage({
   return (
     <ReadonlyFormWrapper
       formData={submission}
-      initialSubmissionStatus={submissionStatus}
       userPermissions={user?.user?.permissions}
       diffErrors={diffErrors}
+      submissionMetadata={submissionMetadata}
     />
   );
 }

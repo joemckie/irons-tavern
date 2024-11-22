@@ -2,7 +2,10 @@
 
 import { ForwardRefExoticComponent, useState } from 'react';
 import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import {
+  RankSubmissionMetadata,
+  RankSubmissionStatus,
+} from '@/app/schemas/rank-calculator';
 import { Flex, IconProps, Text, TextProps } from '@radix-ui/themes';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { RankCalculator } from '../../[player]/rank-calculator';
@@ -13,19 +16,19 @@ import { Navigation } from '../../components/navigation';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
-  initialSubmissionStatus: RankSubmissionStatus;
   userPermissions: string | undefined;
   diffErrors: FieldErrors;
+  submissionMetadata: RankSubmissionMetadata;
 }
 
 export function ReadonlyFormWrapper({
   formData,
-  initialSubmissionStatus,
   userPermissions,
   diffErrors,
+  submissionMetadata,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
-    initialSubmissionStatus,
+    submissionMetadata.status,
   );
 
   const isModeratorActionsAvailable =
@@ -59,6 +62,9 @@ export function ReadonlyFormWrapper({
         <ViewSubmissionNavigationActions
           onStatusChange={setSubmissionStatus}
           playerName={formData.playerName}
+          hasCollectionLogData={submissionMetadata.hasCollectionLogData}
+          hasTempleData={submissionMetadata.hasTempleData}
+          hasWikiSyncData={submissionMetadata.hasWikiSyncData}
         />
       );
     }
