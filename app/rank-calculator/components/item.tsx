@@ -1,17 +1,20 @@
 import { memo } from 'react';
+import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
 import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
+import { ValidationTooltip } from './validation-tooltip';
 
 interface ItemProps {
   acquired: boolean;
   item: Item;
+  error: FieldError | undefined;
 }
 
-export const MemoisedItem = memo(({ item, acquired }: ItemProps) => {
+export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
   const scaledItemPoints = Math.floor(item.points * scaling);
 
@@ -24,7 +27,9 @@ export const MemoisedItem = memo(({ item, acquired }: ItemProps) => {
             src={item.image}
             fallback="?"
           />
-          <Text>{item.name}</Text>
+          <ValidationTooltip error={error}>
+            <Text>{item.name}</Text>
+          </ValidationTooltip>
         </Flex>
       </Table.Cell>
       <Table.Cell align="right">

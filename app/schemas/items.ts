@@ -80,20 +80,20 @@ export const ItemCategoryMap = z.record(z.string(), ItemCategory);
 
 export type ItemCategoryMap = z.infer<typeof ItemCategoryMap>;
 
-export function isCollectionLogItem(item: Item): item is CollectionLogItem {
+export function isCollectionLogItem(item: unknown): item is CollectionLogItem {
   return CollectionLogItem.safeParse(item).success;
 }
 
 export function isCombatAchievementItem(
-  item: Item,
+  item: unknown,
 ): item is CombatAchievementItem {
   return CombatAchievementItem.safeParse(item).success;
 }
 
-export function isQuestItem(item: Item): item is QuestItem {
+export function isQuestItem(item: unknown): item is QuestItem {
   return QuestItem.safeParse(item).success;
 }
 
-export function isCustomItem(item: Item): item is CustomItem {
+export function isCustomItem(item: unknown): item is CustomItem {
   return CustomItem.safeParse(item).success;
 }

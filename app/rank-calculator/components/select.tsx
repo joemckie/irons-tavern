@@ -8,6 +8,7 @@ import {
 import * as Ariakit from '@ariakit/react';
 import { useController } from 'react-hook-form';
 import { AriaAttributes, startTransition } from 'react';
+import { ValidationTooltip } from './validation-tooltip';
 
 interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
   name: string;
@@ -21,12 +22,16 @@ export function Select({
   required,
   ...props
 }: SelectProps) {
-  const { field } = useController({
+  const {
+    field,
+    fieldState: { error },
+  } = useController({
     name: props.name,
     rules: {
       required,
     },
   });
+
   const portalElement =
     typeof document !== 'undefined'
       ? document.getElementById('theme-root')
@@ -41,12 +46,35 @@ export function Select({
       }
       value={field.value ?? ''}
     >
-      <Button {...props} asChild variant="ghost" className="rt-SelectTrigger">
-        <Ariakit.Select {...field}>
-          {field.value}
-          {!field.disabled && <Ariakit.SelectArrow />}
-        </Ariakit.Select>
-      </Button>
+      <Ariakit.Select
+        {...field}
+        render={({ color, ...buttonProps }) => {
+          if (field.disabled) {
+            return (
+              <ValidationTooltip error={error}>
+                <Text size="2">{field.value}</Text>
+              </ValidationTooltip>
+            );
+          }
+
+          return (
+            <Button
+              {...buttonProps}
+              {...props}
+              variant="ghost"
+              className="rt-SelectTrigger"
+            >
+              <Text
+                color={error ? 'red' : undefined}
+                weight={error ? 'medium' : undefined}
+              >
+                {field.value}
+              </Text>
+              <Ariakit.SelectArrow />
+            </Button>
+          );
+        }}
+      />
       <Ariakit.SelectPopover
         gutter={4}
         className="rt-PopoverContent rt-SelectContent rt-r-size-1"

@@ -1,8 +1,11 @@
 'use client';
 
 import { ForwardRefExoticComponent, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
+import {
+  RankSubmissionMetadata,
+  RankSubmissionStatus,
+} from '@/app/schemas/rank-calculator';
 import { Flex, IconProps, Text, TextProps } from '@radix-ui/themes';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { RankCalculator } from '../../[player]/rank-calculator';
@@ -13,24 +16,29 @@ import { Navigation } from '../../components/navigation';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
-  initialSubmissionStatus: RankSubmissionStatus;
   userPermissions: string | undefined;
+  diffErrors: FieldErrors;
+  submissionMetadata: RankSubmissionMetadata;
 }
 
 export function ReadonlyFormWrapper({
   formData,
-  initialSubmissionStatus,
   userPermissions,
+  diffErrors,
+  submissionMetadata,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
-    initialSubmissionStatus,
+    submissionMetadata.status,
   );
+
   const isModeratorActionsAvailable =
     userCanModerateSubmission(userPermissions) &&
     submissionStatus === 'Pending';
+
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
     values: formData,
+    errors: diffErrors,
   });
 
   function renderNavigationActions() {
@@ -54,6 +62,9 @@ export function ReadonlyFormWrapper({
         <ViewSubmissionNavigationActions
           onStatusChange={setSubmissionStatus}
           playerName={formData.playerName}
+          hasCollectionLogData={submissionMetadata.hasCollectionLogData}
+          hasTempleData={submissionMetadata.hasTempleData}
+          hasWikiSyncData={submissionMetadata.hasWikiSyncData}
         />
       );
     }
@@ -74,6 +85,8 @@ export function ReadonlyFormWrapper({
       </Text>
     );
   }
+
+  console.log(methods.formState.errors);
 
   return (
     <FormProvider {...methods}>
