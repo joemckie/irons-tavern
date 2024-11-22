@@ -66,6 +66,7 @@ export const RankSubmissionDiff = z.object({
   ehb: z.number().nullable(),
   ehp: z.number().nullable(),
   totalLevel: z.number().nullable(),
+  collectionLogCount: z.number().nullable(),
 });
 
 export type RankSubmissionDiff = z.infer<typeof RankSubmissionDiff>;

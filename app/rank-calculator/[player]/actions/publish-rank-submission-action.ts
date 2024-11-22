@@ -18,6 +18,7 @@ import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
 import {
   AchievementDiaryMap,
+  RankSubmissionDiff,
   RankSubmissionMetadata,
 } from '@/app/schemas/rank-calculator';
 import { discordBotClient } from '@/discord';
@@ -215,7 +216,7 @@ export const publishRankSubmissionAction = authActionClient
           hasTempleData && totalLevel < savedData.totalLevel
             ? totalLevel
             : null,
-      };
+      } satisfies RankSubmissionDiff;
 
       const submissionTransaction = redis.multi();
 
