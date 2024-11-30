@@ -53,20 +53,19 @@ export async function POST(request: NextRequest) {
 
   console.log('Updating member list');
 
+  // Sync our Temple page with the new member list
+  await fetch(`${clientConstants.temple.baseUrl}/groups/edit.php`, {
+    method: 'POST',
+    body: new URLSearchParams(templeUpdateData),
+  });
+
   await Promise.all([
-    // Sync our Temple page with the new member list
-    fetch(`${clientConstants.temple.baseUrl}/groups/edit.php`, {
-      method: 'POST',
-      body: new URLSearchParams(templeUpdateData),
-    }),
     // Save the member list to the Vercel blob store to use later
     put('members.json', JSON.stringify(body.clanMemberMaps), {
       access: 'public',
     }),
     // Check all players in the new member list
-    fetch(`${clientConstants.publicUrl}/api/check-all-players`, {
-      method: 'POST',
-    }),
+    fetch(`${clientConstants.publicUrl}/api/check-all-players`),
   ]);
 
   return NextResponse.json({ success: true });
