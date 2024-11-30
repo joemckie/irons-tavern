@@ -112,6 +112,16 @@ export async function fetchPlayerDetails(
     redirect(`/rank-calculator/players/edit/${player}`);
   }
 
+  // Update Temple to get the most up-to-date info
+  // Ignore any errors as this isn't required to succeed
+  try {
+    await fetch(
+      `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+    );
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+
   try {
     const savedData = mergeSavedData
       ? await redis.json.get<RankCalculatorSchema>(
