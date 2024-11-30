@@ -5,41 +5,57 @@ import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
+import { z } from 'zod';
 
 export const dynamic = 'force-dynamic';
 
+export const CheckMethod = z.enum(['datapoint', 'get-game-mode']);
+
+async function getPlayerInfo(player: string) {
+  const playerInfoRequest = await fetch(
+    `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
+  );
+
+  return playerInfoRequest.json() as Promise<PlayerInfoResponse>;
+}
+
 export async function GET(request: NextRequest) {
   const player = request.nextUrl.searchParams.get('player');
+  const checkMethod = CheckMethod.parse(
+    request.nextUrl.searchParams.get('check_method'),
+  );
 
   if (!player) {
     throw new Error('No player provided');
   }
 
-  const playerInfoRequest = await fetch(
-    `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
-  );
-  const playerInfo: PlayerInfoResponse = await playerInfoRequest.json();
+  const playerInfo = await getPlayerInfo(player);
   const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
 
   try {
     // If the player has a datapoint cool-down (i.e. a number),
-    // this means they have been checked very recently,
-    // hence we skip these players entirely to avoid triggering rate limits.
+    // this means they have been checked very recently and cannot be checked again
     if (shouldCheckPlayer) {
       // eslint-disable-next-line no-console
-      console.log(`Checking ${player}`);
+      console.log(`Checking ${player} using ${checkMethod} method`);
 
-      const gameMode = await redis.hget(playerGameModesKey, player);
+      const urls = {
+        [CheckMethod.enum.datapoint]:
+          `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+        [CheckMethod.enum['get-game-mode']]:
+          `${clientConstants.temple.baseUrl}/player-tools/getgamemode.php?username=${player}`,
+      };
 
-      await fetch(
-        playerInfo.data['Game mode'] === gameMode
-          ? `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`
-          : `${clientConstants.temple.baseUrl}/player-tools/getgamemode.php?username=${player}`,
-      );
+      await fetch(urls[checkMethod]);
 
-      await redis.hset(playerGameModesKey, {
-        [player]: playerInfo.data['Game mode'],
-      });
+      // If the game mode required an update, attempt to get the latest version and save it
+      if (checkMethod === 'get-game-mode') {
+        const updatedPlayerInfo = await getPlayerInfo(player);
+
+        await redis.hset(playerGameModesKey, {
+          [player]: updatedPlayerInfo.data['Game mode'],
+        });
+      }
     }
 
     // Purge the cache to display the latest member data

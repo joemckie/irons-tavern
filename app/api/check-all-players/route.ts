@@ -3,6 +3,9 @@ import { differenceInDays } from 'date-fns';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
+import { redis } from '@/redis';
+import { playerGameModesKey } from '@/config/redis';
+import { CheckMethod } from '../check-player/route';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,31 +14,89 @@ export async function GET() {
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
   const players: GroupMemberInfoResponse = await response.json();
+  const playerGameModes = (await redis.hgetall(playerGameModesKey)) ?? {};
 
   // Filter players that have been checked within the last day.
   // This reduces the amount of requests significantly, due to
   // players using the XP Updater plugin on RuneLite.
   // Also filter players not on hiscores as these cannot be checked.
   const filteredPlayers = Object.values(players.data.memberlist).filter(
-    (player) =>
-      player.on_hiscores &&
-      differenceInDays(Date.now(), player.last_checked) > 1,
+    ({ on_hiscores: onHiscores, last_checked: lastChecked }) =>
+      onHiscores && differenceInDays(Date.now(), lastChecked) > 1,
   );
 
-  const requests = filteredPlayers.map((player, i) => ({
-    // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
-    // so we need to wait for six seconds before checking the next player
-    url: `${clientConstants.publicUrl}/api/check-player?player=${encodeURI(player.player)}&_delay=${i * 6}`,
-    method: 'GET',
-  }));
+  // Temple bugs out when a player switches game mode
+  // (e.g. when a HCIM dies, they go from HCIM to IM)
+  // We need to split the requests out to check these separately.
+  // The check game mode endpoint is much more rate limited
+  // And can only be called once per minute.
+  const { dataPointMembers, getGameModeMembers } = filteredPlayers.reduce(
+    (acc, { game_mode: gameMode, player }) => {
+      if (playerGameModes[player] !== gameMode) {
+        return {
+          ...acc,
+          getGameModeMembers: acc.getGameModeMembers.concat(player),
+        };
+      }
 
-  console.log('Sending requests to Zeplo');
+      return {
+        ...acc,
+        dataPointMembers: acc.dataPointMembers.concat(player),
+      };
+    },
+    {
+      dataPointMembers: [] as string[],
+      getGameModeMembers: [] as string[],
+    },
+  );
+
+  const dataPointRateLimitSeconds = 6;
+  const getGameModeRateLimitSeconds = 60;
+
+  const datapointRequests = dataPointMembers.map((player, i) => {
+    const url = new URL(`${clientConstants.publicUrl}/api/check-player`);
+
+    url.searchParams.append('player', player);
+    url.searchParams.append('check_method', CheckMethod.enum.datapoint);
+    url.searchParams.append(
+      // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
+      // so we need to wait for six seconds before checking the next player
+      '_delay',
+      (i * dataPointRateLimitSeconds).toFixed(0),
+    );
+
+    return {
+      url,
+      method: 'GET',
+    };
+  });
+
+  const getGameModeRequests = getGameModeMembers.map((player, i) => {
+    const url = new URL(`${clientConstants.publicUrl}/api/check-player`);
+
+    url.searchParams.append('player', player);
+    url.searchParams.append('check_method', CheckMethod.enum['get-game-mode']);
+    url.searchParams.append(
+      // Temple's API is rate limited to 1 request per minute for the check game mode endpoint,
+      // so we need to wait for sixty seconds before checking the next player
+      '_delay',
+      (
+        datapointRequests.length * dataPointRateLimitSeconds +
+        i * getGameModeRateLimitSeconds
+      ).toFixed(0),
+    );
+
+    return {
+      url,
+      method: 'GET',
+    };
+  });
 
   const queueResponse = await fetch(
     `${serverConstants.zeplo.url}/bulk?_token=${serverConstants.zeplo.apiKey}`,
     {
       method: 'POST',
-      body: JSON.stringify(requests),
+      body: JSON.stringify([...datapointRequests, ...getGameModeRequests]),
     },
   );
 
