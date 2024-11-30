@@ -13,6 +13,7 @@ import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-vali
 import { ViewSubmissionNavigationActions } from './components/view-submission-navigation-actions';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { Navigation } from '../../components/navigation';
+import { ModerationProvider } from '../../contexts/moderation-context';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -31,14 +32,14 @@ export function ReadonlyFormWrapper({
     submissionMetadata.status,
   );
 
+  const isModerator = userCanModerateSubmission(userPermissions);
   const isModeratorActionsAvailable =
-    userCanModerateSubmission(userPermissions) &&
-    submissionStatus === 'Pending';
+    isModerator && submissionStatus === 'Pending';
 
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
     values: formData,
-    errors: diffErrors,
+    errors: isModerator ? diffErrors : {},
   });
 
   function renderNavigationActions() {
@@ -62,9 +63,6 @@ export function ReadonlyFormWrapper({
         <ViewSubmissionNavigationActions
           onStatusChange={setSubmissionStatus}
           playerName={formData.playerName}
-          hasCollectionLogData={submissionMetadata.hasCollectionLogData}
-          hasTempleData={submissionMetadata.hasTempleData}
-          hasWikiSyncData={submissionMetadata.hasWikiSyncData}
         />
       );
     }
@@ -86,19 +84,24 @@ export function ReadonlyFormWrapper({
     );
   }
 
-  console.log(methods.formState.errors);
-
   return (
-    <FormProvider {...methods}>
-      <RankCalculator
-        navigation={
-          <Navigation
-            actions={renderNavigationActions()}
-            shouldRenderBackButton={false}
-          />
-        }
-        submitRankCalculatorAction={() => {}}
-      />
-    </FormProvider>
+    <ModerationProvider
+      isModerator={isModerator}
+      hasCollectionLogData={submissionMetadata.hasCollectionLogData}
+      hasTempleData={submissionMetadata.hasTempleData}
+      hasWikiSyncData={submissionMetadata.hasWikiSyncData}
+    >
+      <FormProvider {...methods}>
+        <RankCalculator
+          navigation={
+            <Navigation
+              actions={renderNavigationActions()}
+              shouldRenderBackButton={false}
+            />
+          }
+          submitRankCalculatorAction={() => {}}
+        />
+      </FormProvider>
+    </ModerationProvider>
   );
 }

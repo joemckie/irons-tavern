@@ -4,6 +4,7 @@ import { CombatCard } from './cards/combat-card';
 import { CollectionLogCard } from './cards/collection-log-card';
 import { NotableItemsCard } from './cards/notable-items-card';
 import { usePageHeight } from '../hooks/use-page-height';
+import { ModerationCard } from './cards/moderation-card';
 
 export function Sidebar() {
   const mainHeightCss = usePageHeight();
@@ -20,6 +21,7 @@ export function Sidebar() {
           pb={{ initial: '0', md: '3' }}
         >
           <aside>
+            <ModerationCard />
             <RankProgressCard />
             <CombatCard />
             <CollectionLogCard />

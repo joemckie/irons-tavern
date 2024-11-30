@@ -28,10 +28,15 @@ export function useRankCalculator() {
   const { rank, nextRank } = useRank(pointsAwarded);
   const currentRankThreshold = rankThresholds[rankStructure][rank]!;
   const nextRankThreshold = !nextRank
-    ? currentRankThreshold
+    ? pointsAwarded
     : rankThresholds[rankStructure][nextRank]!;
-  const pointsRemaining = nextRankThreshold - pointsAwarded;
-  const pointsAwardedPercentage = (pointsAwarded - currentRankThreshold) / (nextRankThreshold - currentRankThreshold);
+  const pointsRemaining = nextRankThreshold
+    ? nextRankThreshold - pointsAwarded
+    : pointsAwarded;
+  const pointsAwardedPercentage = nextRankThreshold
+    ? (pointsAwarded - currentRankThreshold) /
+      (nextRankThreshold - currentRankThreshold)
+    : pointsAwarded / nextRankThreshold;
 
   return {
     pointsAwarded,

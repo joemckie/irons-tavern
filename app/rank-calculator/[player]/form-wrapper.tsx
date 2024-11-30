@@ -10,6 +10,7 @@ import { RankCalculatorNavigationActions } from '../components/rank-calculator-n
 import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
+import { ModerationProvider } from '../contexts/moderation-context';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -52,22 +53,29 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   );
 
   return (
-    <FormProvider {...form}>
-      <RankCalculator
-        submitRankCalculatorAction={submitRankCalculator}
-        navigation={
-          <Navigation
-            actions={
-              <RankCalculatorNavigationActions
-                currentRank={currentRank}
-                playerName={formData.playerName}
-                isActionActive={isExecuting || isTransitioning}
-              />
-            }
-            shouldRenderBackButton
-          />
-        }
-      />
-    </FormProvider>
+    <ModerationProvider
+      isModerator={false}
+      hasCollectionLogData={false}
+      hasTempleData={false}
+      hasWikiSyncData={false}
+    >
+      <FormProvider {...form}>
+        <RankCalculator
+          submitRankCalculatorAction={submitRankCalculator}
+          navigation={
+            <Navigation
+              actions={
+                <RankCalculatorNavigationActions
+                  currentRank={currentRank}
+                  playerName={formData.playerName}
+                  isActionActive={isExecuting || isTransitioning}
+                />
+              }
+              shouldRenderBackButton
+            />
+          }
+        />
+      </FormProvider>
+    </ModerationProvider>
   );
 }
