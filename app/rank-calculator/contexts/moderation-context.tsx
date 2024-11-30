@@ -10,9 +10,13 @@ interface ModerationProps
   actionedByUsername: string | null;
 }
 
-export const ModerationContext = createContext<ModerationProps | undefined>(
-  undefined,
-);
+export const ModerationContext = createContext<ModerationProps>({
+  actionedByUsername: '',
+  hasCollectionLogData: false,
+  hasTempleData: false,
+  hasWikiSyncData: false,
+  isModerator: false,
+});
 
 export function ModerationProvider({
   children,
