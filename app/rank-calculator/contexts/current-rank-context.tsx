@@ -1,21 +1,36 @@
 import { Rank } from '@/config/enums';
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 
-export const CurrentRankContext = createContext<Rank | undefined>(undefined);
+interface CurrentPlayerContextProps {
+  rank: Rank | undefined;
+  playerName: string;
+}
 
-export function CurrentRankProvider({
+export const CurrentPlayerContext = createContext<CurrentPlayerContextProps>({
+  playerName: '',
+  rank: undefined,
+});
+
+export function CurrentPlayerProvider({
   rank,
   children,
-}: PropsWithChildren<{ rank: Rank | undefined }>) {
-  const value = useMemo(() => rank, [rank]);
+  playerName,
+}: PropsWithChildren<CurrentPlayerContextProps>) {
+  const value = useMemo(
+    () => ({
+      rank,
+      playerName,
+    }),
+    [rank, playerName],
+  );
 
   return (
-    <CurrentRankContext.Provider value={value}>
+    <CurrentPlayerContext.Provider value={value}>
       {children}
-    </CurrentRankContext.Provider>
+    </CurrentPlayerContext.Provider>
   );
 }
 
-export function useCurrentRank() {
-  return useContext(CurrentRankContext);
+export function useCurrentPlayer() {
+  return useContext(CurrentPlayerContext);
 }

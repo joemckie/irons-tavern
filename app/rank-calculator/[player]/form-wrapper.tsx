@@ -11,7 +11,7 @@ import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
 import { ModerationProvider } from '../contexts/moderation-context';
-import { CurrentRankProvider } from '../contexts/current-rank-context';
+import { CurrentPlayerProvider } from '../contexts/current-rank-context';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -61,7 +61,10 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
       hasWikiSyncData={false}
       actionedByUsername={null}
     >
-      <CurrentRankProvider rank={currentRank}>
+      <CurrentPlayerProvider
+        rank={currentRank}
+        playerName={formData.playerName}
+      >
         <FormProvider {...form}>
           <RankCalculator
             submitRankCalculatorAction={submitRankCalculator}
@@ -69,8 +72,6 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
               <Navigation
                 actions={
                   <RankCalculatorNavigationActions
-                    currentRank={currentRank}
-                    playerName={formData.playerName}
                     isActionActive={isExecuting || isTransitioning}
                   />
                 }
@@ -79,7 +80,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
             }
           />
         </FormProvider>
-      </CurrentRankProvider>
+      </CurrentPlayerProvider>
     </ModerationProvider>
   );
 }

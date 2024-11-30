@@ -9,7 +9,6 @@ import {
 } from '@radix-ui/themes';
 import { useState, useTransition } from 'react';
 import { useFormContext, useFormState } from 'react-hook-form';
-import { Rank } from '@/config/enums';
 import { useAction } from 'next-safe-action/hooks';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -18,16 +17,13 @@ import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-su
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { DeleteSubmissionDataDialog } from './delete-submission-data-dialog';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
+import { useCurrentPlayer } from '../contexts/current-rank-context';
 
 interface RankCalculatorNavigationActionsProps {
-  currentRank?: Rank;
-  playerName: string;
   isActionActive: boolean;
 }
 
 export function RankCalculatorNavigationActions({
-  currentRank,
-  playerName,
   isActionActive,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
@@ -36,6 +32,7 @@ export function RankCalculatorNavigationActions({
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
   const { pointsAwarded: totalPoints, rank } = useRankCalculator();
+  const { playerName, rank: currentRank } = useCurrentPlayer();
   const [
     isDeleteSubmissionDataDialogOpen,
     setIsDeleteSubmissionDataDialogOpen,

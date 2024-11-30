@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import {
   Button,
   Card,
@@ -20,10 +20,9 @@ import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label'
 import { formatNumber } from '../../utils/format-number';
 import { RankStructureInfoModal } from '../rank-structure-info-modal';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
-import { useCurrentRank } from '../../contexts/current-rank-context';
+import { useCurrentPlayer } from '../../contexts/current-rank-context';
 import { handleToastUpdates } from '../../utils/handle-toast-updates';
 import { publishRankSubmissionAction } from '../../[player]/actions/publish-rank-submission-action';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function RankProgressCard() {
   const {
@@ -34,15 +33,12 @@ export function RankProgressCard() {
     rank,
   } = useRankCalculator();
   const { register, setValue, getValues } = useFormContext();
-  const currentRank = useCurrentRank();
+  const { playerName, rank: currentRank } = useCurrentPlayer();
   const [showRankUpDialog, setShowRankUpDialog] = useState(
     currentRank && currentRank !== rank,
   );
   const rankName = getRankName(rank);
   const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
-  const playerName = useWatch<RankCalculatorSchema, 'playerName'>({
-    name: 'playerName',
-  });
   const { executeAsync: publishRankSubmission } = useAction(
     publishRankSubmissionAction.bind(null, currentRank, playerName),
   );
