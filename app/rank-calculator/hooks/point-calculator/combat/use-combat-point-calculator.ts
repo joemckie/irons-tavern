@@ -1,7 +1,8 @@
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
+import { calculateCombatPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-points';
 import { useEhbPoints } from './use-ehb-points';
-import { useMaxCombatAchievementPoints } from './use-max-combat-points';
 import { useCombatAchievementTierPoints } from './use-combat-achievement-points';
+import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export interface CombatPointCalculatorData extends CommonPointCalculatorData {
   combatAchievementTierPoints: number;
@@ -9,13 +10,12 @@ export interface CombatPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useCombatPointCalculator() {
-  const totalPointsAvailable = useMaxCombatAchievementPoints();
+  const scaling = useCalculatorScaling();
   const ehbPoints = useEhbPoints();
   const combatAchievementTierPoints = useCombatAchievementTierPoints();
-  const pointsAwarded = combatAchievementTierPoints + ehbPoints;
-  const pointsRemaining = totalPointsAvailable - (pointsAwarded - ehbPoints);
-  const pointsAwardedPercentage =
-    (pointsAwarded - ehbPoints) / totalPointsAvailable;
+
+  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining } =
+    calculateCombatPoints(ehbPoints, combatAchievementTierPoints, scaling);
 
   return {
     pointsAwarded,
