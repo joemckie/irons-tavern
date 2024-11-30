@@ -5,7 +5,7 @@ import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
-import { CheckMethod } from '../check-player/route';
+import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
 export const dynamic = 'force-dynamic';
 

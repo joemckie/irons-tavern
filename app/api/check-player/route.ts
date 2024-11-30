@@ -5,11 +5,9 @@ import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
-import { z } from 'zod';
+import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
 export const dynamic = 'force-dynamic';
-
-export const CheckMethod = z.enum(['datapoint', 'get-game-mode']);
 
 async function getPlayerInfo(player: string) {
   const playerInfoRequest = await fetch(
