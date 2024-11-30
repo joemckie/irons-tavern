@@ -1,7 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
+import {
+  Button,
+  Card,
+  Dialog,
+  Flex,
+  Progress,
+  Separator,
+  Text,
+} from '@radix-ui/themes';
 import { RankStructure } from '@/app/schemas/rank-calculator';
+import { useAction } from 'next-safe-action/hooks';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
@@ -11,6 +20,9 @@ import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label'
 import { formatNumber } from '../../utils/format-number';
 import { RankStructureInfoModal } from '../rank-structure-info-modal';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
+import { useCurrentPlayer } from '../../contexts/current-rank-context';
+import { handleToastUpdates } from '../../utils/handle-toast-updates';
+import { publishRankSubmissionAction } from '../../[player]/actions/publish-rank-submission-action';
 
 export function RankProgressCard() {
   const {
@@ -21,8 +33,15 @@ export function RankProgressCard() {
     rank,
   } = useRankCalculator();
   const { register, setValue, getValues } = useFormContext();
+  const { playerName, rank: currentRank } = useCurrentPlayer();
+  const [showRankUpDialog, setShowRankUpDialog] = useState(
+    currentRank && currentRank !== rank,
+  );
   const rankName = getRankName(rank);
   const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
+  const { executeAsync: publishRankSubmission } = useAction(
+    publishRankSubmissionAction.bind(null, currentRank, playerName),
+  );
 
   useEffect(() => {
     if (rank !== getValues('rank')) {
@@ -127,6 +146,40 @@ export function RankProgressCard() {
           <RankStructureInfoModal />
         </Flex>
       </Card>
+      <Dialog.Root
+        open={showRankUpDialog}
+        onOpenChange={() => setShowRankUpDialog(false)}
+      >
+        <Dialog.Content maxWidth="450px">
+          <Dialog.Title>Rank up</Dialog.Title>
+          <Dialog.Description size="2" mb="2">
+            Congratulations, you have achieved the <strong>{rankName}</strong>{' '}
+            rank!
+          </Dialog.Description>
+          <Flex gap="3" mt="4" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close
+              onClick={() => {
+                handleToastUpdates(
+                  publishRankSubmission({
+                    totalPoints: pointsAwarded,
+                    rank,
+                  }),
+                  { success: 'Rank application submitted!' },
+                );
+              }}
+            >
+              <Button color="green" variant="soft">
+                Apply for promotion
+              </Button>
+            </Dialog.Close>
+          </Flex>
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   );
 }
