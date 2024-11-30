@@ -53,7 +53,8 @@ export async function GET(request: NextRequest) {
         const updatedPlayerInfo = await getPlayerInfo(player);
 
         await redis.hset(playerGameModesKey, {
-          [player]: updatedPlayerInfo.data['Game mode'],
+          [decodeURIComponent(player).toLowerCase()]:
+            updatedPlayerInfo.data['Game mode'],
         });
       }
     }

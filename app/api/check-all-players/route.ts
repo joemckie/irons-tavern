@@ -32,7 +32,7 @@ export async function GET() {
   // And can only be called once per minute.
   const { dataPointMembers, getGameModeMembers } = filteredPlayers.reduce(
     (acc, { game_mode: gameMode, player }) => {
-      if (playerGameModes[player] !== gameMode) {
+      if (playerGameModes[player.toLowerCase()] !== gameMode) {
         return {
           ...acc,
           getGameModeMembers: acc.getGameModeMembers.concat(player),
