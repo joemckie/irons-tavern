@@ -13,6 +13,7 @@ import {
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateDiffErrors } from './utils/calculate-diff-errors';
+import { getDiscordUsername } from './get-discord-username';
 
 export default async function ViewSubmissionPage({
   params,
@@ -50,12 +51,17 @@ export default async function ViewSubmissionPage({
 
   const diffErrors = calculateDiffErrors(submissionDiff);
 
+  const actionedByUsername = await getDiscordUsername(
+    submissionMetadata.actionedBy,
+  );
+
   return (
     <ReadonlyFormWrapper
       formData={submission}
       userPermissions={user?.user?.permissions}
       diffErrors={diffErrors}
       submissionMetadata={submissionMetadata}
+      actionedByUsername={actionedByUsername}
     />
   );
 }

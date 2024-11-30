@@ -4,8 +4,13 @@ import { DataCard } from '../data-card';
 import { useModeration } from '../../contexts/moderation-context';
 
 export function ModerationCard() {
-  const { hasCollectionLogData, hasTempleData, hasWikiSyncData, isModerator } =
-    useModeration();
+  const {
+    hasCollectionLogData,
+    hasTempleData,
+    hasWikiSyncData,
+    isModerator,
+    actionedByUsername,
+  } = useModeration();
 
   if (!isModerator) {
     return null;
@@ -49,6 +54,12 @@ export function ModerationCard() {
           }
         />
       ))}
+      {actionedByUsername && (
+        <DataCard.Row
+          left={<Text size="2">Actioned by</Text>}
+          right={<Text size="2">{actionedByUsername}</Text>}
+        />
+      )}
     </DataCard.Root>
   );
 }

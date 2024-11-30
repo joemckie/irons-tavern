@@ -20,6 +20,7 @@ interface FormWrapperProps {
   userPermissions: string | undefined;
   diffErrors: FieldErrors;
   submissionMetadata: RankSubmissionMetadata;
+  actionedByUsername: string | null;
 }
 
 export function ReadonlyFormWrapper({
@@ -27,6 +28,7 @@ export function ReadonlyFormWrapper({
   userPermissions,
   diffErrors,
   submissionMetadata,
+  actionedByUsername,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
     submissionMetadata.status,
@@ -90,6 +92,7 @@ export function ReadonlyFormWrapper({
       hasCollectionLogData={submissionMetadata.hasCollectionLogData}
       hasTempleData={submissionMetadata.hasTempleData}
       hasWikiSyncData={submissionMetadata.hasWikiSyncData}
+      actionedByUsername={actionedByUsername}
     >
       <FormProvider {...methods}>
         <RankCalculator

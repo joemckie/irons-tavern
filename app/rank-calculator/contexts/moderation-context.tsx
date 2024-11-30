@@ -7,6 +7,7 @@ interface ModerationProps
     'hasCollectionLogData' | 'hasTempleData' | 'hasWikiSyncData'
   > {
   isModerator: boolean;
+  actionedByUsername: string | null;
 }
 
 export const ModerationContext = createContext<ModerationProps | undefined>(
@@ -19,6 +20,7 @@ export function ModerationProvider({
   hasCollectionLogData,
   hasTempleData,
   hasWikiSyncData,
+  actionedByUsername,
 }: PropsWithChildren<ModerationProps>) {
   const value = useMemo<ModerationProps>(
     () => ({
@@ -26,8 +28,15 @@ export function ModerationProvider({
       hasCollectionLogData,
       hasTempleData,
       hasWikiSyncData,
+      actionedByUsername,
     }),
-    [isModerator, hasCollectionLogData, hasTempleData, hasWikiSyncData],
+    [
+      isModerator,
+      hasCollectionLogData,
+      hasTempleData,
+      hasWikiSyncData,
+      actionedByUsername,
+    ],
   );
 
   return (
