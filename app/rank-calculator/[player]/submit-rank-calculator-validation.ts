@@ -11,28 +11,23 @@ import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
 import { pickBy } from 'lodash';
 
-export const RankCalculatorSchema = z
-  .object({
-    acquiredItems: z
-      .record(z.boolean().optional())
-      .transform((data) => pickBy(data, (val) => val)),
-    achievementDiaries: z.record(DiaryLocation, DiaryTier),
-    joinDate: z.coerce.date(),
-    collectionLogCount: z.coerce.number().nonnegative(),
-    collectionLogTotal: z.coerce.number().nonnegative(),
-    combatAchievementTier: CombatAchievementTier,
-    ehb: z.coerce.number().nonnegative(),
-    ehp: z.coerce.number().nonnegative(),
-    totalLevel: z.coerce.number().min(minimumTotalLevel).max(maximumTotalLevel),
-    playerName: PlayerName,
-    rankStructure: RankStructure,
-    rank: Rank,
-    points: z.coerce.number().nonnegative(),
-    proofLink: z.union([z.string().url().nullish(), z.literal('')]),
-  })
-  .refine(
-    ({ collectionLogCount, collectionLogTotal }) =>
-      collectionLogCount <= collectionLogTotal,
-  );
+export const RankCalculatorSchema = z.object({
+  acquiredItems: z
+    .record(z.boolean().optional())
+    .transform((data) => pickBy(data, (val) => val)),
+  achievementDiaries: z.record(DiaryLocation, DiaryTier),
+  joinDate: z.coerce.date(),
+  collectionLogCount: z.coerce.number().nonnegative(),
+  collectionLogTotal: z.coerce.number().nonnegative(),
+  combatAchievementTier: CombatAchievementTier,
+  ehb: z.coerce.number().nonnegative(),
+  ehp: z.coerce.number().nonnegative(),
+  totalLevel: z.coerce.number().min(minimumTotalLevel).max(maximumTotalLevel),
+  playerName: PlayerName,
+  rankStructure: RankStructure,
+  rank: Rank,
+  points: z.coerce.number().nonnegative(),
+  proofLink: z.union([z.string().url().nullish(), z.literal('')]),
+});
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

@@ -9,17 +9,20 @@ export const saveDraftRankSubmissionAction = authActionClient
   .metadata({
     actionName: 'save-draft-rank-submission',
   })
-  .schema(RankCalculatorSchema)
-  .action(
-    async ({ parsedInput: { rank, points, ...data }, ctx: { userId } }) => {
-      const result = await redis.json.set(
-        userDraftRankSubmissionKey(userId, data.playerName),
-        '$',
-        data,
-      );
+  .schema(
+    RankCalculatorSchema.omit({
+      rank: true,
+      points: true,
+    }),
+  )
+  .action(async ({ parsedInput: data, ctx: { userId } }) => {
+    const result = await redis.json.set(
+      userDraftRankSubmissionKey(userId, data.playerName),
+      '$',
+      data,
+    );
 
-      return {
-        success: !!result,
-      };
-    },
-  );
+    return {
+      success: !!result,
+    };
+  });

@@ -1,6 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Card, Flex, Progress, Separator, Text } from '@radix-ui/themes';
+import {
+  Button,
+  Card,
+  Dialog,
+  Flex,
+  Progress,
+  Separator,
+  Text,
+} from '@radix-ui/themes';
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import Image from 'next/image';
 import { DataCard } from '../data-card';
@@ -11,6 +19,7 @@ import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label'
 import { formatNumber } from '../../utils/format-number';
 import { RankStructureInfoModal } from '../rank-structure-info-modal';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
+import { useCurrentRank } from '../../contexts/current-rank-context';
 
 export function RankProgressCard() {
   const {
@@ -21,6 +30,10 @@ export function RankProgressCard() {
     rank,
   } = useRankCalculator();
   const { register, setValue, getValues } = useFormContext();
+  const currentRank = useCurrentRank();
+  const [showRankUpDialog, setShowRankUpDialog] = useState(
+    currentRank !== rank,
+  );
   const rankName = getRankName(rank);
   const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
 
@@ -127,6 +140,32 @@ export function RankProgressCard() {
           <RankStructureInfoModal />
         </Flex>
       </Card>
+      <Dialog.Root
+        open={showRankUpDialog}
+        onOpenChange={() => setShowRankUpDialog(false)}
+      >
+        <Dialog.Content maxWidth="450px">
+          <Dialog.Title>Rank up</Dialog.Title>
+          <Dialog.Description size="2" mb="2">
+            Congratulations, you have achieved the {rankName} rank!
+          </Dialog.Description>
+          <Dialog.Description size="2" mb="4">
+            Click the button below to apply for a promotion, or cancel to do it
+            later.
+          </Dialog.Description>
+
+          <Flex gap="3" mt="4" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close>
+              <Button color="green">Apply for promotion</Button>
+            </Dialog.Close>
+          </Flex>
+        </Dialog.Content>
+      </Dialog.Root>
     </>
   );
 }

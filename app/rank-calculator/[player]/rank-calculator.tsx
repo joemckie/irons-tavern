@@ -1,5 +1,6 @@
 import { BaseSyntheticEvent, ReactNode } from 'react';
 import { Grid } from '@radix-ui/themes';
+import dedent from 'dedent';
 import { Sidebar } from '../components/sidebar';
 import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
@@ -17,19 +18,19 @@ export function RankCalculator({
     <form onSubmit={submitRankCalculatorAction}>
       <Grid
         areas={{
-          initial: `
+          initial: dedent`
             'nav'
             'sidebar'
             'right-sidebar'
             'main'
           `,
-          md: `
+          md: dedent`
             'nav nav nav'
             'sidebar main right-sidebar'
           `,
         }}
         columns={{
-          md: `
+          md: dedent`
             [sidebar] minmax(200px, 1fr)
             [main] minmax(0, 2fr)
             [right-sidebar] minmax(200px, 1fr)
