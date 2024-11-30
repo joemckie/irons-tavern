@@ -180,7 +180,9 @@ export function RankProgressCard() {
                 );
               }}
             >
-              <Button color="green">Apply for promotion</Button>
+              <Button color="green" variant="soft">
+                Apply for promotion
+              </Button>
             </Dialog.Close>
           </Flex>
         </Dialog.Content>
