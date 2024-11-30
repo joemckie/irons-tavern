@@ -58,6 +58,7 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
       hasCollectionLogData={false}
       hasTempleData={false}
       hasWikiSyncData={false}
+      actionedByUsername={null}
     >
       <FormProvider {...form}>
         <RankCalculator
