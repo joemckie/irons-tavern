@@ -6,7 +6,7 @@ import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST() {
+export async function GET() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
@@ -28,12 +28,6 @@ export async function POST() {
     url: `${clientConstants.publicUrl}/api/check-player?player=${encodeURI(player.player)}&_delay=${i * 6}`,
     method: 'GET',
   }));
-
-  // After all checks have been completed, clear the cache to ensure the new data is displayed
-  requests.push({
-    url: `${clientConstants.publicUrl}/api/revalidate-path?path=/&_delay=${requests.length * 6}`,
-    method: 'GET',
-  });
 
   console.log('Sending requests to Zeplo');
 

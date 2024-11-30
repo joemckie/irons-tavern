@@ -3,6 +3,8 @@ import { revalidatePath } from 'next/cache';
 import { clientConstants } from '@/config/constants.client';
 import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
+import { redis } from '@/redis';
+import { playerGameModesKey } from '@/config/redis';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,16 +22,24 @@ export async function GET(request: NextRequest) {
   const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
 
   try {
-    // If the player has a datapoint cooldown (i.e. a number),
+    // If the player has a datapoint cool-down (i.e. a number),
     // this means they have been checked very recently,
     // hence we skip these players entirely to avoid triggering rate limits.
     if (shouldCheckPlayer) {
       // eslint-disable-next-line no-console
       console.log(`Checking ${player}`);
 
+      const gameMode = await redis.hget(playerGameModesKey, player);
+
       await fetch(
-        `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+        playerInfo.data['Game mode'] === gameMode
+          ? `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`
+          : `${clientConstants.temple.baseUrl}/player-tools/getgamemode.php?username=${player}`,
       );
+
+      await redis.hset(playerGameModesKey, {
+        [player]: playerInfo.data['Game mode'],
+      });
     }
 
     // Purge the cache to display the latest member data
