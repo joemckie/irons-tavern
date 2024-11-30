@@ -39,7 +39,7 @@ import {
   isQuestItem,
   Item,
 } from '@/app/schemas/items';
-import { calculateScaling } from '../../utils/calculate-scaling';
+import { calculateScaling } from '../../utils/calculators/calculate-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';

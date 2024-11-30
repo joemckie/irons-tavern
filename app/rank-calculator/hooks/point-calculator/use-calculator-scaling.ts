@@ -1,5 +1,5 @@
 import { useWatch } from 'react-hook-form';
-import { calculateScaling } from '../../utils/calculate-scaling';
+import { calculateScaling } from '../../utils/calculators/calculate-scaling';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function useCalculatorScaling() {

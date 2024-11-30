@@ -1,9 +1,10 @@
 import { DiaryLocation } from '@/app/schemas/osrs';
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
+import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
 import { useAchievementDiaryPoints } from './use-achievement-diary-points';
 import { useEhpPoints } from './use-ehp-points';
 import { useTotalLevelPoints } from './use-total-level-points';
-import { useMaxSkillingPoints } from './use-max-skilling-points';
+import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
   ehpPoints: number;
@@ -18,16 +19,17 @@ export function useSkillingPointCalculator() {
   } = useAchievementDiaryPoints();
   const ehpPoints = useEhpPoints();
   const totalLevelPoints = useTotalLevelPoints();
-  const totalPointsAvailable = useMaxSkillingPoints();
-  const pointsAwarded = Math.min(
-    totalAchievementDiaryPointsAwarded + totalLevelPoints,
-    totalPointsAvailable,
-  );
-  const pointsRemaining = totalPointsAvailable - pointsAwarded;
-  const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
+  const scaling = useCalculatorScaling();
+  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining } =
+    calculateSkillingPoints(
+      totalAchievementDiaryPointsAwarded,
+      ehpPoints,
+      totalLevelPoints,
+      scaling,
+    );
 
   return {
-    pointsAwarded: pointsAwarded + ehpPoints,
+    pointsAwarded,
     pointsAwardedPercentage,
     pointsRemaining,
     ehpPoints,
