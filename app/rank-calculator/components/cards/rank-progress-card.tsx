@@ -157,11 +157,8 @@ export function RankProgressCard() {
         <Dialog.Content maxWidth="450px">
           <Dialog.Title>Rank up</Dialog.Title>
           <Dialog.Description size="2" mb="2">
-            Congratulations, you have achieved the {rankName} rank!
-          </Dialog.Description>
-          <Dialog.Description size="2" mb="4">
-            Click the button below to apply for a promotion, or cancel to do it
-            later.
+            Congratulations, you have achieved the <strong>{rankName}</strong>{' '}
+            rank!
           </Dialog.Description>
           <Flex gap="3" mt="4" justify="end">
             <Dialog.Close>
