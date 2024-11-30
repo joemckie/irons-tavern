@@ -1,6 +1,9 @@
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
-import { useMaxCollectionLogPoints } from './use-max-collection-log-points';
+import { calculateCollectionLogPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-points';
+import { useWatch } from 'react-hook-form';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useCollectionLogSlotPoints } from './use-collection-log-slot-points';
+import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export interface CollectionLogPointCalculatorData
   extends CommonPointCalculatorData {
@@ -8,11 +11,20 @@ export interface CollectionLogPointCalculatorData
 }
 
 export function useCollectionLogPointCalculator() {
+  const totalCollectionLogSlots = useWatch<
+    RankCalculatorSchema,
+    'collectionLogTotal'
+  >({
+    name: 'collectionLogTotal',
+  });
+  const scaling = useCalculatorScaling();
   const collectionLogSlotPoints = useCollectionLogSlotPoints();
-  const totalPointsAvailable = useMaxCollectionLogPoints();
-  const pointsAwarded = Math.min(collectionLogSlotPoints, totalPointsAvailable);
-  const pointsRemaining = totalPointsAvailable - pointsAwarded;
-  const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
+  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining } =
+    calculateCollectionLogPoints(
+      collectionLogSlotPoints,
+      totalCollectionLogSlots,
+      scaling,
+    );
 
   return {
     pointsAwarded,

@@ -1,6 +1,6 @@
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
+import { calculateCollectionLogSlotPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-slot-points';
 import { useWatch } from 'react-hook-form';
-import { calculatePointsForLogSlots } from '../../../utils/calculators/calculate-points-for-log-slots';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export function useCollectionLogSlotPoints() {
@@ -12,7 +12,5 @@ export function useCollectionLogSlotPoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return collectionLogSlotsAchieved
-    ? calculatePointsForLogSlots(collectionLogSlotsAchieved, scaling)
-    : 0;
+  return calculateCollectionLogSlotPoints(collectionLogSlotsAchieved, scaling);
 }
