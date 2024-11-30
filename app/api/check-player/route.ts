@@ -3,33 +3,58 @@ import { revalidatePath } from 'next/cache';
 import { clientConstants } from '@/config/constants.client';
 import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
+import { redis } from '@/redis';
+import { playerGameModesKey } from '@/config/redis';
+import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
 export const dynamic = 'force-dynamic';
 
+async function getPlayerInfo(player: string) {
+  const playerInfoRequest = await fetch(
+    `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
+  );
+
+  return playerInfoRequest.json() as Promise<PlayerInfoResponse>;
+}
+
 export async function GET(request: NextRequest) {
   const player = request.nextUrl.searchParams.get('player');
+  const checkMethod = CheckMethod.parse(
+    request.nextUrl.searchParams.get('check_method'),
+  );
 
   if (!player) {
     throw new Error('No player provided');
   }
 
-  const playerInfoRequest = await fetch(
-    `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
-  );
-  const playerInfo: PlayerInfoResponse = await playerInfoRequest.json();
+  const playerInfo = await getPlayerInfo(player);
   const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
 
   try {
-    // If the player has a datapoint cooldown (i.e. a number),
-    // this means they have been checked very recently,
-    // hence we skip these players entirely to avoid triggering rate limits.
+    // If the player has a datapoint cool-down (i.e. a number),
+    // this means they have been checked very recently and cannot be checked again
     if (shouldCheckPlayer) {
       // eslint-disable-next-line no-console
-      console.log(`Checking ${player}`);
+      console.log(`Checking ${player} using ${checkMethod} method`);
 
-      await fetch(
-        `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
-      );
+      const urls = {
+        [CheckMethod.enum.datapoint]:
+          `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
+        [CheckMethod.enum['get-game-mode']]:
+          `${clientConstants.temple.baseUrl}/player-tools/getgamemode.php?username=${player}`,
+      };
+
+      await fetch(urls[checkMethod]);
+
+      // If the game mode required an update, attempt to get the latest version and save it
+      if (checkMethod === 'get-game-mode') {
+        const updatedPlayerInfo = await getPlayerInfo(player);
+
+        await redis.hset(playerGameModesKey, {
+          [decodeURIComponent(player).toLowerCase()]:
+            updatedPlayerInfo.data['Game mode'],
+        });
+      }
     }
 
     // Purge the cache to display the latest member data

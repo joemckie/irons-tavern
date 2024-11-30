@@ -6,6 +6,7 @@ enum RedisKeyNamespace {
   SubmissionDiff = 'diff',
   OsrsAccounts = 'osrs-accounts',
   User = 'user',
+  PlayerGameModes = 'player-game-modes',
 }
 
 export function userRankSubmissionsKey(userId: string, playerName: string) {
@@ -31,3 +32,5 @@ export function rankSubmissionMetadataKey(id: string) {
 export function rankSubmissionDiffKey(id: string) {
   return `${rankSubmissionKey(id)}:${RedisKeyNamespace.SubmissionDiff}` as const;
 }
+
+export const playerGameModesKey = RedisKeyNamespace.PlayerGameModes;

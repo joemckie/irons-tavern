@@ -19,6 +19,7 @@ interface MemberInfo {
 }
 
 interface PlayerInfo {
+  'Game mode': 0 | 1 | 2 | 3;
   'Datapoint Cooldown': '-' | number;
 }
 
