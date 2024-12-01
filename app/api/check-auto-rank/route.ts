@@ -115,10 +115,8 @@ export async function GET(request: NextRequest) {
     );
 
     if (rank !== currentRank) {
-      const previousMessageRank = await redis.hget(
-        rankUpMessagesKey,
-        player.toLowerCase(),
-      );
+      const hashKey = `${discordId}:${player.toLowerCase()}`;
+      const previousMessageRank = await redis.hget(rankUpMessagesKey, hashKey);
 
       // Send a message if the user has not been notified of this rank in the past
       if (previousMessageRank !== rank) {
@@ -156,7 +154,7 @@ export async function GET(request: NextRequest) {
         );
 
         await redis.hset(rankUpMessagesKey, {
-          [player.toLowerCase()]: rank,
+          [hashKey]: rank,
         });
       }
     }
