@@ -30,5 +30,5 @@ export const deleteSubmissionDataAction = authActionClient
     revalidatePath(`/rank-calculator/${playerName.toLowerCase()}`);
 
     // Return fresh player details with which to reset the form
-    return fetchPlayerDetails(playerName);
+    return fetchPlayerDetails(playerName, userId);
   });

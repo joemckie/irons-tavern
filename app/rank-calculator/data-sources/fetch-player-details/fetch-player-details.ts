@@ -11,7 +11,6 @@ import {
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import { ApiResponse } from '@/types/api';
 import * as Sentry from '@sentry/nextjs';
-import { auth } from '@/auth';
 import { Rank } from '@/config/enums';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
@@ -73,16 +72,9 @@ export const emptyResponse = {
 
 export async function fetchPlayerDetails(
   player: string,
+  userId: string,
   mergeSavedData = true,
 ): Promise<ApiResponse<PlayerDetailsResponse>> {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    throw new Error('No user session');
-  }
-
-  const { id: userId } = session.user;
-
   const playerRecord = await redis.hget<Player>(
     userOSRSAccountsKey(userId),
     player.toLowerCase(),

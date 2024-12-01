@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
       })
       .parse(request.nextUrl.searchParams.get('discord_id'));
 
-    const playerDetails = await fetchPlayerDetails(player);
+    const playerDetails = await fetchPlayerDetails(player, discordId);
 
     if (!playerDetails.success) {
       throw new Error('Failed to fetch player details');

@@ -78,7 +78,7 @@ export const publishRankSubmissionAction = authActionClient
         throw new ActionError('No saved data!');
       }
 
-      const playerDetails = await fetchPlayerDetails(playerName, false);
+      const playerDetails = await fetchPlayerDetails(playerName, userId, false);
 
       if (!playerDetails.success) {
         throw new Error(
