@@ -1,11 +1,9 @@
+import { maxTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/max-total-level-points';
+import { maxDiaryPoints } from '@/app/rank-calculator/utils/calculators/max-diary-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
-import { useMaxDiaryPoints } from './use-max-diary-points';
-import { useMaxTotalLevelPoints } from './use-max-total-level-points';
 
 export function useMaxSkillingPoints() {
   const scaling = useCalculatorScaling();
-  const maxDiaryPoints = useMaxDiaryPoints();
-  const maxTotalLevelPoints = useMaxTotalLevelPoints();
 
   // Remove this when Sailing is released
   // It is used to make max points equal 100% pre-Sailing

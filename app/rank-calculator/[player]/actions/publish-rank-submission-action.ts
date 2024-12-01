@@ -39,7 +39,7 @@ import {
   isQuestItem,
   Item,
 } from '@/app/schemas/items';
-import { calculateScaling } from '../../utils/calculate-scaling';
+import { calculateScaling } from '../../utils/calculators/calculate-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
@@ -78,7 +78,7 @@ export const publishRankSubmissionAction = authActionClient
         throw new ActionError('No saved data!');
       }
 
-      const playerDetails = await fetchPlayerDetails(playerName, false);
+      const playerDetails = await fetchPlayerDetails(playerName, userId, false);
 
       if (!playerDetails.success) {
         throw new Error(

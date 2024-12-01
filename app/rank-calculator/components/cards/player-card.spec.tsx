@@ -3,7 +3,7 @@ import * as formDataMocks from '@/mocks/misc/form-data';
 import { MockFormProvider } from '@/test-utils/mock-form-provider';
 import { generatePlayerTests } from '@/test-utils/generate-player-tests';
 import { format } from 'date-fns';
-import { calculateScaling } from '../../utils/calculate-scaling';
+import { calculateScaling } from '../../utils/calculators/calculate-scaling';
 import { PlayerCard } from './player-card';
 import { formatPercentage } from '../../utils/format-percentage';
 

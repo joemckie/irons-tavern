@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import * as Sentry from '@sentry/nextjs';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 import { FormWrapper } from './form-wrapper';
@@ -17,7 +18,15 @@ export default async function RankCalculatorPage({
 
   Sentry.setTag('rsn', decodedPlayer);
 
-  const playerDetails = await fetchPlayerDetails(decodedPlayer);
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error('No user session');
+  }
+
+  const { id: userId } = session.user;
+
+  const playerDetails = await fetchPlayerDetails(decodedPlayer, userId);
 
   if (!playerDetails.success) {
     return <p>An error occurred</p>;
