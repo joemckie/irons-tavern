@@ -13,9 +13,7 @@ export async function GET() {
 
   const playerDetails = await Promise.all(
     allAccountKeys.map(async (key) => {
-      const matches = new RegExp(`${userOSRSAccountsKey('([0-9]+)')}`).exec(
-        key,
-      );
+      const matches = new RegExp(userOSRSAccountsKey('([0-9]+)')).exec(key);
 
       if (!matches) {
         throw new Error('Invalid key provided. Unable to extract Discord ID!');
