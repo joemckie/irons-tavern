@@ -90,7 +90,7 @@ export async function fetchPlayerDetails(
     redirect(`/rank-calculator/players/edit/${player}`);
   }
 
-  const isPlayerNameValid = validatePlayerExists(player);
+  const isPlayerNameValid = await validatePlayerExists(player);
 
   if (!isPlayerNameValid) {
     // Flag the account as having an invalid name, and force the user to edit it
