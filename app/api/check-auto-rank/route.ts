@@ -34,14 +34,14 @@ export async function GET(request: NextRequest) {
   try {
     const player = z
       .string({
-        message: 'Player is required',
+        required_error: 'Player is required',
       })
       .transform((encodedPlayer) => decodeURIComponent(encodedPlayer))
       .parse(request.nextUrl.searchParams.get('player'));
 
     const discordId = z
       .string({
-        message: 'Discord ID is required',
+        required_error: 'Discord ID is required',
       })
       .parse(request.nextUrl.searchParams.get('discord_id'));
 
@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
       combatAchievementTier,
       currentRank,
       hasThirdPartyData,
+      playerName,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -133,9 +134,10 @@ export async function GET(request: NextRequest) {
         await sendDiscordMessage(
           {
             content: dedent`
-                  Congratulations, you are eligible for the ${getRankName(rank)} rank!
-                  
-                  Click the button below to go to the rank calculator and apply.`,
+              Congratulations, you are eligible for the ${getRankName(rank)} rank on ${playerName}!
+              
+              Click the button below to go to the rank calculator and apply.
+            `,
             components: [
               {
                 components: [
