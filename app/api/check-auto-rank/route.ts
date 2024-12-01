@@ -24,7 +24,6 @@ import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculato
 import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { RankStructure } from '@/app/schemas/rank-calculator';
 import { clientConstants } from '@/config/constants.client';
 import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
