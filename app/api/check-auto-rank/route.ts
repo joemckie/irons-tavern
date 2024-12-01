@@ -24,7 +24,6 @@ import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculato
 import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { RankStructure } from '@/app/schemas/rank-calculator';
 import { clientConstants } from '@/config/constants.client';
 import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
@@ -64,6 +63,7 @@ export async function GET(request: NextRequest) {
       currentRank,
       hasThirdPartyData,
       playerName,
+      rankStructure,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -109,10 +109,7 @@ export async function GET(request: NextRequest) {
       totalSkillingPoints,
       totalCombatPoints,
     );
-    const { rank } = calculateRank(
-      totalPointsAwarded,
-      RankStructure.enum.Standard,
-    );
+    const { rank } = calculateRank(totalPointsAwarded, rankStructure);
 
     if (rank !== currentRank) {
       const hashKey = `${discordId}:${player.toLowerCase()}`;
