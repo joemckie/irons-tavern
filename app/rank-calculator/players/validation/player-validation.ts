@@ -16,7 +16,7 @@ export async function validatePlayerExists(playerName: string) {
   ) {
     // Bail early if the query is unhealthy, as this doesn't
     // mean the player name is non-existent
-    throw new Error('Unable to query the OSRS player API');
+    return true;
   }
 
   return response.status === StatusCodes.OK;
