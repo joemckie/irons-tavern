@@ -64,6 +64,7 @@ export async function GET(request: NextRequest) {
       currentRank,
       hasThirdPartyData,
       playerName,
+      rankStructure,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -109,10 +110,7 @@ export async function GET(request: NextRequest) {
       totalSkillingPoints,
       totalCombatPoints,
     );
-    const { rank } = calculateRank(
-      totalPointsAwarded,
-      RankStructure.enum.Standard,
-    );
+    const { rank } = calculateRank(totalPointsAwarded, rankStructure);
 
     if (rank !== currentRank) {
       const hashKey = `${discordId}:${player.toLowerCase()}`;
