@@ -1,6 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
 import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
@@ -8,6 +9,7 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { ValidationError } from '../validation-error';
 
 export function CollectionLogCard() {
   const {
@@ -16,10 +18,8 @@ export function CollectionLogCard() {
     pointsRemaining,
     collectionLogSlotPoints,
   } = useCollectionLogPointCalculator();
-  const {
-    getValues,
-    formState: { defaultValues },
-  } = useFormContext<RankCalculatorSchema>();
+  const { getValues } = useFormContext<RankCalculatorSchema>();
+  const { defaultValues, errors } = useFormState<RankCalculatorSchema>();
   const collectionLogTotal = getValues('collectionLogTotal');
 
   return (
@@ -83,6 +83,11 @@ export function CollectionLogCard() {
             {formatNumber(collectionLogSlotPoints)}
           </Text>
         }
+      />
+      <ErrorMessage
+        errors={errors}
+        name="collectionLogCount"
+        render={ValidationError}
       />
       <DataCard.Row
         left={

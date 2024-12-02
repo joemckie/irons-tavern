@@ -1,17 +1,17 @@
 import { Flex, Separator, Text } from '@radix-ui/themes';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, useFormState, useWatch } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { format } from 'date-fns';
 import { DataCard } from '../data-card';
 import { useCalculatorScaling } from '../../hooks/point-calculator/use-calculator-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { Input } from '../input';
+import { ValidationError } from '../validation-error';
 
 export function PlayerCard() {
-  const {
-    register,
-    formState: { defaultValues },
-  } = useFormContext<RankCalculatorSchema>();
+  const { register } = useFormContext<RankCalculatorSchema>();
+  const { defaultValues, errors } = useFormState<RankCalculatorSchema>();
   const playerName = useWatch<RankCalculatorSchema, 'playerName'>({
     name: 'playerName',
   });
@@ -72,6 +72,7 @@ export function PlayerCard() {
           />
         </Flex>
       </Flex>
+      <ErrorMessage errors={errors} name="proofLink" render={ValidationError} />
     </DataCard.Root>
   );
 }

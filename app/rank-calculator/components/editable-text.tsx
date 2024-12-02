@@ -5,7 +5,6 @@ import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Input } from './input';
-import { ValidationTooltip } from './validation-tooltip';
 
 interface EditableTextProps extends TextField.RootProps {
   name: string;
@@ -18,7 +17,7 @@ export function EditableText({
   ...restProps
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const { register, getFieldState } = useFormContext();
+  const { register, getFieldState, trigger } = useFormContext();
   const value = useWatch({ name });
   const field = register(name, {
     required,
@@ -58,6 +57,7 @@ export function EditableText({
         autoFocus
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
+            trigger(name);
             setIsEditing(false);
           }
         }}
@@ -67,11 +67,9 @@ export function EditableText({
 
   return (
     <Flex justify="center" gap="2" width="100%" align="center">
-      <ValidationTooltip error={error}>
-        <Text aria-label={ariaLabel} size="2">
-          {value}
-        </Text>
-      </ValidationTooltip>
+      <Text aria-label={ariaLabel} size="2">
+        {value}
+      </Text>
       {!field.disabled && (
         <IconButton
           type="button"

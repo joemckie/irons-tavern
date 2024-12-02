@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { Item } from '@/app/schemas/items';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
@@ -23,16 +23,11 @@ export const Category = memo(
     items,
     image = formatWikiImageUrl(title, 'category'),
   }: CategoryProps) => {
-    const { getFieldState } = useFormContext();
     const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
       name: items.map(
         ({ name }) => `acquiredItems.${stripEntityName(name)}` as const,
       ),
     });
-    const fieldErrors = items.map(
-      ({ name }) =>
-        getFieldState(`acquiredItems.${stripEntityName(name)}`).error,
-    );
     const completedCount = fields.filter(Boolean).length;
     const percentComplete = formatPercentage(completedCount / items.length, 0);
 
@@ -96,17 +91,12 @@ export const Category = memo(
           <Table.Body>
             {items.map((item, i) =>
               item.isAutomatic ? (
-                <MemoisedAutomaticItem
-                  key={item.name}
-                  item={item}
-                  error={fieldErrors[i]}
-                />
+                <MemoisedAutomaticItem key={item.name} item={item} />
               ) : (
                 <MemoisedItem
                   acquired={!!fields[i]}
                   key={item.name}
                   item={item}
-                  error={fieldErrors[i]}
                 />
               ),
             )}

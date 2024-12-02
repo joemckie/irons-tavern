@@ -8,7 +8,6 @@ import {
 import * as Ariakit from '@ariakit/react';
 import { useController } from 'react-hook-form';
 import { AriaAttributes, startTransition } from 'react';
-import { ValidationTooltip } from './validation-tooltip';
 
 interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
   name: string;
@@ -50,11 +49,7 @@ export function Select({
         {...field}
         render={({ color, ...buttonProps }) => {
           if (field.disabled) {
-            return (
-              <ValidationTooltip error={error}>
-                <Text size="2">{field.value}</Text>
-              </ValidationTooltip>
-            );
+            return <Text size="2">{field.value}</Text>;
           }
 
           return (
