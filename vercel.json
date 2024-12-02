@@ -3,10 +3,6 @@
     {
       "path": "/api/check-all-players",
       "schedule": "0 0 * * 1"
-    },
-    {
-      "path": "/api/check-all-auto-ranks",
-      "schedule": "0 0 * * *"
     }
   ]
 }
