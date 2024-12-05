@@ -18,7 +18,7 @@ async function getGroupMemberInfo() {
   const data = await response.json();
 
   // Temple returns an empty player for some reason, so remove it
-  unset(data, '');
+  unset(data.data.memberlist, '');
 
   return TempleOSRSGroupMemberInfo.parse(data);
 }
