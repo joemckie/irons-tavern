@@ -1,37 +1,44 @@
 import { z } from 'zod';
 
-interface MemberInfo {
-  player: string;
-  player_name_with_capitalization: string;
-  country: string;
-  game_mode: number;
-  level_3: 1 | 0;
-  free_to_play: number;
-  gim_mode: number | null;
-  leagues_iv_points: number | null;
-  on_hiscores: 1 | 0;
-  last_checked: string;
-  last_checked_unix_time: number;
-  last_changed_xp: string;
-  last_changed_xp_unix_time: number;
-  last_changed_kc: string;
-  last_changed_kc_unix_time: number;
-}
+export const GameMode = z.nativeEnum({
+  GroupIronman: 0,
+  Ironman: 1,
+  UltimateIronman: 2,
+  HardcoreIronman: 3,
+});
 
-interface PlayerInfo {
-  'Game mode': 0 | 1 | 2 | 3;
-  'Datapoint Cooldown': '-' | number;
-}
+const BooleanNumber = z.union([z.literal(0), z.literal(1)]);
 
-export interface PlayerInfoResponse {
-  data: PlayerInfo;
-}
+export const TempleOSRSGroupMemberInfo = z.object({
+  data: z.object({
+    memberlist: z.record(
+      z.object({
+        player: z.string(),
+        player_name_with_capitalization: z.string().nullable(),
+        country: z.string(),
+        game_mode: GameMode,
+        level_3: BooleanNumber,
+        free_to_play: BooleanNumber,
+        gim_mode: z.number().nullable(),
+        leagues_iv_points: z.number().nullable(),
+        on_hiscores: BooleanNumber,
+        last_checked: z.string().datetime(),
+        last_checked_unix_time: z.number(),
+        last_changed_xp: z.string().datetime(),
+        last_changed_xp_unix_time: z.number(),
+        last_changed_kc: z.string().datetime(),
+        last_changed_kc_unix_time: z.number(),
+      }),
+    ),
+  }),
+});
 
-export interface GroupMemberInfoResponse {
-  data: {
-    memberlist: Record<string, MemberInfo>;
-  };
-}
+export const TempleOSRSPlayerInfo = z.object({
+  data: z.object({
+    'Game mode': GameMode,
+    'Datapoint Cooldown': z.union([z.literal('-'), z.number()]),
+  }),
+});
 
 export interface GroupUpdateRequest {
   clan: '100';
@@ -44,23 +51,11 @@ export interface GroupUpdateRequest {
   key: string;
 }
 
-export enum GameMode {
-  GroupIronman = 0,
-  Ironman = 1,
-  UltimateIronman = 2,
-  HardcoreIronman = 3,
-}
-
 export const TempleOSRSPlayerStats = z.object({
   data: z.object({
     info: z.object({
       Username: z.string(),
-      'Game mode': z.nativeEnum({
-        GroupIronman: 0,
-        Ironman: 1,
-        UltimateIronman: 2,
-        HardcoreIronman: 3,
-      }),
+      'Game mode': GameMode,
     }),
     Ehb: z.number().nonnegative(),
     Ehp: z.number().nonnegative(),

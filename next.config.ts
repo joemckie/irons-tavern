@@ -5,6 +5,7 @@ export default withSentryConfig<NextConfig>(
   {
     experimental: {
       webpackMemoryOptimizations: true,
+      optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
     },
     images: {
       remotePatterns: [

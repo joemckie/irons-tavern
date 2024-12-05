@@ -4,17 +4,17 @@ import { list } from '@vercel/blob';
 import Image from 'next/image';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
+import { TempleOSRSGroupMemberInfo } from '../schemas/temple-api';
 
-async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
+async function getGroupMemberInfo() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  return response.json();
+  return TempleOSRSGroupMemberInfo.parse(await response.json());
 }
 
 async function getLatestMemberList() {
@@ -67,22 +67,21 @@ export default async function InactivityCheckerPage() {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(groupMemberInfo.data.memberlist)
+          {Object.values(groupMemberInfo.data.memberlist)
             .sort(
               (
-                [, { last_changed_xp_unix_time: a }],
-                [, { last_changed_xp_unix_time: b }],
+                { last_changed_xp_unix_time: a },
+                { last_changed_xp_unix_time: b },
               ) => a - b,
             )
             .map(
-              ([
-                rsn,
-                {
-                  last_changed_xp: lastChangedXp,
-                  on_hiscores: onHiscores,
-                  last_checked: lastChecked,
-                },
-              ]) => {
+              ({
+                player: rsn,
+                player_name_with_capitalization: playerNameWithCapitalisation,
+                last_changed_xp: lastChangedXp,
+                on_hiscores: onHiscores,
+                last_checked: lastChecked,
+              }) => {
                 const estimatedDaysInactive = differenceInDays(
                   Date.now(),
                   lastChangedXp,
@@ -93,7 +92,11 @@ export default async function InactivityCheckerPage() {
                 }
 
                 const { rank, joinedDate } =
-                  memberList[rsn.toLowerCase()] ?? {};
+                  memberList[
+                    (playerNameWithCapitalisation ?? rsn)
+                      .replaceAll('_', ' ')
+                      .toLowerCase()
+                  ] ?? {};
 
                 return (
                   <tr key={rsn}>
@@ -127,13 +130,11 @@ export default async function InactivityCheckerPage() {
                       {`${pluralise('day', estimatedDaysInactive, true)}`}
                     </td>
                     <td className="border-b border-slate-700 p-4">
-                      <span
-                        className={
-                          onHiscores ? 'text-green-400' : 'text-red-400'
-                        }
-                      >
-                        {onHiscores ? 'Yes' : 'No'}
-                      </span>
+                      {onHiscores ? (
+                        <span className="text-green-400">Yes</span>
+                      ) : (
+                        <span className="text-red-400">No</span>
+                      )}
                     </td>
                   </tr>
                 );
