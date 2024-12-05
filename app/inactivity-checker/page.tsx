@@ -10,6 +10,10 @@ import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 import { TempleOSRSGroupMemberInfo } from '../schemas/temple-api';
 
+function normalisePlayerName(player: string) {
+  return player.replaceAll(/(-|_)/g, ' ');
+}
+
 async function getGroupMemberInfo() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
@@ -39,7 +43,7 @@ async function getLatestMemberList() {
 
     return data.reduce(
       (acc, member) => {
-        acc[member.rsn.toLowerCase()] = member;
+        acc[normalisePlayerName(member.rsn.toLowerCase())] = member;
 
         return acc;
       },
@@ -53,10 +57,6 @@ async function getLatestMemberList() {
 }
 
 export const dynamic = 'force-dynamic';
-
-function normalisePlayerName(player: string) {
-  return player.replaceAll(/(-|_)/g, ' ');
-}
 
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();
