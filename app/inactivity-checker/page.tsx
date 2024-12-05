@@ -17,7 +17,10 @@ async function getGroupMemberInfo() {
 
   const data = await response.json();
 
-  return TempleOSRSGroupMemberInfo.parse(unset(data, ''));
+  // Temple returns an empty player for some reason, so remove it
+  unset(data, '');
+
+  return TempleOSRSGroupMemberInfo.parse(data);
 }
 
 async function getLatestMemberList() {
