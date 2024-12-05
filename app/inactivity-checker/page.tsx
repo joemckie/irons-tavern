@@ -48,6 +48,10 @@ async function getLatestMemberList() {
 
 export const dynamic = 'force-dynamic';
 
+function normalisePlayerName(player: string) {
+  return player.replaceAll(/(-|_)/g, ' ');
+}
+
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();
   const memberList = await getLatestMemberList();
@@ -67,79 +71,69 @@ export default async function InactivityCheckerPage() {
           </tr>
         </thead>
         <tbody>
-          {Object.values(groupMemberInfo.data.memberlist)
+          {Object.values(memberList)
+
             .sort(
-              (
-                { last_changed_xp_unix_time: a },
-                { last_changed_xp_unix_time: b },
-              ) => a - b,
+              ({ rsn: a }, { rsn: b }) =>
+                groupMemberInfo.data.memberlist[normalisePlayerName(a)]
+                  .last_changed_xp_unix_time -
+                groupMemberInfo.data.memberlist[normalisePlayerName(b)]
+                  .last_changed_xp_unix_time,
             )
-            .map(
-              ({
-                player: rsn,
-                player_name_with_capitalization: playerNameWithCapitalisation,
+            .map(({ rsn, joinedDate, rank }) => {
+              const {
+                player: templePlayerName,
                 last_changed_xp: lastChangedXp,
                 on_hiscores: onHiscores,
                 last_checked: lastChecked,
-              }) => {
-                const estimatedDaysInactive = differenceInDays(
-                  Date.now(),
-                  lastChangedXp,
-                );
+              } = groupMemberInfo.data.memberlist[normalisePlayerName(rsn)];
 
-                if (!rsn) {
-                  return null;
-                }
+              const estimatedDaysInactive = differenceInDays(
+                Date.now(),
+                lastChangedXp,
+              );
 
-                const { rank, joinedDate } =
-                  memberList[
-                    (playerNameWithCapitalisation ?? rsn)
-                      .replaceAll('_', ' ')
-                      .toLowerCase()
-                  ] ?? {};
-
-                return (
-                  <tr key={rsn}>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      <a
-                        className="underline"
-                        href={`https://templeosrs.com/player/overview.php?player=${rsn}&duration=alltime`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {rsn}
-                      </a>
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {rank && (
-                        <Image
-                          alt={`${rank} icon`}
-                          src={getRankImageUrl(rank)}
-                          height={24}
-                          width={24}
-                        />
-                      )}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {joinedDate ?? 'Unknown'}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {lastChecked}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500 ">
-                      {`${pluralise('day', estimatedDaysInactive, true)}`}
-                    </td>
-                    <td className="border-b border-slate-700 p-4">
-                      {onHiscores ? (
-                        <span className="text-green-400">Yes</span>
-                      ) : (
-                        <span className="text-red-400">No</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              },
-            )}
+              return (
+                <tr key={rsn}>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    <a
+                      className="underline"
+                      href={`https://templeosrs.com/player/overview.php?player=${templePlayerName}&duration=alltime`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {rsn}
+                    </a>
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {rank && (
+                      <Image
+                        alt={`${rank} icon`}
+                        src={getRankImageUrl(rank)}
+                        height={24}
+                        width={24}
+                      />
+                    )}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {joinedDate ?? 'Unknown'}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {lastChecked}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500 ">
+                    {`${pluralise('day', estimatedDaysInactive, true)}`}
+                  </td>
+                  <td className="border-b border-slate-700 p-4">
+                    {onHiscores ? (
+                      <span className="text-green-400">Yes</span>
+                    ) : (
+                      <span className="text-red-400">No</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </main>
