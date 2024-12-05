@@ -11,7 +11,7 @@ import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 import { TempleOSRSGroupMemberInfo } from '../schemas/temple-api';
 
 function normalisePlayerName(player: string) {
-  return player.replaceAll(/(-|_)/g, ' ');
+  return player.replaceAll(/(-|_)/g, ' ').toLowerCase();
 }
 
 async function getGroupMemberInfo() {
@@ -43,7 +43,7 @@ async function getLatestMemberList() {
 
     return data.reduce(
       (acc, member) => {
-        acc[normalisePlayerName(member.rsn.toLowerCase())] = member;
+        acc[normalisePlayerName(member.rsn)] = member;
 
         return acc;
       },
