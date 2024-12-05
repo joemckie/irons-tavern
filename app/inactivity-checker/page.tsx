@@ -2,6 +2,7 @@ import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
+import { unset } from 'lodash';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import * as Sentry from '@sentry/nextjs';
@@ -14,7 +15,9 @@ async function getGroupMemberInfo() {
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  return TempleOSRSGroupMemberInfo.parse(await response.json());
+  const data = await response.json();
+
+  return TempleOSRSGroupMemberInfo.parse(unset(data, ''));
 }
 
 async function getLatestMemberList() {
