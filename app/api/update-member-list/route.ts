@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     name: serverConstants.temple.groupName,
     leaders: leaders.toString(),
     members: members.toString(),
-    ...(serverConstants.temple.privateGroup ? {
+    ...(serverConstants.temple.privateGroup === 'true' ? {
       'private-group-checkbox': 'on',
     } : {}),
   } satisfies GroupUpdateRequest;
