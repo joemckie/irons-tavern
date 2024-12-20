@@ -10,7 +10,7 @@ const ServerConfigSchema = z.object({
     groupName: z.string(),
     groupId: z.string(),
     groupKey: z.string(),
-    privateGroup: z.string(),
+    privateGroup: z.coerce.boolean(),
   }),
   redisUrl: z.string(),
   discord: z.object({
