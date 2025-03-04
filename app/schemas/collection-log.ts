@@ -31,10 +31,6 @@ export const CollectionLogResponse = z.object({
     tabs: z.record(z.string(), CollectionLogTab),
     username: z.string(),
     accountType: z.string(),
-    totalObtained: z.number(),
-    totalItems: z.number(),
-    uniqueObtained: z.number(),
-    uniqueItems: z.number(),
   }),
 });
 

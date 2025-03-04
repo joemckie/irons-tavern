@@ -28,6 +28,7 @@ import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { validatePlayerExists } from '../../players/validation/player-validation';
+import { getUniqueCollectionLogCount } from './get-unique-collection-log-count';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -127,10 +128,12 @@ export async function fetchPlayerDetails(
       wikiSyncData,
       { data: collectionLogData, error: collectionLogError },
       templeData,
+      collectionLogTotal,
     ] = await Promise.all([
       getWikiSyncData(player),
       getCollectionLog(player),
       fetchTemplePlayerStats(player, true),
+      getUniqueCollectionLogCount(),
     ]);
 
     const hasThirdPartyData = Boolean(
@@ -157,7 +160,10 @@ export async function fetchPlayerDetails(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    const { Overall_level: totalLevel = null } = templeData ?? {};
+    const {
+      Overall_level: totalLevel = null,
+      Collections: collectionLogCount = null,
+    } = templeData ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templeData);
 
     const collectionLogItems = collectionLogData
@@ -175,11 +181,6 @@ export async function fetchPlayerDetails(
           {},
         )
       : null;
-
-    const {
-      uniqueItems: collectionLogTotal = null,
-      uniqueObtained: collectionLogCount = null,
-    } = collectionLogData?.collectionLog ?? {};
 
     const {
       achievementDiaries = null,
