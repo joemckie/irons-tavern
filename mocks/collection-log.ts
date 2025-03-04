@@ -15144,7 +15144,6 @@ export const earlyGamePlayerFixture = {
     accountType: 'IRONMAN',
     totalObtained: 0,
     totalItems: 0,
-    uniqueObtained: 119,
     uniqueItems: 1560,
   },
 } satisfies CollectionLogResponse;
@@ -30289,7 +30288,6 @@ export const midGamePlayerFixture = {
     accountType: 'IRONMAN',
     totalObtained: 0,
     totalItems: 0,
-    uniqueObtained: 741,
     uniqueItems: 1560,
   },
 } satisfies CollectionLogResponse;
@@ -45431,7 +45429,6 @@ export const endGamePlayerFixture = {
     accountType: 'IRONMAN',
     totalObtained: 1000,
     totalItems: 1588,
-    uniqueObtained: 1312,
     uniqueItems: 1560,
   },
 } satisfies CollectionLogResponse;

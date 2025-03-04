@@ -157,7 +157,10 @@ export async function fetchPlayerDetails(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    const { Overall_level: totalLevel = null } = templeData ?? {};
+    const {
+      Overall_level: totalLevel = null,
+      Collections: collectionLogCount = null,
+    } = templeData ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templeData);
 
     const collectionLogItems = collectionLogData
@@ -176,10 +179,8 @@ export async function fetchPlayerDetails(
         )
       : null;
 
-    const {
-      uniqueItems: collectionLogTotal = null,
-      uniqueObtained: collectionLogCount = null,
-    } = collectionLogData?.collectionLog ?? {};
+    const { uniqueItems: collectionLogTotal = null } =
+      collectionLogData?.collectionLog ?? {};
 
     const {
       achievementDiaries = null,

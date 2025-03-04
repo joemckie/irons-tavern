@@ -33,7 +33,6 @@ export const CollectionLogResponse = z.object({
     accountType: z.string(),
     totalObtained: z.number(),
     totalItems: z.number(),
-    uniqueObtained: z.number(),
     uniqueItems: z.number(),
   }),
 });
