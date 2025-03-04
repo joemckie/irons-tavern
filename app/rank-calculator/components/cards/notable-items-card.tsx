@@ -26,6 +26,7 @@ export function NotableItemsCard() {
               src="/icons/inventory.png"
               height={18}
               width={18}
+              unoptimized
             />
             <Text role="heading" weight="medium" size="2">
               Notable items

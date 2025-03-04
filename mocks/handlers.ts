@@ -128,6 +128,8 @@ const passthroughHandlers = [
   'https://*.sentry.io/*',
   'https://telemetry.nextjs.org/*',
   'http://localhost:3000/__nextjs_original-stack-frame',
+  'http://localhost:8969/*',
+  'http://localhost:42399/*',
 ].map((url) => http.all(url, passthrough));
 
 export const handlers = [
