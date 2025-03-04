@@ -38,6 +38,7 @@ export default async function RankCalculatorPage({
     hasTempleData,
     hasWikiSyncData,
     hasThirdPartyData,
+    collectionLogError,
     ...formData
   } = playerDetails.data;
 
@@ -45,5 +46,11 @@ export default async function RankCalculatorPage({
     await saveDraftRankSubmissionAction(formData);
   }
 
-  return <FormWrapper formData={formData} currentRank={currentRank} />;
+  return (
+    <FormWrapper
+      formData={formData}
+      currentRank={currentRank}
+      hasCollectionLogNetworkError={!!collectionLogError}
+    />
+  );
 }

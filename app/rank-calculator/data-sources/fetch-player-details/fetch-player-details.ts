@@ -36,6 +36,7 @@ interface PlayerDetailsResponse
   hasTempleData: boolean;
   hasWikiSyncData: boolean;
   hasThirdPartyData: boolean;
+  collectionLogError: string | undefined;
 }
 
 export const emptyResponse = {
@@ -68,6 +69,7 @@ export const emptyResponse = {
   hasTempleData: false,
   hasWikiSyncData: false,
   hasThirdPartyData: false,
+  collectionLogError: undefined,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -121,7 +123,11 @@ export async function fetchPlayerDetails(
         )
       : undefined;
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [wikiSyncData, collectionLogData, templeData] = await Promise.all([
+    const [
+      wikiSyncData,
+      { data: collectionLogData, error: collectionLogError },
+      templeData,
+    ] = await Promise.all([
       getWikiSyncData(player),
       getCollectionLog(player),
       fetchTemplePlayerStats(player, true),
@@ -261,6 +267,7 @@ export async function fetchPlayerDetails(
         hasTempleData: !!templeData,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
+        collectionLogError,
       },
     };
   } catch (error) {

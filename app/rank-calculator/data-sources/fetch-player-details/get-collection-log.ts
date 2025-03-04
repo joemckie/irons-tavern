@@ -10,22 +10,24 @@ export async function getCollectionLog(player: string) {
     );
 
     if (!collectionLogResponse.ok) {
-      throw new Error('collectionlog.net did not respond');
+      Sentry.captureMessage('collectionlog.net did not respond', 'info');
+
+      return {
+        data: null,
+        error: 'collectionlog.net did not respond',
+      };
     }
 
-    return CollectionLogResponse.parse(await collectionLogResponse.json());
+    return {
+      data: CollectionLogResponse.parse(await collectionLogResponse.json()),
+    };
   } catch (e) {
     if (e instanceof ZodError) {
       Sentry.captureMessage('Collection Log data not found', 'info');
     }
 
-    if (
-      e instanceof Error &&
-      e.message === 'collectionlog.net did not respond'
-    ) {
-      Sentry.captureMessage(e.message, 'info');
-    }
-
-    return null;
+    return {
+      data: null,
+    };
   }
 }
