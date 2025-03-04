@@ -114,6 +114,7 @@ export default async function InactivityCheckerPage() {
                           src={getRankImageUrl(rank)}
                           height={24}
                           width={24}
+                          unoptimized
                         />
                       )}
                     </td>

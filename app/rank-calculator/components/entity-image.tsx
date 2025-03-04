@@ -38,6 +38,7 @@ export function EntityImage({
           onError={() => {
             setShowFallback(true);
           }}
+          unoptimized
         />
       )}
     </Avatar.Root>

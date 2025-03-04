@@ -72,6 +72,7 @@ export function Navigation({
                     src={getRankImageUrl(rank)}
                     width={18}
                     height={18}
+                    unoptimized
                   />
                 </Box>
               </Flex>
