@@ -36,7 +36,7 @@ interface PlayerDetailsResponse
   hasTempleData: boolean;
   hasWikiSyncData: boolean;
   hasThirdPartyData: boolean;
-  collectionLogError: string | undefined;
+  hasCollectionLogNetworkError: boolean;
 }
 
 export const emptyResponse = {
@@ -69,7 +69,7 @@ export const emptyResponse = {
   hasTempleData: false,
   hasWikiSyncData: false,
   hasThirdPartyData: false,
-  collectionLogError: undefined,
+  hasCollectionLogNetworkError: false,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -267,7 +267,7 @@ export async function fetchPlayerDetails(
         hasTempleData: !!templeData,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
-        collectionLogError,
+        hasCollectionLogNetworkError: !!collectionLogError,
       },
     };
   } catch (error) {

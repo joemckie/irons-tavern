@@ -38,7 +38,7 @@ export default async function RankCalculatorPage({
     hasTempleData,
     hasWikiSyncData,
     hasThirdPartyData,
-    collectionLogError,
+    hasCollectionLogNetworkError,
     ...formData
   } = playerDetails.data;
 
@@ -50,7 +50,7 @@ export default async function RankCalculatorPage({
     <FormWrapper
       formData={formData}
       currentRank={currentRank}
-      hasCollectionLogNetworkError={!!collectionLogError}
+      hasCollectionLogNetworkError={hasCollectionLogNetworkError}
     />
   );
 }
