@@ -2,10 +2,10 @@ import { NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
+import { TempleOSRSGroupMemberInfo } from '@/app/schemas/temple-api';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +13,7 @@ export async function GET() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
-  const players: GroupMemberInfoResponse = await response.json();
+  const players = TempleOSRSGroupMemberInfo.parse(await response.json());
   const playerGameModes = (await redis.hgetall(playerGameModesKey)) ?? {};
 
   // Filter players that have been checked within the last day.

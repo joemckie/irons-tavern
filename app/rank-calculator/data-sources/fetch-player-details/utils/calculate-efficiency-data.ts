@@ -25,18 +25,18 @@ export function calculateEfficiencyData(
   } = playerStats;
 
   switch (gameMode) {
-    case GameMode.GroupIronman:
+    case GameMode.enum.GroupIronman:
       return {
         ehb,
         ehp,
       };
-    case GameMode.Ironman:
-    case GameMode.HardcoreIronman:
+    case GameMode.enum.Ironman:
+    case GameMode.enum.HardcoreIronman:
       return {
         ehb: ironEhb,
         ehp: ironEhp,
       };
-    case GameMode.UltimateIronman:
+    case GameMode.enum.UltimateIronman:
       return {
         ehb: ironEhb,
         ehp: ultimateIronEhp,
