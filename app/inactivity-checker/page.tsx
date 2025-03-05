@@ -5,13 +5,13 @@ import Image from 'next/image';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import * as Sentry from '@sentry/nextjs';
+import { unset } from 'lodash';
 import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 import {
   normalisePlayerName,
   TempleOSRSGroupMemberInfo,
 } from '../schemas/temple-api';
-import { unset } from 'lodash';
 
 async function getGroupMemberInfo() {
   const response = await fetch(
