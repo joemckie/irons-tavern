@@ -1643,7 +1643,6 @@ export const earlyGamePlayerFixture = {
     28813, 28924, 28988, 28991, 29019, 29025, 29084, 29263, 29309, 29472, 29482,
     29895, 30628, 30631, 30637, 30640,
   ],
-  collectionLogItemCount: 1572,
 } satisfies WikiSyncResponse;
 
 export const midGamePlayerFixture = {
@@ -3303,7 +3302,6 @@ export const midGamePlayerFixture = {
     29265, 29267, 29269, 29309, 29455, 29472, 29474, 29476, 29478, 29482, 29574,
     29580, 29684, 29782, 29784, 29788, 29792, 29794, 29799, 29895, 30068, 30088,
   ],
-  collectionLogItemCount: 1572,
 } satisfies WikiSyncResponse;
 
 export const endGamePlayerFixture = {
@@ -5029,5 +5027,4 @@ export const endGamePlayerFixture = {
     30042, 30045, 30048, 30051, 30054, 30057, 30060, 30066, 30068, 30085, 30088,
     30152, 30324, 30628, 30631, 30637, 30640,
   ],
-  collectionLogItemCount: 1572,
 } satisfies WikiSyncResponse;

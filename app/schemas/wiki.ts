@@ -85,7 +85,6 @@ export const WikiSyncResponse = z.object({
   quests: z.record(z.string(), QuestStatus),
   combat_achievements: z.array(z.number().nonnegative()),
   collection_log: z.array(z.number().nonnegative()),
-  collectionLogItemCount: z.number().nonnegative(),
 });
 
 export type WikiSyncResponse = z.infer<typeof WikiSyncResponse>;
