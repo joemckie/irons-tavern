@@ -73,6 +73,7 @@ export function CombatCard() {
             required
             min={0}
             defaultValue={defaultValues?.ehb}
+            readOnly
           />
         }
         right={
