@@ -115,13 +115,11 @@ export async function fetchPlayerDetails(
         )
       : undefined;
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [wikiSyncData, templeData, allCollectionLogItems] = await Promise.all(
-      [
-        getWikiSyncData(player),
-        fetchTemplePlayerStats(player, true),
-        getCollectionLogItemMap(),
-      ],
-    );
+    const [wikiSyncData, templeData, collectionLogItemMap] = await Promise.all([
+      getWikiSyncData(player),
+      fetchTemplePlayerStats(player, true),
+      getCollectionLogItemMap(),
+    ]);
 
     const hasThirdPartyData = Boolean(wikiSyncData || templeData);
 
@@ -167,16 +165,16 @@ export async function fetchPlayerDetails(
           musicTracks: wikiSyncData.music_tracks,
           combatAchievements: wikiSyncData.combat_achievements,
           collectionLogItems:
-            allCollectionLogItems &&
+            collectionLogItemMap &&
             wikiSyncData.collection_log.reduce((acc, id) => {
               // Some item IDs from WikiSync strangely don't match up to an item in their data file
               // so we need to check that it exists before attempting to parse it
-              const item = allCollectionLogItems[id];
+              const item = collectionLogItemMap[id];
 
               return item
                 ? {
                     ...acc,
-                    [stripEntityName(allCollectionLogItems[id].name)]: true,
+                    [stripEntityName(collectionLogItemMap[id].name)]: true,
                   }
                 : acc;
             }, {} as CollectionLogAcquiredItemMap),
@@ -215,8 +213,8 @@ export async function fetchPlayerDetails(
       {},
     );
 
-    const collectionLogTotal = allCollectionLogItems
-      ? Object.keys(allCollectionLogItems).length
+    const collectionLogTotal = collectionLogItemMap
+      ? Object.keys(collectionLogItemMap).length
       : clientConstants.collectionLog.totalItems;
 
     return {
