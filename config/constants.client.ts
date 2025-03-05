@@ -3,7 +3,7 @@ import { Rank } from './enums';
 
 const ClientConfigSchema = z.object({
   collectionLog: z.object({
-    totalItems: z.literal(1568),
+    totalItems: z.number().nonnegative(),
   }),
   publicUrl: z.string(),
   temple: z.object({
