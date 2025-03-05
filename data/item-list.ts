@@ -554,7 +554,8 @@ export const itemList: ItemCategoryMap = {
         points: 30,
       }),
       singleItem({
-        name: 'Tonalztics of ralos (uncharged)',
+        name: 'Tonalztics of ralos',
+        clogName: 'Tonalztics of ralos (uncharged)',
         points: 100,
       }),
       singleItem({
