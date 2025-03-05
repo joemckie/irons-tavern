@@ -2,7 +2,6 @@ import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
-import { unset } from 'lodash';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import * as Sentry from '@sentry/nextjs';
@@ -10,21 +9,12 @@ import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 import { TempleOSRSGroupMemberInfo } from '../schemas/temple-api';
 
-function normalisePlayerName(player: string) {
-  return player.replaceAll(/(-|_)/g, ' ').toLowerCase();
-}
-
 async function getGroupMemberInfo() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  const data = await response.json();
-
-  // Temple returns an empty player for some reason, so remove it
-  unset(data.data.memberlist, '');
-
-  return TempleOSRSGroupMemberInfo.parse(data);
+  return TempleOSRSGroupMemberInfo.parse(await response.json());
 }
 
 async function getLatestMemberList() {
@@ -43,7 +33,7 @@ async function getLatestMemberList() {
 
     return data.reduce(
       (acc, member) => {
-        acc[normalisePlayerName(member.rsn)] = member;
+        acc[member.rsn.toLowerCase()] = member;
 
         return acc;
       },
@@ -57,6 +47,10 @@ async function getLatestMemberList() {
 }
 
 export const dynamic = 'force-dynamic';
+
+function normalisePlayerName(player: string) {
+  return player.replaceAll(/(-|_)/g, ' ');
+}
 
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();
@@ -118,6 +112,7 @@ export default async function InactivityCheckerPage() {
                         src={getRankImageUrl(rank)}
                         height={24}
                         width={24}
+                        unoptimized
                       />
                     )}
                   </td>

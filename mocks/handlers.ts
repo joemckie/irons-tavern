@@ -3,9 +3,7 @@ import { serverConstants } from '@/config/constants.server';
 import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
-import { CollectionLogResponse } from '@/app/schemas/collection-log';
 import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
-import * as collectionLog from './collection-log';
 import * as wikiSync from './wiki-sync';
 import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';
@@ -37,31 +35,6 @@ const templePlayerStatsHandler = http.get(
       case 'clogging':
         return HttpResponse.json<TempleOSRSPlayerStats>(
           templePlayerStats.endGamePlayerFixture,
-        );
-      default:
-        return passthrough();
-    }
-  },
-);
-
-const collectionLogHandler = http.get<{ player: string }>(
-  `${clientConstants.collectionLog.baseUrl}/collectionlog/user/:player`,
-  async ({ params }) => {
-    await delay();
-
-    switch (decodeURIComponent(params.player).toLowerCase()) {
-      case 'riftletics':
-        return HttpResponse.json<CollectionLogResponse>(
-          collectionLog.earlyGamePlayerFixture,
-        );
-      case 'cousinofkos':
-      case 'iron tyson':
-        return HttpResponse.json<CollectionLogResponse>(
-          collectionLog.midGamePlayerFixture,
-        );
-      case 'clogging':
-        return HttpResponse.json<CollectionLogResponse>(
-          collectionLog.endGamePlayerFixture,
         );
       default:
         return passthrough();
@@ -128,10 +101,11 @@ const passthroughHandlers = [
   'https://*.sentry.io/*',
   'https://telemetry.nextjs.org/*',
   'http://localhost:3000/__nextjs_original-stack-frame',
+  'http://localhost:8969/*',
+  'http://localhost:42399/*',
 ].map((url) => http.all(url, passthrough));
 
 export const handlers = [
-  collectionLogHandler,
   wikiSyncHandler,
   templePlayerStatsHandler,
   memberListHandler,

@@ -32,6 +32,7 @@ export function CollectionLogCard() {
               src="/icons/collection-log.png"
               height={17}
               width={18}
+              unoptimized
             />
             <Text role="heading" weight="medium" size="2">
               Collection Log

@@ -33,6 +33,7 @@ export function CombatCard() {
               src="/icons/combat.png"
               height={18}
               width={18}
+              unoptimized
             />
             <Text role="heading" weight="medium" size="2">
               Combat
@@ -72,6 +73,7 @@ export function CombatCard() {
             required
             min={0}
             defaultValue={defaultValues?.ehb}
+            readOnly
           />
         }
         right={

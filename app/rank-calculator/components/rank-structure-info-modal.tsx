@@ -55,6 +55,7 @@ export function RankStructureInfoModal() {
                         src={getRankImageUrl(rank as Rank)}
                         height={22}
                         width={22}
+                        unoptimized
                       />
                     </Table.Cell>
                     <Table.Cell>{getRankName(rank as Rank)}</Table.Cell>

@@ -263,6 +263,7 @@ export const earlyGamePlayerFixture = {
     Amoxliatl_ehb: 0,
     Ehb: 0.2941,
     Im_ehb: 1.0174,
+    Collections: 119,
   },
 } as TempleOSRSPlayerStats;
 
@@ -519,6 +520,7 @@ export const midGamePlayerFixture = {
     Amoxliatl_ehb: 0,
     Ehb: 409.821,
     Im_ehb: 524.4315,
+    Collections: 701,
   },
 } as TempleOSRSPlayerStats;
 
@@ -775,5 +777,6 @@ export const endGamePlayerFixture = {
     Amoxliatl_ehb: 1.7555555555555555,
     Ehb: 2054.7972,
     Im_ehb: 2602.2528,
+    Collections: 1312,
   },
 } as TempleOSRSPlayerStats;

@@ -4,13 +4,8 @@ import { DataCard } from '../data-card';
 import { useModeration } from '../../contexts/moderation-context';
 
 export function ModerationCard() {
-  const {
-    hasCollectionLogData,
-    hasTempleData,
-    hasWikiSyncData,
-    isModerator,
-    actionedByUsername,
-  } = useModeration();
+  const { hasTempleData, hasWikiSyncData, isModerator, actionedByUsername } =
+    useModeration();
 
   if (!isModerator) {
     return null;
@@ -31,7 +26,6 @@ export function ModerationCard() {
       <Separator size="4" />
       {(
         [
-          ['Collection log data', hasCollectionLogData],
           ['TempleOSRS data', hasTempleData],
           ['WikiSync data', hasWikiSyncData],
         ] as const

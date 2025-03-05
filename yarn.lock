@@ -6893,13 +6893,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-wild@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "get-wild@npm:3.0.2"
-  checksum: 10c0/1e708b73c2f9fab86ec4de888b56d09da8115b5414e2ad672732b47b35c17400a4e37eabba85db7754f897eac3ecebd3d920e55a7f54eecc19795aa70885a6f4
-  languageName: node
-  linkType: hard
-
 "getos@npm:^3.2.1":
   version: 3.2.1
   resolution: "getos@npm:3.2.1"
@@ -7339,7 +7332,6 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.2"
     eslint-plugin-react-hooks: "npm:^5.0.0"
     fast-fuzzy: "npm:^1.12.0"
-    get-wild: "npm:^3.0.2"
     http-status-codes: "npm:^2.3.0"
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"

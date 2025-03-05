@@ -41,7 +41,7 @@ export function calculateNotableItemsPoints(
   const itemsCollected = filteredItemFields.length;
   const percentageCollected = itemsCollected / totalItems;
   const unscaledPointsAwarded = filteredItemFields.reduce(
-    (acc, [item]) => acc + itemPoints[item],
+    (acc, [item]) => acc + (itemPoints?.[item] ?? 0),
     0,
   );
   const pointsAwarded = new Decimal(unscaledPointsAwarded)

@@ -39,6 +39,7 @@ export function SkillingCard() {
               src="/icons/skills.png"
               height={18}
               width={18}
+              unoptimized
             />
             <Text role="heading" weight="medium" size="2">
               Skilling
@@ -78,6 +79,7 @@ export function SkillingCard() {
             type="number"
             min={0}
             defaultValue={defaultValues?.ehp}
+            readOnly
           />
         }
         right={

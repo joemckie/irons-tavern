@@ -34,7 +34,6 @@ export default async function RankCalculatorPage({
 
   const {
     currentRank,
-    hasCollectionLogData,
     hasTempleData,
     hasWikiSyncData,
     hasThirdPartyData,

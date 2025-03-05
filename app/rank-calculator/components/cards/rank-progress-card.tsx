@@ -112,6 +112,7 @@ export function RankProgressCard() {
                 src={getRankImageUrl(rank)}
                 width={22}
                 height={22}
+                unoptimized
               />
             </Flex>
             <Flex gap="2" align="center">
@@ -121,6 +122,7 @@ export function RankProgressCard() {
                   src={getRankImageUrl(nextRank)}
                   height={22}
                   width={22}
+                  unoptimized
                 />
               )}
               <Text aria-label="Next rank" color="gray" size="2">

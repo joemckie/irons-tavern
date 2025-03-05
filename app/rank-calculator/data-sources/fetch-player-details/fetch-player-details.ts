@@ -1,8 +1,3 @@
-import { get } from 'get-wild';
-import {
-  AcquiredItemMap,
-  CollectionLogItem,
-} from '@/app/schemas/collection-log';
 import { itemList } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
@@ -16,9 +11,9 @@ import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
+import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
-import { getCollectionLog } from './get-collection-log';
 import { fetchTemplePlayerStats } from '../temple-osrs';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
@@ -28,11 +23,11 @@ import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { validatePlayerExists } from '../../players/validation/player-validation';
+import { getCollectionLogItemMap } from './get-collection-log-item-map';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
   currentRank?: Rank;
-  hasCollectionLogData: boolean;
   hasTempleData: boolean;
   hasWikiSyncData: boolean;
   hasThirdPartyData: boolean;
@@ -64,7 +59,6 @@ export const emptyResponse = {
   playerName: '',
   rankStructure: 'Standard',
   proofLink: null,
-  hasCollectionLogData: false,
   hasTempleData: false,
   hasWikiSyncData: false,
   hasThirdPartyData: false,
@@ -121,19 +115,16 @@ export async function fetchPlayerDetails(
         )
       : undefined;
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [wikiSyncData, collectionLogData, templeData] = await Promise.all([
+    const [wikiSyncData, templeData, collectionLogItemMap] = await Promise.all([
       getWikiSyncData(player),
-      getCollectionLog(player),
       fetchTemplePlayerStats(player, true),
+      getCollectionLogItemMap(),
     ]);
 
-    const hasThirdPartyData = Boolean(
-      wikiSyncData || collectionLogData || templeData,
-    );
+    const hasThirdPartyData = Boolean(wikiSyncData || templeData);
 
     Sentry.setTags({
       'has-wikisync-data': !!wikiSyncData,
-      'has-collection-log-data': !!collectionLogData,
       'has-temple-data': !!templeData,
       'has-saved-data': !!savedData,
       'has-third-party-data': hasThirdPartyData,
@@ -151,29 +142,11 @@ export async function fetchPlayerDetails(
       ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
       : null;
 
-    const { Overall_level: totalLevel = null } = templeData ?? {};
-    const { ehb, ehp } = calculateEfficiencyData(templeData);
-
-    const collectionLogItems = collectionLogData
-      ? get<CollectionLogItem[]>(
-          collectionLogData,
-          'collectionLog.tabs.*.*.items',
-        ).reduce<AcquiredItemMap>(
-          (acc, item) =>
-            item.obtained
-              ? {
-                  ...acc,
-                  [stripEntityName(item.name)]: item.quantity,
-                }
-              : acc,
-          {},
-        )
-      : null;
-
     const {
-      uniqueItems: collectionLogTotal = null,
-      uniqueObtained: collectionLogCount = null,
-    } = collectionLogData?.collectionLog ?? {};
+      Overall_level: totalLevel = null,
+      Collections: collectionLogCount = null,
+    } = templeData ?? {};
+    const { ehb, ehp } = calculateEfficiencyData(templeData);
 
     const {
       achievementDiaries = null,
@@ -181,6 +154,7 @@ export async function fetchPlayerDetails(
       quests = null,
       musicTracks = null,
       combatAchievements = null,
+      collectionLogItems = {},
     } = wikiSyncData
       ? {
           achievementDiaries: parseAchievementDiaries(
@@ -190,26 +164,39 @@ export async function fetchPlayerDetails(
           quests: wikiSyncData.quests,
           musicTracks: wikiSyncData.music_tracks,
           combatAchievements: wikiSyncData.combat_achievements,
+          collectionLogItems:
+            collectionLogItemMap &&
+            wikiSyncData.collection_log.reduce((acc, id) => {
+              // Some item IDs from WikiSync strangely don't match up to an item in their data file
+              // so we need to check that it exists before attempting to parse it
+              const item = collectionLogItemMap[id];
+
+              return item
+                ? {
+                    ...acc,
+                    [stripEntityName(collectionLogItemMap[id].name)]: true,
+                  }
+                : acc;
+            }, {} as CollectionLogAcquiredItemMap),
         }
       : {};
 
-    const acquiredItems =
-      wikiSyncData || collectionLogData
-        ? Object.values(itemList)
-            .flatMap(({ items }) => items)
-            .filter((item) =>
-              isItemAcquired(item, {
-                acquiredItems: collectionLogItems,
-                quests,
-                achievementDiaries,
-                levels,
-                musicTracks,
-                combatAchievements,
-                totalLevel,
-              }),
-            )
-            .map(({ name }) => stripEntityName(name))
-        : [];
+    const acquiredItems = wikiSyncData
+      ? Object.values(itemList)
+          .flatMap(({ items }) => items)
+          .filter((item) =>
+            isItemAcquired(item, {
+              acquiredItems: collectionLogItems,
+              quests,
+              achievementDiaries,
+              levels,
+              musicTracks,
+              combatAchievements,
+              totalLevel,
+            }),
+          )
+          .map(({ name }) => stripEntityName(name))
+      : [];
 
     const previouslyAcquiredItems = savedData
       ? Object.keys(savedData.acquiredItems).filter(
@@ -217,9 +204,7 @@ export async function fetchPlayerDetails(
         )
       : [];
 
-    const proofLink =
-      savedData?.proofLink ??
-      (collectionLogData ? `https://collectionlog.net/log/${player}` : null);
+    const proofLink = savedData?.proofLink ?? null;
 
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
@@ -227,6 +212,10 @@ export async function fetchPlayerDetails(
       (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
       {},
     );
+
+    const collectionLogTotal = collectionLogItemMap
+      ? Object.keys(collectionLogItemMap).length
+      : clientConstants.collectionLog.totalItems;
 
     return {
       success: true,
@@ -250,14 +239,12 @@ export async function fetchPlayerDetails(
         ehb: Math.round(Math.max(ehb ?? 0, savedData?.ehb ?? 0)),
         ehp: Math.round(Math.max(ehp ?? 0, savedData?.ehp ?? 0)),
         totalLevel: Math.max(totalLevel ?? 0, savedData?.totalLevel ?? 0),
-        collectionLogTotal:
-          collectionLogTotal ?? clientConstants.collectionLog.totalItems,
+        collectionLogTotal,
         joinDate,
         playerName: rsn,
         rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
         currentRank,
-        hasCollectionLogData: !!collectionLogData,
         hasTempleData: !!templeData,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
