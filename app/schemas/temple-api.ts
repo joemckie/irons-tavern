@@ -1,4 +1,9 @@
+import { mapKeys } from 'lodash';
 import { z } from 'zod';
+
+export function normalisePlayerName(player: string) {
+  return player.replaceAll(/(-|_)/g, ' ').toLowerCase();
+}
 
 export const GameMode = z.nativeEnum({
   GroupIronman: 0,
@@ -11,25 +16,29 @@ const BooleanNumber = z.union([z.literal(0), z.literal(1)]);
 
 export const TempleOSRSGroupMemberInfo = z.object({
   data: z.object({
-    memberlist: z.record(
-      z.object({
-        player: z.string(),
-        player_name_with_capitalization: z.string().nullable(),
-        country: z.string(),
-        game_mode: GameMode,
-        level_3: BooleanNumber,
-        free_to_play: BooleanNumber,
-        gim_mode: z.number().nullable(),
-        leagues_iv_points: z.number().nullable(),
-        on_hiscores: BooleanNumber,
-        last_checked: z.string(),
-        last_checked_unix_time: z.number(),
-        last_changed_xp: z.string(),
-        last_changed_xp_unix_time: z.number(),
-        last_changed_kc: z.string().nullable(),
-        last_changed_kc_unix_time: z.union([z.number(), z.literal(false)]),
-      }),
-    ),
+    memberlist: z
+      .record(
+        z.object({
+          player: z.string(),
+          player_name_with_capitalization: z.string().nullable(),
+          country: z.string(),
+          game_mode: GameMode,
+          level_3: BooleanNumber,
+          free_to_play: BooleanNumber,
+          gim_mode: z.number().nullable(),
+          leagues_iv_points: z.number().nullable(),
+          on_hiscores: BooleanNumber,
+          last_checked: z.string(),
+          last_checked_unix_time: z.number(),
+          last_changed_xp: z.string(),
+          last_changed_xp_unix_time: z.number(),
+          last_changed_kc: z.string().nullable(),
+          last_changed_kc_unix_time: z.union([z.number(), z.literal(false)]),
+        }),
+      )
+      .transform((record) =>
+        mapKeys(record, (_, key) => normalisePlayerName(key)),
+      ),
   }),
 });
 

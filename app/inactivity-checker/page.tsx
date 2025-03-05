@@ -7,14 +7,23 @@ import { serverConstants } from '@/config/constants.server';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
-import { TempleOSRSGroupMemberInfo } from '../schemas/temple-api';
+import {
+  normalisePlayerName,
+  TempleOSRSGroupMemberInfo,
+} from '../schemas/temple-api';
+import { unset } from 'lodash';
 
 async function getGroupMemberInfo() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  return TempleOSRSGroupMemberInfo.parse(await response.json());
+  const data = await response.json();
+
+  // Temple returns an empty player for some reason, so remove it
+  unset(data.data.memberlist, '');
+
+  return TempleOSRSGroupMemberInfo.parse(data);
 }
 
 async function getLatestMemberList() {
@@ -32,11 +41,10 @@ async function getLatestMemberList() {
     }
 
     return data.reduce(
-      (acc, member) => {
-        acc[member.rsn.toLowerCase()] = member;
-
-        return acc;
-      },
+      (acc, member) => ({
+        ...acc,
+        [normalisePlayerName(member.rsn)]: member,
+      }),
       {} as Record<string, ClanMember>,
     );
   } catch (error) {
@@ -47,10 +55,6 @@ async function getLatestMemberList() {
 }
 
 export const dynamic = 'force-dynamic';
-
-function normalisePlayerName(player: string) {
-  return player.replaceAll(/(-|_)/g, ' ');
-}
 
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();
@@ -72,21 +76,29 @@ export default async function InactivityCheckerPage() {
         </thead>
         <tbody>
           {Object.values(memberList)
+            .sort(({ rsn: a }, { rsn: b }) => {
+              const memberA =
+                groupMemberInfo.data.memberlist[normalisePlayerName(a)];
+              const memberB =
+                groupMemberInfo.data.memberlist[normalisePlayerName(b)];
 
-            .sort(
-              ({ rsn: a }, { rsn: b }) =>
-                groupMemberInfo.data.memberlist[normalisePlayerName(a)]
-                  .last_changed_xp_unix_time -
-                groupMemberInfo.data.memberlist[normalisePlayerName(b)]
-                  .last_changed_xp_unix_time,
-            )
+              if (!memberA || !memberB) {
+                return -1;
+              }
+
+              return (
+                memberA.last_changed_xp_unix_time -
+                memberB.last_changed_xp_unix_time
+              );
+            })
             .map(({ rsn, joinedDate, rank }) => {
               const {
                 player: templePlayerName,
                 last_changed_xp: lastChangedXp,
                 on_hiscores: onHiscores,
                 last_checked: lastChecked,
-              } = groupMemberInfo.data.memberlist[normalisePlayerName(rsn)];
+              } = groupMemberInfo.data.memberlist[normalisePlayerName(rsn)] ??
+              {};
 
               const estimatedDaysInactive = differenceInDays(
                 Date.now(),
