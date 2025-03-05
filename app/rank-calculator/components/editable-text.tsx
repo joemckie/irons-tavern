@@ -15,6 +15,7 @@ export function EditableText({
   name,
   'aria-label': ariaLabel,
   required,
+  readOnly,
   ...restProps
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -72,7 +73,7 @@ export function EditableText({
           {value}
         </Text>
       </ValidationTooltip>
-      {!field.disabled && (
+      {!field.disabled && !readOnly && (
         <IconButton
           type="button"
           onClick={() => setIsEditing(true)}

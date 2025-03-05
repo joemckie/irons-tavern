@@ -79,6 +79,7 @@ export function SkillingCard() {
             type="number"
             min={0}
             defaultValue={defaultValues?.ehp}
+            readOnly
           />
         }
         right={
