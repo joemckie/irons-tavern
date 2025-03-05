@@ -175,7 +175,7 @@ export const itemList: ItemCategoryMap = {
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
             totalLevel === maximumTotalLevel &&
-              (acquiredItems?.[stripEntityName('Infernal cape')] ?? 0) > 0,
+              acquiredItems?.[stripEntityName('Infernal cape')],
           );
         },
         isAutomatic: true,
@@ -187,8 +187,7 @@ export const itemList: ItemCategoryMap = {
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
             totalLevel === maximumTotalLevel &&
-              (acquiredItems?.[stripEntityName("Blessed dizana's quiver")] ??
-                0) > 0,
+              acquiredItems?.[stripEntityName("Blessed dizana's quiver")],
           );
         },
         isAutomatic: true,
@@ -579,7 +578,7 @@ export const itemList: ItemCategoryMap = {
         points: 30,
       }),
       singleItem({
-        name: 'Tonalztics of ralos',
+        name: 'Tonalztics of ralos (uncharged)',
         points: 100,
       }),
       singleItem({
@@ -1496,7 +1495,7 @@ export const itemList: ItemCategoryMap = {
         'Pet general graardor': [150],
         'Pet kraken': [50],
         "Pet kree'arra": [200],
-        "Pet k'ril Tsutsaroth": [
+        "Pet k'ril tsutsaroth": [
           150,
           formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
         ],
