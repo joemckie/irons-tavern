@@ -207,13 +207,17 @@ export const publishRankSubmissionAction = authActionClient
           ...new Set<string>([
             ...(hasWikiSyncData
               ? Object.values(
-                  pickBy(
-                    Object.keys(savedData.acquiredItems),
-                    (key) =>
+                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                    if (
                       isQuestItem(itemMap[key]) ||
                       isCombatAchievementItem(itemMap[key]) ||
-                      isCollectionLogItem(itemMap[key] && !acquiredItems[key]),
-                  ),
+                      isCollectionLogItem(itemMap[key])
+                    ) {
+                      return !acquiredItems[key];
+                    }
+
+                    return false;
+                  }),
                 )
               : []),
           ]),
