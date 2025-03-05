@@ -1,5 +1,4 @@
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
-import { AcquiredItemMap } from '@/app/schemas/collection-log';
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
@@ -9,10 +8,14 @@ import {
 } from '@/app/schemas/items';
 import { MiniQuest, Quest } from '@/app/schemas/osrs';
 import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
-import { LevelMap, QuestStatus } from '@/app/schemas/wiki';
+import {
+  CollectionLogAcquiredItemMap,
+  LevelMap,
+  QuestStatus,
+} from '@/app/schemas/wiki';
 
 interface IsItemAcquiredData {
-  acquiredItems: AcquiredItemMap | null;
+  acquiredItems: CollectionLogAcquiredItemMap | null;
   quests?: Record<Quest | MiniQuest, QuestStatus> | null;
   achievementDiaries: AchievementDiaryMap | null;
   levels?: LevelMap | null;
@@ -35,8 +38,11 @@ export function isItemAcquired(
 ) {
   if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
+      // Since the WikiSync plugin does not provide an amount collected for each item, we can only automatically
+      // determine single item collection logs. This means items that require multiple of the same item to be collected
+      // (such as Burning Claws requiring 2x Burning Claw) will not be automatically marked as acquired.
       ({ amount, clogName }) =>
-        acquiredItems?.[stripEntityName(clogName)] >= amount,
+        amount === 1 && acquiredItems[stripEntityName(clogName)],
     );
   }
 

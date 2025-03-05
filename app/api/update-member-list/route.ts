@@ -19,7 +19,7 @@ interface ClanExport {
 export async function POST(request: NextRequest) {
   const updateTemple = request.nextUrl.searchParams.get('updateTemple');
   const body: ClanExport = await request.json();
-  
+
   const { members, leaders } = body.clanMemberMaps.reduce(
     (acc, member) => {
       if (clientConstants.ranks.leaders.includes(member.rank)) {
@@ -48,9 +48,11 @@ export async function POST(request: NextRequest) {
     name: serverConstants.temple.groupName,
     leaders: leaders.toString(),
     members: members.toString(),
-    ...(serverConstants.temple.privateGroup === 'true' ? {
-      'private-group-checkbox': 'on',
-    } : {}),
+    ...(serverConstants.temple.privateGroup === 'true'
+      ? {
+          'private-group-checkbox': 'on',
+        }
+      : {}),
   } satisfies GroupUpdateRequest;
 
   console.log('Updating member list');
@@ -66,10 +68,12 @@ export async function POST(request: NextRequest) {
     put('members.json', JSON.stringify(body.clanMemberMaps), {
       access: 'public',
     }),
-    ...(updateTemple ? [
-      // Check all players in the new member list
-      fetch(`${clientConstants.publicUrl}/api/check-all-players`),
-    ] : [])
+    ...(updateTemple
+      ? [
+          // Check all players in the new member list
+          fetch(`${clientConstants.publicUrl}/api/check-all-players`),
+        ]
+      : []),
   ]);
 
   return NextResponse.json({ success: true });

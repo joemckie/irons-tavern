@@ -4,8 +4,6 @@ import { FormProvider } from 'react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Rank } from '@/config/enums';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
@@ -17,14 +15,9 @@ import { CurrentPlayerProvider } from '../contexts/current-rank-context';
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
   currentRank?: Rank;
-  hasCollectionLogNetworkError: boolean;
 }
 
-export function FormWrapper({
-  formData,
-  currentRank,
-  hasCollectionLogNetworkError,
-}: FormWrapperProps) {
+export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
   const {
     form,
     action: {
@@ -58,17 +51,6 @@ export function FormWrapper({
       },
     }),
   );
-
-  useEffect(() => {
-    if (hasCollectionLogNetworkError) {
-      toast.warn(
-        'Unable to populate notable items - collectionlog.net did not respond.',
-        {
-          autoClose: false,
-        },
-      );
-    }
-  }, [hasCollectionLogNetworkError]);
 
   return (
     <CurrentPlayerProvider rank={currentRank} playerName={formData.playerName}>

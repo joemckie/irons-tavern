@@ -97,7 +97,6 @@ export const publishRankSubmissionAction = authActionClient
           totalLevel,
           rankStructure,
           joinDate,
-          hasCollectionLogData,
           hasTempleData,
           hasWikiSyncData,
         },
@@ -211,18 +210,9 @@ export const publishRankSubmissionAction = authActionClient
                   pickBy(
                     Object.keys(savedData.acquiredItems),
                     (key) =>
-                      (isQuestItem(itemMap[key]) ||
-                        isCombatAchievementItem(itemMap[key])) &&
-                      !acquiredItems[key],
-                  ),
-                )
-              : []),
-            ...(hasCollectionLogData
-              ? Object.values(
-                  pickBy(
-                    Object.keys(savedData.acquiredItems),
-                    (key) =>
-                      isCollectionLogItem(itemMap[key]) && !acquiredItems[key],
+                      isQuestItem(itemMap[key]) ||
+                      isCombatAchievementItem(itemMap[key]) ||
+                      isCollectionLogItem(itemMap[key] && !acquiredItems[key]),
                   ),
                 )
               : []),
@@ -239,8 +229,7 @@ export const publishRankSubmissionAction = authActionClient
             ? combatAchievementTier
             : null,
         collectionLogCount:
-          hasCollectionLogData &&
-          collectionLogCount < savedData.collectionLogCount
+          hasWikiSyncData && collectionLogCount < savedData.collectionLogCount
             ? collectionLogCount
             : null,
         ehb: hasTempleData && ehb < savedData.ehb ? ehb : null,
@@ -269,7 +258,6 @@ export const publishRankSubmissionAction = authActionClient
         submittedBy: userId,
         submittedAt: new Date(),
         actionedBy: null,
-        hasCollectionLogData,
         hasTempleData,
         hasWikiSyncData,
       } satisfies RankSubmissionMetadata);

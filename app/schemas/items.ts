@@ -1,8 +1,7 @@
 import { z } from 'zod';
-import { AcquiredItemMap } from './collection-log';
 import { MiniQuest, Quest, Skill } from './osrs';
 import { AchievementDiaryMap } from './rank-calculator';
-import { LevelMap } from './wiki';
+import { CollectionLogAcquiredItemMap, LevelMap } from './wiki';
 
 export const BaseItem = z.object({
   image: z.string(),
@@ -50,7 +49,7 @@ export const CustomItem = BaseItem.extend({
     .args(
       z.object({
         achievementDiaries: AchievementDiaryMap.nullable(),
-        acquiredItems: AcquiredItemMap.nullable(),
+        acquiredItems: CollectionLogAcquiredItemMap.nullable(),
         levels: LevelMap.nullable().optional(),
         musicTracks: z.record(z.string(), z.boolean()).nullable().optional(),
         totalLevel: z.union([z.number(), z.string()]).nullable(),

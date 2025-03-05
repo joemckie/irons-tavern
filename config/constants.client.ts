@@ -3,8 +3,7 @@ import { Rank } from './enums';
 
 const ClientConfigSchema = z.object({
   collectionLog: z.object({
-    baseUrl: z.literal('https://api.collectionlog.net'),
-    totalItems: z.literal(1561),
+    totalItems: z.literal(1568),
   }),
   publicUrl: z.string(),
   temple: z.object({
@@ -27,8 +26,7 @@ const ClientConfigSchema = z.object({
 
 export const clientConstants = ClientConfigSchema.parse({
   collectionLog: {
-    baseUrl: 'https://api.collectionlog.net',
-    totalItems: 1561,
+    totalItems: 1568,
   },
   publicUrl: process.env.NEXT_PUBLIC_URL,
   temple: {
