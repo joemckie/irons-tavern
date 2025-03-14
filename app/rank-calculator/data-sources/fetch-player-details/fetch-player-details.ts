@@ -187,7 +187,7 @@ export async function fetchPlayerDetails(
           ...acc,
           [stripEntityName(name)]: count,
         }),
-        {} as CollectionLogAcquiredItemMap,
+        CollectionLogAcquiredItemMap.parse({}),
       ) ?? null;
 
     const acquiredItems =
