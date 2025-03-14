@@ -49,7 +49,7 @@ export const approveSubmissionAction = authActionClient
         'discordMessageId',
         'submittedBy',
         'hasWikiSyncData',
-      )) as unknown as [RankSubmissionStatus, string, string, boolean];
+      )) as unknown as [RankSubmissionStatus, string, string, string];
 
       if (!metadata) {
         throw new ActionError('Unable to find submission metadata');
@@ -88,13 +88,13 @@ export const approveSubmissionAction = authActionClient
         ],
       } = submissionData;
 
-      const submissionDiff = await redis.json.get<{
-        '$.acquiredItems': [string[]];
-        '$.combatAchievementTier': [CombatAchievementTier];
+      const submissionDiff = await redis.hmget<{
+        acquiredItems: string[] | null;
+        combatAchievementTier: CombatAchievementTier | null;
       }>(
         rankSubmissionDiffKey(submissionId),
-        '$.acquiredItems',
-        '$.combatAchievementTier',
+        'acquiredItems',
+        'combatAchievementTier',
       );
 
       if (!submissionDiff) {
@@ -102,24 +102,24 @@ export const approveSubmissionAction = authActionClient
       }
 
       const {
-        '$.combatAchievementTier': [combatAchievementTierDiscrepancy],
-        '$.acquiredItems': [acquiredItemsDiscrepancies],
+        acquiredItems: acquiredItemsDiscrepancies,
+        combatAchievementTier: combatAchievementTierDiscrepancy,
       } = submissionDiff;
 
       // If the player has WikiSync data available and has the Grandmaster CA tier,
       // they can be assigned the Grandmaster role.
       const isVerifiedGrandmaster =
-        hasWikiSyncData &&
+        hasWikiSyncData === 'true' &&
         combatAchievementTier === 'Grandmaster' &&
-        combatAchievementTierDiscrepancy === null;
+        !combatAchievementTierDiscrepancy;
 
       // If the player has WikiSync data available and has the Ancient blood ornament kit,
       // they can be assigned the Blood Torva role.
       // This item is based on multiple combat achievements that are available via WikiSync.
       const hasVerifiedAncientBloodOrnamentKit =
-        hasWikiSyncData &&
+        hasWikiSyncData === 'true' &&
         isAncientBloodOrnamentKitChecked &&
-        !acquiredItemsDiscrepancies.includes('Ancient blood ornament kit');
+        !acquiredItemsDiscrepancies?.includes('Ancient blood ornament kit');
 
       const applicableAchievementDiscordRoles = {
         'Blood Torva': hasVerifiedAncientBloodOrnamentKit,
@@ -154,8 +154,9 @@ export const approveSubmissionAction = authActionClient
 
               Your application has been approved by <@${approverId}> and you have been assigned the following role(s) on Discord:
               
-              - ${getRankName(rank)}
-              ${newAchievementRoles.map((role) => `- ${role}`).join('\n')}
+              ${[getRankName(rank), ...newAchievementRoles.filter(Boolean)]
+                .map((role) => `- ${role}`)
+                .join('\n')}
 
               Please reach out to a mod to update your in-game rank!
             `,
@@ -163,12 +164,12 @@ export const approveSubmissionAction = authActionClient
           messageId,
         );
       } else {
-        const newAchievementRoles = requiresAchievementRoles
-          ? await assignAchievementDiscordRoles(
-              submitterId,
-              applicableAchievementDiscordRoles,
-            )
-          : [];
+        if (requiresAchievementRoles) {
+          await assignAchievementDiscordRoles(
+            submitterId,
+            applicableAchievementDiscordRoles,
+          );
+        }
 
         await sendDiscordMessage(
           {
@@ -176,15 +177,6 @@ export const approveSubmissionAction = authActionClient
               <@${submitterId}>
 
               Your application has been approved by <@${approverId}>.
-
-              ${
-                requiresAchievementRoles &&
-                `
-                You have been assigned the following role(s) on Discord:
-
-                ${newAchievementRoles.map((role) => `- ${role}`).join('\n')}
-              `
-              }
 
               Please reach out to a mod to update your ranks!
             `,

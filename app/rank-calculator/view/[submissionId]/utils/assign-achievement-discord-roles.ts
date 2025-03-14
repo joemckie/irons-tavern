@@ -13,26 +13,21 @@ export async function assignAchievementDiscordRoles(
   )) as APIGuildMember;
 
   return Promise.all(
-    Object.entries(achievementRoles)
-      .filter(([roleName, shouldApply]) => {
-        const role =
-          achievementDiscordRoles[
-            roleName as keyof typeof achievementDiscordRoles
-          ];
+    Object.entries(achievementRoles).map(async ([roleName, shouldApply]) => {
+      const role =
+        achievementDiscordRoles[
+          roleName as keyof typeof achievementDiscordRoles
+        ];
 
-        return shouldApply || roles.includes(role);
-      })
-      .map(async ([roleName]) => {
-        const role =
-          achievementDiscordRoles[
-            roleName as keyof typeof achievementDiscordRoles
-          ];
+      if (!shouldApply || roles.includes(role)) {
+        return false;
+      }
 
-        await discordBotClient.put(
-          Routes.guildMemberRole(guildId, submitterId, role),
-        );
+      await discordBotClient.put(
+        Routes.guildMemberRole(guildId, submitterId, role),
+      );
 
-        return roleName;
-      }),
+      return roleName;
+    }),
   );
 }
