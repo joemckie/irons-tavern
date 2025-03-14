@@ -84,7 +84,6 @@ export const WikiSyncResponse = z.object({
   music_tracks: z.record(z.string(), z.boolean()),
   quests: z.record(z.string(), QuestStatus),
   combat_achievements: z.array(z.number().nonnegative()),
-  collection_log: z.array(z.number().nonnegative()),
 });
 
 export type WikiSyncResponse = z.infer<typeof WikiSyncResponse>;
@@ -159,7 +158,10 @@ export const CollectionLogResponse = z.array(CollectionLogItemRecord);
 
 export type CollectionLogResponse = z.infer<typeof CollectionLogResponse>;
 
-export const CollectionLogAcquiredItemMap = z.record(z.string(), z.boolean());
+export const CollectionLogAcquiredItemMap = z.record(
+  z.string(),
+  z.number().nonnegative(),
+);
 
 export type CollectionLogAcquiredItemMap = z.infer<
   typeof CollectionLogAcquiredItemMap

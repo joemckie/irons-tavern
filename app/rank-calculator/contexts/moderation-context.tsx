@@ -2,14 +2,18 @@ import { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
 import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 
 interface ModerationProps
-  extends Pick<RankSubmissionMetadata, 'hasTempleData' | 'hasWikiSyncData'> {
+  extends Pick<
+    RankSubmissionMetadata,
+    'hasTemplePlayerStats' | 'hasWikiSyncData' | 'hasTempleCollectionLog'
+  > {
   isModerator: boolean;
   actionedByUsername: string | null;
 }
 
 export const ModerationContext = createContext<ModerationProps>({
   actionedByUsername: '',
-  hasTempleData: false,
+  hasTemplePlayerStats: false,
+  hasTempleCollectionLog: false,
   hasWikiSyncData: false,
   isModerator: false,
 });
@@ -17,18 +21,26 @@ export const ModerationContext = createContext<ModerationProps>({
 export function ModerationProvider({
   children,
   isModerator,
-  hasTempleData,
+  hasTemplePlayerStats,
+  hasTempleCollectionLog,
   hasWikiSyncData,
   actionedByUsername,
 }: PropsWithChildren<ModerationProps>) {
   const value = useMemo<ModerationProps>(
     () => ({
       isModerator,
-      hasTempleData,
+      hasTemplePlayerStats,
+      hasTempleCollectionLog,
       hasWikiSyncData,
       actionedByUsername,
     }),
-    [isModerator, hasTempleData, hasWikiSyncData, actionedByUsername],
+    [
+      isModerator,
+      hasTempleCollectionLog,
+      hasTemplePlayerStats,
+      hasWikiSyncData,
+      actionedByUsername,
+    ],
   );
 
   return (

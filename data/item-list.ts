@@ -259,10 +259,10 @@ export const itemList: ItemCategoryMap = {
           'Noxious blade',
           'Noxious point',
           'Noxious pommel',
-          'Areana boots',
+          'Aranea boots',
           'Araxyte head',
           'Zenyte shard',
-          'Rax',
+          'Nid',
         ],
       }),
     ],
@@ -435,22 +435,14 @@ export const itemList: ItemCategoryMap = {
           Fletching: 72,
         },
       }),
-      manualItem({
-        name: 'Amulet of torture',
-        points: 60,
-      }),
-      manualItem({
-        name: 'Tormented bracelet',
-        points: 50,
-      }),
-      manualItem({
-        name: 'Necklace of anguish',
-        points: 40,
-      }),
-      manualItem({
-        name: 'Ring of suffering',
-        points: 30,
-      }),
+      ...Array.from({ length: 4 }).map<Item>((_, i) =>
+        singleItem({
+          name: `Zenyte shard (${i + 1})`,
+          clogName: 'Zenyte shard',
+          points: 45,
+          requiredAmount: i + 1,
+        }),
+      ),
     ],
   },
   'Desert Treasure 2': {
@@ -492,21 +484,53 @@ export const itemList: ItemCategoryMap = {
         name: 'Virtus robe bottom',
         points: 80,
       }),
-      manualItem({
+      compoundItem({
         name: 'Bellator ring',
         points: 100,
+        requiredItems: [
+          'Bellator vestige',
+          ['Chromium ingot', 3],
+          'Warrior ring',
+        ],
+        requiredLevels: {
+          Magic: 85,
+          Crafting: 75,
+        },
       }),
-      manualItem({
+      compoundItem({
         name: 'Magus ring',
         points: 100,
+        requiredItems: ['Magus vestige', ['Chromium ingot', 3], 'Seers ring'],
+        requiredLevels: {
+          Magic: 85,
+          Crafting: 75,
+        },
       }),
-      manualItem({
+      compoundItem({
         name: 'Ultor ring',
         points: 100,
+        requiredItems: [
+          'Ultor vestige',
+          ['Chromium ingot', 3],
+          'Berserker ring',
+        ],
+        requiredLevels: {
+          Magic: 85,
+          Crafting: 75,
+        },
       }),
-      manualItem({
+      compoundItem({
         name: 'Venator ring',
         points: 100,
+        requiredItems: [
+          'Venator vestige',
+          ['Chromium ingot', 3],
+          'Archers ring',
+        ],
+        requiredLevels: {
+          Magic: 85,
+          Crafting: 75,
+        },
       }),
       compoundItem({
         name: 'Soulreaper axe',
@@ -685,13 +709,17 @@ export const itemList: ItemCategoryMap = {
         name: 'Crystal armour seed',
         points: 20,
       }),
-      manualItem({
-        name: 'Bow of faerdhinen',
+      singleItem({
+        name: 'Enhanced crystal weapon seed (1)',
+        clogName: 'Enhanced crystal weapon seed',
         points: 150,
+        requiredAmount: 1,
       }),
-      manualItem({
-        name: 'Blade of saeldor',
+      singleItem({
+        name: 'Enhanced crystal weapon seed (2)',
+        clogName: 'Enhanced crystal weapon seed',
         points: 150,
+        requiredAmount: 2,
       }),
     ],
   },
@@ -758,22 +786,19 @@ export const itemList: ItemCategoryMap = {
   'Tormented Demons': {
     image: formatWikiImageUrl('Tormented Demon (1)', 'category'),
     items: [
-      manualItem({
+      compoundItem({
         name: 'Burning claws',
         points: 100,
+        requiredItems: [['Burning claw', 2]],
       }),
-      manualItem({
-        name: 'Emberlight',
-        points: 50,
-      }),
-      manualItem({
-        name: 'Purging staff',
-        points: 50,
-      }),
-      manualItem({
-        name: 'Scorching bow',
-        points: 50,
-      }),
+      ...Array.from({ length: 3 }).map((_, i) =>
+        singleItem({
+          name: `Tormented synapse (${i + 1})`,
+          points: 50,
+          clogName: 'Tormented synapse',
+          requiredAmount: i + 1,
+        }),
+      ),
     ],
   },
   'TzHaar Challenges': {
@@ -1063,9 +1088,10 @@ export const itemList: ItemCategoryMap = {
         points: 30,
         clogName: 'Ancient icon',
       }),
-      manualItem({
+      compoundItem({
         name: 'Venator bow',
         points: 80,
+        requiredItems: [['Venator shard', 5]],
       }),
       manualItem({
         name: 'Saturated heart',
@@ -1121,11 +1147,15 @@ export const itemList: ItemCategoryMap = {
         name: 'Amulet of avarice',
         points: 50,
       }),
-      manualItem({
+      compoundItem({
         name: 'Obelisk',
         points: 100,
         image:
           'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
+        requiredItems: [['Ancient crystal', 4]],
+        requiredLevels: {
+          Construction: 72,
+        },
       }),
       singleItem({
         name: "Viggora's chainmace",

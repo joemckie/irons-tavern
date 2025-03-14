@@ -80,3 +80,20 @@ export interface PlayerStatsError {
     Message: string;
   };
 }
+
+const TempleOSRSCollectionLogItem = z.object({
+  count: z.number().nonnegative(),
+  id: z.number().nonnegative(),
+  name: z.string().min(1),
+});
+
+export const TempleOSRSPlayerCollectionLog = z.object({
+  data: z.object({
+    total_collections_available: z.number().nonnegative(),
+    items: z.array(TempleOSRSCollectionLogItem),
+  }),
+});
+
+export type TempleOSRSPlayerCollectionLog = z.infer<
+  typeof TempleOSRSPlayerCollectionLog
+>;
