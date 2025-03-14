@@ -1,5 +1,5 @@
 import { serverConstants } from '@/config/constants.server';
-import { discordRoles } from '@/config/discord-roles';
+import { rankDiscordRoles } from '@/config/discord-roles';
 import { Rank } from '@/config/enums';
 import { discordBotClient } from '@/discord';
 import { APIGuildMember, Routes } from 'discord-api-types/v10';
@@ -13,7 +13,7 @@ export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
   // It's not possible to remove multiple roles in a single call,
   // so we filter the roles to avoid making 10+ requests each time
   // The current rank is excluded as it can cause race conditions when removing and adding it again.
-  const appliedRankRoles = Object.entries(discordRoles).filter(
+  const appliedRankRoles = Object.entries(rankDiscordRoles).filter(
     ([rankName, roleId]) => rankName !== rank && roles.includes(roleId),
   );
 
@@ -26,7 +26,7 @@ export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
     ),
   ]);
 
-  const approvedRole = discordRoles[rank as keyof typeof discordRoles];
+  const approvedRole = rankDiscordRoles[rank as keyof typeof rankDiscordRoles];
 
   // Apply the approved role if the user doesn't already have it
   if (!roles.includes(approvedRole)) {
