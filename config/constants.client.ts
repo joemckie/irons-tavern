@@ -2,9 +2,6 @@ import { z } from 'zod';
 import { Rank } from './enums';
 
 const ClientConfigSchema = z.object({
-  collectionLog: z.object({
-    totalItems: z.number().nonnegative(),
-  }),
   publicUrl: z.string(),
   temple: z.object({
     baseUrl: z.literal('https://templeosrs.com'),
@@ -25,9 +22,6 @@ const ClientConfigSchema = z.object({
 });
 
 export const clientConstants = ClientConfigSchema.parse({
-  collectionLog: {
-    totalItems: 1568,
-  },
   publicUrl: process.env.NEXT_PUBLIC_URL,
   temple: {
     baseUrl: 'https://templeosrs.com',

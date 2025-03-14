@@ -97,7 +97,8 @@ export const publishRankSubmissionAction = authActionClient
           totalLevel,
           rankStructure,
           joinDate,
-          hasTempleData,
+          hasTemplePlayerStats,
+          hasTempleCollectionLog,
           hasWikiSyncData,
         },
       } = playerDetails;
@@ -210,9 +211,19 @@ export const publishRankSubmissionAction = authActionClient
                   pickBy(Object.keys(savedData.acquiredItems), (key) => {
                     if (
                       isQuestItem(itemMap[key]) ||
-                      isCombatAchievementItem(itemMap[key]) ||
-                      isCollectionLogItem(itemMap[key])
+                      isCombatAchievementItem(itemMap[key])
                     ) {
+                      return !acquiredItems[key];
+                    }
+
+                    return false;
+                  }),
+                )
+              : []),
+            ...(hasTempleCollectionLog
+              ? Object.values(
+                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                    if (isCollectionLogItem(itemMap[key])) {
                       return !acquiredItems[key];
                     }
 
@@ -233,13 +244,14 @@ export const publishRankSubmissionAction = authActionClient
             ? combatAchievementTier
             : null,
         collectionLogCount:
-          hasWikiSyncData && collectionLogCount < savedData.collectionLogCount
+          hasTemplePlayerStats &&
+          collectionLogCount < savedData.collectionLogCount
             ? collectionLogCount
             : null,
-        ehb: hasTempleData && ehb < savedData.ehb ? ehb : null,
-        ehp: hasTempleData && ehp < savedData.ehp ? ehp : null,
+        ehb: hasTemplePlayerStats && ehb < savedData.ehb ? ehb : null,
+        ehp: hasTemplePlayerStats && ehp < savedData.ehp ? ehp : null,
         totalLevel:
-          hasTempleData && totalLevel < savedData.totalLevel
+          hasTemplePlayerStats && totalLevel < savedData.totalLevel
             ? totalLevel
             : null,
       } satisfies RankSubmissionDiff;
@@ -262,7 +274,8 @@ export const publishRankSubmissionAction = authActionClient
         submittedBy: userId,
         submittedAt: new Date(),
         actionedBy: null,
-        hasTempleData,
+        hasTemplePlayerStats,
+        hasTempleCollectionLog,
         hasWikiSyncData,
       } satisfies RankSubmissionMetadata);
 

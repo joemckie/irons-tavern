@@ -89,7 +89,8 @@ export function ReadonlyFormWrapper({
   return (
     <ModerationProvider
       isModerator={isModerator}
-      hasTempleData={submissionMetadata.hasTempleData}
+      hasTemplePlayerStats={submissionMetadata.hasTemplePlayerStats}
+      hasTempleCollectionLog={submissionMetadata.hasTempleCollectionLog}
       hasWikiSyncData={submissionMetadata.hasWikiSyncData}
       actionedByUsername={actionedByUsername}
     >

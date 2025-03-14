@@ -52,7 +52,8 @@ export const RankSubmissionMetadata = z.object({
   submittedBy: z.string(),
   submittedAt: z.date(),
   actionedBy: z.string().nullable(),
-  hasTempleData: z.boolean(),
+  hasTemplePlayerStats: z.boolean(),
+  hasTempleCollectionLog: z.boolean(),
   hasWikiSyncData: z.boolean(),
 });
 

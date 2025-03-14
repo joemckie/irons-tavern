@@ -42,7 +42,7 @@ export const MemoisedAutomaticItem = memo(
               acquiredItems: Object.fromEntries(
                 Object.entries(acquiredItems).map(([key, value]) => [
                   key,
-                  Boolean(value),
+                  Number(value),
                 ]),
               ),
               totalLevel,

@@ -38,11 +38,8 @@ export function isItemAcquired(
 ) {
   if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
-      // Since the WikiSync plugin does not provide an amount collected for each item, we can only automatically
-      // determine single item collection logs. This means items that require multiple of the same item to be collected
-      // (such as Burning Claws requiring 2x Burning Claw) will not be automatically marked as acquired.
       ({ amount, clogName }) =>
-        amount === 1 && acquiredItems[stripEntityName(clogName)],
+        acquiredItems[stripEntityName(clogName)] >= amount,
     );
   }
 
