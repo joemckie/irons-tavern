@@ -23,8 +23,8 @@ import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { validatePlayerExists } from '../../players/validation/player-validation';
-import { getCollectionLogItemMap } from './get-collection-log-item-map';
 import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
+import { fetchTempleConstants } from './fetch-temple-constants';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -118,17 +118,12 @@ export async function fetchPlayerDetails(
         )
       : undefined;
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [
-      wikiSyncData,
-      templePlayerStats,
-      templeCollectionLog,
-      collectionLogItemMap,
-    ] = await Promise.all([
-      getWikiSyncData(player),
-      fetchTemplePlayerStats(player, true),
-      fetchTemplePlayerCollectionLog(player),
-      getCollectionLogItemMap(),
-    ]);
+    const [wikiSyncData, templePlayerStats, templeCollectionLog] =
+      await Promise.all([
+        getWikiSyncData(player),
+        fetchTemplePlayerStats(player, true),
+        fetchTemplePlayerCollectionLog(player),
+      ]);
 
     const hasThirdPartyData = Boolean(wikiSyncData || templePlayerStats);
 
@@ -146,6 +141,14 @@ export async function fetchPlayerDetails(
         success: true,
         data: emptyResponse,
       };
+    }
+
+    const collectionLogTotal =
+      templeCollectionLog?.total_collections_available ??
+      (await fetchTempleConstants())?.MAX_COLLECTION_LOGS;
+
+    if (!collectionLogTotal) {
+      throw new Error('Unable to determine max collection logs');
     }
 
     const combatAchievementTier = wikiSyncData
@@ -221,10 +224,6 @@ export async function fetchPlayerDetails(
       (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
       {},
     );
-
-    const collectionLogTotal = collectionLogItemMap
-      ? Object.keys(collectionLogItemMap).length
-      : clientConstants.collectionLog.totalItems;
 
     return {
       success: true,

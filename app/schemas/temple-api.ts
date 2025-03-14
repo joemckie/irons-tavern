@@ -213,3 +213,9 @@ export const TempleOSRSCollectionLogCategory = z.enum([
 export type TempleOSRSCollectionLogCategory = z.infer<
   typeof TempleOSRSCollectionLogCategory
 >;
+
+export const TempleOSRSConstants = z.object({
+  MAX_COLLECTION_LOGS: z.number().nonnegative(),
+});
+
+export type TempleOSRSConstants = z.infer<typeof TempleOSRSConstants>;
