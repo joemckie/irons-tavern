@@ -125,7 +125,9 @@ export async function fetchPlayerDetails(
         fetchTemplePlayerCollectionLog(player),
       ]);
 
-    const hasThirdPartyData = Boolean(wikiSyncData || templePlayerStats);
+    const hasThirdPartyData = Boolean(
+      wikiSyncData || templePlayerStats || templeCollectionLog,
+    );
 
     Sentry.setTags({
       'has-wikisync-data': !!wikiSyncData,
@@ -148,7 +150,7 @@ export async function fetchPlayerDetails(
       (await fetchTempleConstants())?.MAX_COLLECTION_LOGS;
 
     if (!collectionLogTotal) {
-      throw new Error('Unable to determine max collection logs');
+      throw new Error('Unable to determine max collection log slots');
     }
 
     const combatAchievementTier = wikiSyncData

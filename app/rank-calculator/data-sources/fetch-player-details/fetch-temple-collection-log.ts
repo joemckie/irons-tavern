@@ -7,8 +7,8 @@ import {
 import { itemList } from '@/data/item-list';
 import { isCollectionLogItem } from '@/app/schemas/items';
 
-export async function fetchTemplePlayerCollectionLog(player: string) {
-  const categories = Object.values(itemList)
+function generateCollectionLogCategoryList() {
+  return Object.values(itemList)
     .flatMap(({ items }) => items)
     .filter(isCollectionLogItem)
     .reduce((acc, { collectionLogCategories }) => {
@@ -16,6 +16,10 @@ export async function fetchTemplePlayerCollectionLog(player: string) {
 
       return acc;
     }, new Set<TempleOSRSCollectionLogCategory>());
+}
+
+export async function fetchTemplePlayerCollectionLog(player: string) {
+  const categories = generateCollectionLogCategoryList();
 
   try {
     const collectionLogQueryParams = new URLSearchParams({
