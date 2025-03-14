@@ -89,7 +89,7 @@ export const approveSubmissionAction = authActionClient
       } = submissionData;
 
       const submissionDiff = await redis.hmget<{
-        acquiredItems: string[] | null;
+        acquiredItems: string[];
         combatAchievementTier: CombatAchievementTier | null;
       }>(
         rankSubmissionDiffKey(submissionId),
@@ -119,7 +119,7 @@ export const approveSubmissionAction = authActionClient
       const hasVerifiedAncientBloodOrnamentKit =
         hasWikiSyncData === 'true' &&
         isAncientBloodOrnamentKitChecked &&
-        !acquiredItemsDiscrepancies?.includes('Ancient blood ornament kit');
+        !acquiredItemsDiscrepancies.includes('Ancient blood ornament kit');
 
       const applicableAchievementDiscordRoles = {
         'Blood Torva': hasVerifiedAncientBloodOrnamentKit,
