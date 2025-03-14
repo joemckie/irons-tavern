@@ -11,17 +11,21 @@ import {
   RankSubmissionStatus,
 } from '@/app/schemas/rank-calculator';
 import {
+  rankSubmissionDiffKey,
   rankSubmissionKey,
   rankSubmissionMetadataKey,
   userOSRSAccountsKey,
 } from '@/config/redis';
 import { Player } from '@/app/schemas/player';
+import { CombatAchievementTier } from '@/app/schemas/osrs';
+import { achievementDiscordRoles } from '@/config/discord-roles';
 import dedent from 'dedent';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { ApproveSubmissionSchema } from './moderate-submission-schema';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
 import { getRankName } from '../../utils/get-rank-name';
 import { assignRankDiscordRole } from './utils/assign-rank-discord-role';
+import { assignAchievementDiscordRoles } from './utils/assign-achievement-discord-roles';
 
 export const approveSubmissionAction = authActionClient
   .metadata({
@@ -44,13 +48,15 @@ export const approveSubmissionAction = authActionClient
         'status',
         'discordMessageId',
         'submittedBy',
-      )) as unknown as [RankSubmissionStatus, string, string];
+        'hasWikiSyncData',
+      )) as unknown as [RankSubmissionStatus, string, string, string];
 
       if (!metadata) {
         throw new ActionError('Unable to find submission metadata');
       }
 
-      const [submissionStatus, messageId, submitterId] = metadata;
+      const [submissionStatus, messageId, submitterId, hasWikiSyncData] =
+        metadata;
 
       if (submissionStatus !== 'Pending') {
         throw new ActionError('Submission does not need to be moderated!');
@@ -59,7 +65,15 @@ export const approveSubmissionAction = authActionClient
       const submissionData = await redis.json.get<{
         '$.playerName': [string];
         '$.rankStructure': [RankStructure];
-      }>(rankSubmissionKey(submissionId), '$.rankStructure', '$.playerName');
+        '$.combatAchievementTier': [CombatAchievementTier];
+        '$.acquiredItems["Ancient blood ornament kit"]': [boolean];
+      }>(
+        rankSubmissionKey(submissionId),
+        '$.rankStructure',
+        '$.playerName',
+        '$.combatAchievementTier',
+        '$.acquiredItems["Ancient blood ornament kit"]',
+      );
 
       if (!submissionData) {
         throw new ActionError('Unable to find submission data for application');
@@ -68,7 +82,53 @@ export const approveSubmissionAction = authActionClient
       const {
         '$.playerName': [playerName],
         '$.rankStructure': [rankStructure],
+        '$.combatAchievementTier': [combatAchievementTier],
+        '$.acquiredItems["Ancient blood ornament kit"]': [
+          isAncientBloodOrnamentKitChecked,
+        ],
       } = submissionData;
+
+      const submissionDiff = await redis.hmget<{
+        acquiredItems: string[];
+        combatAchievementTier: CombatAchievementTier | null;
+      }>(
+        rankSubmissionDiffKey(submissionId),
+        'acquiredItems',
+        'combatAchievementTier',
+      );
+
+      if (!submissionDiff) {
+        throw new ActionError('Unable to find submission diff for application');
+      }
+
+      const {
+        acquiredItems: acquiredItemsDiscrepancies,
+        combatAchievementTier: combatAchievementTierDiscrepancy,
+      } = submissionDiff;
+
+      // If the player has WikiSync data available and has the Grandmaster CA tier,
+      // they can be assigned the Grandmaster role.
+      const isVerifiedGrandmaster =
+        hasWikiSyncData === 'true' &&
+        combatAchievementTier === 'Grandmaster' &&
+        !combatAchievementTierDiscrepancy;
+
+      // If the player has WikiSync data available and has the Ancient blood ornament kit,
+      // they can be assigned the Blood Torva role.
+      // This item is based on multiple combat achievements that are available via WikiSync.
+      const hasVerifiedAncientBloodOrnamentKit =
+        hasWikiSyncData === 'true' &&
+        isAncientBloodOrnamentKitChecked &&
+        !acquiredItemsDiscrepancies.includes('Ancient blood ornament kit');
+
+      const applicableAchievementDiscordRoles = {
+        'Blood Torva': hasVerifiedAncientBloodOrnamentKit,
+        Grandmaster: isVerifiedGrandmaster,
+      } satisfies Record<keyof typeof achievementDiscordRoles, boolean>;
+
+      const requiresAchievementRoles = Object.values(
+        applicableAchievementDiscordRoles,
+      ).some(Boolean);
 
       if (rankStructure === 'Standard') {
         await discordBotClient.put(
@@ -79,12 +139,24 @@ export const approveSubmissionAction = authActionClient
           ),
         );
         await assignRankDiscordRole(rank, submitterId);
+
+        const newAchievementRoles = requiresAchievementRoles
+          ? await assignAchievementDiscordRoles(
+              submitterId,
+              applicableAchievementDiscordRoles,
+            )
+          : [];
+
         await sendDiscordMessage(
           {
             content: dedent`
               <@${submitterId}>
 
-              Your application has been approved by <@${approverId}> and you have been assigned the ${getRankName(rank)} rank on Discord.
+              Your application has been approved by <@${approverId}> and you have been assigned the following role(s) on Discord:
+              
+              ${[getRankName(rank), ...newAchievementRoles.filter(Boolean)]
+                .map((role) => `- ${role}`)
+                .join('\n')}
 
               Please reach out to a mod to update your in-game rank!
             `,
@@ -92,6 +164,13 @@ export const approveSubmissionAction = authActionClient
           messageId,
         );
       } else {
+        if (requiresAchievementRoles) {
+          await assignAchievementDiscordRoles(
+            submitterId,
+            applicableAchievementDiscordRoles,
+          );
+        }
+
         await sendDiscordMessage(
           {
             content: dedent`
