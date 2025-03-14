@@ -8,7 +8,7 @@ export async function fetchTempleConstants() {
       `${clientConstants.temple.baseUrl}/api/max_constants_list.php`,
     );
 
-    return TempleOSRSConstants.parse(await templeConstantsResponse.json());
+    return TempleOSRSConstants.parse(await templeConstantsResponse.json()).data;
   } catch {
     Sentry.captureMessage('Unable to fetch TempleOSRS constants', 'info');
 

@@ -215,7 +215,9 @@ export type TempleOSRSCollectionLogCategory = z.infer<
 >;
 
 export const TempleOSRSConstants = z.object({
-  MAX_COLLECTION_LOGS: z.number().nonnegative(),
+  data: z.object({
+    MAX_COLLECTION_LOGS: z.number().nonnegative(),
+  }),
 });
 
 export type TempleOSRSConstants = z.infer<typeof TempleOSRSConstants>;
