@@ -1,7 +1,8 @@
 import { z } from 'zod';
-import { MiniQuest, Quest, Skill } from './osrs';
+import { CollectionLogItemName, MiniQuest, Quest, Skill } from './osrs';
 import { AchievementDiaryMap } from './rank-calculator';
 import { CollectionLogAcquiredItemMap, LevelMap } from './wiki';
+import { TempleOSRSCollectionLogCategory } from './temple-api';
 
 export const BaseItem = z.object({
   image: z.string(),
@@ -18,7 +19,7 @@ export const BaseItem = z.object({
 export type BaseItem = z.infer<typeof BaseItem>;
 
 export const RequiredItem = z.object({
-  clogName: z.string(),
+  clogName: CollectionLogItemName,
   amount: z.number(),
 });
 
@@ -27,7 +28,8 @@ export type RequiredItem = z.infer<typeof RequiredItem>;
 export const CollectionLogItem = BaseItem.extend({
   requiredLevels: z.record(Skill, z.number()).optional(),
   requiredItems: z.array(RequiredItem).nonempty(),
-}).superRefine((item) => item.requiredItems !== undefined);
+  collectionLogCategories: z.array(TempleOSRSCollectionLogCategory).nonempty(),
+});
 
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;
 
