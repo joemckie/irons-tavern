@@ -59,6 +59,10 @@ export const HolidayTrack = z.enum([
 
 export type HolidayTrack = z.infer<typeof HolidayTrack>;
 
+export function isHolidayTrack(track: unknown): track is HolidayTrack {
+  return HolidayTrack.safeParse(track).success;
+}
+
 export const WikiSyncResponse = z.object({
   username: z.string(),
   timestamp: z.string(),

@@ -11,7 +11,7 @@ import {
   RequiredItem,
 } from '@/app/schemas/items';
 import { maximumTotalLevel, Quest } from '@/app/schemas/osrs';
-import { HolidayTrack } from '@/app/schemas/wiki';
+import { isHolidayTrack } from '@/app/schemas/wiki';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image'>,
@@ -1330,10 +1330,7 @@ export const itemList: ItemCategoryMap = {
         isAcquired({ musicTracks }) {
           return musicTracks
             ? Object.entries(musicTracks)
-                .filter(
-                  ([track]) =>
-                    !HolidayTrack.options.includes(track as HolidayTrack),
-                )
+                .filter(([track]) => !isHolidayTrack(track))
                 .every(([, unlocked]) => unlocked)
             : false;
         },
