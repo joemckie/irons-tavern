@@ -29,11 +29,11 @@ export async function fetchTemplePlayerCollectionLog(player: string) {
       categories: [...categories].join(','),
     });
 
-    const playerStatsResponse = await fetch(
+    const collectionLogResponse = await fetch(
       `${clientConstants.temple.baseUrl}/api/collection-log/player_collection_log.php?${collectionLogQueryParams}`,
     );
 
-    return TempleOSRSPlayerCollectionLog.parse(await playerStatsResponse.json())
+    return TempleOSRSPlayerCollectionLog.parse(await collectionLogResponse.json())
       .data;
   } catch {
     Sentry.captureMessage('TempleOSRS collection log not found', 'info');
