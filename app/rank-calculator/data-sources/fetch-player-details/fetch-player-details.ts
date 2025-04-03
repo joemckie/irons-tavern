@@ -159,9 +159,12 @@ export async function fetchPlayerDetails(
 
     const {
       Overall_level: totalLevel = null,
-      Collections: collectionLogCount = null,
+      Collections: hiscoresCollectionLogCount = null,
     } = templePlayerStats ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templePlayerStats);
+
+    const { total_collections_finished: templeCollectionLogCount } =
+      templeCollectionLog ?? {};
 
     const {
       achievementDiaries = null,
@@ -243,7 +246,8 @@ export async function fetchPlayerDetails(
             savedData?.combatAchievementTier ?? null,
           ) ?? 'None',
         collectionLogCount: Math.max(
-          collectionLogCount ?? 0,
+          templeCollectionLogCount ?? 0,
+          hiscoresCollectionLogCount ?? 0,
           savedData?.collectionLogCount ?? 0,
         ),
         ehb: Math.round(Math.max(ehb ?? 0, savedData?.ehb ?? 0)),

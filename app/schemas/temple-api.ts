@@ -90,6 +90,7 @@ const TempleOSRSCollectionLogItem = z.object({
 export const TempleOSRSPlayerCollectionLog = z.object({
   data: z.object({
     total_collections_available: z.number().nonnegative(),
+    total_collections_finished: z.number().nonnegative(),
     items: z.array(TempleOSRSCollectionLogItem),
   }),
 });
