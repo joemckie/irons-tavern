@@ -163,7 +163,7 @@ export async function fetchPlayerDetails(
     } = templePlayerStats ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templePlayerStats);
 
-    const { total_collections_finished: templeCollectionLogCount } =
+    const { total_collections_finished: templeCollectionLogCount = null } =
       templeCollectionLog ?? {};
 
     const {
