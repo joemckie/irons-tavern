@@ -1710,6 +1710,7 @@ export const itemList: ItemCategoryMap = {
         Baron: [110],
         Beaver: [150],
         Bloodhound: [400],
+        Bran: [50],
         Butch: [130],
         'Callisto cub': [80],
         'Chompy chick': [10],
@@ -1717,6 +1718,7 @@ export const itemList: ItemCategoryMap = {
         Hellpuppy: [80],
         Herbi: [120],
         Heron: [150],
+        Huberte: [50],
         'Ikkle hydra': [
           140,
           formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
@@ -1781,5 +1783,50 @@ export const itemList: ItemCategoryMap = {
         collectionLogCategory: 'all_pets',
       }),
     ) as NonEmptyArray<Item>,
+  },
+  'The Hueycoatl': {
+    items: [
+      singleItem({
+        name: 'Hueycoatl hide',
+        points: 10,
+        collectionLogCategory: 'the_hueycoatl',
+      }),
+      singleItem({
+        name: 'Dragon hunter wand',
+        points: 0,
+        collectionLogCategory: 'the_hueycoatl',
+      }),
+      singleItem({
+        name: 'Tome of earth',
+        clogName: 'Tome of earth (empty)',
+        points: 0,
+        collectionLogCategory: 'the_hueycoatl',
+      }),
+    ],
+  },
+  'Royal Titans': {
+    items: [
+      singleItem({
+        name: 'Deadeye prayer scroll',
+        image: formatWikiImageUrl('Deadeye'),
+        points: 40,
+        collectionLogCategory: 'royal_titans',
+      }),
+      singleItem({
+        name: 'Mystic vigour prayer scroll',
+        image: formatWikiImageUrl('Mystic Vigour'),
+        points: 40,
+        collectionLogCategory: 'royal_titans',
+      }),
+      compoundItem({
+        name: 'Twinflame staff',
+        points: 80,
+        requiredItems: [
+          'Ice element staff crown',
+          'Fire element staff crown',
+        ],
+        collectionLogCategories: ['royal_titans'],
+      }),
+    ],
   },
 };
