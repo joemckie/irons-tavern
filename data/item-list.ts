@@ -1789,18 +1789,18 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Hueycoatl hide',
         points: 10,
-        collectionLogCategory: 'the_hueycoatl',
+        collectionLogCategory: 'hueycoatl',
       }),
       singleItem({
         name: 'Dragon hunter wand',
         points: 0,
-        collectionLogCategory: 'the_hueycoatl',
+        collectionLogCategory: 'hueycoatl',
       }),
       singleItem({
         name: 'Tome of earth',
         clogName: 'Tome of earth (empty)',
         points: 0,
-        collectionLogCategory: 'the_hueycoatl',
+        collectionLogCategory: 'hueycoatl',
       }),
     ],
   },
