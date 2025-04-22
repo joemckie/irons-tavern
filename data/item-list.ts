@@ -830,6 +830,21 @@ export const itemList: ItemCategoryMap = {
       }),
     ],
   },
+  'The Hueycoatl': {
+    items: [
+      singleItem({
+        name: 'Dragon hunter wand',
+        points: 60,
+        collectionLogCategory: 'hueycoatl',
+      }),
+      singleItem({
+        name: 'Tome of earth',
+        clogName: 'Tome of earth (empty)',
+        points: 30,
+        collectionLogCategory: 'hueycoatl',
+      }),
+    ],
+  },
   'Theatre of Blood': {
     image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
     items: [
@@ -1277,6 +1292,32 @@ export const itemList: ItemCategoryMap = {
       }),
     ],
   },
+  'Royal Titans': {
+    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
+    items: [
+      singleItem({
+        name: 'Deadeye prayer scroll',
+        image: formatWikiImageUrl('Deadeye'),
+        points: 20,
+        collectionLogCategory: 'royal_titans',
+      }),
+      singleItem({
+        name: 'Mystic vigour prayer scroll',
+        image: formatWikiImageUrl('Mystic Vigour'),
+        points: 20,
+        collectionLogCategory: 'royal_titans',
+      }),
+      compoundItem({
+        name: 'Twinflame staff',
+        points: 20,
+        requiredItems: [
+          'Ice element staff crown',
+          'Fire element staff crown',
+        ],
+        collectionLogCategories: ['royal_titans'],
+      }),
+    ],
+  },
   'Wilderness items': {
     image:
       'https://oldschool.runescape.wiki/images/Pkskull_%28Steam_Emoticon%29.png',
@@ -1710,6 +1751,7 @@ export const itemList: ItemCategoryMap = {
         Baron: [110],
         Beaver: [150],
         Bloodhound: [400],
+        Bran: [50],
         Butch: [130],
         'Callisto cub': [80],
         'Chompy chick': [10],
@@ -1717,6 +1759,7 @@ export const itemList: ItemCategoryMap = {
         Hellpuppy: [80],
         Herbi: [120],
         Heron: [150],
+        Huberte: [50],
         'Ikkle hydra': [
           140,
           formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
