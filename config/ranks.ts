@@ -33,7 +33,7 @@ export const standardRanks = {
   Law: 80000,
   Yew: 106000,
   Achiever: 137000,
-  Elite: 180000,
+  Elite: 181000,
   Diseased: 222000,
   Blisterwood: 272000,
 } satisfies AtLeastOne<Record<Rank, number>>;
@@ -52,7 +52,7 @@ export const rankThresholds: Record<
   Inviter: {
     Hero: 0,
     Warlock: 80000,
-    Dragonstone: 180000,
+    Dragonstone: 181000,
   },
   Admin: {
     Defiler: 0,
