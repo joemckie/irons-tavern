@@ -830,6 +830,21 @@ export const itemList: ItemCategoryMap = {
       }),
     ],
   },
+  'The Hueycoatl': {
+    items: [
+      singleItem({
+        name: 'Dragon hunter wand',
+        points: 60,
+        collectionLogCategory: 'hueycoatl',
+      }),
+      singleItem({
+        name: 'Tome of earth',
+        clogName: 'Tome of earth (empty)',
+        points: 30,
+        collectionLogCategory: 'hueycoatl',
+      }),
+    ],
+  },
   'Theatre of Blood': {
     image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
     items: [
@@ -1274,6 +1289,32 @@ export const itemList: ItemCategoryMap = {
       manualItem({
         name: 'Saturated heart',
         points: 60,
+      }),
+    ],
+  },
+  'Royal Titans': {
+    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
+    items: [
+      singleItem({
+        name: 'Deadeye prayer scroll',
+        image: formatWikiImageUrl('Deadeye'),
+        points: 20,
+        collectionLogCategory: 'royal_titans',
+      }),
+      singleItem({
+        name: 'Mystic vigour prayer scroll',
+        image: formatWikiImageUrl('Mystic Vigour'),
+        points: 20,
+        collectionLogCategory: 'royal_titans',
+      }),
+      compoundItem({
+        name: 'Twinflame staff',
+        points: 20,
+        requiredItems: [
+          'Ice element staff crown',
+          'Fire element staff crown',
+        ],
+        collectionLogCategories: ['royal_titans'],
       }),
     ],
   },
@@ -1783,51 +1824,5 @@ export const itemList: ItemCategoryMap = {
         collectionLogCategory: 'all_pets',
       }),
     ) as NonEmptyArray<Item>,
-  },
-  'The Hueycoatl': {
-    items: [
-      singleItem({
-        name: 'Hueycoatl hide',
-        points: 10,
-        collectionLogCategory: 'hueycoatl',
-      }),
-      singleItem({
-        name: 'Dragon hunter wand',
-        points: 100,
-        collectionLogCategory: 'hueycoatl',
-      }),
-      singleItem({
-        name: 'Tome of earth',
-        clogName: 'Tome of earth (empty)',
-        points: 50,
-        collectionLogCategory: 'hueycoatl',
-      }),
-    ],
-  },
-  'Royal Titans': {
-    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
-    items: [
-      singleItem({
-        name: 'Deadeye prayer scroll',
-        image: formatWikiImageUrl('Deadeye'),
-        points: 40,
-        collectionLogCategory: 'royal_titans',
-      }),
-      singleItem({
-        name: 'Mystic vigour prayer scroll',
-        image: formatWikiImageUrl('Mystic Vigour'),
-        points: 40,
-        collectionLogCategory: 'royal_titans',
-      }),
-      compoundItem({
-        name: 'Twinflame staff',
-        points: 80,
-        requiredItems: [
-          'Ice element staff crown',
-          'Fire element staff crown',
-        ],
-        collectionLogCategories: ['royal_titans'],
-      }),
-    ],
   },
 };
