@@ -1793,18 +1793,19 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Dragon hunter wand',
-        points: 0,
+        points: 100,
         collectionLogCategory: 'hueycoatl',
       }),
       singleItem({
         name: 'Tome of earth',
         clogName: 'Tome of earth (empty)',
-        points: 0,
+        points: 50,
         collectionLogCategory: 'hueycoatl',
       }),
     ],
   },
   'Royal Titans': {
+    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
     items: [
       singleItem({
         name: 'Deadeye prayer scroll',
