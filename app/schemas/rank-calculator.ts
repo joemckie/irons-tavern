@@ -63,8 +63,6 @@ export const RankSubmissionDiff = z.object({
   achievementDiaries: AchievementDiaryMap.nullable(),
   acquiredItems: z.array(z.string()).nullable(),
   combatAchievementTier: CombatAchievementTier.nullable(),
-  ehb: z.number().nullable(),
-  ehp: z.number().nullable(),
   totalLevel: z.number().nullable(),
   collectionLogCount: z.number().nullable(),
 });
