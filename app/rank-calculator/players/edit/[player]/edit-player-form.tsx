@@ -26,6 +26,7 @@ import { PlayerNameInput } from './components/player-name-input';
 import { editPlayerAction } from './actions/edit-player-action';
 import { fetchPlayerJoinDateAction } from '../../actions/fetch-player-join-date-action';
 import { EditPlayerSchema } from './actions/edit-player-schema';
+import { Checkbox } from '../../../components/checkbox';
 
 interface EditPlayerFormProps {
   members: string[];
@@ -61,6 +62,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
         defaultValues: {
           joinDate: new Date(playerRecord.joinDate),
           playerName: playerRecord.rsn,
+          isMobileOnly: playerRecord.isMobileOnly,
         },
       },
     },
@@ -156,6 +158,15 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                   </Text>
                 )}
               />
+            </Flex>
+            <Flex direction="row" gap="2" align="center" asChild>
+              <Label weight="bold">
+                <Checkbox
+                  checked={form.watch('isMobileOnly')}
+                  name="isMobileOnly"
+                />
+                <Text as="span">Mobile only player</Text>
+              </Label>
             </Flex>
             <Flex gap="2" mt="2">
               <Flex flexGrow="1">

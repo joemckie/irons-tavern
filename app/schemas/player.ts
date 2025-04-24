@@ -10,6 +10,7 @@ export const Player = z.object({
   joinDate: z.date(),
   rank: Rank.optional(),
   rsn: PlayerName,
+  isMobileOnly: z.boolean(),
 });
 
 export type Player = z.infer<typeof Player>;

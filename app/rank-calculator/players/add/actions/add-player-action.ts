@@ -36,7 +36,10 @@ export const addPlayerAction = authActionClient
   })
   .schema(AddPlayerSchema)
   .action(
-    async ({ parsedInput: { joinDate, playerName }, ctx: { userId } }) => {
+    async ({
+      parsedInput: { joinDate, playerName, isMobileOnly },
+      ctx: { userId },
+    }) => {
       const isUsernameUnique = await assertUniquePlayerRecord(
         userId,
         playerName,
@@ -64,6 +67,7 @@ export const addPlayerAction = authActionClient
         {
           joinDate,
           rsn: maybeFormattedPlayerName,
+          isMobileOnly,
         },
       );
 
