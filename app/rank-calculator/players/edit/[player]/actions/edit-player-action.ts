@@ -22,7 +22,7 @@ export const editPlayerAction = authActionClient
   >([PlayerName, Rank.optional()])
   .action(
     async ({
-      parsedInput: { joinDate, playerName },
+      parsedInput: { joinDate, playerName, isMobileOnly },
       bindArgsParsedInputs: [previousPlayerName, currentRank],
       ctx: { userId },
     }) => {
@@ -80,6 +80,7 @@ export const editPlayerAction = authActionClient
           joinDate,
           rsn: maybeFormattedPlayerName,
           rank: currentRank,
+          isMobileOnly,
         },
       });
 
