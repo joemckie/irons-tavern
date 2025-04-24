@@ -1,4 +1,4 @@
-import { RankStructure } from '@/app/schemas/rank-calculator';
+import { z } from 'zod';
 import { Rank } from './enums';
 
 export const rankNames: Partial<Record<Rank, string>> = {
@@ -21,51 +21,39 @@ export const rankNames: Partial<Record<Rank, string>> = {
   Blisterwood: 'Hollow',
 };
 
-export const standardRanks = {
-  Air: 0,
-  Pine: 1,
-  Water: 3000,
-  Oak: 9000,
-  Earth: 17000,
-  Willow: 28000,
-  Nature: 42000,
-  Maple: 59000,
-  Law: 80000,
-  Yew: 106000,
-  Achiever: 137000,
-  Elite: 181000,
-  Diseased: 222000,
-  Blisterwood: 272000,
-} satisfies AtLeastOne<Record<Rank, number>>;
+export const StandardRank = Rank.extract([
+  'Air',
+  'Pine',
+  'Water',
+  'Oak',
+  'Earth',
+  'Willow',
+  'Nature',
+  'Maple',
+  'Law',
+  'Yew',
+  'Achiever',
+  'Elite',
+  'Diseased',
+  'Blisterwood',
+]);
 
-export const rankThresholds: Record<
-  RankStructure,
-  Partial<Record<Rank, number>>
-> = {
-  Standard: standardRanks,
-  'Bingo Winner': {
-    'Gnome Child': 0,
-  },
-  Legacy: {
-    Legend: 0,
-  },
-  Inviter: {
-    Hero: 0,
-    Warlock: 80000,
-    Dragonstone: 181000,
-  },
-  Admin: {
-    Defiler: 0,
-    Onyx: 137000,
-  },
-  Moderator: {
-    Pure: 0,
-    Zenyte: 137000,
-  },
-  'Deputy Owner': {
-    'Deputy Owner': 0,
-  },
-  Owner: {
-    Owner: 0,
-  },
-};
+export type StandardRank = z.infer<typeof StandardRank>;
+
+/**
+ * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.
+ */
+export const rankProportions = {
+  Water: 0.0091,
+  Oak: 0.0364,
+  Earth: 0.0742,
+  Willow: 0.1226,
+  Nature: 0.1836,
+  Maple: 0.2562,
+  Law: 0.3497,
+  Yew: 0.4618,
+  Achiever: 0.5993,
+  Elite: 0.79,
+  Diseased: 0.9721,
+  Blisterwood: 1.1925,
+} satisfies AtLeastOne<Record<Rank, number>>;

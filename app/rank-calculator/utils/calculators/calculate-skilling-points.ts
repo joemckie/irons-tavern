@@ -1,4 +1,4 @@
-import { calculateMaximumSkillingPointS } from './calculate-maximum-skilling-points';
+import { calculateMaximumSkillingPoints } from './calculate-maximum-skilling-points';
 
 export function calculateSkillingPoints(
   achievementDiaryPoints: number,
@@ -6,7 +6,7 @@ export function calculateSkillingPoints(
   totalLevelPoints: number,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumSkillingPointS(scaling);
+  const totalPointsAvailable = calculateMaximumSkillingPoints(scaling);
 
   const pointsAwarded = Math.min(
     achievementDiaryPoints + totalLevelPoints,
