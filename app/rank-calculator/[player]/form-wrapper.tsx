@@ -66,7 +66,7 @@ export function FormWrapper({
   useEffect(() => {
     if (warnings.templeCollectionLogOutdated) {
       toast.warning(
-        'Please sync your collection log via the TempleOSRS plugin!',
+        'Please sync your collection log via the TempleOSRS RuneLite plugin!',
         { autoClose: false },
       );
     }
