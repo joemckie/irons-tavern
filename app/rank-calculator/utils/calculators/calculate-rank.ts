@@ -1,5 +1,5 @@
 import { Rank } from '@/config/enums';
-import { rankThresholds } from '@/config/ranks';
+import { calculateRankThresholds } from '@/app/rank-calculator/utils/calculate-rank-thresholds';
 import { RankStructure } from '@/app/schemas/rank-calculator';
 
 export interface RankData {
@@ -8,9 +8,11 @@ export interface RankData {
 }
 
 export function calculateRank(
+  totalAvailablePoints: number,
   pointsAwarded: number,
   rankStructure: RankStructure,
-) {
+): RankData {
+  const rankThresholds = calculateRankThresholds(totalAvailablePoints);
   const rankData = Object.entries(rankThresholds[rankStructure]) as [
     Rank,
     number,

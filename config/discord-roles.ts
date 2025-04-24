@@ -1,4 +1,4 @@
-import { standardRanks } from './ranks';
+import { StandardRank } from './ranks';
 
 export const rankDiscordRoles = {
   Blisterwood: '1275200966181916792',
@@ -15,7 +15,7 @@ export const rankDiscordRoles = {
   Water: '846392447629262868',
   Pine: '845833173416804392',
   Air: '1275198438971146240',
-} satisfies Record<keyof typeof standardRanks, string>;
+} satisfies Record<StandardRank, string>;
 
 export const achievementDiscordRoles = {
   Grandmaster: '1042811412063465543',
