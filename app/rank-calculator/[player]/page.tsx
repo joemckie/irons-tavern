@@ -39,6 +39,7 @@ export default async function RankCalculatorPage({
     hasThirdPartyData,
     hasTempleCollectionLog,
     isTempleCollectionLogOutdated,
+    isMobileOnly,
     ...formData
   } = playerDetails.data;
 
@@ -51,9 +52,10 @@ export default async function RankCalculatorPage({
       formData={formData}
       currentRank={currentRank}
       warnings={{
-        templeCollectionLogNotFound: !hasTempleCollectionLog,
-        templeCollectionLogOutdated: isTempleCollectionLogOutdated,
-        wikiSyncNotFound: !hasWikiSyncData,
+        templeCollectionLogNotFound: !isMobileOnly && !hasTempleCollectionLog,
+        templeCollectionLogOutdated:
+          !isMobileOnly && isTempleCollectionLogOutdated,
+        wikiSyncNotFound: !isMobileOnly && !hasWikiSyncData,
       }}
     />
   );

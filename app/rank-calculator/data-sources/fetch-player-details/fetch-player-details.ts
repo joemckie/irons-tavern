@@ -34,6 +34,7 @@ interface PlayerDetailsResponse
   hasWikiSyncData: boolean;
   hasThirdPartyData: boolean;
   isTempleCollectionLogOutdated: boolean;
+  isMobileOnly: boolean;
 }
 
 export const emptyResponse = {
@@ -67,6 +68,7 @@ export const emptyResponse = {
   hasWikiSyncData: false,
   hasThirdPartyData: false,
   isTempleCollectionLogOutdated: false,
+  isMobileOnly: false,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -271,6 +273,7 @@ export async function fetchPlayerDetails(
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
+        isMobileOnly: playerRecord.isMobileOnly,
       },
     };
   } catch (error) {
