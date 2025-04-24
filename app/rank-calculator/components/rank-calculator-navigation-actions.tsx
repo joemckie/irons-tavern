@@ -45,7 +45,7 @@ export function RankCalculatorNavigationActions({
     <Flex gap="1">
       <Button asChild variant="soft" color="gray" type="button">
         <Link
-          href="https://discordapp.com/channels/697956179854229552/1346496963331358787"
+          href="https://discord.com/channels/697956179854229552/1361027528701120664/1361029669968936960"
           target="_blank"
         >
           Help
