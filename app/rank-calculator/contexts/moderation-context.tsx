@@ -4,7 +4,10 @@ import { createContext, PropsWithChildren, useContext, useMemo } from 'react';
 interface ModerationProps
   extends Pick<
     RankSubmissionMetadata,
-    'hasTemplePlayerStats' | 'hasWikiSyncData' | 'hasTempleCollectionLog'
+    | 'hasTemplePlayerStats'
+    | 'hasWikiSyncData'
+    | 'hasTempleCollectionLog'
+    | 'isTempleCollectionLogOutdated'
   > {
   isModerator: boolean;
   actionedByUsername: string | null;
@@ -16,6 +19,7 @@ export const ModerationContext = createContext<ModerationProps>({
   hasTempleCollectionLog: false,
   hasWikiSyncData: false,
   isModerator: false,
+  isTempleCollectionLogOutdated: false,
 });
 
 export function ModerationProvider({
@@ -25,6 +29,7 @@ export function ModerationProvider({
   hasTempleCollectionLog,
   hasWikiSyncData,
   actionedByUsername,
+  isTempleCollectionLogOutdated,
 }: PropsWithChildren<ModerationProps>) {
   const value = useMemo<ModerationProps>(
     () => ({
@@ -33,6 +38,7 @@ export function ModerationProvider({
       hasTempleCollectionLog,
       hasWikiSyncData,
       actionedByUsername,
+      isTempleCollectionLogOutdated,
     }),
     [
       isModerator,
@@ -40,6 +46,7 @@ export function ModerationProvider({
       hasTemplePlayerStats,
       hasWikiSyncData,
       actionedByUsername,
+      isTempleCollectionLogOutdated,
     ],
   );
 
