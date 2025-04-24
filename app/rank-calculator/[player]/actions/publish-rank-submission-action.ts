@@ -92,8 +92,6 @@ export const publishRankSubmissionAction = authActionClient
           achievementDiaries,
           combatAchievementTier,
           collectionLogCount,
-          ehb,
-          ehp,
           totalLevel,
           rankStructure,
           joinDate,
@@ -248,8 +246,6 @@ export const publishRankSubmissionAction = authActionClient
           collectionLogCount < savedData.collectionLogCount
             ? collectionLogCount
             : null,
-        ehb: hasTemplePlayerStats && ehb < savedData.ehb ? ehb : null,
-        ehp: hasTemplePlayerStats && ehp < savedData.ehp ? ehp : null,
         totalLevel:
           hasTemplePlayerStats && totalLevel < savedData.totalLevel
             ? totalLevel

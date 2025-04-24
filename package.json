@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "check-types": "tsc --noEmit",
     "e2e": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress open --e2e\"",
     "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\""
   },

@@ -29,20 +29,6 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
     });
   }
 
-  if (diff.ehb) {
-    errors.ehb = {
-      type: 'value',
-      message: `Expected ${diff.ehb}`,
-    };
-  }
-
-  if (diff.ehp) {
-    errors.ehp = {
-      type: 'value',
-      message: `Expected ${diff.ehp}`,
-    };
-  }
-
   if (diff.totalLevel) {
     errors.totalLevel = {
       type: 'value',
