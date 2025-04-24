@@ -98,6 +98,7 @@ export const publishRankSubmissionAction = authActionClient
           hasTemplePlayerStats,
           hasTempleCollectionLog,
           hasWikiSyncData,
+          isTempleCollectionLogOutdated,
         },
       } = playerDetails;
 
@@ -273,6 +274,7 @@ export const publishRankSubmissionAction = authActionClient
         hasTemplePlayerStats,
         hasTempleCollectionLog,
         hasWikiSyncData,
+        isTempleCollectionLogOutdated,
       } satisfies RankSubmissionMetadata);
 
       submissionTransaction.hset(

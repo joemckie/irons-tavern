@@ -4,6 +4,8 @@ import { FormProvider } from 'react-hook-form';
 import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Rank } from '@/config/enums';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 import { RankCalculator } from './rank-calculator';
 import { RankCalculatorSchema } from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
@@ -15,9 +17,18 @@ import { CurrentPlayerProvider } from '../contexts/current-rank-context';
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
   currentRank?: Rank;
+  warnings: {
+    templeCollectionLogNotFound: boolean;
+    templeCollectionLogOutdated: boolean;
+    wikiSyncNotFound: boolean;
+  };
 }
 
-export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
+export function FormWrapper({
+  formData,
+  currentRank,
+  warnings,
+}: FormWrapperProps) {
   const {
     form,
     action: {
@@ -51,6 +62,33 @@ export function FormWrapper({ formData, currentRank }: FormWrapperProps) {
       },
     }),
   );
+
+  useEffect(() => {
+    if (warnings.templeCollectionLogOutdated) {
+      toast.warning(
+        'Please sync your collection log via the TempleOSRS plugin!',
+        { autoClose: false },
+      );
+    }
+
+    if (warnings.templeCollectionLogNotFound) {
+      toast.warning(
+        'Please install the TempleOSRS RuneLite plugin to enable automatic notable item tracking!',
+        { autoClose: false },
+      );
+    }
+
+    if (warnings.wikiSyncNotFound) {
+      toast.warning(
+        'Please install the WikiSync RuneLite plugin to enable automatic tracking of CAs and diaries!',
+        { autoClose: false },
+      );
+    }
+  }, [
+    warnings.templeCollectionLogOutdated,
+    warnings.templeCollectionLogNotFound,
+    warnings.wikiSyncNotFound,
+  ]);
 
   return (
     <CurrentPlayerProvider rank={currentRank} playerName={formData.playerName}>

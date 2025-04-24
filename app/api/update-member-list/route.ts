@@ -55,6 +55,7 @@ export async function POST(request: NextRequest) {
       : {}),
   } satisfies GroupUpdateRequest;
 
+  // eslint-disable-next-line no-console
   console.log('Updating member list');
 
   // Sync our Temple page with the new member list

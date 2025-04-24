@@ -33,6 +33,7 @@ interface PlayerDetailsResponse
   hasTempleCollectionLog: boolean;
   hasWikiSyncData: boolean;
   hasThirdPartyData: boolean;
+  isTempleCollectionLogOutdated: boolean;
 }
 
 export const emptyResponse = {
@@ -65,6 +66,7 @@ export const emptyResponse = {
   hasTempleCollectionLog: false,
   hasWikiSyncData: false,
   hasThirdPartyData: false,
+  isTempleCollectionLogOutdated: false,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -166,6 +168,11 @@ export async function fetchPlayerDetails(
     const { total_collections_finished: templeCollectionLogCount = null } =
       templeCollectionLog ?? {};
 
+    const isTempleCollectionLogOutdated =
+      templeCollectionLogCount && hiscoresCollectionLogCount
+        ? templeCollectionLogCount < hiscoresCollectionLogCount
+        : false;
+
     const {
       achievementDiaries = null,
       levels = null,
@@ -263,6 +270,7 @@ export async function fetchPlayerDetails(
         hasTempleCollectionLog: !!templeCollectionLog,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
+        isTempleCollectionLogOutdated,
       },
     };
   } catch (error) {

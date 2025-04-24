@@ -93,6 +93,9 @@ export function ReadonlyFormWrapper({
       hasTempleCollectionLog={submissionMetadata.hasTempleCollectionLog}
       hasWikiSyncData={submissionMetadata.hasWikiSyncData}
       actionedByUsername={actionedByUsername}
+      isTempleCollectionLogOutdated={
+        submissionMetadata.isTempleCollectionLogOutdated
+      }
     >
       <FormProvider {...methods}>
         <RankCalculator
