@@ -136,7 +136,6 @@ const ItemRarity = z.string().transform(fractionToDecimal);
 
 export const DroppedItemJSON = z.object({
   Rarity: ItemRarity,
-  'Alt Rarity': ItemRarity,
   'Drop type': z.enum(['combat', 'reward']),
   'Dropped from': z.string(),
 });

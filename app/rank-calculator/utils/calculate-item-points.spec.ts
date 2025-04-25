@@ -6,7 +6,10 @@ import { z } from 'zod';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { calculateItemPoints } from './calculate-item-points';
 
-type ItemResult = Omit<z.input<typeof DroppedItemJSON>, 'Drop type'>;
+type ItemResult = Omit<
+  z.input<typeof DroppedItemJSON>,
+  'Drop type' | 'Alt rarity'
+>;
 
 type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
 
@@ -21,27 +24,20 @@ function setup(items: SetupItem[]) {
       const itemResponse = {
         query: {
           results: Object.fromEntries(
-            results.map(
-              ({
-                'Alt Rarity': altRarity,
-                'Dropped from': dropSource,
-                Rarity: rarity,
-              }) => [
-                `${dropSource}#DROP 1 ${itemName} 1 ${rarity}`,
-                {
-                  printouts: {
-                    'Drop JSON': [
-                      JSON.stringify({
-                        Rarity: rarity,
-                        'Drop type': 'reward',
-                        'Dropped from': dropSource,
-                        'Alt Rarity': altRarity,
-                      } satisfies z.input<typeof DroppedItemJSON>),
-                    ],
-                  },
+            results.map(({ 'Dropped from': dropSource, Rarity: rarity }) => [
+              `${dropSource}#DROP 1 ${itemName} 1 ${rarity}`,
+              {
+                printouts: {
+                  'Drop JSON': [
+                    JSON.stringify({
+                      Rarity: rarity,
+                      'Drop type': 'reward',
+                      'Dropped from': dropSource,
+                    } satisfies z.input<typeof DroppedItemJSON>),
+                  ],
                 },
-              ],
-            ),
+              },
+            ]),
           ),
         },
       } satisfies z.input<typeof DroppedItemResponse>;
@@ -81,7 +77,6 @@ const testCases = [
         item: 'Berserker ring',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Dagannoth Rex',
             Rarity: '1/128',
           },
@@ -97,7 +92,6 @@ const testCases = [
         item: 'Abyssal orphan',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '5/128',
           },
@@ -113,7 +107,6 @@ const testCases = [
         item: 'Jar of miasma',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '13/128',
           },
@@ -130,7 +123,6 @@ const testCases = [
         targetDropSource: 'Unsired',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '26/128',
           },
@@ -146,7 +138,6 @@ const testCases = [
         item: 'Bludgeon axon',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '62/128',
           },
@@ -156,7 +147,6 @@ const testCases = [
         item: 'Bludgeon claw',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '62/128',
           },
@@ -166,7 +156,6 @@ const testCases = [
         item: 'Bludgeon spine',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Unsired',
             Rarity: '62/128',
           },
@@ -182,7 +171,6 @@ const testCases = [
         item: "Hydra's claw",
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/1001',
           },
@@ -199,7 +187,6 @@ const testCases = [
         targetDropSource: 'Alchemical Hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
           },
@@ -210,7 +197,6 @@ const testCases = [
         targetDropSource: 'Alchemical Hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
           },
@@ -221,7 +207,6 @@ const testCases = [
         targetDropSource: 'Alchemical Hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
           },
@@ -238,7 +223,6 @@ const testCases = [
         targetDropSource: 'Alchemical Hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/513',
           },
@@ -255,7 +239,6 @@ const testCases = [
         targetDropSource: 'Alchemical Hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/514',
           },
@@ -271,7 +254,6 @@ const testCases = [
         item: 'Jar of chemicals',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/2000',
           },
@@ -287,7 +269,6 @@ const testCases = [
         item: 'Ikkle hydra',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/3000',
           },
@@ -303,7 +284,6 @@ const testCases = [
         item: "Leviathan's lure",
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'The Leviathan',
             Rarity: '1/768',
           },
@@ -313,7 +293,6 @@ const testCases = [
         item: "Siren's staff",
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'The Whisperer',
             Rarity: '1/512',
           },
@@ -323,7 +302,6 @@ const testCases = [
         item: "Executioner's axe head",
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Vardorvis',
             Rarity: '1/1088',
           },
@@ -333,7 +311,6 @@ const testCases = [
         item: 'Eye of the duke',
         results: [
           {
-            'Alt Rarity': '',
             'Dropped from': 'Duke Sucellus',
             Rarity: '1/720',
           },
@@ -382,12 +359,10 @@ it('calculates the correct points when a specific drop source has been selected'
       item,
       [
         {
-          'Alt Rarity': '',
           'Dropped from': 'Abyssal demon',
           Rarity: '1/32000',
         },
         {
-          'Alt Rarity': '',
           'Dropped from': 'Unsired',
           Rarity: '26/128',
         },
@@ -407,7 +382,6 @@ it('calculates the correct points for items consisting of multiple drops', async
       'Bludgeon axon',
       [
         {
-          'Alt Rarity': '',
           'Dropped from': 'Unsired',
           Rarity: '62/128',
         },
@@ -417,7 +391,6 @@ it('calculates the correct points for items consisting of multiple drops', async
       'Bludgeon claw',
       [
         {
-          'Alt Rarity': '',
           'Dropped from': 'Unsired',
           Rarity: '62/128',
         },
@@ -427,7 +400,6 @@ it('calculates the correct points for items consisting of multiple drops', async
       'Bludgeon spine',
       [
         {
-          'Alt Rarity': '',
           'Dropped from': 'Unsired',
           Rarity: '62/128',
         },
