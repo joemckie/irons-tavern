@@ -283,6 +283,11 @@ export const minimumTotalLevel = skillsCount + 9; // Hitpoints starts at 10
 
 export const maximumTotalLevel = skillsCount * maximumSkillLevel;
 
+/**
+ * A complete list of collection log item names, as found on OSRSWiki.
+ *
+ * https://oldschool.runescape.wiki/?title=Module:Collection_log/data.json&action=raw&ctype=application%2Fjson
+ */
 export const CollectionLogItemName = z.enum([
   'Dragon spear',
   'Shield left half',

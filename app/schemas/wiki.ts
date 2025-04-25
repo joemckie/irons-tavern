@@ -6,6 +6,7 @@ import {
   maximumSkillLevel,
   Skill,
 } from './osrs';
+import { fractionToDecimal } from './transformers/fraction-to-decimal';
 
 export const DiaryTierData = z.object({
   complete: z.boolean(),
@@ -130,6 +131,38 @@ export const CombatAchievementListResponse = z.object({
 export type CombatAchievementListResponse = z.infer<
   typeof CombatAchievementListResponse
 >;
+
+const ItemRarity = z.string().transform(fractionToDecimal);
+
+export const DroppedItemJSON = z.object({
+  Rarity: ItemRarity,
+  'Alt Rarity': ItemRarity,
+  'Drop type': z.enum(['combat', 'reward']),
+  'Dropped from': z.string(),
+});
+
+export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
+
+export const DroppedItemResponse = z
+  .object({
+    query: z.object({
+      results: z.record(
+        z.string(),
+        z.object({
+          printouts: z.object({
+            'Drop JSON': z.array(z.string()),
+          }),
+        }),
+      ),
+    }),
+  })
+  .transform((response) =>
+    Object.values(response.query.results).map((result) =>
+      DroppedItemJSON.parse(JSON.parse(result.printouts['Drop JSON'][0])),
+    ),
+  );
+
+export type DroppedItemResponse = z.infer<typeof DroppedItemResponse>;
 
 export const CombatAchievementJson = z.object({
   monster: z.string(),
