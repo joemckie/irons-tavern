@@ -7,7 +7,10 @@ import {
 } from '@/config/ehb-rates';
 import { fetchDroppedItemInfo } from '../data-sources/fetch-dropped-item-info';
 
-export async function calculateItemPoints(item: CollectionLogItemName) {
+export async function calculateItemPoints(
+  item: CollectionLogItemName,
+  targetDropSource?: string,
+) {
   const itemInfo = await fetchDroppedItemInfo(item);
 
   if (!itemInfo) {
@@ -15,7 +18,14 @@ export async function calculateItemPoints(item: CollectionLogItemName) {
   }
 
   const pointsPerHour = 5;
-  const [{ Rarity: itemRarity, 'Dropped from': dropSource }] = itemInfo;
+
+  const maybeFilteredResults = targetDropSource
+    ? itemInfo.filter((result) => result['Dropped from'] === targetDropSource)
+    : itemInfo;
+
+  const [{ Rarity: itemRarity, 'Dropped from': dropSource }] =
+    maybeFilteredResults;
+
   const bossName = itemBossNameMap[dropSource] ?? dropSource;
   const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
   const dropRateModifier = dropRateModifiers[dropSource] ?? 1;

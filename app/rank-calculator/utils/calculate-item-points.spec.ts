@@ -8,7 +8,10 @@ import { calculateItemPoints } from './calculate-item-points';
 
 type ItemResult = Omit<z.input<typeof DroppedItemJSON>, 'Drop type'>;
 
-function setup(itemName: CollectionLogItemName, results: ItemResult[]) {
+function setup(
+  itemName: CollectionLogItemName,
+  results: NonEmptyArray<ItemResult>,
+) {
   const responseMock = {
     query: {
       results: Object.fromEntries(
@@ -54,11 +57,7 @@ function setup(itemName: CollectionLogItemName, results: ItemResult[]) {
   );
 }
 
-it.each<{
-  itemName: CollectionLogItemName;
-  results: ItemResult[];
-  expectedPoints: number;
-}>([
+const testCases = [
   {
     itemName: 'Berserker ring',
     results: [
@@ -93,6 +92,17 @@ it.each<{
     expectedPoints: 127,
   },
   {
+    itemName: 'Abyssal dagger',
+    results: [
+      {
+        'Alt Rarity': '',
+        'Dropped from': 'Unsired',
+        Rarity: '26/128',
+      },
+    ],
+    expectedPoints: 64,
+  },
+  {
     itemName: "Hydra's claw",
     results: [
       {
@@ -103,7 +113,13 @@ it.each<{
     ],
     expectedPoints: 173,
   },
-])(
+] satisfies NonEmptyArray<{
+  itemName: CollectionLogItemName;
+  results: NonEmptyArray<ItemResult>;
+  expectedPoints: number;
+}>;
+
+it.each(testCases)(
   'calculates the correct points for "$itemName"',
   async ({ expectedPoints, results, itemName }) => {
     setup(itemName, results);
@@ -113,3 +129,25 @@ it.each<{
     expect(points).toEqual(expectedPoints);
   },
 );
+
+it('calculates the correct points when a specific drop source has been selected', async () => {
+  const itemName = 'Abyssal dagger';
+
+  setup(itemName, [
+    {
+      'Alt Rarity': '',
+      'Dropped from': 'Abyssal demon',
+      Rarity: '1/32000',
+    },
+    {
+      'Alt Rarity': '',
+      'Dropped from': 'Unsired',
+      Rarity: '26/128',
+    },
+  ]);
+
+  const points = await calculateItemPoints(itemName, 'Unsired');
+  const expectedPoints = 64;
+
+  expect(points).toEqual(expectedPoints);
+});
