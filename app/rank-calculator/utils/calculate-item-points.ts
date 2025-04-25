@@ -8,33 +8,46 @@ import {
 import { fetchDroppedItemInfo } from '../data-sources/fetch-dropped-item-info';
 
 export async function calculateItemPoints(
-  item: CollectionLogItemName,
-  targetDropSource?: string,
+  items: NonEmptyArray<
+    [itemName: CollectionLogItemName, targetDropSource?: string]
+  >,
 ) {
-  const itemInfo = await fetchDroppedItemInfo(item);
+  const itemInfo = await Promise.all(
+    items.map(([itemName]) => fetchDroppedItemInfo(itemName)),
+  );
 
-  if (!itemInfo) {
+  if (itemInfo.includes(null)) {
     return 0;
   }
 
   const pointsPerHour = 5;
 
-  const maybeFilteredResults = targetDropSource
-    ? itemInfo.filter((result) => result['Dropped from'] === targetDropSource)
-    : itemInfo;
+  const rawPoints = itemInfo.reduce((acc, item, i) => {
+    if (!item) {
+      throw new Error('Cannot find item data');
+    }
 
-  const [{ Rarity: itemRarity, 'Dropped from': dropSource }] =
-    maybeFilteredResults;
+    const [, targetDropSource] = items[i];
 
-  const bossName = itemBossNameMap[dropSource] ?? dropSource;
-  const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
-  const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
+    const maybeFilteredResults = targetDropSource
+      ? item.filter((result) => result['Dropped from'] === targetDropSource)
+      : item;
 
-  if (!bossEhb) {
-    throw new Error('Boss EHB could not be found');
-  }
+    const [{ Rarity: itemRarity, 'Dropped from': dropSource }] =
+      maybeFilteredResults;
 
-  return Math.ceil(
-    (1 / (itemRarity * dropRateModifier) / bossEhb) * pointsPerHour,
-  );
+    const bossName = itemBossNameMap[dropSource] ?? dropSource;
+    const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
+    const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
+
+    if (!bossEhb) {
+      throw new Error('Boss EHB could not be found');
+    }
+
+    return (
+      acc + (1 / (itemRarity * dropRateModifier) / bossEhb) * pointsPerHour
+    );
+  }, 0);
+
+  return Math.ceil(rawPoints);
 }

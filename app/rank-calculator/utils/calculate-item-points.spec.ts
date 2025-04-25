@@ -9,36 +9,46 @@ import { calculateItemPoints } from './calculate-item-points';
 type ItemResult = Omit<z.input<typeof DroppedItemJSON>, 'Drop type'>;
 
 function setup(
-  itemName: CollectionLogItemName,
-  results: NonEmptyArray<ItemResult>,
+  items: NonEmptyArray<
+    [itemName: CollectionLogItemName, results: NonEmptyArray<ItemResult>]
+  >,
 ) {
-  const responseMock = {
-    query: {
-      results: Object.fromEntries(
-        results.map(
-          ({
-            'Alt Rarity': altRarity,
-            'Dropped from': dropSource,
-            Rarity: rarity,
-          }) => [
-            `${dropSource}#DROP 1 ${itemName} 1 ${rarity}`,
-            {
-              printouts: {
-                'Drop JSON': [
-                  JSON.stringify({
-                    Rarity: rarity,
-                    'Drop type': 'reward',
-                    'Dropped from': dropSource,
-                    'Alt Rarity': altRarity,
-                  } satisfies z.input<typeof DroppedItemJSON>),
-                ],
-              },
-            },
-          ],
-        ),
-      ),
+  const responseMock = items.reduce(
+    (acc, [itemName, results]) => {
+      const itemResponse = {
+        query: {
+          results: Object.fromEntries(
+            results.map(
+              ({
+                'Alt Rarity': altRarity,
+                'Dropped from': dropSource,
+                Rarity: rarity,
+              }) => [
+                `${dropSource}#DROP 1 ${itemName} 1 ${rarity}`,
+                {
+                  printouts: {
+                    'Drop JSON': [
+                      JSON.stringify({
+                        Rarity: rarity,
+                        'Drop type': 'reward',
+                        'Dropped from': dropSource,
+                        'Alt Rarity': altRarity,
+                      } satisfies z.input<typeof DroppedItemJSON>),
+                    ],
+                  },
+                },
+              ],
+            ),
+          ),
+        },
+      } satisfies z.input<typeof DroppedItemResponse>;
+
+      acc[itemName] = itemResponse;
+
+      return acc;
     },
-  } satisfies z.input<typeof DroppedItemResponse>;
+    {} as Record<CollectionLogItemName, z.input<typeof DroppedItemResponse>>,
+  );
 
   server.use(
     http.get(`${clientConstants.wiki.baseUrl}/api.php`, ({ request }) => {
@@ -48,8 +58,10 @@ function setup(
           .get('query')
           ?.match(wikiQueryMatcher) ?? [];
 
-      if (requestedItemName === itemName) {
-        return HttpResponse.json(responseMock);
+      if (requestedItemName in responseMock) {
+        return HttpResponse.json(
+          responseMock[requestedItemName as CollectionLogItemName],
+        );
       }
 
       return HttpResponse.error();
@@ -59,7 +71,7 @@ function setup(
 
 const testCases = [
   {
-    itemName: 'Berserker ring',
+    item: 'Berserker ring',
     results: [
       {
         'Alt Rarity': '',
@@ -70,7 +82,7 @@ const testCases = [
     expectedPoints: 7,
   },
   {
-    itemName: 'Abyssal orphan',
+    item: 'Abyssal orphan',
     results: [
       {
         'Alt Rarity': '',
@@ -81,7 +93,7 @@ const testCases = [
     expectedPoints: 329,
   },
   {
-    itemName: 'Jar of miasma',
+    item: 'Jar of miasma',
     results: [
       {
         'Alt Rarity': '',
@@ -92,7 +104,7 @@ const testCases = [
     expectedPoints: 127,
   },
   {
-    itemName: 'Abyssal dagger',
+    item: 'Abyssal dagger',
     results: [
       {
         'Alt Rarity': '',
@@ -103,7 +115,18 @@ const testCases = [
     expectedPoints: 64,
   },
   {
-    itemName: "Hydra's claw",
+    item: 'Bludgeon axon',
+    results: [
+      {
+        'Alt Rarity': '',
+        'Dropped from': 'Unsired',
+        Rarity: '62/128',
+      },
+    ],
+    expectedPoints: 27,
+  },
+  {
+    item: "Hydra's claw",
     results: [
       {
         'Alt Rarity': '',
@@ -114,40 +137,89 @@ const testCases = [
     expectedPoints: 173,
   },
 ] satisfies NonEmptyArray<{
-  itemName: CollectionLogItemName;
+  item: CollectionLogItemName;
   results: NonEmptyArray<ItemResult>;
   expectedPoints: number;
 }>;
 
 it.each(testCases)(
-  'calculates the correct points for "$itemName"',
-  async ({ expectedPoints, results, itemName }) => {
-    setup(itemName, results);
+  'calculates the correct points for "$item"',
+  async ({ expectedPoints, results, item }) => {
+    setup([[item, results]]);
 
-    const points = await calculateItemPoints(itemName);
+    const points = await calculateItemPoints([[item]]);
 
     expect(points).toEqual(expectedPoints);
   },
 );
 
 it('calculates the correct points when a specific drop source has been selected', async () => {
-  const itemName = 'Abyssal dagger';
+  const item = 'Abyssal dagger';
 
-  setup(itemName, [
-    {
-      'Alt Rarity': '',
-      'Dropped from': 'Abyssal demon',
-      Rarity: '1/32000',
-    },
-    {
-      'Alt Rarity': '',
-      'Dropped from': 'Unsired',
-      Rarity: '26/128',
-    },
+  setup([
+    [
+      item,
+      [
+        {
+          'Alt Rarity': '',
+          'Dropped from': 'Abyssal demon',
+          Rarity: '1/32000',
+        },
+        {
+          'Alt Rarity': '',
+          'Dropped from': 'Unsired',
+          Rarity: '26/128',
+        },
+      ],
+    ],
   ]);
 
-  const points = await calculateItemPoints(itemName, 'Unsired');
+  const points = await calculateItemPoints([[item, 'Unsired']]);
   const expectedPoints = 64;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('calculates the correct points for items consisting of multiple drops', async () => {
+  setup([
+    [
+      'Bludgeon axon',
+      [
+        {
+          'Alt Rarity': '',
+          'Dropped from': 'Unsired',
+          Rarity: '62/128',
+        },
+      ],
+    ],
+    [
+      'Bludgeon claw',
+      [
+        {
+          'Alt Rarity': '',
+          'Dropped from': 'Unsired',
+          Rarity: '62/128',
+        },
+      ],
+    ],
+    [
+      'Bludgeon spine',
+      [
+        {
+          'Alt Rarity': '',
+          'Dropped from': 'Unsired',
+          Rarity: '62/128',
+        },
+      ],
+    ],
+  ]);
+
+  const points = await calculateItemPoints([
+    ['Bludgeon axon', 'Unsired'],
+    ['Bludgeon claw', 'Unsired'],
+    ['Bludgeon spine', 'Unsired'],
+  ]);
+  const expectedPoints = 80;
 
   expect(points).toEqual(expectedPoints);
 });
