@@ -295,6 +295,52 @@ const testCases = [
       },
     ],
   },
+  {
+    expectedPoints: 540,
+    itemName: 'Soulreaper axe',
+    itemSources: [
+      {
+        item: "Leviathan's lure",
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'The Leviathan',
+            Rarity: '1/768',
+          },
+        ],
+      },
+      {
+        item: "Siren's staff",
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'The Whisperer',
+            Rarity: '1/512',
+          },
+        ],
+      },
+      {
+        item: "Executioner's axe head",
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Vardorvis',
+            Rarity: '1/1088',
+          },
+        ],
+      },
+      {
+        item: 'Eye of the duke',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Duke Sucellus',
+            Rarity: '1/720',
+          },
+        ],
+      },
+    ],
+  },
 ] satisfies NonEmptyArray<{
   itemName: string;
   itemSources: NonEmptyArray<{

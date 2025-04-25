@@ -5,6 +5,7 @@ import {
   ehbRates,
   itemBossNameMap,
 } from '@/config/ehb-rates';
+import Decimal from 'decimal.js-light';
 import { fetchDroppedItemInfo } from '../data-sources/fetch-dropped-item-info';
 
 export async function calculateItemPoints(
@@ -44,9 +45,12 @@ export async function calculateItemPoints(
       throw new Error('Boss EHB could not be found');
     }
 
-    return (
-      acc + (1 / (itemRarity * dropRateModifier) / bossEhb) * pointsPerHour
-    );
+    const points = new Decimal(1)
+      .dividedBy(new Decimal(itemRarity).times(dropRateModifier))
+      .dividedBy(bossEhb)
+      .times(pointsPerHour);
+
+    return acc + points.toNumber();
   }, 0);
 
   return Math.ceil(rawPoints);
