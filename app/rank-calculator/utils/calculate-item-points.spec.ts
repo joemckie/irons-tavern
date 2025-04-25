@@ -8,11 +8,14 @@ import { calculateItemPoints } from './calculate-item-points';
 
 type ItemResult = Omit<z.input<typeof DroppedItemJSON>, 'Drop type'>;
 
-function setup(
-  items: NonEmptyArray<
-    [itemName: CollectionLogItemName, results: NonEmptyArray<ItemResult>]
-  >,
-) {
+type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
+
+type ItemPointsParameters = [
+  itemName: CollectionLogItemName,
+  targetDropSource?: string,
+];
+
+function setup(items: SetupItem[]) {
   const responseMock = items.reduce(
     (acc, [itemName, results]) => {
       const itemResponse = {
@@ -71,83 +74,150 @@ function setup(
 
 const testCases = [
   {
-    item: 'Berserker ring',
-    results: [
-      {
-        'Alt Rarity': '',
-        'Dropped from': 'Dagannoth Rex',
-        Rarity: '1/128',
-      },
-    ],
     expectedPoints: 7,
-  },
-  {
-    item: 'Abyssal orphan',
-    results: [
+    itemName: 'Berserker ring',
+    itemSources: [
       {
-        'Alt Rarity': '',
-        'Dropped from': 'Unsired',
-        Rarity: '5/128',
+        item: 'Berserker ring',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Dagannoth Rex',
+            Rarity: '1/128',
+          },
+        ],
       },
     ],
+  },
+  {
     expectedPoints: 329,
-  },
-  {
-    item: 'Jar of miasma',
-    results: [
+    itemName: 'Abyssal orphan',
+    itemSources: [
       {
-        'Alt Rarity': '',
-        'Dropped from': 'Unsired',
-        Rarity: '13/128',
+        item: 'Abyssal orphan',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '5/128',
+          },
+        ],
       },
     ],
+  },
+  {
     expectedPoints: 127,
-  },
-  {
-    item: 'Abyssal dagger',
-    results: [
+    itemName: 'Jar of miasma',
+    itemSources: [
       {
-        'Alt Rarity': '',
-        'Dropped from': 'Unsired',
-        Rarity: '26/128',
+        item: 'Jar of miasma',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '13/128',
+          },
+        ],
       },
     ],
+  },
+  {
     expectedPoints: 64,
-  },
-  {
-    item: 'Bludgeon axon',
-    results: [
+    itemName: 'Abyssal dagger',
+    itemSources: [
       {
-        'Alt Rarity': '',
-        'Dropped from': 'Unsired',
-        Rarity: '62/128',
+        item: 'Abyssal dagger',
+        targetDropSource: 'Unsired',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '26/128',
+          },
+        ],
       },
     ],
-    expectedPoints: 27,
   },
   {
-    item: "Hydra's claw",
-    results: [
+    expectedPoints: 80,
+    itemName: 'Abyssal bludgeon',
+    itemSources: [
       {
-        'Alt Rarity': '',
-        'Dropped from': 'Alchemical Hydra',
-        Rarity: '1/1001',
+        item: 'Bludgeon axon',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '62/128',
+          },
+        ],
+      },
+      {
+        item: 'Bludgeon claw',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '62/128',
+          },
+        ],
+      },
+      {
+        item: 'Bludgeon spine',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Unsired',
+            Rarity: '62/128',
+          },
+        ],
       },
     ],
+  },
+  {
     expectedPoints: 173,
+    itemName: "Hydra's claw",
+    itemSources: [
+      {
+        item: "Hydra's claw",
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/1001',
+          },
+        ],
+      },
+    ],
   },
 ] satisfies NonEmptyArray<{
-  item: CollectionLogItemName;
-  results: NonEmptyArray<ItemResult>;
+  itemName: string;
+  itemSources: NonEmptyArray<{
+    item: CollectionLogItemName;
+    results: NonEmptyArray<ItemResult>;
+    targetDropSource?: string;
+  }>;
   expectedPoints: number;
 }>;
 
 it.each(testCases)(
-  'calculates the correct points for "$item"',
-  async ({ expectedPoints, results, item }) => {
-    setup([[item, results]]);
+  'assigns "$itemName" $expectedPoints points',
+  async ({ expectedPoints, itemSources }) => {
+    const itemSourcesTuple = itemSources.map<SetupItem>(({ item, results }) => [
+      item,
+      results,
+    ]);
 
-    const points = await calculateItemPoints([[item]]);
+    setup(itemSourcesTuple);
+
+    const points = await calculateItemPoints(
+      itemSources.map<ItemPointsParameters>((itemSource) => [
+        itemSource.item,
+        'targetDropSource' in itemSource
+          ? itemSource.targetDropSource
+          : undefined,
+      ]) as NonEmptyArray<ItemPointsParameters>,
+    );
 
     expect(points).toEqual(expectedPoints);
   },
