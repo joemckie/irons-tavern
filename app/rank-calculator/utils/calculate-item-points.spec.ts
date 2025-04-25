@@ -190,6 +190,111 @@ const testCases = [
       },
     ],
   },
+  {
+    expectedPoints: 94,
+    itemName: 'Brimstone ring',
+    itemSources: [
+      {
+        item: "Hydra's eye",
+        targetDropSource: 'Alchemical Hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/181',
+          },
+        ],
+      },
+      {
+        item: "Hydra's fang",
+        targetDropSource: 'Alchemical Hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/181',
+          },
+        ],
+      },
+      {
+        item: "Hydra's heart",
+        targetDropSource: 'Alchemical Hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/181',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    expectedPoints: 89,
+    itemName: 'Hydra tail',
+    itemSources: [
+      {
+        item: 'Hydra tail',
+        targetDropSource: 'Alchemical Hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/513',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    expectedPoints: 89,
+    itemName: 'Hydra leather',
+    itemSources: [
+      {
+        item: 'Hydra leather',
+        targetDropSource: 'Alchemical Hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/514',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    expectedPoints: 345,
+    itemName: 'Jar of chemicals',
+    itemSources: [
+      {
+        item: 'Jar of chemicals',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/2000',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    expectedPoints: 518,
+    itemName: 'Ikkle hydra',
+    itemSources: [
+      {
+        item: 'Ikkle hydra',
+        results: [
+          {
+            'Alt Rarity': '',
+            'Dropped from': 'Alchemical Hydra',
+            Rarity: '1/3000',
+          },
+        ],
+      },
+    ],
+  },
 ] satisfies NonEmptyArray<{
   itemName: string;
   itemSources: NonEmptyArray<{
