@@ -6,33 +6,35 @@ import {
   itemBossNameMap,
 } from '@/config/ehb-rates';
 import Decimal from 'decimal.js-light';
-import { fetchDroppedItemInfo } from '../data-sources/fetch-dropped-item-info';
+import { fetchItemDropRates } from '../data-sources/fetch-dropped-item-info';
 
 export async function calculateItemPoints(
   items: NonEmptyArray<
     [itemName: CollectionLogItemName, targetDropSource?: string]
   >,
 ) {
-  const itemInfo = await Promise.all(
-    items.map(([itemName]) => fetchDroppedItemInfo(itemName)),
-  );
+  const dropRateInfo = await fetchItemDropRates();
 
-  if (itemInfo.includes(null)) {
-    return 0;
+  if (!dropRateInfo) {
+    throw new Error('Unable to retrieve drop rate info!');
   }
 
   const pointsPerHour = 5;
 
-  const rawPoints = itemInfo.reduce((acc, item, i) => {
-    if (!item) {
-      throw new Error('Cannot find item data');
+  const rawPoints = items.reduce((acc, [itemName], i) => {
+    const itemDropRates = dropRateInfo[itemName];
+
+    if (!itemDropRates) {
+      throw new Error('Cannot find item drop rates!');
     }
 
     const [, targetDropSource] = items[i];
 
     const maybeFilteredResults = targetDropSource
-      ? item.filter((result) => result['Dropped from'] === targetDropSource)
-      : item;
+      ? itemDropRates.filter(
+          (result) => result['Dropped from'] === targetDropSource,
+        )
+      : itemDropRates;
 
     const [{ Rarity: itemRarity, 'Dropped from': dropSource }] =
       maybeFilteredResults;

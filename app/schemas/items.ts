@@ -21,6 +21,7 @@ export type BaseItem = z.infer<typeof BaseItem>;
 export const RequiredItem = z.object({
   clogName: CollectionLogItemName,
   amount: z.number(),
+  targetDropSource: z.string().optional(),
 });
 
 export type RequiredItem = z.infer<typeof RequiredItem>;
@@ -29,6 +30,7 @@ export const CollectionLogItem = BaseItem.extend({
   requiredLevels: z.record(Skill, z.number()).optional(),
   requiredItems: z.array(RequiredItem).nonempty(),
   collectionLogCategories: z.array(TempleOSRSCollectionLogCategory).nonempty(),
+  points: z.number().optional(),
 });
 
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;

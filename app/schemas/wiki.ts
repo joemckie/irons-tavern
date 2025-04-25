@@ -138,6 +138,7 @@ export const DroppedItemJSON = z.object({
   Rarity: ItemRarity,
   'Drop type': z.enum(['combat', 'reward']),
   'Dropped from': z.string(),
+  'Dropped item': z.string(),
 });
 
 export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
@@ -149,15 +150,34 @@ export const DroppedItemResponse = z
         z.string(),
         z.object({
           printouts: z.object({
-            'Drop JSON': z.array(z.string()),
+            'Drop JSON': z.array(
+              z
+                .string()
+                .transform((jsonString) =>
+                  DroppedItemJSON.parse(JSON.parse(jsonString)),
+                ),
+            ),
           }),
         }),
       ),
     }),
   })
-  .transform((response) =>
-    Object.values(response.query.results).map((result) =>
-      DroppedItemJSON.parse(JSON.parse(result.printouts['Drop JSON'][0])),
+  .transform((data) =>
+    Object.values(data.query.results).reduce(
+      (
+        acc,
+        {
+          printouts: {
+            'Drop JSON': [{ 'Dropped item': itemName, ...dropJson }],
+          },
+        },
+      ) => {
+        acc[itemName] = acc[itemName] ?? [];
+        acc[itemName].push(dropJson);
+
+        return acc;
+      },
+      {} as Record<string, Omit<DroppedItemJSON, 'Dropped item'>[]>,
     ),
   );
 

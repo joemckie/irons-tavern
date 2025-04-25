@@ -8,7 +8,7 @@ import { calculateItemPoints } from './calculate-item-points';
 
 type ItemResult = Omit<
   z.input<typeof DroppedItemJSON>,
-  'Drop type' | 'Alt rarity'
+  'Drop type' | 'Alt rarity' | 'Dropped item'
 >;
 
 type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
@@ -21,50 +21,34 @@ type ItemPointsParameters = [
 function setup(items: SetupItem[]) {
   const responseMock = items.reduce(
     (acc, [itemName, results]) => {
-      const itemResponse = {
-        query: {
-          results: Object.fromEntries(
-            results.map(({ 'Dropped from': dropSource, Rarity: rarity }) => [
-              `${dropSource}#DROP 1 ${itemName} 1 ${rarity}`,
-              {
-                printouts: {
-                  'Drop JSON': [
-                    JSON.stringify({
-                      Rarity: rarity,
-                      'Drop type': 'reward',
-                      'Dropped from': dropSource,
-                    } satisfies z.input<typeof DroppedItemJSON>),
-                  ],
-                },
-              },
-            ]),
-          ),
-        },
-      } satisfies z.input<typeof DroppedItemResponse>;
-
-      acc[itemName] = itemResponse;
+      results.forEach(({ 'Dropped from': dropSource, Rarity: rarity }) => {
+        acc.query.results[`${dropSource}#DROP 1 ${itemName} 1 ${rarity}`] = {
+          printouts: {
+            'Drop JSON': [
+              JSON.stringify({
+                Rarity: rarity,
+                'Drop type': 'reward',
+                'Dropped from': dropSource,
+                'Dropped item': itemName,
+              } satisfies z.input<typeof DroppedItemJSON>),
+            ],
+          },
+        };
+      });
 
       return acc;
     },
-    {} as Record<CollectionLogItemName, z.input<typeof DroppedItemResponse>>,
+    {
+      query: {
+        results: {},
+      },
+    } as z.input<typeof DroppedItemResponse>,
   );
 
   server.use(
-    http.get(`${clientConstants.wiki.baseUrl}/api.php`, ({ request }) => {
-      const wikiQueryMatcher = /Dropped item::([\w|\s|']+)/i;
-      const [, requestedItemName] =
-        new URL(request.url).searchParams
-          .get('query')
-          ?.match(wikiQueryMatcher) ?? [];
-
-      if (requestedItemName in responseMock) {
-        return HttpResponse.json(
-          responseMock[requestedItemName as CollectionLogItemName],
-        );
-      }
-
-      return HttpResponse.error();
-    }),
+    http.get(`${clientConstants.wiki.baseUrl}/api.php`, () =>
+      HttpResponse.json(responseMock),
+    ),
   );
 }
 
