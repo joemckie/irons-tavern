@@ -25,7 +25,7 @@ type SingleItemOptions = Omit<
   clogName?: CollectionLogItemName;
   requiredAmount?: number;
   collectionLogCategory: TempleOSRSCollectionLogCategory;
-  targetDropSource?: string;
+  targetDropSources?: RequiredItem['targetDropSources'];
 };
 
 function singleItem({
@@ -36,7 +36,7 @@ function singleItem({
   requiredAmount = 1,
   isAutomatic,
   collectionLogCategory,
-  targetDropSource,
+  targetDropSources,
 }: SingleItemOptions) {
   return CollectionLogItem.parse({
     image,
@@ -46,7 +46,7 @@ function singleItem({
       {
         amount: requiredAmount,
         clogName: clogName ?? name,
-        targetDropSource,
+        targetDropSources,
       },
     ],
     isAutomatic,
@@ -61,7 +61,7 @@ type CompoundItemOptions = Omit<
   requiredItems: NonEmptyArray<{
     item: CollectionLogItemName;
     amount?: number;
-    targetDropSource?: string;
+    targetDropSources?: RequiredItem['targetDropSources'];
   }>;
 };
 
@@ -79,10 +79,10 @@ function compoundItem({
     name,
     points,
     requiredItems: requiredItems.map<RequiredItem>(
-      ({ item: clogName, amount = 1, targetDropSource }) => ({
+      ({ item: clogName, amount = 1, targetDropSources }) => ({
         amount,
         clogName,
-        ...(targetDropSource && { targetDropSource }),
+        targetDropSources,
       }),
     ),
     requiredLevels,
@@ -219,7 +219,7 @@ export const itemList = {
       }),
       singleItem({
         name: 'Abyssal dagger',
-        targetDropSource: 'Unsired',
+        targetDropSources: ['Unsired'],
         collectionLogCategory: 'abyssal_sire',
       }),
     ],
@@ -230,16 +230,16 @@ export const itemList = {
       compoundItem({
         name: 'Brimstone ring',
         requiredItems: [
-          { item: "Hydra's eye", targetDropSource: 'Alchemical Hydra' },
-          { item: "Hydra's fang", targetDropSource: 'Alchemical Hydra' },
-          { item: "Hydra's heart", targetDropSource: 'Alchemical Hydra' },
+          { item: "Hydra's eye", targetDropSources: ['Alchemical Hydra'] },
+          { item: "Hydra's fang", targetDropSources: ['Alchemical Hydra'] },
+          { item: "Hydra's heart", targetDropSources: ['Alchemical Hydra'] },
         ],
         collectionLogCategories: ['alchemical_hydra'],
       }),
       singleItem({
         name: 'Hydra tail',
         collectionLogCategory: 'alchemical_hydra',
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
       }),
       singleItem({
         name: 'Hydra leather',
@@ -280,9 +280,9 @@ export const itemList = {
           { item: 'Noxious blade' },
           { item: 'Noxious point' },
           { item: 'Noxious pommel' },
-          { item: 'Aranea boots' },
-          { item: 'Araxyte head', targetDropSource: 'Araxxor' },
-          { item: 'Zenyte shard' },
+          { item: 'Aranea boots', targetDropSources: ['Araxyte#Level 146'] },
+          { item: 'Araxyte head', targetDropSources: ['Araxxor'] },
+          { item: 'Zenyte shard', targetDropSources: ['Demonic gorilla'] },
           { item: 'Nid' },
         ],
         collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
@@ -378,7 +378,7 @@ export const itemList = {
       singleItem({
         name: 'Saradomin sword',
         collectionLogCategory: 'commander_zilyana',
-        targetDropSource: 'Commander Zilyana',
+        targetDropSources: ['Commander Zilyana'],
       }),
       singleItem({
         name: "Saradomin's light",
@@ -460,10 +460,10 @@ export const itemList = {
       compoundItem({
         name: 'Heavy ballista',
         requiredItems: [
-          { item: 'Ballista spring', targetDropSource: 'Demonic gorilla' },
-          { item: 'Monkey tail', targetDropSource: 'Demonic gorilla' },
-          { item: 'Heavy frame', targetDropSource: 'Demonic gorilla' },
-          { item: 'Ballista limbs', targetDropSource: 'Demonic gorilla' },
+          { item: 'Ballista spring', targetDropSources: ['Demonic gorilla'] },
+          { item: 'Monkey tail', targetDropSources: ['Demonic gorilla'] },
+          { item: 'Heavy frame', targetDropSources: ['Demonic gorilla'] },
+          { item: 'Ballista limbs', targetDropSources: ['Demonic gorilla'] },
         ],
         requiredLevels: {
           Fletching: 72,
@@ -644,17 +644,17 @@ export const itemList = {
       singleItem({
         name: 'Bandos chestplate',
         collectionLogCategory: 'general_graardor',
-        targetDropSource: 'General Graardor',
+        targetDropSources: ['General Graardor'],
       }),
       singleItem({
         name: 'Bandos tassets',
         collectionLogCategory: 'general_graardor',
-        targetDropSource: 'General Graardor',
+        targetDropSources: ['General Graardor'],
       }),
       singleItem({
         name: 'Bandos boots',
         collectionLogCategory: 'general_graardor',
-        targetDropSource: 'General Graardor',
+        targetDropSources: ['General Graardor'],
       }),
       singleItem({
         name: 'Bandos hilt',
@@ -680,7 +680,7 @@ export const itemList = {
       compoundItem({
         name: 'Guardian boots',
         requiredItems: [
-          { item: 'Bandos boots', targetDropSource: 'General Graardor' },
+          { item: 'Bandos boots', targetDropSources: ['General Graardor'] },
           { item: 'Black tourmaline core' },
         ],
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
@@ -705,17 +705,17 @@ export const itemList = {
       singleItem({
         name: 'Armadyl helmet',
         collectionLogCategory: 'kree_arra',
-        targetDropSource: "Kree'arra",
+        targetDropSources: ["Kree'arra"],
       }),
       singleItem({
         name: 'Armadyl chestplate',
         collectionLogCategory: 'kree_arra',
-        targetDropSource: "Kree'arra",
+        targetDropSources: ["Kree'arra"],
       }),
       singleItem({
         name: 'Armadyl chainskirt',
         collectionLogCategory: 'kree_arra',
-        targetDropSource: "Kree'arra",
+        targetDropSources: ["Kree'arra"],
       }),
       singleItem({
         name: 'Armadyl hilt',
@@ -733,7 +733,7 @@ export const itemList = {
       singleItem({
         name: 'Zamorakian spear',
         collectionLogCategory: 'kril_tsutsaroth',
-        targetDropSource: "K'ril Tsutsaroth",
+        targetDropSources: ["K'ril Tsutsaroth"],
       }),
       singleItem({
         name: 'Staff of the dead',
@@ -759,26 +759,26 @@ export const itemList = {
       singleItem({
         name: 'Crystal weapon seed',
         collectionLogCategory: 'the_gauntlet',
-        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
       }),
       singleItem({
         name: 'Crystal armour seed',
         collectionLogCategory: 'the_gauntlet',
-        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (1)',
         clogName: 'Enhanced crystal weapon seed',
         requiredAmount: 1,
         collectionLogCategory: 'the_gauntlet',
-        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (2)',
         clogName: 'Enhanced crystal weapon seed',
         requiredAmount: 2,
         collectionLogCategory: 'the_gauntlet',
-        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
       }),
     ],
   },
@@ -948,47 +948,47 @@ export const itemList = {
       singleItem({
         name: 'Nightmare staff',
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: "Inquisitor's great helm",
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: "Inquisitor's hauberk",
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: "Inquisitor's plateskirt",
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: "Inquisitor's mace",
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: 'Eldritch orb',
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: 'Harmonised orb',
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: 'Volatile orb',
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
         name: 'Parasitic egg',
         collectionLogCategory: 'the_nightmare',
-        targetDropSource: "Phosani's Nightmare",
+        targetDropSources: ["Phosani's Nightmare"],
       }),
     ],
   },
@@ -1275,7 +1275,7 @@ export const itemList = {
       singleItem({
         name: 'Amulet of avarice',
         collectionLogCategory: 'revenants',
-        targetDropSource: 'Revenant ork#On-task',
+        targetDropSources: ['Revenant ork#On-task'],
       }),
       compoundItem({
         name: 'Obelisk',
@@ -1285,7 +1285,7 @@ export const itemList = {
           {
             item: 'Ancient crystal',
             amount: 4,
-            targetDropSource: 'Revenant ork',
+            targetDropSources: ['Revenant ork'],
           },
         ],
         requiredLevels: {
@@ -1297,41 +1297,41 @@ export const itemList = {
         name: "Viggora's chainmace",
         clogName: "Viggora's chainmace (u)",
         collectionLogCategory: 'revenants',
-        targetDropSource: 'Revenant ork#On-task',
+        targetDropSources: ['Revenant ork#On-task'],
       }),
       singleItem({
         name: 'Claws of callisto',
         collectionLogCategory: 'callisto_and_artio',
-        targetDropSource: 'Artio',
+        targetDropSources: ['Artio'],
       }),
       singleItem({
         name: "Craw's bow",
         clogName: "Craw's bow (u)",
         collectionLogCategory: 'revenants',
-        targetDropSource: 'Revenant ork#On-task',
+        targetDropSources: ['Revenant ork#On-task'],
       }),
       singleItem({
         name: 'Fangs of venenatis',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSource: 'Spindel',
+        targetDropSources: ['Spindel'],
       }),
       singleItem({
         name: "Thammaron's sceptre",
         clogName: "Thammaron's sceptre (u)",
         collectionLogCategory: 'revenants',
-        targetDropSource: 'Revenant ork#On-task',
+        targetDropSources: ['Revenant ork#On-task'],
       }),
       singleItem({
         name: "Skull of vet'ion",
         collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSource: "Calvar'ion",
+        targetDropSources: ["Calvar'ion"],
       }),
       compoundItem({
         name: 'Voidwaker',
         requiredItems: [
-          { item: 'Voidwaker hilt', targetDropSource: 'Artio' },
-          { item: 'Voidwaker gem', targetDropSource: 'Spindel' },
-          { item: 'Voidwaker blade', targetDropSource: "Calvar'ion" },
+          { item: 'Voidwaker hilt', targetDropSources: ['Artio'] },
+          { item: 'Voidwaker gem', targetDropSources: ['Spindel'] },
+          { item: 'Voidwaker blade', targetDropSources: ["Calvar'ion"] },
         ],
         collectionLogCategories: [
           'vetion_and_calvarion',

@@ -132,18 +132,28 @@ export type CombatAchievementListResponse = z.infer<
   typeof CombatAchievementListResponse
 >;
 
-const ItemRarity = z.string().transform(fractionToDecimal);
+const ItemRarity = z
+  .string()
+  .transform(fractionToDecimal)
+  .pipe(
+    z
+      .number()
+      .lt(1, 'Item rarity must be less than 1')
+      .gt(0, 'Item rarity must be more than 0'),
+  );
 
 export const DroppedItemJSON = z
   .object({
     Rarity: ItemRarity,
     'Dropped from': z.string(),
     'Dropped item': z.string(),
+    Rolls: z.number().positive(),
   })
   .transform((data) => ({
     rarity: data.Rarity,
     dropSource: data['Dropped from'],
     itemName: data['Dropped item'],
+    rolls: data.Rolls,
   }));
 
 export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
@@ -173,12 +183,16 @@ export const DroppedItemResponse = z
         acc,
         {
           printouts: {
-            'Drop JSON': [{ itemName, dropSource, rarity }],
+            'Drop JSON': [{ itemName, dropSource, rarity, rolls }],
           },
         },
       ) => {
         acc[itemName] = acc[itemName] ?? {};
-        acc[itemName][dropSource] = rarity;
+
+        // Certain items are rolled multiple times, e.g. Granite Hammer.
+        // As the rarity is for an individual roll, we multiply the
+        // individual rarity by the number of rolls to get the final item rarity
+        acc[itemName][dropSource] = rarity * rolls;
 
         return acc;
       },

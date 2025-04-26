@@ -18,19 +18,22 @@ type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
 function setup(items: SetupItem[]) {
   const responseMock = items.reduce(
     (acc, [itemName, results]) => {
-      results.forEach(({ 'Dropped from': dropSource, Rarity: rarity }) => {
-        acc.query.results[`${dropSource}#DROP 1 ${itemName} 1 ${rarity}`] = {
-          printouts: {
-            'Drop JSON': [
-              JSON.stringify({
-                Rarity: rarity,
-                'Dropped from': dropSource,
-                'Dropped item': itemName,
-              } satisfies z.input<typeof DroppedItemJSON>),
-            ],
-          },
-        };
-      });
+      results.forEach(
+        ({ 'Dropped from': dropSource, Rarity: rarity, ...data }) => {
+          acc.query.results[`${dropSource}#DROP 1 ${itemName} 1 ${rarity}`] = {
+            printouts: {
+              'Drop JSON': [
+                JSON.stringify({
+                  ...data,
+                  Rarity: rarity,
+                  'Dropped from': dropSource,
+                  'Dropped item': itemName,
+                } satisfies z.input<typeof DroppedItemJSON>),
+              ],
+            },
+          };
+        },
+      );
 
       return acc;
     },
@@ -59,6 +62,7 @@ const testCases = [
           {
             'Dropped from': 'Dagannoth Rex',
             Rarity: '1/128',
+            Rolls: 1,
           },
         ],
       },
@@ -74,6 +78,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '5/128',
+            Rolls: 1,
           },
         ],
       },
@@ -89,6 +94,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '13/128',
+            Rolls: 1,
           },
         ],
       },
@@ -105,6 +111,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '26/128',
+            Rolls: 1,
           },
         ],
       },
@@ -120,6 +127,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '62/128',
+            Rolls: 1,
           },
         ],
       },
@@ -129,6 +137,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '62/128',
+            Rolls: 1,
           },
         ],
       },
@@ -138,6 +147,7 @@ const testCases = [
           {
             'Dropped from': 'Unsired',
             Rarity: '62/128',
+            Rolls: 1,
           },
         ],
       },
@@ -153,6 +163,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/1001',
+            Rolls: 1,
           },
         ],
       },
@@ -169,6 +180,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
+            Rolls: 1,
           },
         ],
       },
@@ -179,6 +191,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
+            Rolls: 1,
           },
         ],
       },
@@ -189,6 +202,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/181',
+            Rolls: 1,
           },
         ],
       },
@@ -205,6 +219,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/513',
+            Rolls: 1,
           },
         ],
       },
@@ -221,6 +236,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/514',
+            Rolls: 1,
           },
         ],
       },
@@ -236,6 +252,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/2000',
+            Rolls: 1,
           },
         ],
       },
@@ -251,6 +268,7 @@ const testCases = [
           {
             'Dropped from': 'Alchemical Hydra',
             Rarity: '1/3000',
+            Rolls: 1,
           },
         ],
       },
@@ -266,6 +284,7 @@ const testCases = [
           {
             'Dropped from': 'The Leviathan',
             Rarity: '1/768',
+            Rolls: 1,
           },
         ],
       },
@@ -275,6 +294,7 @@ const testCases = [
           {
             'Dropped from': 'The Whisperer',
             Rarity: '1/512',
+            Rolls: 1,
           },
         ],
       },
@@ -284,6 +304,7 @@ const testCases = [
           {
             'Dropped from': 'Vardorvis',
             Rarity: '1/1088',
+            Rolls: 1,
           },
         ],
       },
@@ -293,6 +314,7 @@ const testCases = [
           {
             'Dropped from': 'Duke Sucellus',
             Rarity: '1/720',
+            Rolls: 1,
           },
         ],
       },
@@ -345,10 +367,12 @@ it('calculates the correct points when a specific drop source has been selected'
         {
           'Dropped from': 'Abyssal demon',
           Rarity: '1/32000',
+          Rolls: 1,
         },
         {
           'Dropped from': 'Unsired',
           Rarity: '26/128',
+          Rolls: 1,
         },
       ],
     ],
@@ -375,6 +399,7 @@ it('calculates the correct points for items consisting of multiple drops', async
         {
           'Dropped from': 'Unsired',
           Rarity: '62/128',
+          Rolls: 1,
         },
       ],
     ],
@@ -384,6 +409,7 @@ it('calculates the correct points for items consisting of multiple drops', async
         {
           'Dropped from': 'Unsired',
           Rarity: '62/128',
+          Rolls: 1,
         },
       ],
     ],
@@ -393,6 +419,7 @@ it('calculates the correct points for items consisting of multiple drops', async
         {
           'Dropped from': 'Unsired',
           Rarity: '62/128',
+          Rolls: 1,
         },
       ],
     ],
@@ -430,18 +457,22 @@ it('calculates points for items dropped from multiple sources by finding the mea
         {
           'Dropped from': 'Duke Sucellus',
           Rarity: '1/2,160',
+          Rolls: 1,
         },
         {
           'Dropped from': 'The Leviathan',
           Rarity: '1/2,304',
+          Rolls: 1,
         },
         {
           'Dropped from': 'The Whisperer',
           Rarity: '1/1,536',
+          Rolls: 1,
         },
         {
           'Dropped from': 'Vardorvis',
           Rarity: '1/3,264',
+          Rolls: 1,
         },
       ],
     ],
@@ -456,6 +487,33 @@ it('calculates points for items dropped from multiple sources by finding the mea
     },
   ]);
   const expectedPoints = 405;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('divides the total points by the amount of rolls per drop', async () => {
+  setup([
+    [
+      'Granite hammer',
+      [
+        {
+          'Dropped from': 'Grotesque Guardians',
+          Rarity: '1/750',
+          Rolls: 2,
+        },
+      ],
+    ],
+  ]);
+
+  const dropRates = await fetchItemDropRates();
+
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 1,
+      clogName: 'Granite hammer',
+    },
+  ]);
+  const expectedPoints = 56;
 
   expect(points).toEqual(expectedPoints);
 });

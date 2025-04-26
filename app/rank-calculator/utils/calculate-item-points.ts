@@ -7,6 +7,7 @@ import {
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
+import { z } from 'zod';
 
 function calculatePointsForSingleDropSource(
   dropSource: string,
@@ -15,16 +16,16 @@ function calculatePointsForSingleDropSource(
 ) {
   const pointsPerHour = 5;
   const bossName = itemBossNameMap[dropSource] ?? dropSource;
-  const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
+  const bossEhb = ehbRates[bossName];
   const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
 
   if (!bossEhb) {
-    throw new Error('Boss EHB could not be found');
+    console.warn(`No EHB rate found for ${bossName}; using default of 60 EHB.`);
   }
 
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
-    .dividedBy(bossEhb)
+    .dividedBy(bossEhb ?? defaultEhbRate)
     .times(pointsPerHour)
     .times(amount)
     .toNumber();
@@ -49,7 +50,11 @@ export function calculateItemPoints(
           calculatePointsForSingleDropSource(
             dropSource,
             amount,
-            dropRateInfo[clogName][dropSource],
+            z
+              .number({
+                required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
+              })
+              .parse(dropRateInfo[clogName][dropSource]),
           ),
         0,
       );
