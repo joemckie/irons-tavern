@@ -22,6 +22,7 @@ export const RequiredItem = z.object({
   clogName: CollectionLogItemName,
   amount: z.number().positive(),
   targetDropSources: z.array(z.string()).nonempty().optional(),
+  ignoreDropRateModifier: z.literal(true).optional(),
 });
 
 export type RequiredItem = z.infer<typeof RequiredItem>;

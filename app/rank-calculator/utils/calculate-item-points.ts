@@ -13,11 +13,14 @@ function calculatePointsForSingleDropSource(
   dropSource: string,
   amount: number,
   itemDropRate: number,
+  ignoreDropRateModifier: boolean = false,
 ) {
   const pointsPerHour = 5;
   const bossName = itemBossNameMap[dropSource] ?? dropSource;
   const bossEhb = ehbRates[bossName];
-  const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
+  const dropRateModifier = ignoreDropRateModifier
+    ? 1
+    : (dropRateModifiers[dropSource] ?? 1);
 
   if (!bossEhb) {
     console.warn(`No EHB rate found for ${bossName}; using default of 60 EHB.`);
@@ -42,6 +45,7 @@ export function calculateItemPoints(
         amount,
         clogName,
         targetDropSources = Object.keys(dropRateInfo[clogName]),
+        ignoreDropRateModifier,
       },
     ) => {
       const totalPointsForDropSources = targetDropSources.reduce(
@@ -55,6 +59,7 @@ export function calculateItemPoints(
                 required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
               })
               .parse(dropRateInfo[clogName][dropSource]),
+            ignoreDropRateModifier,
           ),
         0,
       );

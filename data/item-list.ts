@@ -26,6 +26,7 @@ type SingleItemOptions = Omit<
   requiredAmount?: number;
   collectionLogCategory: TempleOSRSCollectionLogCategory;
   targetDropSources?: RequiredItem['targetDropSources'];
+  ignoreDropRateModifier?: RequiredItem['ignoreDropRateModifier'];
 };
 
 function singleItem({
@@ -37,6 +38,7 @@ function singleItem({
   isAutomatic,
   collectionLogCategory,
   targetDropSources,
+  ignoreDropRateModifier,
 }: SingleItemOptions) {
   return CollectionLogItem.parse({
     image,
@@ -47,6 +49,7 @@ function singleItem({
         amount: requiredAmount,
         clogName: clogName ?? name,
         targetDropSources,
+        ignoreDropRateModifier,
       },
     ],
     isAutomatic,
@@ -58,11 +61,9 @@ type CompoundItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
   'requiredItems'
 > & {
-  requiredItems: NonEmptyArray<{
-    item: CollectionLogItemName;
-    amount?: number;
-    targetDropSources?: RequiredItem['targetDropSources'];
-  }>;
+  requiredItems: NonEmptyArray<
+    Omit<RequiredItem, 'amount'> & { amount?: number }
+  >;
 };
 
 function compoundItem({
@@ -79,7 +80,7 @@ function compoundItem({
     name,
     points,
     requiredItems: requiredItems.map<RequiredItem>(
-      ({ item: clogName, amount = 1, targetDropSources }) => ({
+      ({ clogName, amount = 1, targetDropSources }) => ({
         amount,
         clogName,
         targetDropSources,
@@ -211,9 +212,9 @@ export const itemList = {
       compoundItem({
         name: 'Abyssal bludgeon',
         requiredItems: [
-          { item: 'Bludgeon axon' },
-          { item: 'Bludgeon claw' },
-          { item: 'Bludgeon spine' },
+          { clogName: 'Bludgeon axon' },
+          { clogName: 'Bludgeon claw' },
+          { clogName: 'Bludgeon spine' },
         ],
         collectionLogCategories: ['abyssal_sire'],
       }),
@@ -230,9 +231,12 @@ export const itemList = {
       compoundItem({
         name: 'Brimstone ring',
         requiredItems: [
-          { item: "Hydra's eye", targetDropSources: ['Alchemical Hydra'] },
-          { item: "Hydra's fang", targetDropSources: ['Alchemical Hydra'] },
-          { item: "Hydra's heart", targetDropSources: ['Alchemical Hydra'] },
+          { clogName: "Hydra's eye", targetDropSources: ['Alchemical Hydra'] },
+          { clogName: "Hydra's fang", targetDropSources: ['Alchemical Hydra'] },
+          {
+            clogName: "Hydra's heart",
+            targetDropSources: ['Alchemical Hydra'],
+          },
         ],
         collectionLogCategories: ['alchemical_hydra'],
       }),
@@ -277,13 +281,16 @@ export const itemList = {
       compoundItem({
         name: 'Amulet of rancour (s)',
         requiredItems: [
-          { item: 'Noxious blade' },
-          { item: 'Noxious point' },
-          { item: 'Noxious pommel' },
-          { item: 'Aranea boots', targetDropSources: ['Araxyte#Level 146'] },
-          { item: 'Araxyte head', targetDropSources: ['Araxxor'] },
-          { item: 'Zenyte shard', targetDropSources: ['Demonic gorilla'] },
-          { item: 'Nid' },
+          { clogName: 'Noxious blade' },
+          { clogName: 'Noxious point' },
+          { clogName: 'Noxious pommel' },
+          {
+            clogName: 'Aranea boots',
+            targetDropSources: ['Araxyte#Level 146'],
+          },
+          { clogName: 'Araxyte head', targetDropSources: ['Araxxor'] },
+          { clogName: 'Zenyte shard', targetDropSources: ['Demonic gorilla'] },
+          { clogName: 'Nid' },
         ],
         collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
       }),
@@ -408,27 +415,27 @@ export const itemList = {
       compoundItem({
         name: 'Spectral spirit shield',
         requiredItems: [
-          { item: 'Spirit shield' },
-          { item: 'Spectral sigil' },
-          { item: 'Holy elixir' },
+          { clogName: 'Spirit shield' },
+          { clogName: 'Spectral sigil' },
+          { clogName: 'Holy elixir' },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
       compoundItem({
         name: 'Arcane spirit shield',
         requiredItems: [
-          { item: 'Spirit shield' },
-          { item: 'Arcane sigil' },
-          { item: 'Holy elixir' },
+          { clogName: 'Spirit shield' },
+          { clogName: 'Arcane sigil' },
+          { clogName: 'Holy elixir' },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
       compoundItem({
         name: 'Elysian spirit shield',
         requiredItems: [
-          { item: 'Spirit shield' },
-          { item: 'Elysian sigil' },
-          { item: 'Holy elixir' },
+          { clogName: 'Spirit shield' },
+          { clogName: 'Elysian sigil' },
+          { clogName: 'Holy elixir' },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
@@ -461,10 +468,16 @@ export const itemList = {
       compoundItem({
         name: 'Heavy ballista',
         requiredItems: [
-          { item: 'Ballista spring', targetDropSources: ['Demonic gorilla'] },
-          { item: 'Monkey tail', targetDropSources: ['Demonic gorilla'] },
-          { item: 'Heavy frame', targetDropSources: ['Demonic gorilla'] },
-          { item: 'Ballista limbs', targetDropSources: ['Demonic gorilla'] },
+          {
+            clogName: 'Ballista spring',
+            targetDropSources: ['Demonic gorilla'],
+          },
+          { clogName: 'Monkey tail', targetDropSources: ['Demonic gorilla'] },
+          { clogName: 'Heavy frame', targetDropSources: ['Demonic gorilla'] },
+          {
+            clogName: 'Ballista limbs',
+            targetDropSources: ['Demonic gorilla'],
+          },
         ],
         requiredLevels: {
           Fletching: 72,
@@ -523,7 +536,10 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Bellator ring',
-        requiredItems: [{ item: 'Bellator vestige' }, { item: 'Warrior ring' }],
+        requiredItems: [
+          { clogName: 'Bellator vestige' },
+          { clogName: 'Warrior ring' },
+        ],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -532,7 +548,10 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Magus ring',
-        requiredItems: [{ item: 'Magus vestige' }, { item: 'Seers ring' }],
+        requiredItems: [
+          { clogName: 'Magus vestige' },
+          { clogName: 'Seers ring' },
+        ],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -541,7 +560,10 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Ultor ring',
-        requiredItems: [{ item: 'Ultor vestige' }, { item: 'Berserker ring' }],
+        requiredItems: [
+          { clogName: 'Ultor vestige' },
+          { clogName: 'Berserker ring' },
+        ],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -550,7 +572,10 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Venator ring',
-        requiredItems: [{ item: 'Venator vestige' }, { item: 'Archers ring' }],
+        requiredItems: [
+          { clogName: 'Venator vestige' },
+          { clogName: 'Archers ring' },
+        ],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -560,10 +585,10 @@ export const itemList = {
       compoundItem({
         name: 'Soulreaper axe',
         requiredItems: [
-          { item: "Leviathan's lure" },
-          { item: "Siren's staff" },
-          { item: "Executioner's axe head" },
-          { item: 'Eye of the duke' },
+          { clogName: "Leviathan's lure" },
+          { clogName: "Siren's staff" },
+          { clogName: "Executioner's axe head" },
+          { clogName: 'Eye of the duke' },
         ],
         requiredLevels: {
           Magic: 75,
@@ -671,8 +696,8 @@ export const itemList = {
       compoundItem({
         name: 'Guardian boots',
         requiredItems: [
-          { item: 'Bandos boots', targetDropSources: ['General Graardor'] },
-          { item: 'Black tourmaline core' },
+          { clogName: 'Bandos boots', targetDropSources: ['General Graardor'] },
+          { clogName: 'Black tourmaline core' },
         ],
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
       }),
@@ -862,7 +887,7 @@ export const itemList = {
       compoundItem({
         name: 'Burning claws',
         points: 10000000000,
-        requiredItems: [{ item: 'Burning claw', amount: 2 }],
+        requiredItems: [{ clogName: 'Burning claw', amount: 2 }],
         collectionLogCategories: ['tormented_demons'],
       }),
       ...Array.from({ length: 3 }).map((_, i) =>
@@ -1037,7 +1062,7 @@ export const itemList = {
       singleItem({
         name: 'Thread of elidinis',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: 'Eye of the corruptor',
@@ -1188,7 +1213,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Venator bow',
-        requiredItems: [{ item: 'Venator shard', amount: 5 }],
+        requiredItems: [{ clogName: 'Venator shard', amount: 5 }],
         collectionLogCategories: ['phantom_muspah'],
       }),
       manualItem({
@@ -1213,8 +1238,8 @@ export const itemList = {
       compoundItem({
         name: 'Twinflame staff',
         requiredItems: [
-          { item: 'Ice element staff crown' },
-          { item: 'Fire element staff crown' },
+          { clogName: 'Ice element staff crown' },
+          { clogName: 'Fire element staff crown' },
         ],
         collectionLogCategories: ['royal_titans'],
       }),
@@ -1233,9 +1258,9 @@ export const itemList = {
       compoundItem({
         name: 'Odium ward',
         requiredItems: [
-          { item: 'Odium shard 1' },
-          { item: 'Odium shard 2' },
-          { item: 'Odium shard 3' },
+          { clogName: 'Odium shard 1' },
+          { clogName: 'Odium shard 2' },
+          { clogName: 'Odium shard 3' },
         ],
         collectionLogCategories: [
           'crazy_archaeologist',
@@ -1246,9 +1271,9 @@ export const itemList = {
       compoundItem({
         name: 'Malediction ward',
         requiredItems: [
-          { item: 'Malediction shard 1' },
-          { item: 'Malediction shard 2' },
-          { item: 'Malediction shard 3' },
+          { clogName: 'Malediction shard 1' },
+          { clogName: 'Malediction shard 2' },
+          { clogName: 'Malediction shard 3' },
         ],
         collectionLogCategories: [
           'crazy_archaeologist',
@@ -1293,7 +1318,7 @@ export const itemList = {
           'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
         requiredItems: [
           {
-            item: 'Ancient crystal',
+            clogName: 'Ancient crystal',
             amount: 4,
             targetDropSources: ['Revenant ork'],
           },
@@ -1343,9 +1368,9 @@ export const itemList = {
       compoundItem({
         name: 'Voidwaker',
         requiredItems: [
-          { item: 'Voidwaker hilt', targetDropSources: ['Callisto'] },
-          { item: 'Voidwaker gem', targetDropSources: ['Venenatis'] },
-          { item: 'Voidwaker blade', targetDropSources: ["Vet'ion"] },
+          { clogName: 'Voidwaker hilt', targetDropSources: ['Callisto'] },
+          { clogName: 'Voidwaker gem', targetDropSources: ['Venenatis'] },
+          { clogName: 'Voidwaker blade', targetDropSources: ["Vet'ion"] },
         ],
         collectionLogCategories: [
           'vetion_and_calvarion',
@@ -1380,7 +1405,10 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Devout boots',
-        requiredItems: [{ item: "Drake's tooth" }, { item: 'Holy sandals' }],
+        requiredItems: [
+          { clogName: "Drake's tooth" },
+          { clogName: 'Holy sandals' },
+        ],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
         points: 10000000000,
       }),
@@ -1491,12 +1519,12 @@ export const itemList = {
         points: 10000000000,
         image: formatWikiImageUrl('Graceful hood'),
         requiredItems: [
-          { item: 'Graceful hood' },
-          { item: 'Graceful top' },
-          { item: 'Graceful legs' },
-          { item: 'Graceful gloves' },
-          { item: 'Graceful boots' },
-          { item: 'Graceful cape' },
+          { clogName: 'Graceful hood' },
+          { clogName: 'Graceful top' },
+          { clogName: 'Graceful legs' },
+          { clogName: 'Graceful gloves' },
+          { clogName: 'Graceful boots' },
+          { clogName: 'Graceful cape' },
         ],
         collectionLogCategories: ['rooftop_agility'],
       }),

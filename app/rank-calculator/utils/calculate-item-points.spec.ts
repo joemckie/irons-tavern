@@ -506,7 +506,6 @@ it('divides the total points by the amount of rolls per drop', async () => {
   ]);
 
   const dropRates = await fetchItemDropRates();
-
   const points = calculateItemPoints(dropRates, [
     {
       amount: 1,
@@ -514,6 +513,33 @@ it('divides the total points by the amount of rolls per drop', async () => {
     },
   ]);
   const expectedPoints = 56;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('does not modify the drop rate if "ignoreDropRateModifier" is true', async () => {
+  setup([
+    [
+      'Thread of elidinis',
+      [
+        {
+          'Dropped from': 'Chest (Tombs of Amascut)',
+          Rarity: '1/10',
+          Rolls: 1,
+        },
+      ],
+    ],
+  ]);
+
+  const dropRates = await fetchItemDropRates();
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 1,
+      clogName: 'Thread of elidinis',
+      ignoreDropRateModifier: true,
+    },
+  ]);
+  const expectedPoints = 17;
 
   expect(points).toEqual(expectedPoints);
 });
