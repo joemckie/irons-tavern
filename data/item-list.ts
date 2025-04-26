@@ -795,53 +795,60 @@ export const itemList = {
       }),
     ],
   },
-  // 'Theatre of Blood': {
-  //   image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
-  //   items: [
-  //     singleItem({
-  //       name: 'Avernic defender hilt',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Justiciar faceguard',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Justiciar chestguard',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Justiciar legguards',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Ghrazi rapier',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Sanguinesti staff',
-  //       clogName: 'Sanguinesti staff (uncharged)',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Scythe of vitur',
-  //       clogName: 'Scythe of vitur (uncharged)',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Holy ornament kit',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Sanguine ornament kit',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //     singleItem({
-  //       name: 'Sanguine dust',
-  //       collectionLogCategory: 'theatre_of_blood',
-  //     }),
-  //   ],
-  // },
+  'Theatre of Blood': {
+    image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
+    items: [
+      singleItem({
+        name: 'Avernic defender hilt',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Justiciar faceguard',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Justiciar chestguard',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Justiciar legguards',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Ghrazi rapier',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Sanguinesti staff',
+        clogName: 'Sanguinesti staff (uncharged)',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Scythe of vitur',
+        clogName: 'Scythe of vitur (uncharged)',
+        collectionLogCategory: 'theatre_of_blood',
+        targetDropSources: ['Monumental chest#Hard Mode'],
+      }),
+      singleItem({
+        name: 'Holy ornament kit',
+        collectionLogCategory: 'theatre_of_blood',
+      }),
+      singleItem({
+        name: 'Sanguine ornament kit',
+        collectionLogCategory: 'theatre_of_blood',
+      }),
+      singleItem({
+        name: 'Sanguine dust',
+        collectionLogCategory: 'theatre_of_blood',
+      }),
+    ],
+  },
   'Thermonuclear Smoke Devil': {
     image: formatWikiImageUrl('Pet smoke devil chathead', 'category'),
     items: [
@@ -1188,7 +1195,7 @@ export const itemList = {
       }),
       manualItem({
         name: 'Saturated heart',
-        points: 60,
+        points: 10000000000,
       }),
     ],
   },
@@ -1221,7 +1228,7 @@ export const itemList = {
     items: [
       questItem({
         name: 'Mage Arena 2 cape',
-        points: 20,
+        points: 10000000000,
         image: formatWikiImageUrl('Imbued zamorak cape'),
         requiredQuests: ['Mage Arena II'],
       }),
@@ -1254,28 +1261,33 @@ export const itemList = {
       singleItem({
         name: 'Dragon pickaxe',
         collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Artio', 'Spindel', "Calvar'ion"],
       }),
       singleItem({
         name: 'Ring of the gods',
         collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
       }),
       singleItem({
         name: 'Treasonous ring',
         collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
       }),
       singleItem({
         name: 'Tyrannical ring',
         collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
       }),
       singleItem({
         name: 'Amulet of eternal glory',
-        points: 100,
+        points: 10000000000,
         collectionLogCategory: 'miscellaneous',
       }),
       singleItem({
         name: 'Amulet of avarice',
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
+        points: 10000000000,
       }),
       compoundItem({
         name: 'Obelisk',
@@ -1292,12 +1304,14 @@ export const itemList = {
           Construction: 72,
         },
         collectionLogCategories: ['revenants'],
+        points: 10000000000,
       }),
       singleItem({
         name: "Viggora's chainmace",
         clogName: "Viggora's chainmace (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
+        points: 10000000000,
       }),
       singleItem({
         name: 'Claws of callisto',
@@ -1309,6 +1323,7 @@ export const itemList = {
         clogName: "Craw's bow (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
+        points: 10000000000,
       }),
       singleItem({
         name: 'Fangs of venenatis',
@@ -1320,6 +1335,7 @@ export const itemList = {
         clogName: "Thammaron's sceptre (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
+        points: 10000000000,
       }),
       singleItem({
         name: "Skull of vet'ion",
@@ -1342,6 +1358,7 @@ export const itemList = {
       singleItem({
         name: 'Teleport anchoring scroll',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
     ],
   },
@@ -1350,57 +1367,68 @@ export const itemList = {
     items: [
       manualItem({
         name: 'Slayer helmet (i)',
-        points: 10,
+        points: 10000000000,
       }),
       singleItem({
         name: 'Leaf-bladed battleaxe',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Warped sceptre',
         clogName: 'Warped sceptre (uncharged)',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       compoundItem({
         name: 'Devout boots',
         requiredItems: [{ item: "Drake's tooth" }, { item: 'Holy sandals' }],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
+        points: 10000000000,
       }),
       singleItem({
         name: 'Boots of brimstone',
         clogName: "Drake's claw",
         image: formatWikiImageUrl('Boots of brimstone'),
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Neitiznot faceguard',
         clogName: 'Basilisk jaw',
         image: formatWikiImageUrl('Neitiznot faceguard'),
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Abyssal whip',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Dark bow',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Mist battlestaff',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Dust battlestaff',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Eternal gem',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Imbued heart',
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
     ],
   },
@@ -1412,18 +1440,21 @@ export const itemList = {
         clogName: 'Draconic visage',
         image: formatWikiImageUrl('Dragonfire shield'),
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Dragonfire ward',
         clogName: 'Skeletal visage',
         image: formatWikiImageUrl('Dragonfire ward'),
         collectionLogCategory: 'vorkath',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Ancient wyvern shield',
         clogName: 'Wyvern visage',
         image: formatWikiImageUrl('Ancient wyvern shield'),
         collectionLogCategory: 'slayer',
+        points: 10000000000,
       }),
     ],
   },
@@ -1432,12 +1463,12 @@ export const itemList = {
     items: [
       questItem({
         name: 'Barrows gloves',
-        points: 20,
+        points: 10000000000,
         requiredQuests: ['Recipe for Disaster'],
       }),
       questItem({
         name: 'Book of the dead',
-        points: 10,
+        points: 10000000000,
         requiredQuests: ['A Kingdom Divided'],
       }),
       singleItem({
@@ -1451,10 +1482,12 @@ export const itemList = {
       singleItem({
         name: 'Crystal tool seed',
         collectionLogCategory: 'zalcano',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Dragon warhammer',
         collectionLogCategory: 'miscellaneous',
+        points: 10000000000,
       }),
       compoundItem({
         name: 'Graceful set',
@@ -1473,6 +1506,7 @@ export const itemList = {
       singleItem({
         name: 'Ham joint',
         collectionLogCategory: 'easy_treasure_trails',
+        points: 10000000000,
       }),
       customItem({
         name: 'Music cape',
@@ -1495,6 +1529,7 @@ export const itemList = {
       singleItem({
         name: 'Ranger boots',
         collectionLogCategory: 'medium_treasure_trails',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Ring of endurance',
@@ -1526,6 +1561,7 @@ export const itemList = {
           Smithing: 65,
         },
         collectionLogCategory: 'miscellaneous',
+        points: 10000000000,
       }),
     ],
   },

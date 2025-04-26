@@ -85,6 +85,8 @@ export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
   'Ancient chest': 'Chambers of Xeric Challenge Mode',
   'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
+  'Monumental chest': 'Theatre of Blood',
+  'Monumental chest#Hard Mode': 'Theatre of Blood',
   'Reward Chest (The Gauntlet)#(Corrupted)': 'The Corrupted Gauntlet',
   'Rewards Chest (Fortis Colosseum)#Wave 1': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 2': 'Sol Heredit',
