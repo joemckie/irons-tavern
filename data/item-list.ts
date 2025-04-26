@@ -476,6 +476,7 @@ export const itemList = {
           clogName: 'Zenyte shard',
           requiredAmount: i + 1,
           collectionLogCategory: 'gloughs_experiments',
+          points: 10000000000,
         }),
       ),
     ],
@@ -608,23 +609,28 @@ export const itemList = {
       singleItem({
         name: 'Sunfire fanatic helm',
         collectionLogCategory: 'fortis_colosseum',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Sunfire fanatic cuirass',
         collectionLogCategory: 'fortis_colosseum',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Sunfire fanatic chausses',
         collectionLogCategory: 'fortis_colosseum',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Echo crystal',
         collectionLogCategory: 'fortis_colosseum',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Tonalztics of ralos',
         clogName: 'Tonalztics of ralos (uncharged)',
         collectionLogCategory: 'fortis_colosseum',
+        points: 10000000000,
       }),
       singleItem({
         name: "Dizana's quiver",
@@ -772,6 +778,7 @@ export const itemList = {
         requiredAmount: 1,
         collectionLogCategory: 'the_gauntlet',
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+        points: 10000000000,
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (2)',
@@ -779,6 +786,7 @@ export const itemList = {
         requiredAmount: 2,
         collectionLogCategory: 'the_gauntlet',
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+        points: 10000000000,
       }),
     ],
   },
@@ -855,6 +863,7 @@ export const itemList = {
       singleItem({
         name: 'Occult necklace',
         collectionLogCategory: 'thermonuclear_smoke_devil',
+        targetDropSources: ['Thermonuclear smoke devil'],
       }),
       singleItem({
         name: 'Smoke battlestaff',
@@ -1043,18 +1052,22 @@ export const itemList = {
       singleItem({
         name: 'Thread of elidinis',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Eye of the corruptor',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Jewel of the sun',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Breach of the scarab',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: "Osmumten's fang",
@@ -1738,7 +1751,9 @@ export const itemList = {
       Smolcano: {
         points: 10000000000,
       },
-      'Smol heredit': {},
+      'Smol heredit': {
+        points: 10000000000,
+      },
       Sraracha: {},
       Tangleroot: {
         points: 10000000000,
