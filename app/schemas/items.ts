@@ -21,7 +21,7 @@ export type BaseItem = z.infer<typeof BaseItem>;
 export const RequiredItem = z.object({
   clogName: CollectionLogItemName,
   amount: z.number().positive(),
-  targetDropSource: z.string().optional(),
+  targetDropSources: z.array(z.string()).nonempty().optional(),
 });
 
 export type RequiredItem = z.infer<typeof RequiredItem>;

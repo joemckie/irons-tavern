@@ -100,7 +100,7 @@ const testCases = [
     itemSources: [
       {
         item: 'Abyssal dagger',
-        targetDropSource: 'Unsired',
+        targetDropSources: ['Unsired'],
         results: [
           {
             'Dropped from': 'Unsired',
@@ -164,7 +164,7 @@ const testCases = [
     itemSources: [
       {
         item: "Hydra's eye",
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -174,7 +174,7 @@ const testCases = [
       },
       {
         item: "Hydra's fang",
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -184,7 +184,7 @@ const testCases = [
       },
       {
         item: "Hydra's heart",
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -200,7 +200,7 @@ const testCases = [
     itemSources: [
       {
         item: 'Hydra tail',
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -216,7 +216,7 @@ const testCases = [
     itemSources: [
       {
         item: 'Hydra leather',
-        targetDropSource: 'Alchemical Hydra',
+        targetDropSources: ['Alchemical Hydra'],
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -303,7 +303,7 @@ const testCases = [
   itemSources: NonEmptyArray<{
     item: CollectionLogItemName;
     results: NonEmptyArray<ItemResult>;
-    targetDropSource?: string;
+    targetDropSources?: string[];
   }>;
   expectedPoints: number;
 }>;
@@ -324,9 +324,9 @@ it.each(testCases)(
       itemSources.map((itemSource) => ({
         amount: 1,
         clogName: itemSource.item,
-        targetDropSource:
-          'targetDropSource' in itemSource
-            ? itemSource.targetDropSource
+        targetDropSources:
+          'targetDropSources' in itemSource
+            ? [itemSource.targetDropSources]
             : undefined,
       })) as NonEmptyArray<RequiredItem>,
     );
@@ -359,7 +359,7 @@ it('calculates the correct points when a specific drop source has been selected'
     {
       amount: 1,
       clogName: item,
-      targetDropSource: 'Unsired',
+      targetDropSources: ['Unsired'],
     },
   ]);
   const expectedPoints = 64;
@@ -404,20 +404,58 @@ it('calculates the correct points for items consisting of multiple drops', async
     {
       amount: 1,
       clogName: 'Bludgeon axon',
-      targetDropSource: 'Unsired',
+      targetDropSources: ['Unsired'],
     },
     {
       amount: 1,
       clogName: 'Bludgeon claw',
-      targetDropSource: 'Unsired',
+      targetDropSources: ['Unsired'],
     },
     {
       amount: 1,
       clogName: 'Bludgeon spine',
-      targetDropSource: 'Unsired',
+      targetDropSources: ['Unsired'],
     },
   ]);
   const expectedPoints = 80;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('calculates points for items dropped from multiple sources by finding the mean points', async () => {
+  setup([
+    [
+      'Virtus robe top',
+      [
+        {
+          'Dropped from': 'Duke Sucellus',
+          Rarity: '1/2,160',
+        },
+        {
+          'Dropped from': 'The Leviathan',
+          Rarity: '1/2,304',
+        },
+        {
+          'Dropped from': 'The Whisperer',
+          Rarity: '1/1,536',
+        },
+        {
+          'Dropped from': 'Vardorvis',
+          Rarity: '1/3,264',
+        },
+      ],
+    ],
+  ]);
+
+  const dropRates = await fetchItemDropRates();
+
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 1,
+      clogName: 'Virtus robe top',
+    },
+  ]);
+  const expectedPoints = 405;
 
   expect(points).toEqual(expectedPoints);
 });

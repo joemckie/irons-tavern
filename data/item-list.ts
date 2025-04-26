@@ -644,10 +644,12 @@ export const itemList = {
       singleItem({
         name: 'Bandos chestplate',
         collectionLogCategory: 'general_graardor',
+        targetDropSource: 'General Graardor',
       }),
       singleItem({
         name: 'Bandos tassets',
         collectionLogCategory: 'general_graardor',
+        targetDropSource: 'General Graardor',
       }),
       singleItem({
         name: 'Bandos boots',
