@@ -83,6 +83,8 @@ export const ehbRates = {
  */
 export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
+  'Ancient chest': 'Chambers of Xeric Challenge Mode',
+  'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
 };
 
 /**
