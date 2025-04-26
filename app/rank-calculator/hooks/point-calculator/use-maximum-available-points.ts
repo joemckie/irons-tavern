@@ -15,7 +15,7 @@ export function useMaximumAvailablePoints() {
   useEffect(() => {
     async function fetchMaximumAvailablePoints() {
       if (maximumCollectionLogSlotCount) {
-        const points = await calculateMaximumAvailablePoints(
+        const points = calculateMaximumAvailablePoints(
           maximumCollectionLogSlotCount,
         );
 

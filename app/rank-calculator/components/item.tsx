@@ -1,12 +1,14 @@
 import { memo } from 'react';
 import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
-import { Item } from '@/app/schemas/items';
+import { isCollectionLogItem, Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
 import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
 import { ValidationTooltip } from './validation-tooltip';
+import { useDropRates } from '../hooks/use-drop-rates';
+import { calculateItemPoints } from '../utils/calculate-item-points';
 
 interface ItemProps {
   acquired: boolean;
@@ -16,7 +18,21 @@ interface ItemProps {
 
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
-  const scaledItemPoints = Math.floor(item.points ?? 0 * scaling);
+  const { data: dropRates } = useDropRates();
+
+  function getItemPoints() {
+    if (item.points) {
+      return item.points;
+    }
+
+    if (isCollectionLogItem(item)) {
+      return calculateItemPoints(dropRates, item.requiredItems);
+    }
+
+    throw new Error(`Could not calculate item points for ${item.name}`);
+  }
+
+  const scaledItemPoints = Math.floor(getItemPoints() * scaling);
 
   return (
     <Table.Row key={item.name} align="center">

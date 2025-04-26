@@ -1,8 +1,14 @@
 import { auth } from '@/auth';
 import * as Sentry from '@sentry/nextjs';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 import { FormWrapper } from './form-wrapper';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
+import { fetchItemDropRates } from '../data-sources/fetch-dropped-item-info';
 
 interface Params {
   player: string;
@@ -47,16 +53,25 @@ export default async function RankCalculatorPage({
     await saveDraftRankSubmissionAction(formData);
   }
 
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['drop-rates'],
+    queryFn: fetchItemDropRates,
+  });
+
   return (
-    <FormWrapper
-      formData={formData}
-      currentRank={currentRank}
-      warnings={{
-        templeCollectionLogNotFound: !isMobileOnly && !hasTempleCollectionLog,
-        templeCollectionLogOutdated:
-          !isMobileOnly && isTempleCollectionLogOutdated,
-        wikiSyncNotFound: !isMobileOnly && !hasWikiSyncData,
-      }}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <FormWrapper
+        formData={formData}
+        currentRank={currentRank}
+        warnings={{
+          templeCollectionLogNotFound: !isMobileOnly && !hasTempleCollectionLog,
+          templeCollectionLogOutdated:
+            !isMobileOnly && isTempleCollectionLogOutdated,
+          wikiSyncNotFound: !isMobileOnly && !hasWikiSyncData,
+        }}
+      />
+    </HydrationBoundary>
   );
 }

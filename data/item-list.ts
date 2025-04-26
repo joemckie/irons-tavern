@@ -30,7 +30,7 @@ type SingleItemOptions = Omit<
 
 function singleItem({
   name,
-  points,
+  points = 0,
   clogName,
   image = formatWikiImageUrl(clogName ?? name),
   requiredAmount = 1,
@@ -68,7 +68,7 @@ type CompoundItemOptions = Omit<
 function compoundItem({
   name,
   image = formatWikiImageUrl(name),
-  points,
+  points = 0,
   requiredItems,
   requiredLevels,
   isAutomatic,
@@ -153,7 +153,7 @@ function customItem({
   });
 }
 
-export const itemList = ItemCategoryMap.parseAsync({
+export const itemList = {
   'Automatic Items': {
     image: formatWikiImageUrl('Black cog detail', 'category'),
     items: [
@@ -1691,4 +1691,4 @@ export const itemList = ItemCategoryMap.parseAsync({
   //       }),
   //   ) as NonEmptyArray<Promise<Item>>,
   // },
-});
+} satisfies ItemCategoryMap;

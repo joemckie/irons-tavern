@@ -2,10 +2,22 @@ import { clientConstants } from '@/config/constants.client';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
+import { itemList } from '@/data/item-list';
+import { isCollectionLogItem } from '@/app/schemas/items';
 
-export async function fetchItemDropRates(
-  queriedItems: Set<CollectionLogItemName>,
-) {
+function generateRequiredItemList() {
+  return Object.values(itemList)
+    .flatMap(({ items }) => items)
+    .filter(isCollectionLogItem)
+    .reduce((acc, { requiredItems }) => {
+      requiredItems.forEach(({ clogName }) => acc.add(clogName), acc);
+
+      return acc;
+    }, new Set<CollectionLogItemName>());
+}
+
+export async function fetchItemDropRates() {
+  const queriedItems = generateRequiredItemList();
   const batches = [];
   const batchSize = 10;
 
@@ -53,6 +65,6 @@ export async function fetchItemDropRates(
   } catch (error) {
     Sentry.captureException(error);
 
-    return null;
+    throw new Error('Could not fetch drop rates!');
   }
 }

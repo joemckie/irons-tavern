@@ -5,7 +5,7 @@ export function useGetItems() {
   return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
-      return Object.entries(await itemList);
+      return Object.entries(itemList);
     },
   });
 }
