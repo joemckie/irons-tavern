@@ -96,4 +96,6 @@ export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
  */
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
+  'Chest (Tombs of Amascut)': 1 / 10,
+  'Ancient chest': 1 / 7.23,
 };

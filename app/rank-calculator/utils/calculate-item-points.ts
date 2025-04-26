@@ -1,59 +1,48 @@
-import { CollectionLogItemName } from '@/app/schemas/osrs';
 import {
   defaultEhbRate,
   dropRateModifiers,
   ehbRates,
   itemBossNameMap,
 } from '@/config/ehb-rates';
+import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
-import { fetchItemDropRates } from '../data-sources/fetch-dropped-item-info';
+import { DroppedItemResponse } from '@/app/schemas/wiki';
 
-export async function calculateItemPoints(
-  items: NonEmptyArray<
-    [itemName: CollectionLogItemName, targetDropSource?: string]
-  >,
+export function calculateItemPoints(
+  dropRateInfo: DroppedItemResponse,
+  items: NonEmptyArray<RequiredItem>,
 ) {
-  const dropRateInfo = await fetchItemDropRates();
-
-  if (!dropRateInfo) {
-    throw new Error('Unable to retrieve drop rate info!');
-  }
-
   const pointsPerHour = 5;
 
-  const rawPoints = items.reduce((acc, [itemName], i) => {
-    const itemDropRates = dropRateInfo[itemName];
+  const rawPoints = items.reduce(
+    (acc, { amount, clogName, targetDropSource }) => {
+      const itemDropRates = dropRateInfo[clogName];
 
-    if (!itemDropRates) {
-      throw new Error('Cannot find item drop rates!');
-    }
+      if (!itemDropRates) {
+        throw new Error('Cannot find item drop rates!');
+      }
 
-    const [, targetDropSource] = items[i];
+      const [dropSource, itemRarity] = targetDropSource
+        ? [targetDropSource, itemDropRates[targetDropSource]]
+        : Object.entries(itemDropRates)[0];
 
-    const maybeFilteredResults = targetDropSource
-      ? itemDropRates.filter(
-          (result) => result['Dropped from'] === targetDropSource,
-        )
-      : itemDropRates;
+      const bossName = itemBossNameMap[dropSource] ?? dropSource;
+      const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
+      const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
 
-    const [{ Rarity: itemRarity, 'Dropped from': dropSource }] =
-      maybeFilteredResults;
+      if (!bossEhb) {
+        throw new Error('Boss EHB could not be found');
+      }
 
-    const bossName = itemBossNameMap[dropSource] ?? dropSource;
-    const bossEhb = ehbRates[bossName] ?? defaultEhbRate;
-    const dropRateModifier = dropRateModifiers[dropSource] ?? 1;
+      const points = new Decimal(1)
+        .dividedBy(new Decimal(itemRarity).times(dropRateModifier))
+        .dividedBy(bossEhb)
+        .times(pointsPerHour);
 
-    if (!bossEhb) {
-      throw new Error('Boss EHB could not be found');
-    }
-
-    const points = new Decimal(1)
-      .dividedBy(new Decimal(itemRarity).times(dropRateModifier))
-      .dividedBy(bossEhb)
-      .times(pointsPerHour);
-
-    return acc + points.toNumber();
-  }, 0);
+      return acc + points.times(amount).toNumber();
+    },
+    0,
+  );
 
   return Math.ceil(rawPoints);
 }

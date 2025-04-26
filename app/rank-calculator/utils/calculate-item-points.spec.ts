@@ -4,7 +4,9 @@ import { clientConstants } from '@/config/constants.client';
 import { DroppedItemJSON, DroppedItemResponse } from '@/app/schemas/wiki';
 import { z } from 'zod';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
+import { RequiredItem } from '@/app/schemas/items';
 import { calculateItemPoints } from './calculate-item-points';
+import { fetchItemDropRates } from '../data-sources/fetch-dropped-item-info';
 
 type ItemResult = Omit<
   z.input<typeof DroppedItemJSON>,
@@ -12,11 +14,6 @@ type ItemResult = Omit<
 >;
 
 type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
-
-type ItemPointsParameters = [
-  itemName: CollectionLogItemName,
-  targetDropSource?: string,
-];
 
 function setup(items: SetupItem[]) {
   const responseMock = items.reduce(
@@ -27,7 +24,6 @@ function setup(items: SetupItem[]) {
             'Drop JSON': [
               JSON.stringify({
                 Rarity: rarity,
-                'Drop type': 'reward',
                 'Dropped from': dropSource,
                 'Dropped item': itemName,
               } satisfies z.input<typeof DroppedItemJSON>),
@@ -322,13 +318,20 @@ it.each(testCases)(
 
     setup(itemSourcesTuple);
 
-    const points = await calculateItemPoints(
-      itemSources.map<ItemPointsParameters>((itemSource) => [
-        itemSource.item,
-        'targetDropSource' in itemSource
-          ? itemSource.targetDropSource
-          : undefined,
-      ]) as NonEmptyArray<ItemPointsParameters>,
+    const dropRates =
+      (await fetchItemDropRates(
+        new Set(itemSourcesTuple.map(([item]) => item)),
+      )) ?? {};
+    const points = calculateItemPoints(
+      dropRates,
+      itemSources.map((itemSource) => ({
+        amount: 1,
+        clogName: itemSource.item,
+        targetDropSource:
+          'targetDropSource' in itemSource
+            ? itemSource.targetDropSource
+            : undefined,
+      })) as NonEmptyArray<RequiredItem>,
     );
 
     expect(points).toEqual(expectedPoints);
@@ -354,7 +357,13 @@ it('calculates the correct points when a specific drop source has been selected'
     ],
   ]);
 
-  const points = await calculateItemPoints([[item, 'Unsired']]);
+  const dropRates = (await fetchItemDropRates(new Set([item]))) ?? {};
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 1,
+      clogName: item,
+    },
+  ]);
   const expectedPoints = 64;
 
   expect(points).toEqual(expectedPoints);
@@ -391,10 +400,27 @@ it('calculates the correct points for items consisting of multiple drops', async
     ],
   ]);
 
-  const points = await calculateItemPoints([
-    ['Bludgeon axon', 'Unsired'],
-    ['Bludgeon claw', 'Unsired'],
-    ['Bludgeon spine', 'Unsired'],
+  const dropRates =
+    (await fetchItemDropRates(
+      new Set(['Bludgeon axon', 'Bludgeon claw', 'Bludgeon spine']),
+    )) ?? {};
+
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 1,
+      clogName: 'Bludgeon axon',
+      targetDropSource: 'Unsired',
+    },
+    {
+      amount: 1,
+      clogName: 'Bludgeon claw',
+      targetDropSource: 'Unsired',
+    },
+    {
+      amount: 1,
+      clogName: 'Bludgeon spine',
+      targetDropSource: 'Unsired',
+    },
   ]);
   const expectedPoints = 80;
 

@@ -2,35 +2,22 @@ import { clientConstants } from '@/config/constants.client';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
-import { itemList } from '@/data/item-list';
-import { isCollectionLogItem } from '@/app/schemas/items';
 
-function generateRequiredItemList() {
-  return Object.values(itemList)
-    .flatMap(({ items }) => items)
-    .filter(isCollectionLogItem)
-    .reduce((acc, { requiredItems }) => {
-      requiredItems.forEach(({ clogName }) => acc.add(clogName), acc);
-
-      return acc;
-    }, new Set<CollectionLogItemName>());
-}
-
-export async function fetchItemDropRates() {
-  const queriedItems = generateRequiredItemList();
+export async function fetchItemDropRates(
+  queriedItems: Set<CollectionLogItemName>,
+) {
   const batches = [];
+  const batchSize = 10;
 
-  while (queriedItems.size > 0) {
-    const batch = [...queriedItems].slice(0, 10);
+  for (let i = 0; i < queriedItems.size; i += batchSize) {
+    const batch = [...queriedItems].slice(i, i + batchSize);
     const query = [
-      `[[Dropped item::${[...queriedItems].join('||')}]]`,
+      `[[Dropped item::${[...batch].join('||')}]]`,
       '?Drop JSON',
       'limit=1000',
     ].join('|');
 
     batches.push(query);
-
-    batch.forEach((item) => queriedItems.delete(item));
   }
 
   try {
@@ -44,25 +31,25 @@ export async function fetchItemDropRates() {
           formatversion: '2',
         });
 
-        return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`);
+        return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
+          cache: 'force-cache',
+        });
       }),
     );
 
-    const droppedItemResponse = await Promise.all(
-      batchResponses.map((res) => res.json()),
+    const droppedItemResponses = await Promise.all(
+      batchResponses.map(async (res) =>
+        DroppedItemResponse.parse(await res.json()),
+      ),
     );
 
-    return DroppedItemResponse.parse({
-      query: {
-        results: Object.values(droppedItemResponse).reduce(
-          (acc, { query }) => ({
-            ...acc,
-            ...query.results,
-          }),
-          {},
-        ),
-      },
-    });
+    return droppedItemResponses.reduce(
+      (acc, val) => ({
+        ...acc,
+        ...val,
+      }),
+      {},
+    );
   } catch (error) {
     Sentry.captureException(error);
 

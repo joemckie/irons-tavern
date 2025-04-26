@@ -134,12 +134,17 @@ export type CombatAchievementListResponse = z.infer<
 
 const ItemRarity = z.string().transform(fractionToDecimal);
 
-export const DroppedItemJSON = z.object({
-  Rarity: ItemRarity,
-  'Drop type': z.enum(['combat', 'reward']),
-  'Dropped from': z.string(),
-  'Dropped item': z.string(),
-});
+export const DroppedItemJSON = z
+  .object({
+    Rarity: ItemRarity,
+    'Dropped from': z.string(),
+    'Dropped item': z.string(),
+  })
+  .transform((data) => ({
+    rarity: data.Rarity,
+    dropSource: data['Dropped from'],
+    itemName: data['Dropped item'],
+  }));
 
 export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
 
@@ -168,16 +173,16 @@ export const DroppedItemResponse = z
         acc,
         {
           printouts: {
-            'Drop JSON': [{ 'Dropped item': itemName, ...dropJson }],
+            'Drop JSON': [{ itemName, dropSource, rarity }],
           },
         },
       ) => {
-        acc[itemName] = acc[itemName] ?? [];
-        acc[itemName].push(dropJson);
+        acc[itemName] = acc[itemName] ?? {};
+        acc[itemName][dropSource] = rarity;
 
         return acc;
       },
-      {} as Record<string, Omit<DroppedItemJSON, 'Dropped item'>[]>,
+      {} as Record<string, Record<string, number>>,
     ),
   );
 

@@ -82,7 +82,7 @@ function compoundItem({
       ({ item: clogName, amount = 1, targetDropSource }) => ({
         amount,
         clogName,
-        targetDropSource,
+        ...(targetDropSource && { targetDropSource }),
       }),
     ),
     requiredLevels,
@@ -153,13 +153,13 @@ function customItem({
   });
 }
 
-export const itemList: ItemCategoryMap = {
+export const itemList = ItemCategoryMap.parseAsync({
   'Automatic Items': {
     image: formatWikiImageUrl('Black cog detail', 'category'),
     items: [
       customItem({
         name: 'Achievement Diary Cape',
-        points: 1000,
+        points: 10000000000,
         image: formatWikiImageUrl('Achievement diary cape (t) detail'),
         isAcquired({ achievementDiaries }) {
           return achievementDiaries
@@ -172,7 +172,7 @@ export const itemList: ItemCategoryMap = {
       }),
       customItem({
         name: 'Max Cape',
-        points: 7000,
+        points: 10000000000,
         image: formatWikiImageUrl('Max cape detail'),
         isAcquired({ totalLevel }) {
           return totalLevel === maximumTotalLevel;
@@ -181,7 +181,7 @@ export const itemList: ItemCategoryMap = {
       }),
       customItem({
         name: 'Infernal Max Cape',
-        points: 2000,
+        points: 10000000000,
         image: formatWikiImageUrl('Infernal max cape detail'),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
@@ -193,7 +193,7 @@ export const itemList: ItemCategoryMap = {
       }),
       customItem({
         name: "Dizana's Max Cape",
-        points: 2000,
+        points: 10000000000,
         image: formatWikiImageUrl("Dizana's max cape detail"),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
@@ -230,15 +230,16 @@ export const itemList: ItemCategoryMap = {
       compoundItem({
         name: 'Brimstone ring',
         requiredItems: [
-          { item: "Hydra's eye" },
-          { item: "Hydra's fang" },
-          { item: "Hydra's heart" },
+          { item: "Hydra's eye", targetDropSource: 'Alchemical Hydra' },
+          { item: "Hydra's fang", targetDropSource: 'Alchemical Hydra' },
+          { item: "Hydra's heart", targetDropSource: 'Alchemical Hydra' },
         ],
         collectionLogCategories: ['alchemical_hydra'],
       }),
       singleItem({
         name: 'Hydra tail',
         collectionLogCategory: 'alchemical_hydra',
+        targetDropSource: 'Alchemical Hydra',
       }),
       singleItem({
         name: 'Hydra leather',
@@ -254,7 +255,7 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: 'Coagulated venom',
-        points: 10,
+        points: 10000000000,
         collectionLogCategory: 'araxxor',
       }),
       singleItem({
@@ -275,13 +276,12 @@ export const itemList: ItemCategoryMap = {
       }),
       compoundItem({
         name: 'Amulet of rancour (s)',
-        points: 60,
         requiredItems: [
           { item: 'Noxious blade' },
           { item: 'Noxious point' },
           { item: 'Noxious pommel' },
           { item: 'Aranea boots' },
-          { item: 'Araxyte head' },
+          { item: 'Araxyte head', targetDropSource: 'Araxxor' },
           { item: 'Zenyte shard' },
           { item: 'Nid' },
         ],
@@ -315,74 +315,60 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: 'Dexterous prayer scroll',
-        points: 80,
         image: formatWikiImageUrl('Rigour'),
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Arcane prayer scroll',
-        points: 50,
         image: formatWikiImageUrl('Augury'),
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Twisted buckler',
-        points: 80,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Dragon hunter crossbow',
-        points: 150,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: "Dinh's bulwark",
-        points: 80,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Ancestral hat',
-        points: 120,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Ancestral robe top',
-        points: 120,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Ancestral robe bottom',
-        points: 120,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Dragon claws',
-        points: 150,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Elder maul',
-        points: 250,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Kodai insignia',
-        points: 300,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Twisted bow',
-        points: 400,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Twisted ancestral colour kit',
-        points: 80,
         collectionLogCategory: 'chambers_of_xeric',
       }),
       singleItem({
         name: 'Metamorphic dust',
-        points: 300,
         collectionLogCategory: 'chambers_of_xeric',
       }),
     ],
@@ -392,6 +378,7 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Saradomin sword',
         collectionLogCategory: 'commander_zilyana',
+        targetDropSource: 'Commander Zilyana',
       }),
       singleItem({
         name: "Saradomin's light",
@@ -411,17 +398,14 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: 'Spirit shield',
-        points: 20,
         collectionLogCategory: 'corporeal_beast',
       }),
       singleItem({
         name: 'Holy elixir',
-        points: 50,
         collectionLogCategory: 'corporeal_beast',
       }),
       compoundItem({
         name: 'Spectral spirit shield',
-        points: 150,
         requiredItems: [
           { item: 'Spirit shield' },
           { item: 'Spectral sigil' },
@@ -431,7 +415,6 @@ export const itemList: ItemCategoryMap = {
       }),
       compoundItem({
         name: 'Arcane spirit shield',
-        points: 150,
         requiredItems: [
           { item: 'Spirit shield' },
           { item: 'Arcane sigil' },
@@ -441,7 +424,6 @@ export const itemList: ItemCategoryMap = {
       }),
       compoundItem({
         name: 'Elysian spirit shield',
-        points: 500,
         requiredItems: [
           { item: 'Spirit shield' },
           { item: 'Elysian sigil' },
@@ -477,12 +459,11 @@ export const itemList: ItemCategoryMap = {
     items: [
       compoundItem({
         name: 'Heavy ballista',
-        points: 50,
         requiredItems: [
-          { item: 'Ballista spring' },
-          { item: 'Monkey tail' },
-          { item: 'Heavy frame' },
-          { item: 'Ballista limbs' },
+          { item: 'Ballista spring', targetDropSource: 'Demonic gorilla' },
+          { item: 'Monkey tail', targetDropSource: 'Demonic gorilla' },
+          { item: 'Heavy frame', targetDropSource: 'Demonic gorilla' },
+          { item: 'Ballista limbs', targetDropSource: 'Demonic gorilla' },
         ],
         requiredLevels: {
           Fletching: 72,
@@ -493,7 +474,6 @@ export const itemList: ItemCategoryMap = {
         singleItem({
           name: `Zenyte shard (${i + 1})`,
           clogName: 'Zenyte shard',
-          points: 45,
           requiredAmount: i + 1,
           collectionLogCategory: 'gloughs_experiments',
         }),
@@ -505,7 +485,6 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: "Awakener's orb",
-        points: 10,
         collectionLogCategory: 'vardorvis',
       }),
       singleItem({
@@ -612,7 +591,7 @@ export const itemList: ItemCategoryMap = {
       }),
       combatAchievementItem({
         name: 'Ancient blood ornament kit',
-        points: 2000,
+        points: 10000000000,
         image: formatWikiImageUrl('Sanguine torva full helm detail'),
         requiredCombatAchievements: [
           490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
@@ -650,12 +629,12 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: "Dizana's quiver",
         clogName: "Dizana's quiver (uncharged)",
-        points: 3500,
+        points: 10000000000,
         collectionLogCategory: 'fortis_colosseum',
       }),
       manualItem({
         name: "Blessed dizana's quiver",
-        points: 3500,
+        points: 10000000000,
       }),
     ],
   },
@@ -673,6 +652,7 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Bandos boots',
         collectionLogCategory: 'general_graardor',
+        targetDropSource: 'General Graardor',
       }),
       singleItem({
         name: 'Bandos hilt',
@@ -698,7 +678,7 @@ export const itemList: ItemCategoryMap = {
       compoundItem({
         name: 'Guardian boots',
         requiredItems: [
-          { item: 'Bandos boots' },
+          { item: 'Bandos boots', targetDropSource: 'General Graardor' },
           { item: 'Black tourmaline core' },
         ],
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
@@ -723,14 +703,17 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Armadyl helmet',
         collectionLogCategory: 'kree_arra',
+        targetDropSource: "Kree'arra",
       }),
       singleItem({
         name: 'Armadyl chestplate',
         collectionLogCategory: 'kree_arra',
+        targetDropSource: "Kree'arra",
       }),
       singleItem({
         name: 'Armadyl chainskirt',
         collectionLogCategory: 'kree_arra',
+        targetDropSource: "Kree'arra",
       }),
       singleItem({
         name: 'Armadyl hilt',
@@ -748,6 +731,7 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Zamorakian spear',
         collectionLogCategory: 'kril_tsutsaroth',
+        targetDropSource: "K'ril Tsutsaroth",
       }),
       singleItem({
         name: 'Staff of the dead',
@@ -773,22 +757,26 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Crystal weapon seed',
         collectionLogCategory: 'the_gauntlet',
+        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
       }),
       singleItem({
         name: 'Crystal armour seed',
         collectionLogCategory: 'the_gauntlet',
+        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (1)',
         clogName: 'Enhanced crystal weapon seed',
         requiredAmount: 1,
         collectionLogCategory: 'the_gauntlet',
+        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (2)',
         clogName: 'Enhanced crystal weapon seed',
         requiredAmount: 2,
         collectionLogCategory: 'the_gauntlet',
+        targetDropSource: 'Reward Chest (The Gauntlet)#(Corrupted)',
       }),
     ],
   },
@@ -805,53 +793,53 @@ export const itemList: ItemCategoryMap = {
       }),
     ],
   },
-  'Theatre of Blood': {
-    image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
-    items: [
-      singleItem({
-        name: 'Avernic defender hilt',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Justiciar faceguard',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Justiciar chestguard',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Justiciar legguards',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Ghrazi rapier',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Sanguinesti staff',
-        clogName: 'Sanguinesti staff (uncharged)',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Scythe of vitur',
-        clogName: 'Scythe of vitur (uncharged)',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Holy ornament kit',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Sanguine ornament kit',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-      singleItem({
-        name: 'Sanguine dust',
-        collectionLogCategory: 'theatre_of_blood',
-      }),
-    ],
-  },
+  // 'Theatre of Blood': {
+  //   image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
+  //   items: [
+  //     singleItem({
+  //       name: 'Avernic defender hilt',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Justiciar faceguard',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Justiciar chestguard',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Justiciar legguards',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Ghrazi rapier',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Sanguinesti staff',
+  //       clogName: 'Sanguinesti staff (uncharged)',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Scythe of vitur',
+  //       clogName: 'Scythe of vitur (uncharged)',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Holy ornament kit',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Sanguine ornament kit',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //     singleItem({
+  //       name: 'Sanguine dust',
+  //       collectionLogCategory: 'theatre_of_blood',
+  //     }),
+  //   ],
+  // },
   'Thermonuclear Smoke Devil': {
     image: formatWikiImageUrl('Pet smoke devil chathead', 'category'),
     items: [
@@ -870,14 +858,14 @@ export const itemList: ItemCategoryMap = {
     items: [
       compoundItem({
         name: 'Burning claws',
-        points: 100,
+        points: 10000000000,
         requiredItems: [{ item: 'Burning claw', amount: 2 }],
         collectionLogCategories: ['tormented_demons'],
       }),
       ...Array.from({ length: 3 }).map((_, i) =>
         singleItem({
           name: `Tormented synapse (${i + 1})`,
-          points: 50,
+          points: 10000000000,
           clogName: 'Tormented synapse',
           requiredAmount: i + 1,
           collectionLogCategory: 'tormented_demons',
@@ -890,17 +878,17 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: 'Fire cape',
-        points: 20,
+        points: 10000000000,
         collectionLogCategory: 'the_fight_caves',
       }),
       singleItem({
         name: 'Infernal cape',
-        points: 7000,
+        points: 10000000000,
         collectionLogCategory: 'the_inferno',
       }),
       combatAchievementItem({
         name: '6 Jads',
-        points: 100,
+        points: 10000000000,
         image: formatWikiImageUrl('TzTok-Jad'),
         requiredCombatAchievements: [
           363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
@@ -913,12 +901,10 @@ export const itemList: ItemCategoryMap = {
     items: [
       singleItem({
         name: "Vorkath's head",
-        points: 20,
         collectionLogCategory: 'vorkath',
       }),
       singleItem({
         name: 'Dragonbone necklace',
-        points: 100,
         collectionLogCategory: 'vorkath',
       }),
     ],
@@ -960,38 +946,47 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Nightmare staff',
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: "Inquisitor's great helm",
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: "Inquisitor's hauberk",
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: "Inquisitor's plateskirt",
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: "Inquisitor's mace",
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: 'Eldritch orb',
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: 'Harmonised orb',
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: 'Volatile orb',
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
       singleItem({
         name: 'Parasitic egg',
         collectionLogCategory: 'the_nightmare',
+        targetDropSource: "Phosani's Nightmare",
       }),
     ],
   },
@@ -1084,34 +1079,42 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Masori crafting kit',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Menaphite ornament kit',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Remnant of akkha',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Remnant of ba-ba',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Remnant of kephri',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Remnant of zebak',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Ancient remnant',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
       singleItem({
         name: 'Cursed phalanx',
         collectionLogCategory: 'tombs_of_amascut',
+        points: 10000000000,
       }),
     ],
   },
@@ -1269,15 +1272,20 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Amulet of avarice',
-        points: 50,
         collectionLogCategory: 'revenants',
+        targetDropSource: 'Revenant ork#On-task',
       }),
       compoundItem({
         name: 'Obelisk',
-        points: 100,
         image:
           'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
-        requiredItems: [{ item: 'Ancient crystal', amount: 4 }],
+        requiredItems: [
+          {
+            item: 'Ancient crystal',
+            amount: 4,
+            targetDropSource: 'Revenant ork',
+          },
+        ],
         requiredLevels: {
           Construction: 72,
         },
@@ -1286,41 +1294,42 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: "Viggora's chainmace",
         clogName: "Viggora's chainmace (u)",
-        points: 100,
         collectionLogCategory: 'revenants',
+        targetDropSource: 'Revenant ork#On-task',
       }),
       singleItem({
         name: 'Claws of callisto',
-        points: 50,
         collectionLogCategory: 'callisto_and_artio',
+        targetDropSource: 'Artio',
       }),
       singleItem({
         name: "Craw's bow",
         clogName: "Craw's bow (u)",
-        points: 100,
         collectionLogCategory: 'revenants',
+        targetDropSource: 'Revenant ork#On-task',
       }),
       singleItem({
         name: 'Fangs of venenatis',
-        points: 50,
         collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSource: 'Spindel',
       }),
       singleItem({
         name: "Thammaron's sceptre",
         clogName: "Thammaron's sceptre (u)",
-        points: 100,
         collectionLogCategory: 'revenants',
+        targetDropSource: 'Revenant ork#On-task',
       }),
       singleItem({
         name: "Skull of vet'ion",
         collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSource: "Calvar'ion",
       }),
       compoundItem({
         name: 'Voidwaker',
         requiredItems: [
-          { item: 'Voidwaker hilt' },
-          { item: 'Voidwaker gem' },
-          { item: 'Voidwaker blade' },
+          { item: 'Voidwaker hilt', targetDropSource: 'Artio' },
+          { item: 'Voidwaker gem', targetDropSource: 'Spindel' },
+          { item: 'Voidwaker blade', targetDropSource: "Calvar'ion" },
         ],
         collectionLogCategories: [
           'vetion_and_calvarion',
@@ -1330,7 +1339,6 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Teleport anchoring scroll',
-        points: 100,
         collectionLogCategory: 'slayer',
       }),
     ],
@@ -1344,63 +1352,52 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Leaf-bladed battleaxe',
-        points: 20,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Warped sceptre',
         clogName: 'Warped sceptre (uncharged)',
-        points: 20,
         collectionLogCategory: 'slayer',
       }),
       compoundItem({
         name: 'Devout boots',
-        points: 20,
         requiredItems: [{ item: "Drake's tooth" }, { item: 'Holy sandals' }],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
       }),
       singleItem({
         name: 'Boots of brimstone',
         clogName: "Drake's claw",
-        points: 20,
         image: formatWikiImageUrl('Boots of brimstone'),
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Neitiznot faceguard',
         clogName: 'Basilisk jaw',
-        points: 30,
         image: formatWikiImageUrl('Neitiznot faceguard'),
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Abyssal whip',
-        points: 20,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Dark bow',
-        points: 20,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Mist battlestaff',
-        points: 30,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Dust battlestaff',
-        points: 30,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Eternal gem',
-        points: 150,
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Imbued heart',
-        points: 250,
         collectionLogCategory: 'slayer',
       }),
     ],
@@ -1411,21 +1408,18 @@ export const itemList: ItemCategoryMap = {
       singleItem({
         name: 'Dragonfire shield',
         clogName: 'Draconic visage',
-        points: 150,
         image: formatWikiImageUrl('Dragonfire shield'),
         collectionLogCategory: 'slayer',
       }),
       singleItem({
         name: 'Dragonfire ward',
         clogName: 'Skeletal visage',
-        points: 200,
         image: formatWikiImageUrl('Dragonfire ward'),
         collectionLogCategory: 'vorkath',
       }),
       singleItem({
         name: 'Ancient wyvern shield',
         clogName: 'Wyvern visage',
-        points: 200,
         image: formatWikiImageUrl('Ancient wyvern shield'),
         collectionLogCategory: 'slayer',
       }),
@@ -1454,17 +1448,15 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Crystal tool seed',
-        points: 100,
         collectionLogCategory: 'zalcano',
       }),
       singleItem({
         name: 'Dragon warhammer',
-        points: 100,
         collectionLogCategory: 'miscellaneous',
       }),
       compoundItem({
         name: 'Graceful set',
-        points: 20,
+        points: 10000000000,
         image: formatWikiImageUrl('Graceful hood'),
         requiredItems: [
           { item: 'Graceful hood' },
@@ -1478,12 +1470,11 @@ export const itemList: ItemCategoryMap = {
       }),
       singleItem({
         name: 'Ham joint',
-        points: 20,
         collectionLogCategory: 'easy_treasure_trails',
       }),
       customItem({
         name: 'Music cape',
-        points: 80,
+        points: 10000000000,
         image: formatWikiImageUrl('Music cape detail'),
         isAcquired({ musicTracks }) {
           return musicTracks
@@ -1495,42 +1486,40 @@ export const itemList: ItemCategoryMap = {
       }),
       questItem({
         name: 'Quest cape',
-        points: 80,
+        points: 10000000000,
         image: formatWikiImageUrl('Quest point cape detail'),
         requiredQuests: Quest.options,
       }),
       singleItem({
         name: 'Ranger boots',
-        points: 60,
         collectionLogCategory: 'medium_treasure_trails',
       }),
       singleItem({
         name: 'Ring of endurance',
         clogName: 'Ring of endurance (uncharged)',
-        points: 120,
+        points: 10000000000,
         collectionLogCategory: 'hallowed_sepulchre',
       }),
       singleItem({
         name: 'Swift blade',
-        points: 30,
+        points: 10000000000,
         collectionLogCategory: 'last_man_standing',
       }),
       singleItem({
         name: 'Tome of fire',
         clogName: 'Tome of fire (empty)',
-        points: 30,
+        points: 10000000000,
         collectionLogCategory: 'wintertodt',
       }),
       singleItem({
         name: 'Tome of water',
         clogName: 'Tome of water (empty)',
-        points: 30,
+        points: 10000000000,
         collectionLogCategory: 'tempoross',
       }),
       singleItem({
         name: 'Zombie axe',
         clogName: 'Broken zombie axe',
-        points: 20,
         requiredLevels: {
           Smithing: 65,
         },
@@ -1702,4 +1691,4 @@ export const itemList: ItemCategoryMap = {
   //       }),
   //   ) as NonEmptyArray<Promise<Item>>,
   // },
-};
+});

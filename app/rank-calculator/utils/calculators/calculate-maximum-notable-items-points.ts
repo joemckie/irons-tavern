@@ -1,10 +1,10 @@
 import { itemList } from '@/data/item-list';
 
-export function calculateMaximumNotableItemsPoints(scaling: number) {
-  const maxAvailablePoints = Object.entries(itemList).reduce(
+export async function calculateMaximumNotableItemsPoints(scaling: number) {
+  const maxAvailablePoints = Object.entries(await itemList).reduce(
     (acc, [, { items }]) => {
       const categoryTotalPoints = items.reduce(
-        (categoryAcc, val) => categoryAcc + val.points,
+        (categoryAcc, val) => categoryAcc + (val.points ?? 0),
         0,
       );
 

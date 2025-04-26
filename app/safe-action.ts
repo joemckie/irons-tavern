@@ -31,9 +31,9 @@ export const actionClient = createSafeActionClient({
 
     if (process.env.NODE_ENV === 'development') {
       /* eslint-disable no-console */
-      console.log(`Input: ${JSON.stringify(clientInput, null, 2)}`);
-      console.log(`Result: ${JSON.stringify(result, null, 2)}`);
-      console.log(`Metadata: ${JSON.stringify(metadata, null, 2)}`);
+      // console.log(`Input: ${JSON.stringify(clientInput, null, 2)}`);
+      // console.log(`Result: ${JSON.stringify(result, null, 2)}`);
+      // console.log(`Metadata: ${JSON.stringify(metadata, null, 2)}`);
       /* eslint-enable no-console */
     }
 

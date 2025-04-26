@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
@@ -16,6 +17,25 @@ export function useNotableItemsPointCalculator() {
     name: 'acquiredItems',
   });
   const scaling = useCalculatorScaling();
+  const [notableItemsData, setNotableItemsData] =
+    useState<NotableItemsPointCalculatorData>({
+      pointsAwarded: 0,
+      itemsCollected: 0,
+      percentageCollected: 0,
+      pointsAwardedPercentage: 0,
+      pointsRemaining: 0,
+      totalItems: 0,
+    });
 
-  return calculateNotableItemsPoints(itemFields, scaling);
+  useEffect(() => {
+    async function calculateNotableItemsData() {
+      const data = await calculateNotableItemsPoints(itemFields, scaling);
+
+      setNotableItemsData(data);
+    }
+
+    calculateNotableItemsData();
+  }, [itemFields, scaling]);
+
+  return notableItemsData;
 }

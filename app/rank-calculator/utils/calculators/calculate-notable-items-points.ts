@@ -3,12 +3,13 @@ import Decimal from 'decimal.js-light';
 import { stripEntityName } from '../strip-entity-name';
 import { calculateMaximumNotableItemsPoints } from './calculate-maximum-notable-items-points';
 
-export function calculateNotableItemsPoints(
+export async function calculateNotableItemsPoints(
   itemFields: Record<string, boolean | undefined>,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumNotableItemsPoints(scaling);
-  const { totalItems, itemPoints } = Object.entries(itemList).reduce(
+  const totalPointsAvailable =
+    await calculateMaximumNotableItemsPoints(scaling);
+  const { totalItems, itemPoints } = Object.entries(await itemList).reduce(
     (acc, [, { items }]) => {
       const { categoryItemPointMap } = items.reduce(
         (categoryAcc, val) => ({
