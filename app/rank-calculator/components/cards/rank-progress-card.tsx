@@ -20,7 +20,7 @@ import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label'
 import { formatNumber } from '../../utils/format-number';
 import { RankStructureInfoModal } from '../rank-structure-info-modal';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
-import { useCurrentPlayer } from '../../contexts/current-rank-context';
+import { useCurrentPlayer } from '../../contexts/current-player-context';
 import { handleToastUpdates } from '../../utils/handle-toast-updates';
 import { publishRankSubmissionAction } from '../../[player]/actions/publish-rank-submission-action';
 
