@@ -307,6 +307,7 @@ export const itemList = {
       singleItem({
         name: 'Smouldering stone',
         collectionLogCategory: 'cerberus',
+        targetDropSources: ['Cerberus'],
       }),
     ],
   },
@@ -522,11 +523,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Bellator ring',
-        requiredItems: [
-          { item: 'Bellator vestige' },
-          { item: 'Chromium ingot', amount: 3 },
-          { item: 'Warrior ring' },
-        ],
+        requiredItems: [{ item: 'Bellator vestige' }, { item: 'Warrior ring' }],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -535,11 +532,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Magus ring',
-        requiredItems: [
-          { item: 'Magus vestige' },
-          { item: 'Chromium ingot', amount: 3 },
-          { item: 'Seers ring' },
-        ],
+        requiredItems: [{ item: 'Magus vestige' }, { item: 'Seers ring' }],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -548,11 +541,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Ultor ring',
-        requiredItems: [
-          { item: 'Ultor vestige' },
-          { item: 'Chromium ingot', amount: 3 },
-          { item: 'Berserker ring' },
-        ],
+        requiredItems: [{ item: 'Ultor vestige' }, { item: 'Berserker ring' }],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -561,11 +550,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Venator ring',
-        requiredItems: [
-          { item: 'Venator vestige' },
-          { item: 'Chromium ingot', amount: 3 },
-          { item: 'Archers ring' },
-        ],
+        requiredItems: [{ item: 'Venator vestige' }, { item: 'Archers ring' }],
         requiredLevels: {
           Magic: 85,
           Crafting: 75,
@@ -1279,17 +1264,17 @@ export const itemList = {
       singleItem({
         name: 'Ring of the gods',
         collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Calvar'ion"],
+        targetDropSources: ["Vet'ion"],
       }),
       singleItem({
         name: 'Treasonous ring',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Spindel'],
+        targetDropSources: ['Venenatis'],
       }),
       singleItem({
         name: 'Tyrannical ring',
         collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Artio'],
+        targetDropSources: ['Callisto'],
       }),
       singleItem({
         name: 'Amulet of eternal glory',
@@ -1329,7 +1314,7 @@ export const itemList = {
       singleItem({
         name: 'Claws of callisto',
         collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Artio'],
+        targetDropSources: ['Callisto'],
       }),
       singleItem({
         name: "Craw's bow",
@@ -1341,7 +1326,7 @@ export const itemList = {
       singleItem({
         name: 'Fangs of venenatis',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Spindel'],
+        targetDropSources: ['Venenatis'],
       }),
       singleItem({
         name: "Thammaron's sceptre",
@@ -1353,14 +1338,14 @@ export const itemList = {
       singleItem({
         name: "Skull of vet'ion",
         collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Calvar'ion"],
+        targetDropSources: ["Vet'ion"],
       }),
       compoundItem({
         name: 'Voidwaker',
         requiredItems: [
-          { item: 'Voidwaker hilt', targetDropSources: ['Artio'] },
-          { item: 'Voidwaker gem', targetDropSources: ['Spindel'] },
-          { item: 'Voidwaker blade', targetDropSources: ["Calvar'ion"] },
+          { item: 'Voidwaker hilt', targetDropSources: ['Callisto'] },
+          { item: 'Voidwaker gem', targetDropSources: ['Venenatis'] },
+          { item: 'Voidwaker blade', targetDropSources: ["Vet'ion"] },
         ],
         collectionLogCategories: [
           'vetion_and_calvarion',
@@ -1460,7 +1445,6 @@ export const itemList = {
         clogName: 'Skeletal visage',
         image: formatWikiImageUrl('Dragonfire ward'),
         collectionLogCategory: 'vorkath',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Ancient wyvern shield',
