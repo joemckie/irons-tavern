@@ -1640,93 +1640,150 @@ export const itemList = {
       }),
     ],
   },
-  // Pets: {
-  //   image: formatWikiImageUrl('Nid', 'category'),
-  //   items: (
-  //     Object.entries({
-  //       'Abyssal orphan': [100],
-  //       'Abyssal protector': [150],
-  //       'Baby chinchompa': [
-  //         150,
-  //         formatWikiImageUrl('Baby chinchompa (gold) chathead'),
-  //       ],
-  //       'Baby mole': [50],
-  //       Baron: [110],
-  //       Beaver: [150],
-  //       Bloodhound: [400],
-  //       Bran: [50],
-  //       Butch: [130],
-  //       'Callisto cub': [80],
-  //       'Chompy chick': [10],
-  //       'Giant squirrel': [200],
-  //       Hellpuppy: [80],
-  //       Herbi: [120],
-  //       Heron: [150],
-  //       Huberte: [50],
-  //       'Ikkle hydra': [
-  //         140,
-  //         formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
-  //       ],
-  //       'Jal-nib-rek': [200],
-  //       'Kalphite princess': [100],
-  //       "Lil' creator": [100],
-  //       "Lil'viathan": [140],
-  //       "Lil' zik": [200],
-  //       'Little nightmare': [300],
-  //       Muphin: [80, formatWikiImageUrl('Muphin (shielded) chathead')],
-  //       Nexling: [250],
-  //       Nid: [70],
-  //       Noon: [120],
-  //       Olmlet: [400],
-  //       'Pet chaos elemental': [20],
-  //       'Pet dagannoth prime': [100],
-  //       'Pet dagannoth rex': [100],
-  //       'Pet dagannoth supreme': [100],
-  //       'Pet dark core': [400],
-  //       'Pet general graardor': [150],
-  //       'Pet kraken': [50],
-  //       "Pet kree'arra": [200],
-  //       "Pet k'ril tsutsaroth": [
-  //         150,
-  //         formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
-  //       ],
-  //       'Pet penance queen': [500],
-  //       'Pet smoke devil': [60],
-  //       'Pet snakeling': [120],
-  //       'Pet zilyana': [200],
-  //       Phoenix: [150],
-  //       'Prince black dragon': [80],
-  //       Quetzin: [150],
-  //       'Rift guardian': [
-  //         300,
-  //         formatWikiImageUrl('Rift guardian (follower, fire)'),
-  //       ],
-  //       'Rock golem': [200],
-  //       Rocky: [100],
-  //       "Scorpia's offspring": [60],
-  //       Scurry: [50],
-  //       Skotos: [40],
-  //       Smolcano: [160],
-  //       'Smol heredit': [150],
-  //       Sraracha: [70],
-  //       Tangleroot: [400],
-  //       'Tiny tempor': [200],
-  //       "Tumeken's guardian": [200],
-  //       'Tzrek-jad': [140],
-  //       'Venenatis spiderling': [80],
-  //       "Vet'ion jr.": [100],
-  //       Vorki: [120],
-  //       Wisp: [120],
-  //       Youngllef: [160],
-  //     }) as [string, [number] | [number, string]][]
-  //   ).map<Promise<Item>>(
-  //     async ([name, [points, image = formatWikiImageUrl(name)]]) =>
-  //       singleItem({
-  //         name,
-  //         points,
-  //         image,
-  //         collectionLogCategory: 'all_pets',
-  //       }),
-  //   ) as NonEmptyArray<Promise<Item>>,
-  // },
+  Pets: {
+    image: formatWikiImageUrl('Nid', 'category'),
+    items: Object.entries({
+      'Abyssal orphan': {},
+      'Abyssal protector': {
+        points: 10000000000,
+      },
+      'Baby chinchompa': {
+        points: 10000000000,
+        image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
+      },
+      'Baby mole': {},
+      Baron: {},
+      Beaver: {
+        points: 10000000000,
+      },
+      Bloodhound: { points: 10000000000 },
+      Bran: {},
+      Butch: {},
+      'Callisto cub': {
+        targetDropSources: ['Artio'],
+      },
+      'Chompy chick': {
+        points: 10000000000,
+      },
+      'Giant squirrel': {
+        points: 10000000000,
+      },
+      Hellpuppy: {},
+      Herbi: {
+        points: 10000000000,
+      },
+      Heron: {
+        points: 10000000000,
+      },
+      Huberte: {},
+      'Ikkle hydra': {
+        image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
+      },
+      'Jal-nib-rek': {
+        points: 10000000000,
+      },
+      'Kalphite princess': {},
+      "Lil' creator": {
+        points: 10000000000,
+      },
+      "Lil'viathan": {},
+      "Lil' zik": {},
+      'Little nightmare': {
+        targetDropSources: ["Phosani's Nightmare"],
+      },
+      Muphin: {
+        image: formatWikiImageUrl('Muphin (shielded) chathead'),
+      },
+      Nexling: {},
+      Nid: {},
+      Noon: {},
+      Olmlet: {},
+      'Pet chaos elemental': {},
+      'Pet dagannoth prime': {},
+      'Pet dagannoth rex': {},
+      'Pet dagannoth supreme': {},
+      'Pet dark core': {},
+      'Pet general graardor': {},
+      'Pet kraken': {},
+      "Pet kree'arra": {},
+      "Pet k'ril tsutsaroth": {
+        image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
+      },
+      'Pet penance queen': {
+        points: 10000000000,
+      },
+      'Pet smoke devil': {},
+      'Pet snakeling': {},
+      'Pet zilyana': {},
+      Phoenix: {
+        points: 10000000000,
+      },
+      'Prince black dragon': {},
+      Quetzin: {
+        points: 10000000000,
+      },
+      'Rift guardian': {
+        points: 10000000000,
+        image: formatWikiImageUrl('Rift guardian (follower, fire)'),
+      },
+      'Rock golem': {
+        points: 10000000000,
+      },
+      Rocky: {
+        points: 10000000000,
+      },
+      "Scorpia's offspring": {},
+      Scurry: {},
+      Skotos: {},
+      Smolcano: {
+        points: 10000000000,
+      },
+      'Smol heredit': {},
+      Sraracha: {},
+      Tangleroot: {
+        points: 10000000000,
+      },
+      'Tiny tempor': {
+        points: 10000000000,
+      },
+      "Tumeken's guardian": {
+        points: 10000000000,
+      },
+      'Tzrek-jad': {
+        points: 10000000000,
+      },
+      'Venenatis spiderling': {
+        targetDropSources: ['Spindel'],
+      },
+      "Vet'ion jr.": {
+        targetDropSources: ["Calvar'ion"],
+      },
+      Vorki: {},
+      Wisp: {},
+      Youngllef: {
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      },
+    } satisfies Partial<
+      Record<
+        CollectionLogItemName,
+        {
+          points?: number;
+          image?: string;
+          targetDropSources?: NonEmptyArray<string>;
+        }
+      >
+    >).map(
+      ([
+        name,
+        { points, image = formatWikiImageUrl(name), targetDropSources },
+      ]) =>
+        singleItem({
+          name,
+          points,
+          image,
+          collectionLogCategory: 'all_pets',
+          targetDropSources,
+        }),
+    ) as NonEmptyArray<Item>,
+  },
 } satisfies ItemCategoryMap;
