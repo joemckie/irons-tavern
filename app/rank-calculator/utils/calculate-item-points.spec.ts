@@ -318,10 +318,7 @@ it.each(testCases)(
 
     setup(itemSourcesTuple);
 
-    const dropRates =
-      (await fetchItemDropRates(
-        new Set(itemSourcesTuple.map(([item]) => item)),
-      )) ?? {};
+    const dropRates = await fetchItemDropRates();
     const points = calculateItemPoints(
       dropRates,
       itemSources.map((itemSource) => ({
@@ -357,11 +354,12 @@ it('calculates the correct points when a specific drop source has been selected'
     ],
   ]);
 
-  const dropRates = (await fetchItemDropRates(new Set([item]))) ?? {};
+  const dropRates = await fetchItemDropRates();
   const points = calculateItemPoints(dropRates, [
     {
       amount: 1,
       clogName: item,
+      targetDropSource: 'Unsired',
     },
   ]);
   const expectedPoints = 64;
@@ -400,10 +398,7 @@ it('calculates the correct points for items consisting of multiple drops', async
     ],
   ]);
 
-  const dropRates =
-    (await fetchItemDropRates(
-      new Set(['Bludgeon axon', 'Bludgeon claw', 'Bludgeon spine']),
-    )) ?? {};
+  const dropRates = await fetchItemDropRates();
 
   const points = calculateItemPoints(dropRates, [
     {
