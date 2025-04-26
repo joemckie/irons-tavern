@@ -21,13 +21,15 @@ import { isHolidayTrack } from '@/app/schemas/wiki';
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
   'requiredItems' | 'collectionLogCategories'
-> & {
-  clogName?: CollectionLogItemName;
-  requiredAmount?: number;
-  collectionLogCategory: TempleOSRSCollectionLogCategory;
-  targetDropSources?: RequiredItem['targetDropSources'];
-  ignoreDropRateModifier?: RequiredItem['ignoreDropRateModifier'];
-};
+> &
+  Pick<
+    RequiredItem,
+    'ignoreAmountMultiplier' | 'ignoreDropRateModifier' | 'targetDropSources'
+  > & {
+    clogName?: CollectionLogItemName;
+    requiredAmount?: number;
+    collectionLogCategory: TempleOSRSCollectionLogCategory;
+  };
 
 function singleItem({
   name,
@@ -39,6 +41,7 @@ function singleItem({
   collectionLogCategory,
   targetDropSources,
   ignoreDropRateModifier,
+  ignoreAmountMultiplier,
 }: SingleItemOptions) {
   return CollectionLogItem.parse({
     image,
@@ -50,6 +53,7 @@ function singleItem({
         clogName: clogName ?? name,
         targetDropSources,
         ignoreDropRateModifier,
+        ignoreAmountMultiplier,
       },
     ],
     isAutomatic,
@@ -80,10 +84,9 @@ function compoundItem({
     name,
     points,
     requiredItems: requiredItems.map<RequiredItem>(
-      ({ clogName, amount = 1, targetDropSources }) => ({
+      ({ amount = 1, ...item }) => ({
+        ...item,
         amount,
-        clogName,
-        targetDropSources,
       }),
     ),
     requiredLevels,
@@ -490,7 +493,7 @@ export const itemList = {
           clogName: 'Zenyte shard',
           requiredAmount: i + 1,
           collectionLogCategory: 'gloughs_experiments',
-          points: 10000000000,
+          ignoreAmountMultiplier: true,
         }),
       ),
     ],
@@ -788,7 +791,6 @@ export const itemList = {
         requiredAmount: 1,
         collectionLogCategory: 'the_gauntlet',
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-        points: 10000000000,
       }),
       singleItem({
         name: 'Enhanced crystal weapon seed (2)',
@@ -796,7 +798,7 @@ export const itemList = {
         requiredAmount: 2,
         collectionLogCategory: 'the_gauntlet',
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-        points: 10000000000,
+        ignoreAmountMultiplier: true,
       }),
     ],
   },
@@ -886,17 +888,16 @@ export const itemList = {
     items: [
       compoundItem({
         name: 'Burning claws',
-        points: 10000000000,
         requiredItems: [{ clogName: 'Burning claw', amount: 2 }],
         collectionLogCategories: ['tormented_demons'],
       }),
       ...Array.from({ length: 3 }).map((_, i) =>
         singleItem({
           name: `Tormented synapse (${i + 1})`,
-          points: 10000000000,
           clogName: 'Tormented synapse',
           requiredAmount: i + 1,
           collectionLogCategory: 'tormented_demons',
+          ignoreAmountMultiplier: true,
         }),
       ),
     ],

@@ -3,17 +3,28 @@ import {
   dropRateModifiers,
   ehbRates,
   itemBossNameMap,
+  pointModifiers,
 } from '@/config/ehb-rates';
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { z } from 'zod';
+import { CollectionLogItemName } from '@/app/schemas/osrs';
+
+interface CalculatePointsForSingleDropSourceOptions {
+  ignoreDropRateModifier?: boolean;
+  ignoreAmountMultiplier?: boolean;
+}
 
 function calculatePointsForSingleDropSource(
+  itemName: CollectionLogItemName,
   dropSource: string,
   amount: number,
   itemDropRate: number,
-  ignoreDropRateModifier: boolean = false,
+  {
+    ignoreDropRateModifier = false,
+    ignoreAmountMultiplier = false,
+  }: CalculatePointsForSingleDropSourceOptions,
 ) {
   const pointsPerHour = 5;
   const bossName = itemBossNameMap[dropSource] ?? dropSource;
@@ -21,6 +32,7 @@ function calculatePointsForSingleDropSource(
   const dropRateModifier = ignoreDropRateModifier
     ? 1
     : (dropRateModifiers[dropSource] ?? 1);
+  const pointModifier = pointModifiers[itemName] ?? 1;
 
   if (!bossEhb) {
     console.warn(`No EHB rate found for ${bossName}; using default of 60 EHB.`);
@@ -30,7 +42,8 @@ function calculatePointsForSingleDropSource(
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
     .dividedBy(bossEhb ?? defaultEhbRate)
     .times(pointsPerHour)
-    .times(amount)
+    .times(pointModifier)
+    .times(ignoreAmountMultiplier ? 1 : amount)
     .toNumber();
 }
 
@@ -46,12 +59,14 @@ export function calculateItemPoints(
         clogName,
         targetDropSources = Object.keys(dropRateInfo[clogName]),
         ignoreDropRateModifier,
+        ignoreAmountMultiplier,
       },
     ) => {
       const totalPointsForDropSources = targetDropSources.reduce(
         (sum, dropSource) =>
           sum +
           calculatePointsForSingleDropSource(
+            clogName,
             dropSource,
             amount,
             z
@@ -59,7 +74,10 @@ export function calculateItemPoints(
                 required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
               })
               .parse(dropRateInfo[clogName][dropSource]),
-            ignoreDropRateModifier,
+            {
+              ignoreDropRateModifier,
+              ignoreAmountMultiplier,
+            },
           ),
         0,
       );

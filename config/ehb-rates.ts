@@ -1,3 +1,5 @@
+import { CollectionLogItemName } from '@/app/schemas/osrs';
+
 /**
  * 60 EHB is the default rate given by TempleOSRS when a new boss is added.
  *
@@ -121,4 +123,20 @@ export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Chest (Tombs of Amascut)': 1 / 10,
   'Ancient chest': 1 / 7.23,
+};
+
+/**
+ * Some items have unique drop mechanics that mean their rarities aren't quite correct in reality.
+ *
+ * For example, the Hydra's eye, fang and heart are all 1/180, but dupe protection makes the effective drop rate 1/60.
+ *
+ * This map is used to modify the final item points to account for this.
+ */
+export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
+  'Eye of the corruptor': 1 / 3,
+  'Jewel of the sun': 1 / 3,
+  'Breach of the scarab': 1 / 3,
+  "Hydra's eye": 1 / 3,
+  "Hydra's fang": 1 / 3,
+  "Hydra's heart": 1 / 3,
 };

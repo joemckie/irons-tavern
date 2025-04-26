@@ -170,7 +170,7 @@ const testCases = [
     ],
   },
   {
-    expectedPoints: 94,
+    expectedPoints: 32,
     itemName: 'Brimstone ring',
     itemSources: [
       {
@@ -540,6 +540,59 @@ it('does not modify the drop rate if "ignoreDropRateModifier" is true', async ()
     },
   ]);
   const expectedPoints = 17;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('does not multiply the points by amount of items if "ignoreAmountMultiplier" is true', async () => {
+  setup([
+    [
+      'Zenyte shard',
+      [
+        {
+          'Dropped from': 'Demonic gorilla',
+          Rarity: '1/300',
+          Rolls: 1,
+        },
+      ],
+    ],
+  ]);
+
+  const dropRates = await fetchItemDropRates();
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 2,
+      clogName: 'Zenyte shard',
+      ignoreAmountMultiplier: true,
+    },
+  ]);
+  const expectedPoints = 25;
+
+  expect(points).toEqual(expectedPoints);
+});
+
+it('multiplies the points by amount of items if "amount" is greater than 1 and "ignoreAmountMultiplier" is not true', async () => {
+  setup([
+    [
+      'Zenyte shard',
+      [
+        {
+          'Dropped from': 'Demonic gorilla',
+          Rarity: '1/300',
+          Rolls: 1,
+        },
+      ],
+    ],
+  ]);
+
+  const dropRates = await fetchItemDropRates();
+  const points = calculateItemPoints(dropRates, [
+    {
+      amount: 2,
+      clogName: 'Zenyte shard',
+    },
+  ]);
+  const expectedPoints = 50;
 
   expect(points).toEqual(expectedPoints);
 });
