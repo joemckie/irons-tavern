@@ -139,4 +139,6 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's eye": 1 / 3,
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
+  'Tzrek-jad': 67 / 200,
+  'Jal-nib-rek': 43 / 100,
 };

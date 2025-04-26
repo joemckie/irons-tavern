@@ -1705,9 +1705,7 @@ export const itemList = {
       'Ikkle hydra': {
         image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
       },
-      'Jal-nib-rek': {
-        points: 10000000000,
-      },
+      'Jal-nib-rek': {},
       'Kalphite princess': {},
       "Lil' creator": {
         points: 10000000000,
@@ -1777,9 +1775,7 @@ export const itemList = {
       "Tumeken's guardian": {
         points: 10000000000,
       },
-      'Tzrek-jad': {
-        points: 10000000000,
-      },
+      'Tzrek-jad': {},
       'Venenatis spiderling': {
         targetDropSources: ['Spindel'],
       },
