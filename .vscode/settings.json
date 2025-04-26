@@ -1,10 +1,14 @@
 {
   "prettier.configPath": ".prettierrc.json",
   "cSpell.words": [
+    "Amascut",
     "Ardougne",
+    "Branda",
     "Draynor",
+    "Eldric",
     "Falador",
     "Fremennik",
+    "Heredit",
     "hiscores",
     "hkeys",
     "Kandarin",
@@ -17,6 +21,7 @@
     "Skilling",
     "Unsired",
     "Varrock",
+    "Vorkath",
     "Xeric"
   ],
   "typescript.tsdk": "node_modules/typescript/lib"

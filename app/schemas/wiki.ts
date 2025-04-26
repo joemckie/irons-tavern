@@ -136,10 +136,13 @@ const ItemRarity = z
   .string()
   .transform(fractionToDecimal)
   .pipe(
-    z
-      .number()
-      .lt(1, 'Item rarity must be less than 1')
-      .gt(0, 'Item rarity must be more than 0'),
+    z.union([
+      z.nan(),
+      z
+        .number()
+        .lt(1, 'Item rarity must be less than 1')
+        .gt(0, 'Item rarity must be more than 0'),
+    ]),
   );
 
 export const DroppedItemJSON = z
