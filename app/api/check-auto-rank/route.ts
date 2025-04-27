@@ -29,6 +29,7 @@ import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
 import { redis } from '@/redis';
 import { calculateMaximumAvailablePoints } from '@/app/rank-calculator/utils/calculators/calculate-maximum-available-points';
+import { fetchItemDropRates } from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
 
 export async function GET(request: NextRequest) {
   try {
@@ -71,6 +72,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
+    const dropRates = await fetchItemDropRates();
     const scaling = calculateScaling(joinDate);
     const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
       collectionLogCount,
@@ -83,7 +85,7 @@ export async function GET(request: NextRequest) {
         scaling,
       );
     const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(acquiredItems, scaling);
+      calculateNotableItemsPoints(dropRates, acquiredItems, scaling);
     const { pointsAwarded: achievementDiariesPoints } =
       calculateAchievementDiaryPoints(achievementDiaries, scaling);
     const ehpPoints = calculateEhpPoints(ehp, scaling);
@@ -110,8 +112,10 @@ export async function GET(request: NextRequest) {
       totalSkillingPoints,
       totalCombatPoints,
     );
-    const maximumAvailablePoints =
-      calculateMaximumAvailablePoints(collectionLogTotal);
+    const maximumAvailablePoints = calculateMaximumAvailablePoints(
+      dropRates,
+      collectionLogTotal,
+    );
     const { rank } = calculateRank(
       maximumAvailablePoints,
       totalPointsAwarded,
