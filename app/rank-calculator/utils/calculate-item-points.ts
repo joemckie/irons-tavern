@@ -10,6 +10,8 @@ import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { z } from 'zod';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import chalk from 'chalk';
+import dedent from 'dedent';
+import { clientConstants } from '@/config/constants.client';
 
 interface CalculatePointsForSingleDropSourceOptions {
   ignoreDropRateModifier?: boolean;
@@ -36,7 +38,11 @@ function calculatePointsForSingleDropSource(
 
   if (!bossEhb) {
     console.warn(
-      `${chalk.underline.yellow(bossName)}: No EHB rate found for whilst calculating "${chalk.underline.red(itemName)}". Using default of ${chalk.bold.underline('60 EHB')}.`,
+      dedent`
+        ${chalk.underline.yellow(bossName)}: No EHB rate found whilst calculating "${chalk.underline.red(itemName)}". Using default of ${chalk.bold.underline('60 EHB')}.
+
+        ${encodeURI(`${clientConstants.wiki.baseUrl}/api.php?action=ask&query=[[Dropped item::${itemName}]]|?Drop JSON|limit=1000&format=json`)}
+      `,
     );
   }
 

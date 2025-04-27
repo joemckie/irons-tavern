@@ -33,6 +33,12 @@ export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Branda the Fire Queen': 'The Royal Titans',
   'Eldric the Ice King': 'The Royal Titans',
   'Lunar Chest': 'Lunar Chests',
+  'Scurrius#MVP': 'Scurrius',
+  'Reward casket (medium)': 'Medium Clue',
+  'Reward casket (easy)': 'Easy Clue',
+  'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
+  'Cave kraken': 'Kraken',
+  'Crazy archaeologist': 'Crazy Archaeologist',
 };
 /**
  * Some unique drops don't come directly from the original source, e.g.:
@@ -68,4 +74,17 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's heart": 1 / 3,
   'Tzrek-jad': 67 / 200,
   'Jal-nib-rek': 43 / 100,
+};
+
+/**
+ * Some drop sources provide multiple rolls from the drop table.
+ *
+ * For example, medium clue caskets have between 3 and 5 rolls, with an average of 4,
+ * but OSRSWiki provides each item with a roll of 1.
+ *
+ * This map is used to overrides the rolls provided by OSRSWiki to get the correct drop rate.
+ */
+export const rollOverrides: Record<string, number> = {
+  'Reward casket (medium)': 4,
+  'Reward casket (easy)': 3,
 };

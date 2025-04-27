@@ -496,6 +496,7 @@ export const itemList = {
           requiredAmount: i + 1,
           collectionLogCategory: 'gloughs_experiments',
           ignoreAmountMultiplier: true,
+          targetDropSources: ['Demonic gorilla'],
         }),
       ),
     ],
@@ -1070,17 +1071,17 @@ export const itemList = {
       singleItem({
         name: 'Eye of the corruptor',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: 'Jewel of the sun',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: 'Breach of the scarab',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: "Osmumten's fang",
@@ -1213,10 +1214,17 @@ export const itemList = {
         name: 'Ancient sceptre',
         clogName: 'Ancient icon',
         collectionLogCategory: 'phantom_muspah',
+        targetDropSources: ['Phantom Muspah'],
       }),
       compoundItem({
         name: 'Venator bow',
-        requiredItems: [{ clogName: 'Venator shard', amount: 5 }],
+        requiredItems: [
+          {
+            clogName: 'Venator shard',
+            amount: 5,
+            targetDropSources: ['Phantom Muspah'],
+          },
+        ],
         collectionLogCategories: ['phantom_muspah'],
       }),
       manualItem({
@@ -1534,7 +1542,6 @@ export const itemList = {
       singleItem({
         name: 'Ham joint',
         collectionLogCategory: 'easy_treasure_trails',
-        points: 10000000000,
       }),
       customItem({
         name: 'Music cape',
@@ -1557,7 +1564,6 @@ export const itemList = {
       singleItem({
         name: 'Ranger boots',
         collectionLogCategory: 'medium_treasure_trails',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Ring of endurance',
