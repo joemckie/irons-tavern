@@ -102,6 +102,7 @@ export const ehbRates = {
   'Revenant ork#On-task': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
   'Black dragon#Wilderness Slayer Cave': 50, // Assumed value - can cannon in the Wilderness Slayer Cave
   'Spitting Wyvern': 100,
+  'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
 } satisfies Record<string, number>;
 
 /**

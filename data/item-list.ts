@@ -1394,7 +1394,7 @@ export const itemList = {
       singleItem({
         name: 'Teleport anchoring scroll',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        targetDropSources: ["Zombie Pirate's Locker"],
       }),
     ],
   },

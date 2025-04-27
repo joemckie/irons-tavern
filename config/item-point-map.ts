@@ -46,6 +46,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Rewards Guardian': 'Guardians of the Rift',
   'Barbarian Assault/Gambles#High': 'Barbarian Assault',
   'Grand Hallowed Coffin': 'Hallowed Sepulchre',
+  "Zombie Pirate's Locker": 'Zombie Pirate Key',
 };
 
 /**
