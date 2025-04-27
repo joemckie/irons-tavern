@@ -1,4 +1,4 @@
-import { calculateXpBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-based-item-points';
+import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import {
@@ -158,6 +158,10 @@ function customItem({
     isAutomatic,
   });
 }
+
+const estimatedSlayerXpForImbuedHeart = 25000000;
+const estimatedFishingXpForHeron = 10112800;
+const eternalGloryDropRate = 1 / 25000;
 
 export const itemList = {
   'Automatic Items': {
@@ -1314,8 +1318,8 @@ export const itemList = {
       }),
       singleItem({
         name: 'Amulet of eternal glory',
-        points: 10000000000,
         collectionLogCategory: 'miscellaneous',
+        points: calculateXpOrTimeBasedItemPoints(1 / eternalGloryDropRate, 600),
       }),
       singleItem({
         name: 'Amulet of avarice',
@@ -1440,22 +1444,34 @@ export const itemList = {
       singleItem({
         name: 'Mist battlestaff',
         collectionLogCategory: 'slayer',
-        points: calculateXpBasedItemPoints(25000000 / 3.5, ehpRates.Slayer),
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedSlayerXpForImbuedHeart / 3.5,
+          ehpRates.Slayer,
+        ),
       }),
       singleItem({
         name: 'Dust battlestaff',
         collectionLogCategory: 'slayer',
-        points: calculateXpBasedItemPoints(25000000 / 3.5, ehpRates.Slayer),
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedSlayerXpForImbuedHeart / 3.5,
+          ehpRates.Slayer,
+        ),
       }),
       singleItem({
         name: 'Eternal gem',
         collectionLogCategory: 'slayer',
-        points: calculateXpBasedItemPoints(25000000, ehpRates.Slayer),
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedSlayerXpForImbuedHeart,
+          ehpRates.Slayer,
+        ),
       }),
       singleItem({
         name: 'Imbued heart',
         collectionLogCategory: 'slayer',
-        points: calculateXpBasedItemPoints(25000000, ehpRates.Slayer),
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedSlayerXpForImbuedHeart,
+          ehpRates.Slayer,
+        ),
       }),
     ],
   },
@@ -1687,7 +1703,10 @@ export const itemList = {
       Hellpuppy: {},
       Herbi: {},
       Heron: {
-        points: calculateXpBasedItemPoints(10112800, ehpRates.Fishing),
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedFishingXpForHeron,
+          ehpRates.Fishing,
+        ),
       },
       Huberte: {},
       'Ikkle hydra': {
