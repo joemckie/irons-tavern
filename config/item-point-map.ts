@@ -108,7 +108,7 @@ export const rollOverrides: Record<string, number> = {
 /**
  * Some items have drop rates that are more nuanced than what is provided by OSRSWiki.
  *
- * For example, the Avernic defender hilt has a drop rate of 1 / 19, but in reality is 1 / 64
+ * For example, the Avernic defender hilt has a drop rate of 1/19, but in reality is 1/64
  * when taking into consideration the loot mechanics of the raid.
  *
  * This map is used to override the item rarity provided by OSRSWiki to get the correct item drop rate.
@@ -121,9 +121,9 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Justiciar faceguard': 1 / 259,
   'Justiciar legguards': 1 / 259,
   'Scythe of vitur (uncharged)': 1 / 519,
-  'Jal-nib-rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1 / 75 roll and exchanges an Infernal Cape for a 1 / 100 roll
-  'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1 / 100 roll and exchanges a Fire Cape for a 1 / 200 roll
-  'Smol heredit': 1 / 100, // Assuming the player exchanges a Dizana's Quiver for an additional 1 / 200 roll
+  'Jal-nib-rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
+  'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
+  'Smol heredit': 1 / 100, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
   "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
   'Masori mask': 1 / 144.9,
@@ -133,4 +133,19 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   "Osmumten's fang": 1 / 41.4,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
+  'Basilisk jaw': 1 / 1000, // Assuming the player kills Basilisk Knights on-task
+};
+
+/**
+ * Some items have an alternate rarity as provided by OSRSWiki.
+ *
+ * For example, the Amulet of avarice has a 1/2933 drop rate from a Revenant Ork on-task whilst unskulled, but 1/1613 whilst skulled.
+ *
+ * This map is used to switch to the alternate rarity provided by OSRSWiki.
+ */
+export const altRarityItems: Partial<Record<CollectionLogItemName, true>> = {
+  'Amulet of avarice': true,
+  "Craw's bow (u)": true,
+  "Thammaron's sceptre (u)": true,
+  "Viggora's chainmace (u)": true,
 };

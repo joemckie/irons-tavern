@@ -1321,7 +1321,6 @@ export const itemList = {
         name: 'Amulet of avarice',
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
-        points: 10000000000,
       }),
       compoundItem({
         name: 'Obelisk',
@@ -1345,7 +1344,6 @@ export const itemList = {
         clogName: "Viggora's chainmace (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
-        points: 10000000000,
       }),
       singleItem({
         name: 'Claws of callisto',
@@ -1357,7 +1355,6 @@ export const itemList = {
         clogName: "Craw's bow (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
-        points: 10000000000,
       }),
       singleItem({
         name: 'Fangs of venenatis',
@@ -1369,7 +1366,6 @@ export const itemList = {
         clogName: "Thammaron's sceptre (u)",
         collectionLogCategory: 'revenants',
         targetDropSources: ['Revenant ork#On-task'],
-        points: 10000000000,
       }),
       singleItem({
         name: "Skull of vet'ion",
@@ -1406,13 +1402,11 @@ export const itemList = {
       singleItem({
         name: 'Leaf-bladed battleaxe',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Warped sceptre',
         clogName: 'Warped sceptre (uncharged)',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
       }),
       compoundItem({
         name: 'Devout boots',
@@ -1421,31 +1415,27 @@ export const itemList = {
           { clogName: 'Holy sandals' },
         ],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
-        points: 10000000000,
       }),
       singleItem({
         name: 'Boots of brimstone',
         clogName: "Drake's claw",
         image: formatWikiImageUrl('Boots of brimstone'),
         collectionLogCategory: 'slayer',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Neitiznot faceguard',
         clogName: 'Basilisk jaw',
         image: formatWikiImageUrl('Neitiznot faceguard'),
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        targetDropSources: ['Basilisk Knight'],
       }),
       singleItem({
         name: 'Abyssal whip',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Dark bow',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
       }),
       singleItem({
         name: 'Mist battlestaff',

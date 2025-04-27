@@ -1,5 +1,9 @@
 import { z, ZodNumber } from 'zod';
-import { rarityOverrides, rollOverrides } from '@/config/item-point-map';
+import {
+  altRarityItems,
+  rarityOverrides,
+  rollOverrides,
+} from '@/config/item-point-map';
 import {
   CollectionLogItemName,
   CombatAchievementTier,
@@ -149,12 +153,14 @@ const ItemRarity = z
 
 export const DroppedItemJSON = z
   .object({
+    'Alt Rarity': ItemRarity,
     Rarity: ItemRarity,
     'Dropped from': z.string(),
     'Dropped item': z.string(),
     Rolls: z.number().positive(),
   })
   .transform((data) => ({
+    altRarity: data['Alt Rarity'],
     rarity: data.Rarity,
     dropSource: data['Dropped from'],
     itemName: data['Dropped item'],
@@ -188,7 +194,7 @@ export const DroppedItemResponse = z
         acc,
         {
           printouts: {
-            'Drop JSON': [{ itemName, dropSource, rarity, rolls }],
+            'Drop JSON': [{ altRarity, itemName, dropSource, rarity, rolls }],
           },
         },
       ) => {
@@ -196,12 +202,19 @@ export const DroppedItemResponse = z
 
         const rarityOverride =
           rarityOverrides[itemName as CollectionLogItemName];
+        const useAltRarity =
+          !!altRarityItems[itemName as CollectionLogItemName];
+
+        if (useAltRarity && !altRarity) {
+          throw new Error(`Could not find alt rarity for ${itemName}!`);
+        }
 
         // Certain items are rolled multiple times, e.g. Granite Hammer.
         // As the rarity is for an individual roll, we multiply the
         // individual rarity by the number of rolls to get the final item rarity
         acc[itemName][dropSource] =
-          (rarityOverride ?? rarity) * (rollOverrides[dropSource] ?? rolls);
+          (rarityOverride ?? (useAltRarity ? altRarity : rarity)) *
+          (rollOverrides[dropSource] ?? rolls);
 
         return acc;
       },
