@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateMaximumAvailablePoints } from '../../utils/calculators/calculate-maximum-available-points';
+import { useDropRates } from '../use-drop-rates';
 
 export function useMaximumAvailablePoints() {
   const maximumCollectionLogSlotCount = useWatch<
@@ -10,21 +10,10 @@ export function useMaximumAvailablePoints() {
   >({
     name: 'collectionLogTotal',
   });
-  const [maximumAvailablePoints, setMaximumAvailablePoints] = useState(0);
+  const { data: dropRates } = useDropRates();
 
-  useEffect(() => {
-    async function fetchMaximumAvailablePoints() {
-      if (maximumCollectionLogSlotCount) {
-        const points = calculateMaximumAvailablePoints(
-          maximumCollectionLogSlotCount,
-        );
-
-        setMaximumAvailablePoints(points);
-      }
-    }
-
-    fetchMaximumAvailablePoints();
-  }, [maximumCollectionLogSlotCount]);
-
-  return maximumAvailablePoints;
+  return calculateMaximumAvailablePoints(
+    dropRates,
+    maximumCollectionLogSlotCount,
+  );
 }

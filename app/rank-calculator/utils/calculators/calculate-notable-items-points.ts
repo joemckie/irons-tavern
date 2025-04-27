@@ -1,13 +1,18 @@
 import { itemList } from '@/data/item-list';
+import { DroppedItemResponse } from '@/app/schemas/wiki';
 import Decimal from 'decimal.js-light';
 import { stripEntityName } from '../strip-entity-name';
 import { calculateMaximumNotableItemsPoints } from './calculate-maximum-notable-items-points';
 
 export function calculateNotableItemsPoints(
+  dropRates: DroppedItemResponse,
   itemFields: Record<string, boolean | undefined>,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumNotableItemsPoints(scaling);
+  const totalPointsAvailable = calculateMaximumNotableItemsPoints(
+    dropRates,
+    scaling,
+  );
   const { totalItems, itemPoints } = Object.entries(itemList).reduce(
     (acc, [, { items }]) => {
       const { categoryItemPointMap } = items.reduce(

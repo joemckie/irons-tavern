@@ -170,7 +170,7 @@ export const itemList = {
     items: [
       customItem({
         name: 'Achievement Diary Cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Achievement diary cape (t) detail'),
         isAcquired({ achievementDiaries }) {
           return achievementDiaries
@@ -183,7 +183,7 @@ export const itemList = {
       }),
       customItem({
         name: 'Max Cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Max cape detail'),
         isAcquired({ totalLevel }) {
           return totalLevel === maximumTotalLevel;
@@ -192,7 +192,7 @@ export const itemList = {
       }),
       customItem({
         name: 'Infernal Max Cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Infernal max cape detail'),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
@@ -204,7 +204,7 @@ export const itemList = {
       }),
       customItem({
         name: "Dizana's Max Cape",
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl("Dizana's max cape detail"),
         isAcquired({ totalLevel, acquiredItems }) {
           return Boolean(
@@ -269,7 +269,7 @@ export const itemList = {
     items: [
       singleItem({
         name: 'Coagulated venom',
-        points: 10000000000,
+        points: 1,
         collectionLogCategory: 'araxxor',
       }),
       singleItem({
@@ -613,7 +613,7 @@ export const itemList = {
       }),
       combatAchievementItem({
         name: 'Ancient blood ornament kit',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Sanguine torva full helm detail'),
         requiredCombatAchievements: [
           490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
@@ -630,38 +630,38 @@ export const itemList = {
       singleItem({
         name: 'Sunfire fanatic helm',
         collectionLogCategory: 'fortis_colosseum',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Sunfire fanatic cuirass',
         collectionLogCategory: 'fortis_colosseum',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Sunfire fanatic chausses',
         collectionLogCategory: 'fortis_colosseum',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Echo crystal',
         collectionLogCategory: 'fortis_colosseum',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Tonalztics of ralos',
         clogName: 'Tonalztics of ralos (uncharged)',
         collectionLogCategory: 'fortis_colosseum',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: "Dizana's quiver",
         clogName: "Dizana's quiver (uncharged)",
-        points: 10000000000,
+        points: 1,
         collectionLogCategory: 'fortis_colosseum',
       }),
       manualItem({
         name: "Blessed dizana's quiver",
-        points: 10000000000,
+        points: 1,
       }),
     ],
   },
@@ -915,17 +915,17 @@ export const itemList = {
     items: [
       singleItem({
         name: 'Fire cape',
-        points: 10000000000,
+        points: 1,
         collectionLogCategory: 'the_fight_caves',
       }),
       singleItem({
         name: 'Infernal cape',
-        points: 10000000000,
+        points: 1,
         collectionLogCategory: 'the_inferno',
       }),
       combatAchievementItem({
         name: '6 Jads',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('TzTok-Jad'),
         requiredCombatAchievements: [
           363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
@@ -1075,17 +1075,17 @@ export const itemList = {
       singleItem({
         name: 'Eye of the corruptor',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Jewel of the sun',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Breach of the scarab',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: "Osmumten's fang",
@@ -1119,42 +1119,42 @@ export const itemList = {
       singleItem({
         name: 'Masori crafting kit',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Menaphite ornament kit',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Remnant of akkha',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Remnant of ba-ba',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Remnant of kephri',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Remnant of zebak',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Ancient remnant',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Cursed phalanx',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 10000000000,
+        points: 1,
       }),
     ],
   },
@@ -1233,7 +1233,7 @@ export const itemList = {
       }),
       manualItem({
         name: 'Saturated heart',
-        points: 10000000000,
+        points: 1,
       }),
     ],
   },
@@ -1266,7 +1266,7 @@ export const itemList = {
     items: [
       questItem({
         name: 'Mage Arena 2 cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Imbued zamorak cape'),
         requiredQuests: ['Mage Arena II'],
       }),
@@ -1299,22 +1299,22 @@ export const itemList = {
       singleItem({
         name: 'Dragon pickaxe',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Callisto', 'Venenatis', "Vet'ion"],
+        targetDropSources: ['Artio', 'Spindel', "Calvar'ion"],
       }),
       singleItem({
         name: 'Ring of the gods',
         collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Vet'ion"],
+        targetDropSources: ["Calvar'ion"],
       }),
       singleItem({
         name: 'Treasonous ring',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Venenatis'],
+        targetDropSources: ['Spindel'],
       }),
       singleItem({
         name: 'Tyrannical ring',
         collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Callisto'],
+        targetDropSources: ['Artio'],
       }),
       singleItem({
         name: 'Amulet of eternal glory',
@@ -1354,7 +1354,7 @@ export const itemList = {
       singleItem({
         name: 'Claws of callisto',
         collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Callisto'],
+        targetDropSources: ['Artio'],
       }),
       singleItem({
         name: "Craw's bow",
@@ -1365,7 +1365,7 @@ export const itemList = {
       singleItem({
         name: 'Fangs of venenatis',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Venenatis'],
+        targetDropSources: ['Spindel'],
       }),
       singleItem({
         name: "Thammaron's sceptre",
@@ -1376,14 +1376,14 @@ export const itemList = {
       singleItem({
         name: "Skull of vet'ion",
         collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Vet'ion"],
+        targetDropSources: ["Calvar'ion"],
       }),
       compoundItem({
         name: 'Voidwaker',
         requiredItems: [
-          { clogName: 'Voidwaker hilt', targetDropSources: ['Callisto'] },
-          { clogName: 'Voidwaker gem', targetDropSources: ['Venenatis'] },
-          { clogName: 'Voidwaker blade', targetDropSources: ["Vet'ion"] },
+          { clogName: 'Voidwaker hilt', targetDropSources: ['Artio'] },
+          { clogName: 'Voidwaker gem', targetDropSources: ['Spindel'] },
+          { clogName: 'Voidwaker blade', targetDropSources: ["Calvar'ion"] },
         ],
         collectionLogCategories: [
           'vetion_and_calvarion',
@@ -1403,7 +1403,7 @@ export const itemList = {
     items: [
       manualItem({
         name: 'Slayer helmet (i)',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Leaf-bladed battleaxe',
@@ -1438,6 +1438,7 @@ export const itemList = {
       singleItem({
         name: 'Abyssal whip',
         collectionLogCategory: 'slayer',
+        targetDropSources: ['Abyssal demon#Standard'],
       }),
       singleItem({
         name: 'Dark bow',
@@ -1507,12 +1508,12 @@ export const itemList = {
     items: [
       questItem({
         name: 'Barrows gloves',
-        points: 10000000000,
+        points: 1,
         requiredQuests: ['Recipe for Disaster'],
       }),
       questItem({
         name: 'Book of the dead',
-        points: 10000000000,
+        points: 1,
         requiredQuests: ['A Kingdom Divided'],
       }),
       singleItem({
@@ -1526,7 +1527,7 @@ export const itemList = {
       singleItem({
         name: 'Crystal tool seed',
         collectionLogCategory: 'zalcano',
-        points: 10000000000,
+        points: 1,
       }),
       singleItem({
         name: 'Dragon warhammer',
@@ -1534,7 +1535,7 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Graceful set',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Graceful hood'),
         requiredItems: [
           { clogName: 'Graceful hood' },
@@ -1552,7 +1553,7 @@ export const itemList = {
       }),
       customItem({
         name: 'Music cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Music cape detail'),
         isAcquired({ musicTracks }) {
           return musicTracks
@@ -1564,7 +1565,7 @@ export const itemList = {
       }),
       questItem({
         name: 'Quest cape',
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Quest point cape detail'),
         requiredQuests: Quest.options,
       }),
@@ -1579,7 +1580,7 @@ export const itemList = {
       }),
       singleItem({
         name: 'Swift blade',
-        points: 10000000000,
+        points: 1,
         collectionLogCategory: 'last_man_standing',
       }),
       singleItem({
@@ -1684,23 +1685,23 @@ export const itemList = {
       'Abyssal orphan': {},
       'Abyssal protector': {},
       'Baby chinchompa': {
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
       },
       'Baby mole': {},
       Baron: {},
       Beaver: {
-        points: 10000000000,
+        points: 1,
       },
       Bloodhound: {},
       Bran: {},
       Butch: {},
       'Callisto cub': {
-        targetDropSources: ['Callisto'],
+        targetDropSources: ['Artio'],
       },
       'Chompy chick': {},
       'Giant squirrel': {
-        points: 10000000000,
+        points: 1,
       },
       Hellpuppy: {},
       Herbi: {},
@@ -1750,14 +1751,14 @@ export const itemList = {
         targetDropSources: ["Hunters' loot sack (expert)"],
       },
       'Rift guardian': {
-        points: 10000000000,
+        points: 1,
         image: formatWikiImageUrl('Rift guardian (follower, fire)'),
       },
       'Rock golem': {
-        points: 10000000000,
+        points: 1,
       },
       Rocky: {
-        points: 10000000000,
+        points: 1,
       },
       "Scorpia's offspring": {},
       Scurry: {},
@@ -1766,16 +1767,16 @@ export const itemList = {
       'Smol heredit': {},
       Sraracha: {},
       Tangleroot: {
-        points: 10000000000,
+        points: 1,
       },
       'Tiny tempor': {},
       "Tumeken's guardian": {},
       'Tzrek-jad': {},
       'Venenatis spiderling': {
-        targetDropSources: ['Venenatis'],
+        targetDropSources: ['Spindel'],
       },
       "Vet'ion jr.": {
-        targetDropSources: ["Vet'ion"],
+        targetDropSources: ["Calvar'ion"],
       },
       Vorki: {},
       Wisp: {},

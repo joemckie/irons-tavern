@@ -50,7 +50,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
 };
 
 /**
- * Some items may be sourced from an item with identical names that conflict with the boss->EHB mapping.
+ * Some items may be sourced from an item with identical names that conflict with the boss to EHB mapping.
  *
  * This map is used to override a specific **collection log item** to a boss EHB.
  *

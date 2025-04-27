@@ -10,7 +10,7 @@ export const defaultEhbRate = 60;
 /**
  * EHB rates are copied from here:
  *
- * https://templeosrs.com/efficiency/pvm.php?ehb=im
+ * https://templeosrs.com/rates/bosses.php?ehp=imehb
  *
  * **Note**: Only IM EHB should be used!
  */
@@ -103,6 +103,8 @@ export const ehbRates = {
   'Black dragon#Wilderness Slayer Cave': 50, // Assumed value - can cannon in the Wilderness Slayer Cave
   'Spitting Wyvern': 100,
   'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
+  'Abyssal demon#Standard': 486, // Assuming an average of a 37 minute task consisting of 300 kills
+  'Basilisk Knight': 100, // Assuming an average of a 100 minute task consisting of 165 kills
 } satisfies Record<string, number>;
 
 /**
