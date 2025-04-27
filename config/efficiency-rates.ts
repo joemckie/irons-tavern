@@ -77,9 +77,18 @@ export const ehbRates = {
   'The Hueycoatl': 9,
   Amoxliatl: 71,
   'The Royal Titans': 55,
-  'Medium Clue': 4.6,
-  'Easy Clue': 15,
+  'Soul Wars Zeal': 375,
+  Wintertodt: 12,
+  Zalcano: 40,
+  'Colosseum Glory': 15000,
+
+  // These rates are self-calculated and are not from TempleOSRS
+  'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
+  'Easy Clue': 18, // https://oldschool.runescape.wiki/w/Money_making_guide/Pickpocketing_H.A.M._members
   'Guardians of the Rift': 6,
+  'Tormented Demon': 55, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Tormented_Demons
+  'Araxyte#Level 146': 900, // Assuming an average of a 20 minute task consisting of 300 kills
+  'Demonic gorilla': 62, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_demonic_gorillas,
 } satisfies Record<string, number>;
 
 /**

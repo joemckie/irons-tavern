@@ -1295,7 +1295,7 @@ export const itemList = {
       singleItem({
         name: 'Dragon pickaxe',
         collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Artio', 'Spindel', "Calvar'ion"],
+        targetDropSources: ['Callisto', 'Venenatis', "Vet'ion"],
       }),
       singleItem({
         name: 'Ring of the gods',
@@ -1697,7 +1697,7 @@ export const itemList = {
       Bran: {},
       Butch: {},
       'Callisto cub': {
-        targetDropSources: ['Artio'],
+        targetDropSources: ['Callisto'],
       },
       'Chompy chick': {
         points: 10000000000,
@@ -1710,7 +1710,7 @@ export const itemList = {
         points: 10000000000,
       },
       Heron: {
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(10112800, ehpRates.Fishing),
       },
       Huberte: {},
       'Ikkle hydra': {
@@ -1770,9 +1770,7 @@ export const itemList = {
       "Scorpia's offspring": {},
       Scurry: {},
       Skotos: {},
-      Smolcano: {
-        points: 10000000000,
-      },
+      Smolcano: {},
       'Smol heredit': {
         points: 10000000000,
       },
@@ -1788,10 +1786,10 @@ export const itemList = {
       },
       'Tzrek-jad': {},
       'Venenatis spiderling': {
-        targetDropSources: ['Spindel'],
+        targetDropSources: ['Venenatis'],
       },
       "Vet'ion jr.": {
-        targetDropSources: ["Calvar'ion"],
+        targetDropSources: ["Vet'ion"],
       },
       Vorki: {},
       Wisp: {},
