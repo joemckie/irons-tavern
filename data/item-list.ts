@@ -1345,7 +1345,6 @@ export const itemList = {
           Construction: 72,
         },
         collectionLogCategories: ['revenants'],
-        points: 10000000000,
       }),
       singleItem({
         name: "Viggora's chainmace",

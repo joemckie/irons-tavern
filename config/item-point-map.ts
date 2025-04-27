@@ -148,4 +148,5 @@ export const altRarityItems: Partial<Record<CollectionLogItemName, true>> = {
   "Craw's bow (u)": true,
   "Thammaron's sceptre (u)": true,
   "Viggora's chainmace (u)": true,
+  'Ancient crystal': true,
 };

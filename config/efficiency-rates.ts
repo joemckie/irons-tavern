@@ -98,6 +98,7 @@ export const ehbRates = {
   "Armoured zombie (Zemouregal's Fort)": 250,
   'Lizardman shaman': 180, // Assuming cannoning in the Lizardman Canyon https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Lizardman_Shamans_(Canyon)
   'Hallowed Sepulchre': 8.4, // https://oldschool.runescape.wiki/w/Hallowed_Sepulchre#Experience_rates
+  'Revenant ork': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
   'Revenant ork#On-task': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
 } satisfies Record<string, number>;
 
