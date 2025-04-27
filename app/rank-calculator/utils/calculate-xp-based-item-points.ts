@@ -1,3 +1,5 @@
+import { clientConstants } from '@/config/constants.client';
+import Decimal from 'decimal.js-light';
 import { z } from 'zod';
 
 export function calculateXpBasedItemPoints(
@@ -11,5 +13,9 @@ export function calculateXpBasedItemPoints(
     .parse(estimatedXpToCompletion);
   const parsedEhpRate = z.number().positive().parse(ehpRate);
 
-  return Math.ceil(parsedEstimatedXpToCompletion / parsedEhpRate);
+  return new Decimal(parsedEstimatedXpToCompletion)
+    .dividedBy(parsedEhpRate)
+    .times(clientConstants.calculator.notableItemsPointsPerHour)
+    .toDecimalPlaces(0, Decimal.ROUND_CEIL)
+    .toNumber();
 }

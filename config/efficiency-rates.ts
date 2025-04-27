@@ -78,6 +78,7 @@ export const ehbRates = {
   'The Royal Titans': 55,
   'Medium Clue': 4.6,
   'Easy Clue': 15,
+  'Guardians of the Rift': 6,
 } satisfies Record<string, number>;
 
 /**

@@ -28,7 +28,6 @@ function calculatePointsForSingleDropSource(
     ignoreAmountMultiplier = false,
   }: CalculatePointsForSingleDropSourceOptions,
 ) {
-  const pointsPerHour = 5;
   const bossName = itemBossNameMap[dropSource] ?? dropSource;
   const bossEhb = ehbRates[bossName];
   const dropRateModifier = ignoreDropRateModifier
@@ -49,7 +48,7 @@ function calculatePointsForSingleDropSource(
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
     .dividedBy(bossEhb ?? defaultEhbRate)
-    .times(pointsPerHour)
+    .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)
     .toNumber();

@@ -18,7 +18,7 @@ import {
 } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
-import { ehpRates } from '@/config/efficiency-rates';
+import { ehbRates, ehpRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
@@ -1679,7 +1679,10 @@ export const itemList = {
     items: Object.entries({
       'Abyssal orphan': {},
       'Abyssal protector': {
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(
+          400,
+          ehbRates['Guardians of the Rift'],
+        ),
       },
       'Baby chinchompa': {
         points: 10000000000,
