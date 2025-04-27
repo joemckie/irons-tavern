@@ -1,10 +1,9 @@
+import { defaultEhbRate, ehbRates } from '@/config/efficiency-rates';
 import {
-  defaultEhbRate,
   dropRateModifiers,
-  ehbRates,
   itemBossNameMap,
   pointModifiers,
-} from '@/config/ehb-rates';
+} from '@/config/item-point-map';
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
 import { DroppedItemResponse } from '@/app/schemas/wiki';

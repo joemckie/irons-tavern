@@ -26,6 +26,8 @@ export const Skill = z.enum([
   'Hunter',
 ]);
 
+export type Skill = z.infer<typeof Skill>;
+
 export const Quest = z.enum([
   'A Kingdom Divided',
   'A Night at the Theatre',

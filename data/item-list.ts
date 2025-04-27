@@ -1,3 +1,4 @@
+import { calculateXpBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-based-item-points';
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
+import { ehpRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
@@ -1440,22 +1442,22 @@ export const itemList = {
       singleItem({
         name: 'Mist battlestaff',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(25000000 / 3.5, ehpRates.Slayer),
       }),
       singleItem({
         name: 'Dust battlestaff',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(25000000 / 3.5, ehpRates.Slayer),
       }),
       singleItem({
         name: 'Eternal gem',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(25000000, ehpRates.Slayer),
       }),
       singleItem({
         name: 'Imbued heart',
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        points: calculateXpBasedItemPoints(25000000, ehpRates.Slayer),
       }),
     ],
   },
