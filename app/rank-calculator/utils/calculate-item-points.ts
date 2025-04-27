@@ -9,6 +9,7 @@ import Decimal from 'decimal.js-light';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { z } from 'zod';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
+import chalk from 'chalk';
 
 interface CalculatePointsForSingleDropSourceOptions {
   ignoreDropRateModifier?: boolean;
@@ -34,7 +35,9 @@ function calculatePointsForSingleDropSource(
   const pointModifier = pointModifiers[itemName] ?? 1;
 
   if (!bossEhb) {
-    console.warn(`No EHB rate found for ${bossName}; using default of 60 EHB.`);
+    console.warn(
+      `${chalk.underline.yellow(bossName)}: No EHB rate found for whilst calculating "${chalk.underline.red(itemName)}". Using default of ${chalk.bold.underline('60 EHB')}.`,
+    );
   }
 
   return new Decimal(1)

@@ -5050,6 +5050,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "chalk@npm:5.4.1"
+  checksum: 10c0/b23e88132c702f4855ca6d25cb5538b1114343e41472d5263ee8a37cccfccd9c4216d111e1097c6a27830407a1dc81fecdf2a56f2c63033d4dbbd88c10b0dcef
+  languageName: node
+  linkType: hard
+
 "char-regex@npm:^1.0.2":
   version: 1.0.2
   resolution: "char-regex@npm:1.0.2"
@@ -7318,6 +7325,7 @@ __metadata:
     "@upstash/redis": "npm:^1.34.3"
     "@vercel/blob": "npm:^0.23.4"
     "@vercel/speed-insights": "npm:^1.1.0"
+    chalk: "npm:^5.4.1"
     cypress: "npm:^13.15.0"
     date-fns: "npm:^4.1.0"
     decimal.js-light: "npm:^2.5.1"
