@@ -1523,7 +1523,6 @@ export const itemList = {
       singleItem({
         name: 'Dragon warhammer',
         collectionLogCategory: 'miscellaneous',
-        points: 10000000000,
       }),
       compoundItem({
         name: 'Graceful set',
@@ -1568,7 +1567,6 @@ export const itemList = {
       singleItem({
         name: 'Ring of endurance',
         clogName: 'Ring of endurance (uncharged)',
-        points: 10000000000,
         collectionLogCategory: 'hallowed_sepulchre',
       }),
       singleItem({
@@ -1579,13 +1577,11 @@ export const itemList = {
       singleItem({
         name: 'Tome of fire',
         clogName: 'Tome of fire (empty)',
-        points: 10000000000,
         collectionLogCategory: 'wintertodt',
       }),
       singleItem({
         name: 'Tome of water',
         clogName: 'Tome of water (empty)',
-        points: 10000000000,
         collectionLogCategory: 'tempoross',
       }),
       singleItem({
@@ -1595,7 +1591,7 @@ export const itemList = {
           Smithing: 65,
         },
         collectionLogCategory: 'miscellaneous',
-        points: 10000000000,
+        targetDropSources: ["Armoured zombie (Zemouregal's Fort)"],
       }),
     ],
   },
@@ -1762,9 +1758,7 @@ export const itemList = {
         points: 10000000000,
       },
       'Tiny tempor': {},
-      "Tumeken's guardian": {
-        points: 10000000000,
-      },
+      "Tumeken's guardian": {},
       'Tzrek-jad': {},
       'Venenatis spiderling': {
         targetDropSources: ['Venenatis'],

@@ -45,6 +45,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Reward pool': 'Tempoross',
   'Rewards Guardian': 'Guardians of the Rift',
   'Barbarian Assault/Gambles#High': 'Barbarian Assault',
+  'Grand Hallowed Coffin': 'Hallowed Sepulchre',
 };
 
 /**
@@ -71,7 +72,6 @@ export const collectionLogItemBossNameMap: Partial<
  */
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
-  'Chest (Tombs of Amascut)': 1 / 10,
   'Ancient chest': 1 / 7.23,
 };
 
@@ -125,4 +125,12 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1 / 100 roll and exchanges a Fire Cape for a 1 / 200 roll
   'Smol heredit': 1 / 100, // Assuming the player exchanges a Dizana's Quiver for an additional 1 / 200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
+  "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
+  'Masori mask': 1 / 144.9,
+  'Masori body': 1 / 144.9,
+  'Masori chaps': 1 / 144.9,
+  "Elidinis' ward": 1 / 96.6,
+  "Osmumten's fang": 1 / 41.4,
+  Lightbearer: 1 / 41.4,
+  "Tumeken's guardian": 1 / 338.1,
 };
