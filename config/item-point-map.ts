@@ -133,7 +133,18 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   "Osmumten's fang": 1 / 41.4,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
-  'Basilisk jaw': 1 / 1000, // Assuming the player kills Basilisk Knights on-task
+  'Eclipse atlatl': 1 / (25 / 3),
+  'Eclipse moon chestplate': 1 / (25 / 3),
+  'Eclipse moon tassets': 1 / (25 / 3),
+  'Eclipse moon helm': 1 / (25 / 3),
+  'Dual macuahuitl': 1 / (25 / 3),
+  'Blood moon chestplate': 1 / (25 / 3),
+  'Blood moon tassets': 1 / (25 / 3),
+  'Blood moon helm': 1 / (25 / 3),
+  'Blue moon spear': 1 / (25 / 3),
+  'Blue moon chestplate': 1 / (25 / 3),
+  'Blue moon tassets': 1 / (25 / 3),
+  'Blue moon helm': 1 / (25 / 3),
 };
 
 /**
@@ -149,4 +160,5 @@ export const altRarityItems: Partial<Record<CollectionLogItemName, true>> = {
   "Thammaron's sceptre (u)": true,
   "Viggora's chainmace (u)": true,
   'Ancient crystal': true,
+  'Basilisk jaw': true,
 };

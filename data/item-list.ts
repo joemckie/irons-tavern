@@ -1071,22 +1071,21 @@ export const itemList = {
       singleItem({
         name: 'Thread of elidinis',
         collectionLogCategory: 'tombs_of_amascut',
-        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: 'Eye of the corruptor',
         collectionLogCategory: 'tombs_of_amascut',
-        ignoreDropRateModifier: true,
+        points: 10000000000,
       }),
       singleItem({
         name: 'Jewel of the sun',
         collectionLogCategory: 'tombs_of_amascut',
-        ignoreDropRateModifier: true,
+        points: 10000000000,
       }),
       singleItem({
         name: 'Breach of the scarab',
         collectionLogCategory: 'tombs_of_amascut',
-        ignoreDropRateModifier: true,
+        points: 10000000000,
       }),
       singleItem({
         name: "Osmumten's fang",
