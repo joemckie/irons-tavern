@@ -85,11 +85,14 @@ export const ehbRates = {
   // These rates are self-calculated and are not from TempleOSRS
   'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
   'Easy Clue': 18, // https://oldschool.runescape.wiki/w/Money_making_guide/Pickpocketing_H.A.M._members
-  'Guardians of the Rift': 6,
+  'Guardians of the Rift': 60, // Assuming an average of 6 games per hour with 10 points per game
   'Tormented Demon': 55, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Tormented_Demons
   'Araxyte#Level 146': 900, // Assuming an average of a 20 minute task consisting of 300 kills
   'Demonic gorilla': 62, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_demonic_gorillas,
   'Expert Hunter Contracts': 24,
+  Herbiboar: 60,
+  Tempoross: 80, // Assuming an average of 80 permits per hour
+  'Chompy bird': 350,
 } satisfies Record<string, number>;
 
 /**

@@ -18,7 +18,7 @@ import {
 } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
-import { ehbRates, ehpRates } from '@/config/efficiency-rates';
+import { ehpRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
@@ -1678,12 +1678,7 @@ export const itemList = {
     image: formatWikiImageUrl('Nid', 'category'),
     items: Object.entries({
       'Abyssal orphan': {},
-      'Abyssal protector': {
-        points: calculateXpBasedItemPoints(
-          400,
-          ehbRates['Guardians of the Rift'],
-        ),
-      },
+      'Abyssal protector': {},
       'Baby chinchompa': {
         points: 10000000000,
         image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
@@ -1699,16 +1694,12 @@ export const itemList = {
       'Callisto cub': {
         targetDropSources: ['Callisto'],
       },
-      'Chompy chick': {
-        points: 10000000000,
-      },
+      'Chompy chick': {},
       'Giant squirrel': {
         points: 10000000000,
       },
       Hellpuppy: {},
-      Herbi: {
-        points: 10000000000,
-      },
+      Herbi: {},
       Heron: {
         points: calculateXpBasedItemPoints(10112800, ehpRates.Fishing),
       },
@@ -1772,9 +1763,7 @@ export const itemList = {
       Tangleroot: {
         points: 10000000000,
       },
-      'Tiny tempor': {
-        points: 10000000000,
-      },
+      'Tiny tempor': {},
       "Tumeken's guardian": {
         points: 10000000000,
       },
