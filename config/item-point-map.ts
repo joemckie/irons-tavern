@@ -38,6 +38,9 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
   'Cave kraken': 'Kraken',
   'Crazy archaeologist': 'Crazy Archaeologist',
+  'Reward Cart': 'Wintertodt',
+  'Spoils of war': 'Soul Wars Zeal',
+  "Hunters' loot sack (expert)": 'Expert Hunter Contracts',
 };
 
 /**
@@ -82,8 +85,7 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's eye": 1 / 3,
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
-  'Tzrek-jad': 67 / 200,
-  'Jal-nib-rek': 43 / 100,
+  "Lil' creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
 };
 
 /**
@@ -115,4 +117,8 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Justiciar faceguard': 1 / 259,
   'Justiciar legguards': 1 / 259,
   'Scythe of vitur (uncharged)': 1 / 519,
+  'Jal-nib-rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1 / 75 roll and exchanges an Infernal Cape for a 1 / 100 roll
+  'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1 / 100 roll and exchanges a Fire Cape for a 1 / 200 roll
+  'Smol heredit': 1 / 100, // Assuming the player exchanges a Dizana's Quiver for an additional 1 / 200 roll
+  Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
 };

@@ -592,7 +592,7 @@ it('multiplies the points by amount of items if "amount" is greater than 1 and "
       clogName: 'Zenyte shard',
     },
   ]);
-  const expectedPoints = 50;
+  const expectedPoints = 49;
 
   expect(points).toEqual(expectedPoints);
 });

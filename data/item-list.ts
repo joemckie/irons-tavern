@@ -1718,9 +1718,7 @@ export const itemList = {
       },
       'Jal-nib-rek': {},
       'Kalphite princess': {},
-      "Lil' creator": {
-        points: 10000000000,
-      },
+      "Lil' creator": {},
       "Lil'viathan": {},
       "Lil' zik": {},
       'Little nightmare': {
@@ -1750,12 +1748,10 @@ export const itemList = {
       'Pet smoke devil': {},
       'Pet snakeling': {},
       'Pet zilyana': {},
-      Phoenix: {
-        points: 10000000000,
-      },
+      Phoenix: {},
       'Prince black dragon': {},
       Quetzin: {
-        points: 10000000000,
+        targetDropSources: ["Hunters' loot sack (expert)"],
       },
       'Rift guardian': {
         points: 10000000000,
@@ -1771,9 +1767,7 @@ export const itemList = {
       Scurry: {},
       Skotos: {},
       Smolcano: {},
-      'Smol heredit': {
-        points: 10000000000,
-      },
+      'Smol heredit': {},
       Sraracha: {},
       Tangleroot: {
         points: 10000000000,

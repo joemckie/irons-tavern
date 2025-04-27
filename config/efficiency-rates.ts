@@ -89,6 +89,7 @@ export const ehbRates = {
   'Tormented Demon': 55, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Tormented_Demons
   'Araxyte#Level 146': 900, // Assuming an average of a 20 minute task consisting of 300 kills
   'Demonic gorilla': 62, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_demonic_gorillas,
+  'Expert Hunter Contracts': 24,
 } satisfies Record<string, number>;
 
 /**
