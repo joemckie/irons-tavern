@@ -33,8 +33,9 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Eldric the Ice King': 'The Royal Titans',
   'Lunar Chest': 'Lunar Chests',
   'Scurrius#MVP': 'Scurrius',
-  'Reward casket (medium)': 'Medium Clue',
   'Reward casket (easy)': 'Easy Clue',
+  'Reward casket (medium)': 'Medium Clue',
+  'Reward casket (master)': 'Master Clue',
   'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
   'Cave kraken': 'Kraken',
   'Crazy archaeologist': 'Crazy Archaeologist',
@@ -43,6 +44,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   "Hunters' loot sack (expert)": 'Expert Hunter Contracts',
   'Reward pool': 'Tempoross',
   'Rewards Guardian': 'Guardians of the Rift',
+  'Barbarian Assault/Gambles#High': 'Barbarian Assault',
 };
 
 /**

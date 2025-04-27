@@ -83,8 +83,9 @@ export const ehbRates = {
   'Colosseum Glory': 15000,
 
   // These rates are self-calculated and are not from TempleOSRS
-  'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
   'Easy Clue': 18, // https://oldschool.runescape.wiki/w/Money_making_guide/Pickpocketing_H.A.M._members
+  'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
+  'Master Clue': 1, // Probably wrong, needs to be calculated
   'Guardians of the Rift': 60, // Assuming an average of 6 games per hour with 10 points per game
   'Tormented Demon': 55, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Tormented_Demons
   'Araxyte#Level 146': 900, // Assuming an average of a 20 minute task consisting of 300 kills
@@ -93,6 +94,7 @@ export const ehbRates = {
   Herbiboar: 60,
   Tempoross: 80, // Assuming an average of 80 permits per hour
   'Chompy bird': 350,
+  'Barbarian Assault': 3.5,
 } satisfies Record<string, number>;
 
 /**

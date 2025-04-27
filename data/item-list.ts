@@ -1688,7 +1688,7 @@ export const itemList = {
       Beaver: {
         points: 10000000000,
       },
-      Bloodhound: { points: 10000000000 },
+      Bloodhound: {},
       Bran: {},
       Butch: {},
       'Callisto cub': {
@@ -1733,9 +1733,7 @@ export const itemList = {
       "Pet k'ril tsutsaroth": {
         image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
       },
-      'Pet penance queen': {
-        points: 10000000000,
-      },
+      'Pet penance queen': {},
       'Pet smoke devil': {},
       'Pet snakeling': {},
       'Pet zilyana': {},
