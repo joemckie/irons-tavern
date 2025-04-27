@@ -6,7 +6,6 @@ import { ehbRates } from './efficiency-rates';
  *
  * This maps the item name to the boss to calculate the EHB rate.
  */
-
 export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
   'Ancient chest': 'Chambers of Xeric Challenge Mode',
@@ -63,7 +62,6 @@ export const collectionLogItemBossNameMap: Partial<
  *
  * This map is used to modify the drop rate provided by OSRSWiki by the rate of the drop source occurring.
  */
-
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Chest (Tombs of Amascut)': 1 / 10,
@@ -77,7 +75,6 @@ export const dropRateModifiers: Record<string, number> = {
  *
  * This map is used to modify the final item points to account for this.
  */
-
 export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   'Eye of the corruptor': 1 / 3,
   'Jewel of the sun': 1 / 3,
