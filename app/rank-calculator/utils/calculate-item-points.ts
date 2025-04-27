@@ -1,8 +1,9 @@
 import { defaultEhbRate, ehbRates } from '@/config/efficiency-rates';
 import {
   dropRateModifiers,
-  itemBossNameMap,
+  rewardItemBossNameMap,
   pointModifiers,
+  collectionLogItemBossNameMap,
 } from '@/config/item-point-map';
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
@@ -28,7 +29,10 @@ function calculatePointsForSingleDropSource(
     ignoreAmountMultiplier = false,
   }: CalculatePointsForSingleDropSourceOptions,
 ) {
-  const bossName = itemBossNameMap[dropSource] ?? dropSource;
+  const bossName =
+    collectionLogItemBossNameMap[itemName] ??
+    rewardItemBossNameMap[dropSource] ??
+    dropSource;
   const bossEhb = ehbRates[bossName];
   const dropRateModifier = ignoreDropRateModifier
     ? 1

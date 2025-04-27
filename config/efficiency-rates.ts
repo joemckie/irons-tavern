@@ -57,6 +57,7 @@ export const ehbRates = {
   Vorkath: 34,
   Zulrah: 39,
   'The Nightmare': 11,
+  'Theatre of Blood Hard Mode': 3,
   "Phosani's Nightmare": 6.7,
   Nex: 15,
   'Tombs of Amascut': 3.7,

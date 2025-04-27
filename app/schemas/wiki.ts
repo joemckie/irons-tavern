@@ -1,6 +1,7 @@
 import { z, ZodNumber } from 'zod';
-import { rollOverrides } from '@/config/item-point-map';
+import { rarityOverrides, rollOverrides } from '@/config/item-point-map';
 import {
+  CollectionLogItemName,
   CombatAchievementTier,
   DiaryLocation,
   DiaryTier,
@@ -193,11 +194,14 @@ export const DroppedItemResponse = z
       ) => {
         acc[itemName] = acc[itemName] ?? {};
 
+        const rarityOverride =
+          rarityOverrides[itemName as CollectionLogItemName];
+
         // Certain items are rolled multiple times, e.g. Granite Hammer.
         // As the rarity is for an individual roll, we multiply the
         // individual rarity by the number of rolls to get the final item rarity
         acc[itemName][dropSource] =
-          rarity * (rollOverrides[dropSource] ?? rolls);
+          (rarityOverride ?? rarity) * (rollOverrides[dropSource] ?? rolls);
 
         return acc;
       },

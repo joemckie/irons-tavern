@@ -824,39 +824,39 @@ export const itemList = {
       singleItem({
         name: 'Avernic defender hilt',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Justiciar faceguard',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Justiciar chestguard',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Justiciar legguards',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Ghrazi rapier',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Sanguinesti staff',
         clogName: 'Sanguinesti staff (uncharged)',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Scythe of vitur',
         clogName: 'Scythe of vitur (uncharged)',
         collectionLogCategory: 'theatre_of_blood',
-        targetDropSources: ['Monumental chest#Hard Mode'],
+        targetDropSources: ['Monumental chest#Normal Mode'],
       }),
       singleItem({
         name: 'Holy ornament kit',

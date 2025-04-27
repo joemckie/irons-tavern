@@ -7,13 +7,13 @@ import { ehbRates } from './efficiency-rates';
  * This maps the item name to the boss to calculate the EHB rate.
  */
 
-export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
+export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
   'Ancient chest': 'Chambers of Xeric Challenge Mode',
   'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
-  'Monumental chest': 'Theatre of Blood',
-  'Monumental chest#Hard Mode': 'Theatre of Blood',
+  'Monumental chest': 'Theatre of Blood Hard Mode',
   'Monumental chest#Normal Mode': 'Theatre of Blood',
+  'Monumental chest#Hard Mode': 'Theatre of Blood Hard Mode',
   'Reward Chest (The Gauntlet)#(Corrupted)': 'The Corrupted Gauntlet',
   'Rewards Chest (Fortis Colosseum)#Wave 1': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 2': 'Sol Heredit',
@@ -40,6 +40,20 @@ export const itemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Cave kraken': 'Kraken',
   'Crazy archaeologist': 'Crazy Archaeologist',
 };
+
+/**
+ * Some items may be sourced from an item with identical names that conflict with the boss->EHB mapping.
+ *
+ * This map is used to override a specific **collection log item** to a boss EHB.
+ *
+ * This override takes precedence over the `rewardItemBossNameMap` mapping.
+ */
+export const collectionLogItemBossNameMap: Partial<
+  Record<CollectionLogItemName, keyof typeof ehbRates>
+> = {
+  "Lil' zik": 'Theatre of Blood',
+};
+
 /**
  * Some unique drops don't come directly from the original source, e.g.:
  *
@@ -54,7 +68,6 @@ export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Chest (Tombs of Amascut)': 1 / 10,
   'Ancient chest': 1 / 7.23,
-  'Monumental chest#Hard Mode': 1 / 2.4,
 };
 
 /**
@@ -87,4 +100,22 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
 export const rollOverrides: Record<string, number> = {
   'Reward casket (medium)': 4,
   'Reward casket (easy)': 3,
+};
+
+/**
+ * Some items have drop rates that are more nuanced than what is provided by OSRSWiki.
+ *
+ * For example, the Avernic defender hilt has a drop rate of 1 / 19, but in reality is 1 / 64
+ * when taking into consideration the loot mechanics of the raid.
+ *
+ * This map is used to override the item rarity provided by OSRSWiki to get the correct item drop rate.
+ */
+export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
+  'Avernic defender hilt': 1 / 64,
+  'Ghrazi rapier': 1 / 259,
+  'Sanguinesti staff (uncharged)': 1 / 259,
+  'Justiciar chestguard': 1 / 259,
+  'Justiciar faceguard': 1 / 259,
+  'Justiciar legguards': 1 / 259,
+  'Scythe of vitur (uncharged)': 1 / 519,
 };

@@ -539,7 +539,7 @@ it('does not modify the drop rate if "ignoreDropRateModifier" is true', async ()
       ignoreDropRateModifier: true,
     },
   ]);
-  const expectedPoints = 17;
+  const expectedPoints = 25;
 
   expect(points).toEqual(expectedPoints);
 });
