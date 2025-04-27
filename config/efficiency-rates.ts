@@ -100,6 +100,8 @@ export const ehbRates = {
   'Hallowed Sepulchre': 8.4, // https://oldschool.runescape.wiki/w/Hallowed_Sepulchre#Experience_rates
   'Revenant ork': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
   'Revenant ork#On-task': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
+  'Black dragon#Wilderness Slayer Cave': 50, // Assumed value - can cannon in the Wilderness Slayer Cave
+  'Spitting Wyvern': 100,
 } satisfies Record<string, number>;
 
 /**

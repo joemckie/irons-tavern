@@ -154,11 +154,25 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
  *
  * This map is used to switch to the alternate rarity provided by OSRSWiki.
  */
-export const altRarityItems: Partial<Record<CollectionLogItemName, true>> = {
-  'Amulet of avarice': true,
-  "Craw's bow (u)": true,
-  "Thammaron's sceptre (u)": true,
-  "Viggora's chainmace (u)": true,
-  'Ancient crystal': true,
-  'Basilisk jaw': true,
+export const altRarityItems: Partial<
+  Record<CollectionLogItemName, Record<string, true>>
+> = {
+  'Amulet of avarice': {
+    'Revenant ork#On-task': true,
+  },
+  "Craw's bow (u)": {
+    'Revenant ork#On-task': true,
+  },
+  "Thammaron's sceptre (u)": {
+    'Revenant ork#On-task': true,
+  },
+  "Viggora's chainmace (u)": {
+    'Revenant ork#On-task': true,
+  },
+  'Ancient crystal': {
+    'Revenant ork': true,
+  },
+  'Basilisk jaw': {
+    'Basilisk Knight': true,
+  },
 };

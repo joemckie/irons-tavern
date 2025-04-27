@@ -203,10 +203,12 @@ export const DroppedItemResponse = z
         const rarityOverride =
           rarityOverrides[itemName as CollectionLogItemName];
         const useAltRarity =
-          !!altRarityItems[itemName as CollectionLogItemName];
+          !!altRarityItems[itemName as CollectionLogItemName]?.[dropSource];
 
         if (useAltRarity && !altRarity) {
-          throw new Error(`Could not find alt rarity for ${itemName}!`);
+          throw new Error(
+            `Could not find alt rarity for ${itemName} from ${dropSource}!`,
+          );
         }
 
         // Certain items are rolled multiple times, e.g. Granite Hammer.

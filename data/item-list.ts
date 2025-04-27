@@ -1485,7 +1485,7 @@ export const itemList = {
         clogName: 'Draconic visage',
         image: formatWikiImageUrl('Dragonfire shield'),
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        targetDropSources: ['Black dragon#Wilderness Slayer Cave'],
       }),
       singleItem({
         name: 'Dragonfire ward',
@@ -1498,7 +1498,7 @@ export const itemList = {
         clogName: 'Wyvern visage',
         image: formatWikiImageUrl('Ancient wyvern shield'),
         collectionLogCategory: 'slayer',
-        points: 10000000000,
+        targetDropSources: ['Spitting Wyvern'],
       }),
     ],
   },
