@@ -162,6 +162,7 @@ function customItem({
 const estimatedSlayerXpForImbuedHeart = 25000000;
 const estimatedFishingXpForHeron = 10112800;
 const eternalGloryDropRate = 1 / 25000;
+const gloriesChargedPerHour = 600;
 
 export const itemList = {
   'Automatic Items': {
@@ -1319,7 +1320,10 @@ export const itemList = {
       singleItem({
         name: 'Amulet of eternal glory',
         collectionLogCategory: 'miscellaneous',
-        points: calculateXpOrTimeBasedItemPoints(1 / eternalGloryDropRate, 600),
+        points: calculateXpOrTimeBasedItemPoints(
+          1 / eternalGloryDropRate,
+          gloriesChargedPerHour,
+        ),
       }),
       singleItem({
         name: 'Amulet of avarice',
