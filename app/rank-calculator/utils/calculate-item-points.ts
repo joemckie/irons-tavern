@@ -4,6 +4,7 @@ import {
   rewardItemBossNameMap,
   pointModifiers,
   collectionLogItemBossNameMap,
+  groupSizes,
 } from '@/config/item-point-map';
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
@@ -51,7 +52,7 @@ function calculatePointsForSingleDropSource(
 
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
-    .dividedBy(bossEhb ?? defaultEhbRate)
+    .dividedBy(bossEhb ?? defaultEhbRate / (groupSizes[bossName] ?? 1))
     .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)

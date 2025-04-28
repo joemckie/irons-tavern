@@ -73,6 +73,7 @@ export const collectionLogItemBossNameMap: Partial<
  */
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
+  'Ancient chest': 1 / 7.23,
 };
 
 /**
@@ -87,8 +88,6 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
   "Lil' creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
-  Skotos: 57,
-  'Jar of darkness': 57,
 };
 
 export const ehbModifiers: Partial<Record<keyof typeof ehbRates, number>> = {
@@ -190,6 +189,6 @@ export const altRarityItems: Partial<
  * Some content is expected to be completed in a group to be the most efficient,
  * meaning the player will not receive loot for every kill.
  */
-export const groupSizes: Record<string, number> = {
-  'Chambers of Xeric': 3,
+export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
+  'Chambers of Xeric Challenge Mode': 3,
 };
