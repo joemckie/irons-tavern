@@ -1,26 +1,17 @@
-import { DroppedItemResponse } from '@/app/schemas/wiki';
-import { itemList } from '@/data/item-list';
-import { isCollectionLogItem } from '@/app/schemas/items';
-import { calculateItemPoints } from '../calculate-item-points';
+import { ItemCategory } from '@/app/schemas/items';
 
 export function calculateMaximumNotableItemsPoints(
-  dropRates: DroppedItemResponse,
+  notableItems: [string, ItemCategory][],
   scaling: number,
 ) {
-  const maxAvailablePoints = Object.entries(itemList).reduce(
-    (acc, [, { items }]) => {
-      const categoryTotalPoints = items.reduce(
-        (categoryAcc, val) =>
-          !val.points && isCollectionLogItem(val)
-            ? categoryAcc + calculateItemPoints(dropRates, val.requiredItems)
-            : categoryAcc + val.points,
-        0,
-      );
+  const maxAvailablePoints = notableItems.reduce((acc, [, { items }]) => {
+    const categoryTotalPoints = items.reduce(
+      (categoryAcc, val) => categoryAcc + val.points,
+      0,
+    );
 
-      return acc + categoryTotalPoints;
-    },
-    0,
-  );
+    return acc + categoryTotalPoints;
+  }, 0);
 
   return Math.floor(maxAvailablePoints * scaling);
 }

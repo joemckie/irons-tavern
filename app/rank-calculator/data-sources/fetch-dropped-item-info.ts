@@ -3,12 +3,15 @@ import { DroppedItemResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
-import { isCollectionLogItem } from '@/app/schemas/items';
+import { CollectionLogItem, isCollectionLogItem } from '@/app/schemas/items';
 
 function generateRequiredItemList() {
   return Object.values(itemList)
     .flatMap(({ items }) => items)
-    .filter(isCollectionLogItem)
+    .filter(
+      (item): item is CollectionLogItem =>
+        !item.points && isCollectionLogItem(item),
+    )
     .reduce((acc, { requiredItems }) => {
       requiredItems.forEach(({ clogName }) => acc.add(clogName), acc);
 

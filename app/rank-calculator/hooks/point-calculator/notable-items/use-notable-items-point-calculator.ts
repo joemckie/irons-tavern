@@ -3,7 +3,7 @@ import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { calculateNotableItemsPoints } from '@/app/rank-calculator/utils/calculators/calculate-notable-items-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
-import { useDropRates } from '../../use-drop-rates';
+import { useGetItems } from '../../use-get-items';
 
 export interface NotableItemsPointCalculatorData
   extends CommonPointCalculatorData {
@@ -17,7 +17,7 @@ export function useNotableItemsPointCalculator() {
     name: 'acquiredItems',
   });
   const scaling = useCalculatorScaling();
-  const { data: dropRates } = useDropRates();
+  const { data: notableItems } = useGetItems();
 
-  return calculateNotableItemsPoints(dropRates, itemFields, scaling);
+  return calculateNotableItemsPoints(notableItems, itemFields, scaling);
 }
