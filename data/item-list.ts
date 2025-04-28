@@ -269,7 +269,6 @@ export const itemList = {
     items: [
       singleItem({
         name: 'Coagulated venom',
-        points: 1,
         collectionLogCategory: 'araxxor',
       }),
       singleItem({

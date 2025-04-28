@@ -164,6 +164,7 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   get 'Ancient remnant'() {
     return this["Osmumten's fang"]! / 1.9;
   },
+  'Coagulated venom': 1 / 66,
   'Eclipse atlatl': 1 / (25 / 3),
   'Eclipse moon chestplate': 1 / (25 / 3),
   'Eclipse moon tassets': 1 / (25 / 3),
