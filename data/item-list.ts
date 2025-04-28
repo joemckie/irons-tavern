@@ -18,7 +18,7 @@ import {
 } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
-import { ehpRates } from '@/config/efficiency-rates';
+import { ehbRates, ehpRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
@@ -163,6 +163,9 @@ const estimatedSlayerXpForImbuedHeart = 25000000;
 const estimatedFishingXpForHeron = 10112800;
 const eternalGloryDropRate = 1 / 25000;
 const gloriesChargedPerHour = 600;
+const muspahAverageAncientEssencePerKill = 759.4;
+const saturateHeartEssenceRequired = 150000;
+const swiftBladeLmsPointsRequired = 350;
 
 export const itemList = {
   'Automatic Items': {
@@ -1223,7 +1226,10 @@ export const itemList = {
       }),
       manualItem({
         name: 'Saturated heart',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          saturateHeartEssenceRequired / muspahAverageAncientEssencePerKill,
+          ehbRates['Phantom Muspah'],
+        ),
       }),
     ],
   },
@@ -1519,7 +1525,6 @@ export const itemList = {
       singleItem({
         name: 'Crystal tool seed',
         collectionLogCategory: 'zalcano',
-        points: 1,
       }),
       singleItem({
         name: 'Dragon warhammer',
@@ -1572,7 +1577,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Swift blade',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          swiftBladeLmsPointsRequired,
+          ehbRates['LMS Points'],
+        ),
         collectionLogCategory: 'last_man_standing',
       }),
       singleItem({

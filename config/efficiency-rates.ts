@@ -106,6 +106,7 @@ export const ehbRates = {
   'Abyssal demon#Standard': 486, // Assuming an average of a 37 minute task consisting of 300 kills
   'Basilisk Knight': 100, // Assuming an average of a 100 minute task consisting of 165 kills
   'Dark beast': 60,
+  'LMS Points': 25,
 } satisfies Record<string, number>;
 
 /**

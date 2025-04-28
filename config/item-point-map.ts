@@ -220,4 +220,5 @@ export const altRarityItems: Partial<
 export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
   'Chambers of Xeric Challenge Mode': 3,
   Nex: 4,
+  Zalcano: 4,
 };
