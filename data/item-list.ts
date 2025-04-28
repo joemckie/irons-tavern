@@ -384,10 +384,12 @@ export const itemList = {
       singleItem({
         name: 'Twisted ancestral colour kit',
         collectionLogCategory: 'chambers_of_xeric',
+        ignoreDropRateModifier: true,
       }),
       singleItem({
         name: 'Metamorphic dust',
         collectionLogCategory: 'chambers_of_xeric',
+        ignoreDropRateModifier: true,
       }),
     ],
   },
