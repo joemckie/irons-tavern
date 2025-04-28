@@ -132,12 +132,38 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Masori body': 1 / 144.9,
   'Masori chaps': 1 / 144.9,
   "Elidinis' ward": 1 / 96.6,
-  "Osmumten's fang": 1 / 41.4,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
   'Jewel of the sun': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
   'Breach of the scarab': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
   'Eye of the corruptor': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
+  get "Osmumten's fang"() {
+    return 1 / 41.4;
+  },
+  get 'Masori crafting kit'() {
+    return this["Osmumten's fang"];
+  },
+  get 'Menaphite ornament kit'() {
+    return this["Osmumten's fang"]! / 1.5;
+  },
+  get 'Cursed phalanx'() {
+    return this["Osmumten's fang"]! / 2.25;
+  },
+  get 'Remnant of akkha'() {
+    return this["Osmumten's fang"]! / 2.2;
+  },
+  get 'Remnant of ba-ba'() {
+    return this["Osmumten's fang"]! / 1.9;
+  },
+  get 'Remnant of kephri'() {
+    return this["Osmumten's fang"]! / 2.1;
+  },
+  get 'Remnant of zebak'() {
+    return this["Osmumten's fang"]! / 1.9;
+  },
+  get 'Ancient remnant'() {
+    return this["Osmumten's fang"]! / 1.9;
+  },
   'Eclipse atlatl': 1 / (25 / 3),
   'Eclipse moon chestplate': 1 / (25 / 3),
   'Eclipse moon tassets': 1 / (25 / 3),

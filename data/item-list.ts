@@ -1118,42 +1118,34 @@ export const itemList = {
       singleItem({
         name: 'Masori crafting kit',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Menaphite ornament kit',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Remnant of akkha',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Remnant of ba-ba',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Remnant of kephri',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Remnant of zebak',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Ancient remnant',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Cursed phalanx',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
     ],
   },
