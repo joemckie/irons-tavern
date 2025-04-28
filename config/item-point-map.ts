@@ -77,6 +77,16 @@ export const dropRateModifiers: Record<string, number> = {
 };
 
 /**
+ * Some content is expected to be completed in a group to be the most efficient,
+ * meaning the player will not receive loot for every kill.
+ */
+export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
+  'Chambers of Xeric Challenge Mode': 3,
+  Nex: 4,
+  Zalcano: 4,
+};
+
+/**
  * Some items have unique drop mechanics that mean their rarities aren't quite correct in reality.
  *
  * For example, the Hydra's eye, fang and heart are all 1/180, but dupe protection makes the effective drop rate 1/60.
@@ -88,6 +98,9 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
   "Lil' creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
+  'Twisted ancestral colour kit':
+    1 / groupSizes['Chambers of Xeric Challenge Mode']!,
+  'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
 };
 
 export const ehbModifiers: Partial<Record<keyof typeof ehbRates, number>> = {
@@ -125,7 +138,7 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Scythe of vitur (uncharged)': 1 / 519,
   'Jal-nib-rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
   'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
-  'Smol heredit': 1 / 100, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
+  'Smol heredit': 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
   "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
   'Masori mask': 1 / 144.9,
@@ -211,14 +224,4 @@ export const altRarityItems: Partial<
   'Thread of elidinis': {
     'Chest (Tombs of Amascut)': true,
   },
-};
-
-/**
- * Some content is expected to be completed in a group to be the most efficient,
- * meaning the player will not receive loot for every kill.
- */
-export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
-  'Chambers of Xeric Challenge Mode': 3,
-  Nex: 4,
-  Zalcano: 4,
 };

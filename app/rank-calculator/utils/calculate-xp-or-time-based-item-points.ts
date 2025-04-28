@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export function calculateXpOrTimeBasedItemPoints(
   estimatedXpOrTimeToCompletion: number,
-  ehpRate: number,
+  ehpRate: number = 1,
 ) {
   // Validate that the provided numbers are greater than 0
   const parsedEstimatedXpToCompletion = z

@@ -159,7 +159,7 @@ function customItem({
   });
 }
 
-const estimatedSlayerXpForImbuedHeart = 25000000;
+const estimatedHoursForImbuedHeart = 125;
 const estimatedFishingXpForHeron = 10112800;
 const eternalGloryDropRate = 1 / 25000;
 const gloriesChargedPerHour = 600;
@@ -1446,33 +1446,25 @@ export const itemList = {
         name: 'Mist battlestaff',
         collectionLogCategory: 'slayer',
         points: calculateXpOrTimeBasedItemPoints(
-          estimatedSlayerXpForImbuedHeart / 3.5,
-          ehpRates.Slayer,
+          estimatedHoursForImbuedHeart / 3.5,
         ),
       }),
       singleItem({
         name: 'Dust battlestaff',
         collectionLogCategory: 'slayer',
         points: calculateXpOrTimeBasedItemPoints(
-          estimatedSlayerXpForImbuedHeart / 3.5,
-          ehpRates.Slayer,
+          estimatedHoursForImbuedHeart / 3.5,
         ),
       }),
       singleItem({
         name: 'Eternal gem',
         collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedSlayerXpForImbuedHeart,
-          ehpRates.Slayer,
-        ),
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
       }),
       singleItem({
         name: 'Imbued heart',
         collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedSlayerXpForImbuedHeart,
-          ehpRates.Slayer,
-        ),
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
       }),
     ],
   },
