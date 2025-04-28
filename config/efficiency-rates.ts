@@ -61,7 +61,7 @@ export const ehbRates = {
   "Phosani's Nightmare": 6.7,
   Nex: 15,
   'Tombs of Amascut': 3.7,
-  'Tombs of Amascut (Expert)': 2, // Override from 3 to match solo ToAs
+  'Tombs of Amascut (Expert)': 3,
   'Phantom Muspah': 27,
   Artio: 50,
   "Calvar'ion": 45,

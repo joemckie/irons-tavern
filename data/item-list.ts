@@ -1075,17 +1075,14 @@ export const itemList = {
       singleItem({
         name: 'Eye of the corruptor',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Jewel of the sun',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: 'Breach of the scarab',
         collectionLogCategory: 'tombs_of_amascut',
-        points: 1,
       }),
       singleItem({
         name: "Osmumten's fang",
@@ -1417,7 +1414,7 @@ export const itemList = {
       compoundItem({
         name: 'Devout boots',
         requiredItems: [
-          { clogName: "Drake's tooth" },
+          { clogName: "Drake's tooth", targetDropSources: ['Drake'] },
           { clogName: 'Holy sandals' },
         ],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
@@ -1427,6 +1424,7 @@ export const itemList = {
         clogName: "Drake's claw",
         image: formatWikiImageUrl('Boots of brimstone'),
         collectionLogCategory: 'slayer',
+        targetDropSources: ['Drake'],
       }),
       singleItem({
         name: 'Neitiznot faceguard',
@@ -1443,6 +1441,7 @@ export const itemList = {
       singleItem({
         name: 'Dark bow',
         collectionLogCategory: 'slayer',
+        targetDropSources: ['Dark beast'],
       }),
       singleItem({
         name: 'Mist battlestaff',

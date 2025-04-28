@@ -73,7 +73,6 @@ export const collectionLogItemBossNameMap: Partial<
  */
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
-  'Ancient chest': 1 / 7.23,
 };
 
 /**
@@ -84,13 +83,16 @@ export const dropRateModifiers: Record<string, number> = {
  * This map is used to modify the final item points to account for this.
  */
 export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
-  'Eye of the corruptor': 1 / 3,
-  'Jewel of the sun': 1 / 3,
-  'Breach of the scarab': 1 / 3,
   "Hydra's eye": 1 / 3,
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
   "Lil' creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
+  Skotos: 57,
+  'Jar of darkness': 57,
+};
+
+export const ehbModifiers: Partial<Record<keyof typeof ehbRates, number>> = {
+  Skotizo: 1 / 60, // Temple assumes zero time collecting totem pieces
 };
 
 /**
@@ -134,6 +136,9 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   "Osmumten's fang": 1 / 41.4,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
+  'Jewel of the sun': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
+  'Breach of the scarab': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
+  'Eye of the corruptor': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
   'Eclipse atlatl': 1 / (25 / 3),
   'Eclipse moon chestplate': 1 / (25 / 3),
   'Eclipse moon tassets': 1 / (25 / 3),
@@ -176,4 +181,15 @@ export const altRarityItems: Partial<
   'Basilisk jaw': {
     'Basilisk Knight': true,
   },
+  'Thread of elidinis': {
+    'Chest (Tombs of Amascut)': true,
+  },
+};
+
+/**
+ * Some content is expected to be completed in a group to be the most efficient,
+ * meaning the player will not receive loot for every kill.
+ */
+export const groupSizes: Record<string, number> = {
+  'Chambers of Xeric': 3,
 };
