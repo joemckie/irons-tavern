@@ -105,6 +105,7 @@ export const ehbRates = {
   'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
   'Abyssal demon#Standard': 486, // Assuming an average of a 37 minute task consisting of 300 kills
   'Basilisk Knight': 100, // Assuming an average of a 100 minute task consisting of 165 kills
+  'Dark beast': 60,
 } satisfies Record<string, number>;
 
 /**
