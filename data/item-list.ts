@@ -631,28 +631,28 @@ export const itemList = {
       singleItem({
         name: 'Sunfire fanatic helm',
         collectionLogCategory: 'fortis_colosseum',
-        points: 1,
+        targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
       singleItem({
         name: 'Sunfire fanatic cuirass',
         collectionLogCategory: 'fortis_colosseum',
-        points: 1,
+        targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
       singleItem({
         name: 'Sunfire fanatic chausses',
         collectionLogCategory: 'fortis_colosseum',
-        points: 1,
+        targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
       singleItem({
         name: 'Echo crystal',
         collectionLogCategory: 'fortis_colosseum',
-        points: 1,
+        targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
       singleItem({
         name: 'Tonalztics of ralos',
         clogName: 'Tonalztics of ralos (uncharged)',
         collectionLogCategory: 'fortis_colosseum',
-        points: 1,
+        targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
       singleItem({
         name: "Dizana's quiver",

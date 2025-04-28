@@ -177,6 +177,7 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Blue moon chestplate': 1 / (25 / 3),
   'Blue moon tassets': 1 / (25 / 3),
   'Blue moon helm': 1 / (25 / 3),
+  'Echo crystal': 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
 };
 
 /**
@@ -218,4 +219,5 @@ export const altRarityItems: Partial<
  */
 export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
   'Chambers of Xeric Challenge Mode': 3,
+  Nex: 4,
 };
