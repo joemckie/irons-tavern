@@ -52,7 +52,7 @@ function calculatePointsForSingleDropSource(
 
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
-    .dividedBy(bossEhb ?? defaultEhbRate / (groupSizes[bossName] ?? 1))
+    .dividedBy((bossEhb ?? defaultEhbRate) / (groupSizes[bossName] ?? 1))
     .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)
