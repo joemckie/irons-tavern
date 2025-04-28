@@ -1,4 +1,4 @@
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { isCollectionLogItem, Item } from '@/app/schemas/items';
@@ -32,8 +32,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
     throw new Error(`Could not calculate item points for ${item.name}`);
   }
 
-  const itemPoints = useMemo(getItemPoints, [dropRates, item]);
-  const scaledItemPoints = Math.floor(itemPoints * scaling);
+  const scaledItemPoints = Math.floor(getItemPoints() * scaling);
 
   return (
     <Table.Row key={item.name} align="center">
