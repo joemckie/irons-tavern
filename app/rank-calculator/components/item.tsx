@@ -17,7 +17,7 @@ interface ItemProps {
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
   const scaledItemPoints = Intl.NumberFormat('en-gb').format(
-    Math.floor(item.points * scaling),
+    Math.max(1, Math.floor(item.points * scaling)),
   );
 
   return (
