@@ -1,4 +1,4 @@
-import { Skill } from '@/app/schemas/osrs';
+import { CollectionLogItemName } from '@/app/schemas/osrs';
 
 /**
  * 60 EHB is the default rate given by TempleOSRS when a new boss is added.
@@ -112,34 +112,16 @@ export const ehbRates = {
 } satisfies Record<string, number>;
 
 /**
- * EHP rates are copied from here:
- *
- * https://templeosrs.com/efficiency/skilling.php?ehp=im
- *
- * **Note**: Only IM EHP should be used!
+ * EHC rates are pulled from the TempleOSRS Collection Log
  */
-export const ehpRates = {
-  Agility: 97600,
-  Attack: 186400,
-  Construction: 279100,
-  Cooking: 440000,
-  Crafting: 207200,
-  Defence: 768000,
-  Farming: 2000000,
-  Firemaking: 462400,
-  Fishing: 141800,
-  Fletching: 1524300,
-  Hitpoints: 0,
-  Herblore: 76000,
-  Hunter: 240000,
-  Magic: 0,
-  Mining: 125000,
-  Prayer: 175900,
-  Ranged: 1560900,
-  Runecraft: 123000,
-  Slayer: 73260,
-  Smithing: 375000,
-  Strength: 300000,
-  Thieving: 0,
-  Woodcutting: 187600,
-} satisfies Record<Skill, number>;
+export const petEhcRates = {
+  'Baby chinchompa': 91.5,
+  Beaver: 111.3,
+  'Giant squirrel': 132.8,
+  Heron: 84.3,
+  Phoenix: 85.4,
+  'Rift guardian': 67.9,
+  'Rock golem': 118.3,
+  Rocky: 25,
+  Tangleroot: 82,
+} satisfies Partial<Record<CollectionLogItemName, number>>;

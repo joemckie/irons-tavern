@@ -18,7 +18,7 @@ import {
 } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
-import { ehbRates, ehpRates } from '@/config/efficiency-rates';
+import { ehbRates, petEhcRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points'>,
@@ -160,7 +160,6 @@ function customItem({
 }
 
 const estimatedHoursForImbuedHeart = 125;
-const estimatedFishingXpForHeron = 10112800;
 const eternalGloryDropRate = 1 / 25000;
 const gloriesChargedPerHour = 600;
 const muspahAverageAncientEssencePerKill = 759.4;
@@ -1690,13 +1689,15 @@ export const itemList = {
       'Abyssal orphan': {},
       'Abyssal protector': {},
       'Baby chinchompa': {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          petEhcRates['Baby chinchompa'],
+        ),
         image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
       },
       'Baby mole': {},
       Baron: {},
       Beaver: {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
       },
       Bloodhound: {},
       Bran: {},
@@ -1706,15 +1707,12 @@ export const itemList = {
       },
       'Chompy chick': {},
       'Giant squirrel': {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
       },
       Hellpuppy: {},
       Herbi: {},
       Heron: {
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedFishingXpForHeron,
-          ehpRates.Fishing,
-        ),
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
       },
       Huberte: {},
       'Ikkle hydra': {
@@ -1750,20 +1748,22 @@ export const itemList = {
       'Pet smoke devil': {},
       'Pet snakeling': {},
       'Pet zilyana': {},
-      Phoenix: {},
+      Phoenix: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
+      },
       'Prince black dragon': {},
       Quetzin: {
         targetDropSources: ["Hunters' loot sack (expert)"],
       },
       'Rift guardian': {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
         image: formatWikiImageUrl('Rift guardian (follower, fire)'),
       },
       'Rock golem': {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
       },
       Rocky: {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
       },
       "Scorpia's offspring": {},
       Scurry: {},
@@ -1772,7 +1772,7 @@ export const itemList = {
       'Smol heredit': {},
       Sraracha: {},
       Tangleroot: {
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
       },
       'Tiny tempor': {},
       "Tumeken's guardian": {},

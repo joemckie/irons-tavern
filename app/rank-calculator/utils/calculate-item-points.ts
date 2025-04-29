@@ -39,6 +39,7 @@ function calculatePointsForSingleDropSource(
     ? 1
     : (dropRateModifiers[dropSource] ?? 1);
   const pointModifier = pointModifiers[itemName] ?? 1;
+  const groupSize = groupSizes[bossName] ?? 1;
 
   if (!bossEhb) {
     console.warn(
@@ -51,8 +52,8 @@ function calculatePointsForSingleDropSource(
   }
 
   return new Decimal(1)
-    .dividedBy(new Decimal(itemDropRate).times(dropRateModifier))
-    .dividedBy((bossEhb ?? defaultEhbRate) / (groupSizes[bossName] ?? 1))
+    .dividedBy(new Decimal(itemDropRate).times(dropRateModifier).div(groupSize))
+    .dividedBy(bossEhb ?? defaultEhbRate)
     .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)
