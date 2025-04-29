@@ -430,27 +430,27 @@ export const itemList = {
       compoundItem({
         name: 'Spectral spirit shield',
         requiredItems: [
-          { clogName: 'Spirit shield' },
           { clogName: 'Spectral sigil' },
-          { clogName: 'Holy elixir' },
+          { clogName: 'Spirit shield', ignorePoints: true },
+          { clogName: 'Holy elixir', ignorePoints: true },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
       compoundItem({
         name: 'Arcane spirit shield',
         requiredItems: [
-          { clogName: 'Spirit shield' },
           { clogName: 'Arcane sigil' },
-          { clogName: 'Holy elixir' },
+          { clogName: 'Spirit shield', ignorePoints: true },
+          { clogName: 'Holy elixir', ignorePoints: true },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
       compoundItem({
         name: 'Elysian spirit shield',
         requiredItems: [
-          { clogName: 'Spirit shield' },
           { clogName: 'Elysian sigil' },
-          { clogName: 'Holy elixir' },
+          { clogName: 'Spirit shield', ignorePoints: true },
+          { clogName: 'Holy elixir', ignorePoints: true },
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),

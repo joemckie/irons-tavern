@@ -73,25 +73,33 @@ export function calculateItemPoints(
         targetDropSources = Object.keys(dropRateInfo[clogName]),
         ignoreDropRateModifier,
         ignoreAmountMultiplier,
+        ignorePoints,
       },
     ) => {
       const totalPointsForDropSources = targetDropSources.reduce(
-        (sum, dropSource) =>
-          sum +
-          calculatePointsForSingleDropSource(
-            clogName,
-            dropSource,
-            amount,
-            z
-              .number({
-                required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
-              })
-              .parse(dropRateInfo[clogName][dropSource]),
-            {
-              ignoreDropRateModifier,
-              ignoreAmountMultiplier,
-            },
-          ),
+        (sum, dropSource) => {
+          if (ignorePoints) {
+            return sum;
+          }
+
+          return (
+            sum +
+            calculatePointsForSingleDropSource(
+              clogName,
+              dropSource,
+              amount,
+              z
+                .number({
+                  required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
+                })
+                .parse(dropRateInfo[clogName][dropSource]),
+              {
+                ignoreDropRateModifier,
+                ignoreAmountMultiplier,
+              },
+            )
+          );
+        },
         0,
       );
 
