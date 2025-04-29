@@ -1,10 +1,12 @@
 import { Box, Flex, ScrollArea } from '@radix-ui/themes';
+import { useSearchParams } from 'next/navigation';
 import { useGetItems } from '../hooks/use-get-items';
 import { usePageHeight } from '../hooks/use-page-height';
 import { Category } from './category';
 
 export function ItemList() {
-  const { data: categories } = useGetItems();
+  const search = useSearchParams();
+  const { data: categories } = useGetItems(Number(search.get('h')));
   const mainHeightCss = usePageHeight();
 
   return (

@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
     }
 
     const dropRates = await fetchItemDropRates();
-    const items = Object.entries(buildNotableItemList(dropRates));
+    const items = Object.entries(buildNotableItemList(dropRates, 5));
     const scaling = calculateScaling(joinDate);
     const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
       collectionLogCount,

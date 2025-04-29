@@ -3,7 +3,10 @@ import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { calculateItemPoints } from './calculate-item-points';
 
-export function buildNotableItemList(dropRates: DroppedItemResponse) {
+export function buildNotableItemList(
+  dropRates: DroppedItemResponse,
+  h: number,
+) {
   return Object.fromEntries(
     Object.entries(itemList).map(([key, category]) => {
       const items = category.items.map((item) => {
@@ -14,7 +17,7 @@ export function buildNotableItemList(dropRates: DroppedItemResponse) {
         if (isCollectionLogItem(item)) {
           return {
             ...item,
-            points: calculateItemPoints(dropRates, item.requiredItems),
+            points: calculateItemPoints(dropRates, item.requiredItems, h),
           };
         }
 
