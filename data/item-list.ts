@@ -302,7 +302,11 @@ export const itemList = {
             targetDropSources: ['Araxyte#Level 146'],
           },
           { clogName: 'Araxyte head', targetDropSources: ['Araxxor'] },
-          { clogName: 'Zenyte shard', targetDropSources: ['Demonic gorilla'] },
+          {
+            clogName: 'Zenyte shard',
+            targetDropSources: ['Demonic gorilla'],
+            ignorePoints: true,
+          },
           { clogName: 'Nid' },
         ],
         collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
@@ -554,7 +558,7 @@ export const itemList = {
         name: 'Bellator ring',
         requiredItems: [
           { clogName: 'Bellator vestige' },
-          { clogName: 'Warrior ring' },
+          { clogName: 'Warrior ring', ignorePoints: true },
         ],
         requiredLevels: {
           Magic: 85,
@@ -566,7 +570,7 @@ export const itemList = {
         name: 'Magus ring',
         requiredItems: [
           { clogName: 'Magus vestige' },
-          { clogName: 'Seers ring' },
+          { clogName: 'Seers ring', ignorePoints: true },
         ],
         requiredLevels: {
           Magic: 85,
@@ -578,7 +582,7 @@ export const itemList = {
         name: 'Ultor ring',
         requiredItems: [
           { clogName: 'Ultor vestige' },
-          { clogName: 'Berserker ring' },
+          { clogName: 'Berserker ring', ignorePoints: true },
         ],
         requiredLevels: {
           Magic: 85,
@@ -590,7 +594,7 @@ export const itemList = {
         name: 'Venator ring',
         requiredItems: [
           { clogName: 'Venator vestige' },
-          { clogName: 'Archers ring' },
+          { clogName: 'Archers ring', ignorePoints: true },
         ],
         requiredLevels: {
           Magic: 85,
@@ -712,7 +716,11 @@ export const itemList = {
       compoundItem({
         name: 'Guardian boots',
         requiredItems: [
-          { clogName: 'Bandos boots', targetDropSources: ['General Graardor'] },
+          {
+            clogName: 'Bandos boots',
+            targetDropSources: ['General Graardor'],
+            ignorePoints: true,
+          },
           { clogName: 'Black tourmaline core' },
         ],
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
