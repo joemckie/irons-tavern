@@ -11,7 +11,10 @@ export function buildNotableItemList(
     Object.entries(itemList).map(([key, category]) => {
       const items = category.items.map((item) => {
         if (item.points) {
-          return item;
+          return {
+            ...item,
+            points: (item.points / 5) * h,
+          };
         }
 
         if (isCollectionLogItem(item)) {
