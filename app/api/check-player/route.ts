@@ -1,20 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { clientConstants } from '@/config/constants.client';
-import { PlayerInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
+import { TempleOSRSPlayerInfo } from '@/app/schemas/temple-api';
 
 export const dynamic = 'force-dynamic';
 
 async function getPlayerInfo(player: string) {
-  const playerInfoRequest = await fetch(
+  const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,
   );
 
-  return playerInfoRequest.json() as Promise<PlayerInfoResponse>;
+  return TempleOSRSPlayerInfo.parse(await response.json());
 }
 
 export async function GET(request: NextRequest) {

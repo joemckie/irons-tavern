@@ -4,17 +4,26 @@ import { list } from '@vercel/blob';
 import Image from 'next/image';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
+import { unset } from 'lodash';
 import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
+import {
+  normalisePlayerName,
+  TempleOSRSGroupMemberInfo,
+} from '../schemas/temple-api';
 
-async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
+async function getGroupMemberInfo() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  return response.json();
+  const data = await response.json();
+
+  // Temple returns an empty player for some reason, so remove it
+  unset(data.data.memberlist, '');
+
+  return TempleOSRSGroupMemberInfo.parse(data);
 }
 
 async function getLatestMemberList() {
@@ -32,11 +41,10 @@ async function getLatestMemberList() {
     }
 
     return data.reduce(
-      (acc, member) => {
-        acc[member.rsn.toLowerCase()] = member;
-
-        return acc;
-      },
+      (acc, member) => ({
+        ...acc,
+        [normalisePlayerName(member.rsn)]: member,
+      }),
       {} as Record<string, ClanMember>,
     );
   } catch (error) {
@@ -67,79 +75,78 @@ export default async function InactivityCheckerPage() {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(groupMemberInfo.data.memberlist)
-            .sort(
-              (
-                [, { last_changed_xp_unix_time: a }],
-                [, { last_changed_xp_unix_time: b }],
-              ) => a - b,
-            )
-            .map(
-              ([
-                rsn,
-                {
-                  last_changed_xp: lastChangedXp,
-                  on_hiscores: onHiscores,
-                  last_checked: lastChecked,
-                },
-              ]) => {
-                const estimatedDaysInactive = differenceInDays(
-                  Date.now(),
-                  lastChangedXp,
-                );
+          {Object.values(memberList)
+            .sort(({ rsn: a }, { rsn: b }) => {
+              const memberA =
+                groupMemberInfo.data.memberlist[normalisePlayerName(a)];
+              const memberB =
+                groupMemberInfo.data.memberlist[normalisePlayerName(b)];
 
-                if (!rsn) {
-                  return null;
-                }
+              if (!memberA || !memberB) {
+                return -1;
+              }
 
-                const { rank, joinedDate } =
-                  memberList[rsn.toLowerCase()] ?? {};
+              return (
+                memberA.last_changed_xp_unix_time -
+                memberB.last_changed_xp_unix_time
+              );
+            })
+            .map(({ rsn, joinedDate, rank }) => {
+              const {
+                player: templePlayerName,
+                last_changed_xp: lastChangedXp,
+                on_hiscores: onHiscores,
+                last_checked: lastChecked,
+              } = groupMemberInfo.data.memberlist[normalisePlayerName(rsn)] ??
+              {};
 
-                return (
-                  <tr key={rsn}>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      <a
-                        className="underline"
-                        href={`https://templeosrs.com/player/overview.php?player=${rsn}&duration=alltime`}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {rsn}
-                      </a>
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {rank && (
-                        <Image
-                          alt={`${rank} icon`}
-                          src={getRankImageUrl(rank)}
-                          height={24}
-                          width={24}
-                          unoptimized
-                        />
-                      )}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {joinedDate ?? 'Unknown'}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {lastChecked}
-                    </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500 ">
-                      {`${pluralise('day', estimatedDaysInactive, true)}`}
-                    </td>
-                    <td className="border-b border-slate-700 p-4">
-                      <span
-                        className={
-                          onHiscores ? 'text-green-400' : 'text-red-400'
-                        }
-                      >
-                        {onHiscores ? 'Yes' : 'No'}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              },
-            )}
+              const estimatedDaysInactive = differenceInDays(
+                Date.now(),
+                lastChangedXp,
+              );
+
+              return (
+                <tr key={rsn}>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    <a
+                      className="underline"
+                      href={`https://templeosrs.com/player/overview.php?player=${templePlayerName}&duration=alltime`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {rsn}
+                    </a>
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {rank && (
+                      <Image
+                        alt={`${rank} icon`}
+                        src={getRankImageUrl(rank)}
+                        height={24}
+                        width={24}
+                        unoptimized
+                      />
+                    )}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {joinedDate ?? 'Unknown'}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500">
+                    {lastChecked}
+                  </td>
+                  <td className="border-b border-slate-700 p-4 text-slate-500 ">
+                    {`${pluralise('day', estimatedDaysInactive, true)}`}
+                  </td>
+                  <td className="border-b border-slate-700 p-4">
+                    {onHiscores ? (
+                      <span className="text-green-400">Yes</span>
+                    ) : (
+                      <span className="text-red-400">No</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </main>
