@@ -224,4 +224,10 @@ export const altRarityItems: Partial<
   'Thread of elidinis': {
     'Chest (Tombs of Amascut)': true,
   },
+  "Drake's claw": {
+    Drake: true,
+  },
+  "Drake's tooth": {
+    Drake: true,
+  },
 };

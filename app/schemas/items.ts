@@ -24,7 +24,6 @@ export const RequiredItem = z.object({
   targetDropSources: z.array(z.string()).nonempty().optional(),
   ignoreDropRateModifier: z.literal(true).optional(),
   ignoreAmountMultiplier: z.literal(true).optional(),
-  useAltRarity: z.literal(true).optional(),
 });
 
 export type RequiredItem = z.infer<typeof RequiredItem>;

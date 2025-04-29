@@ -166,6 +166,8 @@ const gloriesChargedPerHour = 600;
 const muspahAverageAncientEssencePerKill = 759.4;
 const saturateHeartEssenceRequired = 150000;
 const swiftBladeLmsPointsRequired = 350;
+const estimatedHoursToObtainAbyssalWhip = 20;
+const estimatedHoursToObtainBottomlessCompostBucket = 35;
 
 export const itemList = {
   'Automatic Items': {
@@ -1404,16 +1406,21 @@ export const itemList = {
       singleItem({
         name: 'Leaf-bladed battleaxe',
         collectionLogCategory: 'slayer',
+        targetDropSources: ['Kurask'],
       }),
       singleItem({
         name: 'Warped sceptre',
         clogName: 'Warped sceptre (uncharged)',
         collectionLogCategory: 'slayer',
+        targetDropSources: ['Warped Terrorbird'],
       }),
       compoundItem({
         name: 'Devout boots',
         requiredItems: [
-          { clogName: "Drake's tooth", targetDropSources: ['Drake'] },
+          {
+            clogName: "Drake's tooth",
+            targetDropSources: ['Drake'],
+          },
           { clogName: 'Holy sandals' },
         ],
         collectionLogCategories: ['slayer', 'medium_treasure_trails'],
@@ -1436,6 +1443,9 @@ export const itemList = {
         name: 'Abyssal whip',
         collectionLogCategory: 'slayer',
         targetDropSources: ['Abyssal demon#Standard'],
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToObtainAbyssalWhip,
+        ),
       }),
       singleItem({
         name: 'Dark bow',
@@ -1509,6 +1519,9 @@ export const itemList = {
       singleItem({
         name: 'Bottomless compost bucket',
         collectionLogCategory: 'hespori',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToObtainBottomlessCompostBucket,
+        ),
       }),
       singleItem({
         name: "Bryophyta's essence",

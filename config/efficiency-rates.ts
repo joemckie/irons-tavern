@@ -103,10 +103,12 @@ export const ehbRates = {
   'Black dragon#Wilderness Slayer Cave': 50, // Assumed value - can cannon in the Wilderness Slayer Cave
   'Spitting Wyvern': 100,
   'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
-  'Abyssal demon#Standard': 486, // Assuming an average of a 37 minute task consisting of 300 kills
   'Basilisk Knight': 100, // Assuming an average of a 100 minute task consisting of 165 kills
   'Dark beast': 60,
   'LMS Points': 25,
+  Drake: 164,
+  Kurask: 280,
+  'Warped Terrorbird': 450,
 } satisfies Record<string, number>;
 
 /**
