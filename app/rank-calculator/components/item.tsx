@@ -16,7 +16,9 @@ interface ItemProps {
 
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
-  const scaledItemPoints = Math.floor(item.points * scaling);
+  const scaledItemPoints = Intl.NumberFormat('en-gb').format(
+    Math.floor(item.points * scaling),
+  );
 
   return (
     <Table.Row key={item.name} align="center">
