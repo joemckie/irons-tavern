@@ -1,4 +1,3 @@
-import { itemList } from '@/data/item-list';
 import Decimal from 'decimal.js-light';
 import { ItemCategory } from '@/app/schemas/items';
 import { stripEntityName } from '../strip-entity-name';
@@ -13,7 +12,7 @@ export function calculateNotableItemsPoints(
     notableItems,
     scaling,
   );
-  const { totalItems, itemPoints } = Object.entries(itemList).reduce(
+  const { totalItems, itemPoints } = notableItems.reduce(
     (acc, [, { items }]) => {
       const { categoryItemPointMap } = items.reduce(
         (categoryAcc, val) => ({
