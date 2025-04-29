@@ -71,7 +71,7 @@ export const ehbRates = {
   'The Whisperer': 21,
   Vardorvis: 35,
   Scurrius: 60,
-  'Lunar Chests': 18,
+  'Lunar Chests': 10,
   'Sol Heredit': 2.5,
   Araxxor: 38,
   'The Hueycoatl': 9,
