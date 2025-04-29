@@ -103,10 +103,6 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
 };
 
-export const ehbModifiers: Partial<Record<keyof typeof ehbRates, number>> = {
-  Skotizo: 1 / 60, // Temple assumes zero time collecting totem pieces
-};
-
 /**
  * Some drop sources provide multiple rolls from the drop table.
  *

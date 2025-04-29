@@ -45,7 +45,6 @@ export const ehbRates = {
   Obor: 12,
   Sarachnis: 67,
   Scorpia: 80,
-  Skotizo: 38,
   'The Gauntlet': 10,
   'The Corrupted Gauntlet': 7.2,
   'Theatre of Blood': 3.2,
@@ -83,6 +82,7 @@ export const ehbRates = {
   'Colosseum Glory': 15000,
 
   // These rates are self-calculated and are not from TempleOSRS
+  Skotizo: 1, // Temple doesn't account for the time taken to gather totems, assuming 1 totem acquired per hour
   'Easy Clue': 18, // https://oldschool.runescape.wiki/w/Money_making_guide/Pickpocketing_H.A.M._members
   'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
   'Master Clue': 1, // Probably wrong, needs to be calculated
