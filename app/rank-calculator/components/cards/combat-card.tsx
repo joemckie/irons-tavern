@@ -10,6 +10,8 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { Checkbox } from '../checkbox';
+import { ValidationTooltip } from '../validation-tooltip';
 
 export function CombatCard() {
   const {
@@ -19,10 +21,18 @@ export function CombatCard() {
     combatAchievementTierPoints,
     ehbPoints,
     tzhaarCapePoints,
+    bloodTorvaPoints,
+    dizanasQuiverPoints,
   } = useCombatPointCalculator();
   const {
     formState: { defaultValues },
+    getValues,
+    getFieldState,
   } = useFormContext<RankCalculatorSchema>();
+  const [hasBloodTorva, hasDizanasQuiver] = getValues([
+    'hasBloodTorva',
+    'hasDizanasQuiver',
+  ]);
 
   return (
     <DataCard.Root>
@@ -126,8 +136,42 @@ export function CombatCard() {
           />
         }
         right={
-          <Text aria-label="TzHaar cape points points" color="gray" size="2">
+          <Text aria-label="TzHaar cape points" color="gray" size="2">
             {formatNumber(tzhaarCapePoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <ValidationTooltip
+            error={getFieldState('hasDizanasQuiver').error}
+            color="gray"
+            size="2"
+          >
+            <Text>Dizana&apos;s quiver</Text>
+          </ValidationTooltip>
+        }
+        center={<Checkbox name="hasDizanasQuiver" checked={hasDizanasQuiver} />}
+        right={
+          <Text aria-label="Dizana's quiver points" color="gray" size="2">
+            {formatNumber(dizanasQuiverPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <ValidationTooltip
+            error={getFieldState('hasBloodTorva').error}
+            color="gray"
+            size="2"
+          >
+            <Text>Blood torva</Text>
+          </ValidationTooltip>
+        }
+        center={<Checkbox name="hasBloodTorva" checked={hasBloodTorva} />}
+        right={
+          <Text aria-label="Blood torva points" color="gray" size="2">
+            {formatNumber(bloodTorvaPoints)}
           </Text>
         }
       />

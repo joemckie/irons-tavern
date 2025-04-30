@@ -57,5 +57,19 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
     };
   }
 
+  if (diff.hasBloodTorva) {
+    errors.hasBloodTorva = {
+      type: 'value',
+      message: `Expected ${diff.hasBloodTorva}`,
+    };
+  }
+
+  if (diff.hasDizanasQuiver) {
+    errors.hasDizanasQuiver = {
+      type: 'value',
+      message: `Expected ${diff.hasDizanasQuiver}`,
+    };
+  }
+
   return errors;
 }

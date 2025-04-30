@@ -96,7 +96,7 @@ function compoundItem({
   });
 }
 
-function combatAchievementItem({
+export function combatAchievementItem({
   name,
   image = formatWikiImageUrl(name),
   points,
@@ -598,17 +598,6 @@ export const itemList = {
           'duke_sucellus',
         ],
       }),
-      combatAchievementItem({
-        name: 'Ancient blood ornament kit',
-        points: 1,
-        image: formatWikiImageUrl('Sanguine torva full helm detail'),
-        requiredCombatAchievements: [
-          490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
-          499, // https://oldschool.runescape.wiki/w/Whispered
-          508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
-          517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
-        ],
-      }),
     ],
   },
   'Fortis Colosseum': {
@@ -639,12 +628,6 @@ export const itemList = {
         clogName: 'Tonalztics of ralos (uncharged)',
         collectionLogCategory: 'fortis_colosseum',
         targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
-      }),
-      singleItem({
-        name: "Dizana's quiver",
-        clogName: "Dizana's quiver (uncharged)",
-        points: 1,
-        collectionLogCategory: 'fortis_colosseum',
       }),
     ],
   },

@@ -1,4 +1,4 @@
-import { itemList, singleItem } from '@/data/item-list';
+import { combatAchievementItem, itemList, singleItem } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
@@ -13,7 +13,7 @@ import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
 import { TzHaarCape } from '@/app/schemas/osrs';
-import { CollectionLogItem } from '@/app/schemas/items';
+import { CollectionLogItem, CombatAchievementItem } from '@/app/schemas/items';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
@@ -72,6 +72,8 @@ export const emptyResponse = {
   isTempleCollectionLogOutdated: false,
   isMobileOnly: false,
   tzhaarCape: 'None',
+  hasBloodTorva: false,
+  hasDizanasQuiver: false,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -205,7 +207,8 @@ export async function fetchPlayerDetails(
       ) ?? null;
 
     /**
-     * Some items must be parsed from the collection log, but are not displayed in the notable items list
+     * Some items must be retrieved from the collection log,
+     * but are not displayed in the notable items list.
      */
     const additionalItems = [
       singleItem({
@@ -216,7 +219,22 @@ export async function fetchPlayerDetails(
         name: 'Infernal cape',
         collectionLogCategory: 'tzhaar',
       }),
-    ] satisfies CollectionLogItem[];
+      singleItem({
+        name: "Dizana's quiver",
+        clogName: "Dizana's quiver (uncharged)",
+        collectionLogCategory: 'fortis_colosseum',
+      }),
+      combatAchievementItem({
+        name: 'Ancient blood ornament kit',
+        points: 1,
+        requiredCombatAchievements: [
+          490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
+          499, // https://oldschool.runescape.wiki/w/Whispered
+          508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
+          517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
+        ],
+      }),
+    ] satisfies (CollectionLogItem | CombatAchievementItem)[];
 
     const acquiredItems =
       wikiSyncData || templeCollectionLog
@@ -257,9 +275,13 @@ export async function fetchPlayerDetails(
     );
 
     const tzhaarCape =
-      (acquiredItemsMap['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
       (acquiredItemsMap['Infernal cape'] && TzHaarCape.enum['Infernal cape']) ||
+      (acquiredItemsMap['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
       TzHaarCape.enum.None;
+
+    const hasBloodTorva = acquiredItemsMap['Ancient blood ornament kit'];
+
+    const hasDizanasQuiver = acquiredItemsMap['Dizanas quiver'];
 
     return {
       success: true,
@@ -297,6 +319,8 @@ export async function fetchPlayerDetails(
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
         tzhaarCape,
+        hasBloodTorva,
+        hasDizanasQuiver,
       },
     };
   } catch (error) {

@@ -100,6 +100,8 @@ export const publishRankSubmissionAction = authActionClient
           hasWikiSyncData,
           isTempleCollectionLogOutdated,
           tzhaarCape,
+          hasBloodTorva,
+          hasDizanasQuiver,
         },
       } = playerDetails;
 
@@ -255,6 +257,15 @@ export const publishRankSubmissionAction = authActionClient
         tzhaarCape:
           hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape
             ? tzhaarCape
+            : null,
+        hasBloodTorva:
+          hasWikiSyncData && hasBloodTorva !== savedData.hasBloodTorva
+            ? !!hasBloodTorva
+            : null,
+        hasDizanasQuiver:
+          hasTempleCollectionLog &&
+          hasDizanasQuiver !== savedData.hasDizanasQuiver
+            ? !!hasDizanasQuiver
             : null,
       } satisfies RankSubmissionDiff;
 

@@ -4,8 +4,14 @@ export function calculateMaximumCombatPoints(scaling: number) {
   const maximumCombatAchievementPoints =
     calculateMaximumCombatAchievementPoints(scaling);
   const maximumTzhaarCapePoints = 7000;
+  const maximumBloodTorvaPoints = 6500;
+  const maximumDizanasQuiverPoints = 6500;
 
   return Math.floor(
-    (maximumCombatAchievementPoints + maximumTzhaarCapePoints) * scaling,
+    (maximumCombatAchievementPoints +
+      maximumTzhaarCapePoints +
+      maximumBloodTorvaPoints +
+      maximumDizanasQuiverPoints) *
+      scaling,
   );
 }

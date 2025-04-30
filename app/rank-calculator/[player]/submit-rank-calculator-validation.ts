@@ -30,6 +30,8 @@ export const RankCalculatorSchema = z.object({
   points: z.coerce.number().nonnegative(),
   proofLink: z.union([z.string().url().nullish(), z.literal('')]),
   tzhaarCape: TzHaarCape,
+  hasBloodTorva: z.boolean().optional(),
+  hasDizanasQuiver: z.boolean().optional(),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

@@ -72,6 +72,8 @@ export const RankSubmissionDiff = z.object({
   totalLevel: z.number().nullable(),
   collectionLogCount: z.number().nullable(),
   tzhaarCape: TzHaarCape.nullable(),
+  hasBloodTorva: z.boolean().nullable(),
+  hasDizanasQuiver: z.boolean().nullable(),
 });
 
 export type RankSubmissionDiff = z.infer<typeof RankSubmissionDiff>;

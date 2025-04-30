@@ -8,7 +8,7 @@ export function calculateMaximumAvailablePoints(
   items: [string, ItemCategory][],
   maximumCollectionLogSlotCount: number,
 ) {
-  const maximumCombatAchievementPoints = calculateMaximumCombatPoints(1);
+  const maximumCombatPoints = calculateMaximumCombatPoints(1);
   const maximumSkillingPoints = calculateMaximumSkillingPoints(1);
   const maximumNotableItemsPoints = calculateMaximumNotableItemsPoints(
     items,
@@ -23,6 +23,6 @@ export function calculateMaximumAvailablePoints(
     maximumCollectionLogSlotPoints +
     maximumSkillingPoints +
     maximumNotableItemsPoints +
-    maximumCombatAchievementPoints
+    maximumCombatPoints
   );
 }
