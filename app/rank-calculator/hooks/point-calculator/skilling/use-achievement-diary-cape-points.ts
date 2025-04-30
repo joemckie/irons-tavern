@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
-import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
+import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points copy';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export function useAchievementDiaryCapePoints() {
@@ -12,5 +12,8 @@ export function useAchievementDiaryCapePoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return calculateMaxCapePoints(hasAchievementDiaryCape || false, scaling);
+  return calculateAchievementDiaryCapePoints(
+    hasAchievementDiaryCape || false,
+    scaling,
+  );
 }
