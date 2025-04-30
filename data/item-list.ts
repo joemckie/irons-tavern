@@ -162,8 +162,6 @@ function customItem({
 const estimatedHoursForImbuedHeart = 125;
 const eternalGloryDropRate = 1 / 25000;
 const gloriesChargedPerHour = 600;
-const muspahAverageAncientEssencePerKill = 759.4;
-const saturateHeartEssenceRequired = 150000;
 const swiftBladeLmsPointsRequired = 350;
 const estimatedHoursToObtainAbyssalWhip = 20;
 const estimatedHoursToObtainBottomlessCompostBucket = 35;
@@ -202,18 +200,6 @@ export const itemList = {
           return Boolean(
             totalLevel === maximumTotalLevel &&
               acquiredItems?.[stripEntityName('Infernal cape')],
-          );
-        },
-        isAutomatic: true,
-      }),
-      customItem({
-        name: "Dizana's Max Cape",
-        points: 1,
-        image: formatWikiImageUrl("Dizana's max cape detail"),
-        isAcquired({ totalLevel, acquiredItems }) {
-          return Boolean(
-            totalLevel === maximumTotalLevel &&
-              acquiredItems?.[stripEntityName("Blessed dizana's quiver")],
           );
         },
         isAutomatic: true,
@@ -667,10 +653,6 @@ export const itemList = {
         clogName: "Dizana's quiver (uncharged)",
         points: 1,
         collectionLogCategory: 'fortis_colosseum',
-      }),
-      manualItem({
-        name: "Blessed dizana's quiver",
-        points: 1,
       }),
     ],
   },
@@ -1232,13 +1214,6 @@ export const itemList = {
           },
         ],
         collectionLogCategories: ['phantom_muspah'],
-      }),
-      manualItem({
-        name: 'Saturated heart',
-        points: calculateXpOrTimeBasedItemPoints(
-          saturateHeartEssenceRequired / muspahAverageAncientEssencePerKill,
-          ehbRates['Phantom Muspah'],
-        ),
       }),
     ],
   },
