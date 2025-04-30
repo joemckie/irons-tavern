@@ -1,14 +1,14 @@
 import { DiaryLocation } from '@/app/schemas/osrs';
 import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
+import { useWatch } from 'react-hook-form';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { useAchievementDiaryPoints } from './use-achievement-diary-points';
 import { useEhpPoints } from './use-ehp-points';
 import { useTotalLevelPoints } from './use-total-level-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 import { useAchievementDiaryCapePoints } from './use-achievement-diary-cape-points';
 import { useMaxCapePoints } from './use-max-cape-points';
-import { useWatch } from 'react-hook-form';
-import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
   ehpPoints: number;

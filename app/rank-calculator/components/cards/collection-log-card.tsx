@@ -105,7 +105,7 @@ export function CollectionLogCard() {
             min={0}
           />
         }
-        right={<></>}
+        right={null}
       />
       <DataCard.Row
         left={

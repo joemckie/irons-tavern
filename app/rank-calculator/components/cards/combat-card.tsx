@@ -195,7 +195,7 @@ export function CombatCard() {
             min={0}
           />
         }
-        right={<></>}
+        right={null}
       />
       <DataCard.Row
         left={

@@ -13,11 +13,7 @@ import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
 import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
-import {
-  CollectionLogItem,
-  CombatAchievementItem,
-  CustomItem,
-} from '@/app/schemas/items';
+import { CollectionLogItem, CombatAchievementItem } from '@/app/schemas/items';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';

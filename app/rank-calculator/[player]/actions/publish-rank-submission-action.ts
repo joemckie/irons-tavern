@@ -31,7 +31,6 @@ import {
   CombatAchievementTier,
   DiaryLocation,
   DiaryTier,
-  maximumTotalLevel,
 } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
 import {
