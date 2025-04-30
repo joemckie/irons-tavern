@@ -50,5 +50,12 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
     };
   }
 
+  if (diff.tzhaarCape) {
+    errors.tzhaarCape = {
+      type: 'value',
+      message: `Expected ${diff.tzhaarCape}`,
+    };
+  }
+
   return errors;
 }

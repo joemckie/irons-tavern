@@ -99,6 +99,7 @@ export const publishRankSubmissionAction = authActionClient
           hasTempleCollectionLog,
           hasWikiSyncData,
           isTempleCollectionLogOutdated,
+          tzhaarCape,
         },
       } = playerDetails;
 
@@ -250,6 +251,10 @@ export const publishRankSubmissionAction = authActionClient
         totalLevel:
           hasTemplePlayerStats && totalLevel < savedData.totalLevel
             ? totalLevel
+            : null,
+        tzhaarCape:
+          hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape
+            ? tzhaarCape
             : null,
       } satisfies RankSubmissionDiff;
 

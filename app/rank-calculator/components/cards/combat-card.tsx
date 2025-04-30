@@ -1,7 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
-import { CombatAchievementTier } from '@/app/schemas/osrs';
+import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -18,6 +18,7 @@ export function CombatCard() {
     pointsRemaining,
     combatAchievementTierPoints,
     ehbPoints,
+    tzhaarCapePoints,
   } = useCombatPointCalculator();
   const {
     formState: { defaultValues },
@@ -107,6 +108,26 @@ export function CombatCard() {
             size="2"
           >
             {formatNumber(combatAchievementTierPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            TzHaar cape
+          </Text>
+        }
+        center={
+          <Select
+            aria-label="TzHaar cape value"
+            name="tzhaarCape"
+            placeholder="Select a cape"
+            options={TzHaarCape.options}
+          />
+        }
+        right={
+          <Text aria-label="TzHaar cape points points" color="gray" size="2">
+            {formatNumber(tzhaarCapePoints)}
           </Text>
         }
       />

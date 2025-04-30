@@ -1777,3 +1777,10 @@ export const CollectionLogItemName = z.enum([
 ]);
 
 export type CollectionLogItemName = z.infer<typeof CollectionLogItemName>;
+
+export const TzHaarCape = z.enum([
+  'None',
+  ...CollectionLogItemName.extract(['Fire cape', 'Infernal cape']).options,
+]);
+
+export type TzHaarCape = z.infer<typeof TzHaarCape>;

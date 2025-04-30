@@ -900,16 +900,6 @@ export const itemList = {
   'TzHaar Challenges': {
     image: formatWikiImageUrl('TzKal-Zuk', 'category'),
     items: [
-      singleItem({
-        name: 'Fire cape',
-        points: 1,
-        collectionLogCategory: 'the_fight_caves',
-      }),
-      singleItem({
-        name: 'Infernal cape',
-        points: 1,
-        collectionLogCategory: 'the_inferno',
-      }),
       combatAchievementItem({
         name: '6 Jads',
         points: calculateXpOrTimeBasedItemPoints(estimatedHoursToComplete6Jads),

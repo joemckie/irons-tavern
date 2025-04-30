@@ -5,6 +5,7 @@ import {
   DiaryTier,
   maximumTotalLevel,
   minimumTotalLevel,
+  TzHaarCape,
 } from '@/app/schemas/osrs';
 import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/app/schemas/rank-calculator';
@@ -28,6 +29,7 @@ export const RankCalculatorSchema = z.object({
   rank: Rank,
   points: z.coerce.number().nonnegative(),
   proofLink: z.union([z.string().url().nullish(), z.literal('')]),
+  tzhaarCape: TzHaarCape,
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

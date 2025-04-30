@@ -1,5 +1,5 @@
 export function calculateMaximumCombatAchievementPoints(scaling: number) {
-  const maxAvailablePoints = 50000;
+  const maximumCombatAchievementPoints = 50000;
 
-  return Math.floor(maxAvailablePoints * scaling);
+  return Math.floor(maximumCombatAchievementPoints * scaling);
 }

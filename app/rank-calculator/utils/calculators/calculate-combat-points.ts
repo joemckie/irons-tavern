@@ -1,13 +1,15 @@
-import { calculateMaximumCombatAchievementPoints } from './calculate-maximum-combat-achievement-points';
+import { calculateMaximumCombatPoints } from './calculate-maximum-combat-points';
 
 export function calculateCombatPoints(
   ehbPoints: number,
   combatAchievementTierPoints: number,
+  tzhaarCapePoints: number,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumCombatAchievementPoints(scaling);
-  const pointsAwarded = combatAchievementTierPoints + ehbPoints;
-  const pointsRemaining = totalPointsAvailable - (pointsAwarded - ehbPoints);
+  const totalPointsAvailable = calculateMaximumCombatPoints(scaling);
+  const pointsAwarded =
+    combatAchievementTierPoints + ehbPoints + tzhaarCapePoints;
+  const pointsRemaining = totalPointsAvailable - pointsAwarded - ehbPoints;
   const pointsAwardedPercentage =
     (pointsAwarded - ehbPoints) / totalPointsAvailable;
 

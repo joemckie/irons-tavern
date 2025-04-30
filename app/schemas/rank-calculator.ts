@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
+import {
+  CombatAchievementTier,
+  DiaryLocation,
+  DiaryTier,
+  TzHaarCape,
+} from './osrs';
 
 export const RankStructure = z.enum([
   'Standard',
@@ -66,6 +71,7 @@ export const RankSubmissionDiff = z.object({
   combatAchievementTier: CombatAchievementTier.nullable(),
   totalLevel: z.number().nullable(),
   collectionLogCount: z.number().nullable(),
+  tzhaarCape: TzHaarCape.nullable(),
 });
 
 export type RankSubmissionDiff = z.infer<typeof RankSubmissionDiff>;

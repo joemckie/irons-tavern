@@ -12,6 +12,7 @@ import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
+import { TzHaarCape } from '@/app/schemas/osrs';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
@@ -69,6 +70,7 @@ export const emptyResponse = {
   hasThirdPartyData: false,
   isTempleCollectionLogOutdated: false,
   isMobileOnly: false,
+  tzhaarCape: 'None',
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -239,6 +241,11 @@ export async function fetchPlayerDetails(
       {},
     );
 
+    const tzhaarCape =
+      (acquiredItemsMap['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
+      (acquiredItemsMap['Infernal cape'] && TzHaarCape.enum['Infernal cape']) ||
+      TzHaarCape.enum.None;
+
     return {
       success: true,
       error: null,
@@ -274,6 +281,7 @@ export async function fetchPlayerDetails(
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
+        tzhaarCape,
       },
     };
   } catch (error) {
