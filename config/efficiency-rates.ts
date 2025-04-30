@@ -109,6 +109,7 @@ export const ehbRates = {
   Drake: 164,
   Kurask: 280,
   'Warped Terrorbird': 450,
+  'Cave horror': 528,
 } satisfies Record<string, number>;
 
 /**

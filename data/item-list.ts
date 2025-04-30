@@ -2,7 +2,6 @@ import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/ca
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import {
-  BaseItem,
   CollectionLogItem,
   CombatAchievementItem,
   CustomItem,
@@ -125,20 +124,6 @@ function questItem({
     name,
     points,
     requiredQuests,
-    isAutomatic,
-  });
-}
-
-function manualItem({
-  name,
-  image = formatWikiImageUrl(name),
-  points,
-  isAutomatic,
-}: OptionalKeys<BaseItem, 'image'>) {
-  return BaseItem.parse({
-    image,
-    name,
-    points,
     isAutomatic,
   });
 }
@@ -1381,9 +1366,11 @@ export const itemList = {
   'Major Slayer Items': {
     image: formatWikiImageUrl('Slayer icon (detail)', 'category'),
     items: [
-      manualItem({
-        name: 'Slayer helmet (i)',
-        points: 1,
+      singleItem({
+        name: 'Black mask',
+        collectionLogCategory: 'slayer',
+        clogName: 'Black mask (10)',
+        targetDropSources: ['Cave horror'],
       }),
       singleItem({
         name: 'Leaf-bladed battleaxe',
