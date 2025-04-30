@@ -31,6 +31,11 @@ import { redis } from '@/redis';
 import { calculateMaximumAvailablePoints } from '@/app/rank-calculator/utils/calculators/calculate-maximum-available-points';
 import { fetchItemDropRates } from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
+import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points copy';
+import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
+import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
+import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
+import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
 
 export async function GET(request: NextRequest) {
   try {
@@ -67,6 +72,11 @@ export async function GET(request: NextRequest) {
       hasThirdPartyData,
       playerName,
       rankStructure,
+      tzhaarCape,
+      hasBloodTorva = false,
+      hasDizanasQuiver = false,
+      hasAchievementDiaryCape = false,
+      hasMaxCape = false,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -92,10 +102,17 @@ export async function GET(request: NextRequest) {
       calculateAchievementDiaryPoints(achievementDiaries, scaling);
     const ehpPoints = calculateEhpPoints(ehp, scaling);
     const totalLevelPoints = calculateTotalLevelPoints(totalLevel, scaling);
+    const achievementDiaryCapePoints = calculateAchievementDiaryCapePoints(
+      hasAchievementDiaryCape,
+      scaling,
+    );
+    const maxCapePoints = calculateMaxCapePoints(hasMaxCape, scaling);
     const { pointsAwarded: totalSkillingPoints } = calculateSkillingPoints(
       achievementDiariesPoints,
       ehpPoints,
       totalLevelPoints,
+      achievementDiaryCapePoints,
+      maxCapePoints,
       scaling,
     );
     const ehbPoints = calculateEhbPoints(ehb, scaling);
@@ -103,9 +120,18 @@ export async function GET(request: NextRequest) {
       combatAchievementTier,
       scaling,
     );
+    const tzhaarCapePoints = calculateTzhaarCapePoints(tzhaarCape, scaling);
+    const bloodTorvaPoints = calculateBloodTorvaPoints(hasBloodTorva, scaling);
+    const dizanasQuiverPoints = calculateDizanasQuiverPoints(
+      hasDizanasQuiver,
+      scaling,
+    );
     const { pointsAwarded: totalCombatPoints } = calculateCombatPoints(
       ehbPoints,
       combatAchievementTierPoints,
+      tzhaarCapePoints,
+      bloodTorvaPoints,
+      dizanasQuiverPoints,
       scaling,
     );
     const totalPointsAwarded = calculateTotalPoints(
