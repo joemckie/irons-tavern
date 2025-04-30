@@ -1,6 +1,5 @@
 import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
 import {
   CollectionLogItem,
   CombatAchievementItem,
@@ -10,11 +9,7 @@ import {
   QuestItem,
   RequiredItem,
 } from '@/app/schemas/items';
-import {
-  CollectionLogItemName,
-  maximumTotalLevel,
-  Quest,
-} from '@/app/schemas/osrs';
+import { CollectionLogItemName, Quest } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { isHolidayTrack } from '@/app/schemas/wiki';
 import { ehbRates, petEhcRates } from '@/config/efficiency-rates';
@@ -159,45 +154,6 @@ const estimatedHoursToAcquireGracefulSet = 50;
 const estimatedHoursToComplete6Jads = 250;
 
 export const itemList = {
-  'Automatic Items': {
-    image: formatWikiImageUrl('Black cog detail', 'category'),
-    items: [
-      customItem({
-        name: 'Achievement Diary Cape',
-        points: 1,
-        image: formatWikiImageUrl('Achievement diary cape (t) detail'),
-        isAcquired({ achievementDiaries }) {
-          return achievementDiaries
-            ? Object.values(achievementDiaries).every(
-                (tier) => tier === 'Elite',
-              )
-            : false;
-        },
-        isAutomatic: true,
-      }),
-      customItem({
-        name: 'Max Cape',
-        points: 1,
-        image: formatWikiImageUrl('Max cape detail'),
-        isAcquired({ totalLevel }) {
-          return totalLevel === maximumTotalLevel;
-        },
-        isAutomatic: true,
-      }),
-      customItem({
-        name: 'Infernal Max Cape',
-        points: 1,
-        image: formatWikiImageUrl('Infernal max cape detail'),
-        isAcquired({ totalLevel, acquiredItems }) {
-          return Boolean(
-            totalLevel === maximumTotalLevel &&
-              acquiredItems?.[stripEntityName('Infernal cape')],
-          );
-        },
-        isAutomatic: true,
-      }),
-    ],
-  },
   'Abyssal Sire': {
     image: formatWikiImageUrl('Abyssal orphan (follower)', 'category'),
     items: [
