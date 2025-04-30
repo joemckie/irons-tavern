@@ -8,12 +8,6 @@ export const BaseItem = z.object({
   image: z.string(),
   name: z.string(),
   points: z.number(),
-  /**
-   * Automatic items can be updated by the form as the user fills it in
-   *
-   * e.g. achievement diary cape, max cape
-   * */
-  isAutomatic: z.literal(true).optional(),
 });
 
 export type BaseItem = z.infer<typeof BaseItem>;

@@ -9,7 +9,6 @@ import { EntityImage } from './entity-image';
 import { parseInitials } from '../utils/parse-initials';
 import { formatPercentage } from '../utils/format-percentage';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { MemoisedAutomaticItem } from './automatic-item';
 
 interface CategoryProps {
   title: string;
@@ -94,22 +93,14 @@ export const Category = memo(
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {items.map((item, i) =>
-              item.isAutomatic ? (
-                <MemoisedAutomaticItem
-                  key={item.name}
-                  item={item}
-                  error={fieldErrors[i]}
-                />
-              ) : (
-                <MemoisedItem
-                  acquired={!!fields[i]}
-                  key={item.name}
-                  item={item}
-                  error={fieldErrors[i]}
-                />
-              ),
-            )}
+            {items.map((item, i) => (
+              <MemoisedItem
+                acquired={!!fields[i]}
+                key={item.name}
+                item={item}
+                error={fieldErrors[i]}
+              />
+            ))}
           </Table.Body>
         </Table.Root>
       </Card>

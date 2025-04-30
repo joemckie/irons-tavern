@@ -33,7 +33,6 @@ export function singleItem({
   clogName,
   image = formatWikiImageUrl(clogName ?? name),
   requiredAmount = 1,
-  isAutomatic,
   collectionLogCategory,
   targetDropSources,
   ignoreDropRateModifier,
@@ -52,7 +51,6 @@ export function singleItem({
         ignoreAmountMultiplier,
       },
     ],
-    isAutomatic,
     collectionLogCategories: [collectionLogCategory],
   });
 }
@@ -72,7 +70,6 @@ function compoundItem({
   points = 0,
   requiredItems,
   requiredLevels,
-  isAutomatic,
   collectionLogCategories,
 }: CompoundItemOptions) {
   return CollectionLogItem.parse({
@@ -86,7 +83,6 @@ function compoundItem({
       }),
     ),
     requiredLevels,
-    isAutomatic,
     collectionLogCategories,
   });
 }
@@ -96,14 +92,12 @@ export function combatAchievementItem({
   image = formatWikiImageUrl(name),
   points,
   requiredCombatAchievements,
-  isAutomatic,
 }: OptionalKeys<CombatAchievementItem, 'image'>) {
   return CombatAchievementItem.parse({
     image,
     name,
     points,
     requiredCombatAchievements,
-    isAutomatic,
   });
 }
 
@@ -112,14 +106,12 @@ function questItem({
   image = formatWikiImageUrl(name),
   points,
   requiredQuests,
-  isAutomatic,
 }: OptionalKeys<QuestItem, 'image'>) {
   return QuestItem.parse({
     image,
     name,
     points,
     requiredQuests,
-    isAutomatic,
   });
 }
 
@@ -128,14 +120,12 @@ function customItem({
   name,
   image = formatWikiImageUrl(name),
   points,
-  isAutomatic,
 }: OptionalKeys<CustomItem, 'image'>) {
   return CustomItem.parse({
     image,
     isAcquired,
     name,
     points,
-    isAutomatic,
   });
 }
 
