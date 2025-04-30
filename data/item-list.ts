@@ -150,6 +150,13 @@ const gloriesChargedPerHour = 600;
 const swiftBladeLmsPointsRequired = 350;
 const estimatedHoursToObtainAbyssalWhip = 20;
 const estimatedHoursToObtainBottomlessCompostBucket = 35;
+const estimatedHoursToAcquireMusicCape = 100;
+const estimatedHoursToAcquireQuestCape = 100;
+const estimatedHoursToAcquireMageArena2Cape = 10;
+const estimatedHoursToAcquireBarrowsGloves = 10;
+const estimatedHoursToAcquireBookOfTheDead = 10;
+const estimatedHoursToAcquireGracefulSet = 50;
+const estimatedHoursToComplete6Jads = 250;
 
 export const itemList = {
   'Automatic Items': {
@@ -905,7 +912,7 @@ export const itemList = {
       }),
       combatAchievementItem({
         name: '6 Jads',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursToComplete6Jads),
         image: formatWikiImageUrl('TzTok-Jad'),
         requiredCombatAchievements: [
           363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
@@ -1231,7 +1238,9 @@ export const itemList = {
     items: [
       questItem({
         name: 'Mage Arena 2 cape',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireMageArena2Cape,
+        ),
         image: formatWikiImageUrl('Imbued zamorak cape'),
         requiredQuests: ['Mage Arena II'],
       }),
@@ -1477,12 +1486,16 @@ export const itemList = {
     items: [
       questItem({
         name: 'Barrows gloves',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireBarrowsGloves,
+        ),
         requiredQuests: ['Recipe for Disaster'],
       }),
       questItem({
         name: 'Book of the dead',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireBookOfTheDead,
+        ),
         requiredQuests: ['A Kingdom Divided'],
       }),
       singleItem({
@@ -1506,7 +1519,9 @@ export const itemList = {
       }),
       compoundItem({
         name: 'Graceful set',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireGracefulSet,
+        ),
         image: formatWikiImageUrl('Graceful hood'),
         requiredItems: [
           { clogName: 'Graceful hood' },
@@ -1524,7 +1539,9 @@ export const itemList = {
       }),
       customItem({
         name: 'Music cape',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireMusicCape,
+        ),
         image: formatWikiImageUrl('Music cape detail'),
         isAcquired({ musicTracks }) {
           return musicTracks
@@ -1536,7 +1553,9 @@ export const itemList = {
       }),
       questItem({
         name: 'Quest cape',
-        points: 1,
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireQuestCape,
+        ),
         image: formatWikiImageUrl('Quest point cape detail'),
         requiredQuests: Quest.options,
       }),
