@@ -6,15 +6,18 @@ export function calculateCombatPoints(
   tzhaarCapePoints: number,
   bloodTorvaPoints: number,
   dizanasQuiverPoints: number,
+  multiplier: number,
   scaling: number,
 ) {
   const totalPointsAvailable = calculateMaximumCombatPoints(scaling);
-  const pointsAwarded =
-    combatAchievementTierPoints +
-    ehbPoints +
-    tzhaarCapePoints +
-    bloodTorvaPoints +
-    dizanasQuiverPoints;
+  const pointsAwarded = Math.floor(
+    (combatAchievementTierPoints +
+      ehbPoints +
+      tzhaarCapePoints +
+      bloodTorvaPoints +
+      dizanasQuiverPoints) *
+      multiplier,
+  );
   const pointsRemaining = totalPointsAvailable - (pointsAwarded - ehbPoints);
   const pointsAwardedPercentage =
     (pointsAwarded - ehbPoints) / totalPointsAvailable;

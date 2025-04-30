@@ -6,6 +6,8 @@ import { useCalculatorScaling } from '../use-calculator-scaling';
 import { useTzhaarCapePoints } from './use-tzhaar-cape-points';
 import { useBloodTorvaPoints } from './use-blood-torva-points';
 import { useDizanasQuiverPoints } from './use-dizanas-quiver-points';
+import { useWatch } from 'react-hook-form';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 export interface CombatPointCalculatorData extends CommonPointCalculatorData {
   combatAchievementTierPoints: number;
@@ -16,6 +18,11 @@ export interface CombatPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useCombatPointCalculator() {
+  const rawMultiplier = useWatch<RankCalculatorSchema, 'combatMultiplier'>({
+    name: 'combatMultiplier',
+  });
+  const multiplier = 1 + rawMultiplier / 100;
+
   const scaling = useCalculatorScaling();
   const ehbPoints = useEhbPoints();
   const combatAchievementTierPoints = useCombatAchievementTierPoints();
@@ -30,6 +37,7 @@ export function useCombatPointCalculator() {
       tzhaarCapePoints,
       bloodTorvaPoints,
       dizanasQuiverPoints,
+      multiplier,
       scaling,
     );
 

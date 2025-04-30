@@ -12,6 +12,7 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { Checkbox } from '../checkbox';
 import { ValidationTooltip } from '../validation-tooltip';
+import { Input } from '../input';
 
 export function CombatCard() {
   const {
@@ -28,6 +29,7 @@ export function CombatCard() {
     formState: { defaultValues },
     getValues,
     getFieldState,
+    register,
   } = useFormContext<RankCalculatorSchema>();
   const [hasBloodTorva, hasDizanasQuiver] = getValues([
     'hasBloodTorva',
@@ -174,6 +176,26 @@ export function CombatCard() {
             {formatNumber(bloodTorvaPoints)}
           </Text>
         }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Multiplier
+          </Text>
+        }
+        center={
+          <Input
+            {...register('combatMultiplier', {
+              valueAsNumber: true,
+              min: 0,
+            })}
+            hasError={false}
+            type="number"
+            size="1"
+            min={0}
+          />
+        }
+        right={<></>}
       />
       <DataCard.Row
         left={

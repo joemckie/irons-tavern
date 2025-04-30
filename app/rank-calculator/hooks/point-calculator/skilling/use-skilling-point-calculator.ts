@@ -7,6 +7,8 @@ import { useTotalLevelPoints } from './use-total-level-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 import { useAchievementDiaryCapePoints } from './use-achievement-diary-cape-points';
 import { useMaxCapePoints } from './use-max-cape-points';
+import { useWatch } from 'react-hook-form';
+import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
   ehpPoints: number;
@@ -17,6 +19,11 @@ export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useSkillingPointCalculator() {
+  const rawMultiplier = useWatch<RankCalculatorSchema, 'skillingMultiplier'>({
+    name: 'skillingMultiplier',
+  });
+  const multiplier = 1 + rawMultiplier / 100;
+
   const {
     pointMap: achievementDiariesPoints,
     pointsAwarded: totalAchievementDiaryPointsAwarded,
@@ -33,6 +40,7 @@ export function useSkillingPointCalculator() {
       totalLevelPoints,
       achievementDiaryCapePoints,
       maxCapePoints,
+      multiplier,
       scaling,
     );
 

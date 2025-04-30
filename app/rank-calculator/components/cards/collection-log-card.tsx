@@ -8,6 +8,7 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { Input } from '../input';
 
 export function CollectionLogCard() {
   const {
@@ -19,6 +20,7 @@ export function CollectionLogCard() {
   const {
     getValues,
     formState: { defaultValues },
+    register,
   } = useFormContext<RankCalculatorSchema>();
   const collectionLogTotal = getValues('collectionLogTotal');
 
@@ -84,6 +86,26 @@ export function CollectionLogCard() {
             {formatNumber(collectionLogSlotPoints)}
           </Text>
         }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Multiplier
+          </Text>
+        }
+        center={
+          <Input
+            {...register('collectionLogMultiplier', {
+              valueAsNumber: true,
+              min: 0,
+            })}
+            hasError={false}
+            type="number"
+            size="1"
+            min={0}
+          />
+        }
+        right={<></>}
       />
       <DataCard.Row
         left={

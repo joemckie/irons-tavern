@@ -6,15 +6,19 @@ export function calculateSkillingPoints(
   totalLevelPoints: number,
   achievementDiaryCapePoints: number,
   maxCapePoints: number,
+  multiplier: number,
   scaling: number,
 ) {
   const totalPointsAvailable = calculateMaximumSkillingPoints(scaling);
 
   const pointsAwarded = Math.min(
-    achievementDiaryPoints +
-      totalLevelPoints +
-      achievementDiaryCapePoints +
-      maxCapePoints,
+    Math.floor(
+      (achievementDiaryPoints +
+        totalLevelPoints +
+        achievementDiaryCapePoints +
+        maxCapePoints) *
+        multiplier,
+    ),
     totalPointsAvailable,
   );
   const pointsRemaining = totalPointsAvailable - pointsAwarded;

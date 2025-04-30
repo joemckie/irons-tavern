@@ -34,6 +34,9 @@ export const RankCalculatorSchema = z.object({
   hasDizanasQuiver: z.boolean().optional(),
   hasMaxCape: z.boolean().optional(),
   hasAchievementDiaryCape: z.boolean().optional(),
+  combatMultiplier: z.number().default(0),
+  skillingMultiplier: z.number().default(0),
+  collectionLogMultiplier: z.number().default(0),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

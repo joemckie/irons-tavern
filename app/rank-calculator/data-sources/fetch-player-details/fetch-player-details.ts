@@ -1,9 +1,4 @@
-import {
-  combatAchievementItem,
-  customItem,
-  itemList,
-  singleItem,
-} from '@/data/item-list';
+import { combatAchievementItem, itemList, singleItem } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
@@ -83,6 +78,9 @@ export const emptyResponse = {
   tzhaarCape: 'None',
   hasBloodTorva: false,
   hasDizanasQuiver: false,
+  combatMultiplier: 0,
+  skillingMultiplier: 0,
+  collectionLogMultiplier: 0,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -338,6 +336,9 @@ export async function fetchPlayerDetails(
         hasDizanasQuiver,
         hasAchievementDiaryCape,
         hasMaxCape,
+        collectionLogMultiplier: 0,
+        combatMultiplier: 0,
+        skillingMultiplier: 0,
       },
     };
   } catch (error) {

@@ -3,13 +3,17 @@ import { calculateCollectionLogSlotPoints } from './calculate-collection-log-slo
 export function calculateCollectionLogPoints(
   collectionLogSlotPoints: number,
   totalCollectionLogSlots: number,
+  multiplier: number,
   scaling: number,
 ) {
   const totalPointsAvailable = calculateCollectionLogSlotPoints(
     totalCollectionLogSlots,
     scaling,
   );
-  const pointsAwarded = Math.min(collectionLogSlotPoints, totalPointsAvailable);
+  const pointsAwarded = Math.min(
+    Math.floor(collectionLogSlotPoints * multiplier),
+    totalPointsAvailable,
+  );
   const pointsRemaining = totalPointsAvailable - pointsAwarded;
   const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
 
