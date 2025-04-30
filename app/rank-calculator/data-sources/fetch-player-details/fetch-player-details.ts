@@ -1,4 +1,4 @@
-import { itemList } from '@/data/item-list';
+import { itemList, singleItem } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
@@ -13,6 +13,7 @@ import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
 import { TzHaarCape } from '@/app/schemas/osrs';
+import { CollectionLogItem } from '@/app/schemas/items';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
@@ -96,15 +97,14 @@ export async function fetchPlayerDetails(
   const isPlayerNameValid = await validatePlayerExists(player);
 
   if (!isPlayerNameValid) {
-    // Flag the account as having an invalid name, and force the user to edit it
-    await redis.hset<Player>(userOSRSAccountsKey(userId), {
-      [player.toLowerCase()]: {
-        ...playerRecord,
-        isNameInvalid: true,
-      },
-    });
-
-    redirect(`/rank-calculator/players/edit/${player}`);
+    // // Flag the account as having an invalid name, and force the user to edit it
+    // await redis.hset<Player>(userOSRSAccountsKey(userId), {
+    //   [player.toLowerCase()]: {
+    //     ...playerRecord,
+    //     isNameInvalid: true,
+    //   },
+    // });
+    // redirect(`/rank-calculator/players/edit/${player}`);
   }
 
   // Update Temple to get the most up-to-date info
@@ -204,10 +204,25 @@ export async function fetchPlayerDetails(
         CollectionLogAcquiredItemMap.parse({}),
       ) ?? null;
 
+    /**
+     * Some items must be parsed from the collection log, but are not displayed in the notable items list
+     */
+    const additionalItems = [
+      singleItem({
+        name: 'Fire cape',
+        collectionLogCategory: 'tzhaar',
+      }),
+      singleItem({
+        name: 'Infernal cape',
+        collectionLogCategory: 'tzhaar',
+      }),
+    ] satisfies CollectionLogItem[];
+
     const acquiredItems =
       wikiSyncData || templeCollectionLog
         ? Object.values(itemList)
             .flatMap(({ items }) => items)
+            .concat(additionalItems)
             .filter((item) =>
               isItemAcquired(item, {
                 acquiredItems: collectionLogItems,

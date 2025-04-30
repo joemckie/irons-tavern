@@ -32,7 +32,7 @@ type SingleItemOptions = Omit<
     collectionLogCategory: TempleOSRSCollectionLogCategory;
   };
 
-function singleItem({
+export function singleItem({
   name,
   points = 0,
   clogName,
