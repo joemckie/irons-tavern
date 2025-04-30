@@ -1,4 +1,9 @@
-import { combatAchievementItem, itemList, singleItem } from '@/data/item-list';
+import {
+  combatAchievementItem,
+  customItem,
+  itemList,
+  singleItem,
+} from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
@@ -12,8 +17,12 @@ import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
-import { TzHaarCape } from '@/app/schemas/osrs';
-import { CollectionLogItem, CombatAchievementItem } from '@/app/schemas/items';
+import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
+import {
+  CollectionLogItem,
+  CombatAchievementItem,
+  CustomItem,
+} from '@/app/schemas/items';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
@@ -283,6 +292,12 @@ export async function fetchPlayerDetails(
 
     const hasDizanasQuiver = acquiredItemsMap['Dizanas quiver'];
 
+    const hasAchievementDiaryCape = achievementDiaries
+      ? Object.values(achievementDiaries).every((tier) => tier === 'Elite')
+      : false;
+
+    const hasMaxCape = totalLevel === maximumTotalLevel;
+
     return {
       success: true,
       error: null,
@@ -321,6 +336,8 @@ export async function fetchPlayerDetails(
         tzhaarCape,
         hasBloodTorva,
         hasDizanasQuiver,
+        hasAchievementDiaryCape,
+        hasMaxCape,
       },
     };
   } catch (error) {

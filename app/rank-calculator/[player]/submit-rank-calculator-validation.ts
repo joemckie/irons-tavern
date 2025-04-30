@@ -32,6 +32,8 @@ export const RankCalculatorSchema = z.object({
   tzhaarCape: TzHaarCape,
   hasBloodTorva: z.boolean().optional(),
   hasDizanasQuiver: z.boolean().optional(),
+  hasMaxCape: z.boolean().optional(),
+  hasAchievementDiaryCape: z.boolean().optional(),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

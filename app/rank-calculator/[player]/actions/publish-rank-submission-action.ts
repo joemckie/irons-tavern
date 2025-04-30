@@ -31,6 +31,7 @@ import {
   CombatAchievementTier,
   DiaryLocation,
   DiaryTier,
+  maximumTotalLevel,
 } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
 import {
@@ -102,6 +103,8 @@ export const publishRankSubmissionAction = authActionClient
           tzhaarCape,
           hasBloodTorva,
           hasDizanasQuiver,
+          hasAchievementDiaryCape,
+          hasMaxCape,
         },
       } = playerDetails;
 
@@ -267,6 +270,11 @@ export const publishRankSubmissionAction = authActionClient
           hasDizanasQuiver !== savedData.hasDizanasQuiver
             ? !!hasDizanasQuiver
             : null,
+        hasAchievementDiaryCape:
+          hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
+            ? !!hasAchievementDiaryCape
+            : null,
+        hasMaxCape: hasMaxCape !== savedData.hasMaxCape ? !!hasMaxCape : null,
       } satisfies RankSubmissionDiff;
 
       const submissionTransaction = redis.multi();
