@@ -31,6 +31,14 @@ export const earlyGamePlayer = {
   ehp: 368,
   totalLevel: 1588,
   rankStructure: 'Standard',
+  collectionLogMultiplier: 0,
+  combatMultiplier: 0,
+  skillingMultiplier: 0,
+  tzhaarCape: 'None',
+  hasAchievementDiaryCape: false,
+  hasMaxCape: false,
+  hasBloodTorva: false,
+  hasDizanasQuiver: false,
 } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 
 export const midGamePlayer = {
@@ -158,6 +166,14 @@ export const midGamePlayer = {
   ehp: 1144,
   totalLevel: 2174,
   rankStructure: 'Standard',
+  collectionLogMultiplier: 0,
+  combatMultiplier: 0,
+  skillingMultiplier: 0,
+  tzhaarCape: 'None',
+  hasAchievementDiaryCape: false,
+  hasMaxCape: false,
+  hasBloodTorva: false,
+  hasDizanasQuiver: false,
 } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
 
 export const endGamePlayer = {
@@ -400,4 +416,12 @@ export const endGamePlayer = {
   ehp: 2776,
   totalLevel: 2277,
   rankStructure: 'Standard',
+  collectionLogMultiplier: 0,
+  combatMultiplier: 0,
+  skillingMultiplier: 0,
+  tzhaarCape: 'None',
+  hasAchievementDiaryCape: false,
+  hasMaxCape: false,
+  hasBloodTorva: false,
+  hasDizanasQuiver: false,
 } satisfies Omit<RankCalculatorSchema, 'rank' | 'points'>;
