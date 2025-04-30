@@ -9,6 +9,9 @@ export const combatExpectedValues = {
       pointsRemaining: 47500,
       combatAchievementTierPoints: 2500,
       ehbPoints: 10,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 1757,
@@ -16,6 +19,9 @@ export const combatExpectedValues = {
       pointsRemaining: 33250,
       combatAchievementTierPoints: 1750,
       ehbPoints: 7,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 1004,
@@ -23,6 +29,9 @@ export const combatExpectedValues = {
       pointsRemaining: 19000,
       combatAchievementTierPoints: 1000,
       ehbPoints: 4,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 438,
@@ -30,6 +39,9 @@ export const combatExpectedValues = {
       pointsRemaining: 8313,
       combatAchievementTierPoints: 437,
       ehbPoints: 1,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     noScaling: {
       pointsAwarded: 251,
@@ -37,6 +49,9 @@ export const combatExpectedValues = {
       pointsRemaining: 4750,
       combatAchievementTierPoints: 250,
       ehbPoints: 1,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
   },
   midGamePlayer: {
@@ -46,6 +61,9 @@ export const combatExpectedValues = {
       pointsRemaining: 30000,
       combatAchievementTierPoints: 20000,
       ehbPoints: 5240,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 17668,
@@ -53,6 +71,9 @@ export const combatExpectedValues = {
       pointsRemaining: 21000,
       combatAchievementTierPoints: 14000,
       ehbPoints: 3668,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 10096,
@@ -60,6 +81,9 @@ export const combatExpectedValues = {
       pointsRemaining: 12000,
       combatAchievementTierPoints: 8000,
       ehbPoints: 2096,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 4417,
@@ -67,6 +91,9 @@ export const combatExpectedValues = {
       pointsRemaining: 5250,
       combatAchievementTierPoints: 3500,
       ehbPoints: 917,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     noScaling: {
       pointsAwarded: 2524,
@@ -74,6 +101,9 @@ export const combatExpectedValues = {
       pointsRemaining: 3000,
       combatAchievementTierPoints: 2000,
       ehbPoints: 524,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
   },
   endGamePlayer: {
@@ -83,6 +113,9 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 50000,
       ehbPoints: 26020,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 53214,
@@ -90,6 +123,9 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 35000,
       ehbPoints: 18214,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 30408,
@@ -97,6 +133,9 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 20000,
       ehbPoints: 10408,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 13303,
@@ -104,6 +143,9 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 8750,
       ehbPoints: 4553,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
     noScaling: {
       pointsAwarded: 7602,
@@ -111,6 +153,9 @@ export const combatExpectedValues = {
       pointsRemaining: 0,
       combatAchievementTierPoints: 5000,
       ehbPoints: 2602,
+      bloodTorvaPoints: 0,
+      dizanasQuiverPoints: 0,
+      tzhaarCapePoints: 0,
     },
   },
 } satisfies CategoryFixture<CombatPointCalculatorData>;
