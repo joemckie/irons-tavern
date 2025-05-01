@@ -1,13 +1,13 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
+// import { useFormContext } from 'react-hook-form';
 import { DataCard } from '../data-card';
 import { useNotableItemsPointCalculator } from '../../hooks/point-calculator/notable-items/use-notable-items-point-calculator';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
-import { Input } from '../input';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+// import { Input } from '../input';
+// import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 
 export function NotableItemsCard() {
   const {
@@ -18,7 +18,7 @@ export function NotableItemsCard() {
     itemsCollected,
     totalItems,
   } = useNotableItemsPointCalculator();
-  const { register } = useFormContext<RankCalculatorSchema>();
+  // const { register } = useFormContext<RankCalculatorSchema>();
 
   return (
     <DataCard.Root>
@@ -104,7 +104,7 @@ export function NotableItemsCard() {
           </Text>
         }
       />
-      <DataCard.Row
+      {/* <DataCard.Row
         left={
           <Text color="gray" size="2">
             Multiplier
@@ -123,7 +123,7 @@ export function NotableItemsCard() {
           />
         }
         right={null}
-      />
+      /> */}
       <DataCard.Row
         left={
           <Text color="gray" size="2">

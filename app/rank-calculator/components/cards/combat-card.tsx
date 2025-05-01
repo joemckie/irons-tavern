@@ -12,7 +12,7 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { Checkbox } from '../checkbox';
 import { ValidationTooltip } from '../validation-tooltip';
-import { Input } from '../input';
+// import { Input } from '../input';
 
 export function CombatCard() {
   const {
@@ -29,7 +29,7 @@ export function CombatCard() {
     formState: { defaultValues },
     getValues,
     getFieldState,
-    register,
+    // register,
   } = useFormContext<RankCalculatorSchema>();
   const [hasBloodTorva, hasDizanasQuiver] = getValues([
     'hasBloodTorva',
@@ -177,7 +177,7 @@ export function CombatCard() {
           </Text>
         }
       />
-      <DataCard.Row
+      {/* <DataCard.Row
         left={
           <Text color="gray" size="2">
             Multiplier
@@ -196,7 +196,7 @@ export function CombatCard() {
           />
         }
         right={null}
-      />
+      /> */}
       <DataCard.Row
         left={
           <Text color="gray" size="2">
