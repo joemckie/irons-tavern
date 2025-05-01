@@ -7,8 +7,8 @@ export function buildNotableItemList(
   dropRates: DroppedItemResponse,
   h: number,
 ) {
-  return Object.fromEntries(
-    Object.entries(itemList).map(([key, category]) => {
+  return Object.entries(itemList).reduce(
+    (acc, [key, category]) => {
       const items = category.items.map((item) => {
         if (item.points) {
           return {
@@ -20,17 +20,21 @@ export function buildNotableItemList(
         if (isCollectionLogItem(item)) {
           return {
             ...item,
-            points: calculateItemPoints(dropRates, item.requiredItems, h),
+            points: calculateItemPoints(dropRates, item.requiredItems, h || 5),
           };
         }
 
         throw new Error(`Could not calculate item points for ${item.name}`);
       }) as NonEmptyArray<Item>;
 
-      return [key, { ...category, items }] as [
-        keyof typeof itemList,
-        ItemCategory,
-      ];
-    }),
+      return {
+        ...acc,
+        [key]: {
+          ...category,
+          items,
+        },
+      };
+    },
+    {} as Record<keyof typeof itemList, ItemCategory>,
   );
 }
