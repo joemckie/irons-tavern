@@ -17,9 +17,20 @@ export function useNotableItemsPointCalculator() {
   const itemFields = useWatch<RankCalculatorSchema, 'acquiredItems'>({
     name: 'acquiredItems',
   });
+  const notableItemsBonusMultiplier = useWatch<
+    RankCalculatorSchema,
+    'notableItemsBonusMultiplier'
+  >({
+    name: 'notableItemsBonusMultiplier',
+  });
   const scaling = useCalculatorScaling();
   const search = useSearchParams();
   const { data: notableItems } = useGetItems(Number(search.get('h')));
 
-  return calculateNotableItemsPoints(notableItems, itemFields, scaling);
+  return calculateNotableItemsPoints(
+    notableItems,
+    itemFields,
+    notableItemsBonusMultiplier,
+    scaling,
+  );
 }

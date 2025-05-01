@@ -94,11 +94,11 @@ export async function GET(request: NextRequest) {
       calculateCollectionLogPoints(
         collectionLogSlotPoints,
         collectionLogTotal,
-        1,
+        0,
         scaling,
       );
     const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(items, acquiredItems, scaling);
+      calculateNotableItemsPoints(items, acquiredItems, 0, scaling);
     const { pointsAwarded: achievementDiariesPoints } =
       calculateAchievementDiaryPoints(achievementDiaries, scaling);
     const ehpPoints = calculateEhpPoints(ehp, scaling);
@@ -114,7 +114,7 @@ export async function GET(request: NextRequest) {
       totalLevelPoints,
       achievementDiaryCapePoints,
       maxCapePoints,
-      1,
+      0,
       scaling,
     );
     const ehbPoints = calculateEhbPoints(ehb, scaling);
@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
       tzhaarCapePoints,
       bloodTorvaPoints,
       dizanasQuiverPoints,
-      1,
+      0,
       scaling,
     );
     const totalPointsAwarded = calculateTotalPoints(

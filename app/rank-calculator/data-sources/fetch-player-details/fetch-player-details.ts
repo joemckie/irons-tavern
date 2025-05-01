@@ -79,6 +79,7 @@ export const emptyResponse = {
   combatBonusMultiplier: 0,
   skillingBonusMultiplier: 0,
   collectionLogBonusMultiplier: 0,
+  notableItemsBonusMultiplier: 0,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -325,6 +326,7 @@ export async function fetchPlayerDetails(
         collectionLogBonusMultiplier: 0,
         combatBonusMultiplier: 0,
         skillingBonusMultiplier: 0,
+        notableItemsBonusMultiplier: 0,
       },
     };
   } catch (error) {
