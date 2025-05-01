@@ -1,7 +1,5 @@
 import { z } from 'zod';
 import { CollectionLogItemName, MiniQuest, Quest, Skill } from './osrs';
-import { AchievementDiaryMap } from './rank-calculator';
-import { CollectionLogAcquiredItemMap, LevelMap } from './wiki';
 import { TempleOSRSCollectionLogCategory } from './temple-api';
 
 export const BaseItem = z.object({
@@ -43,29 +41,11 @@ export const QuestItem = BaseItem.extend({
 
 export type QuestItem = z.infer<typeof QuestItem>;
 
-export const CustomItem = BaseItem.extend({
-  isAcquired: z
-    .function()
-    .args(
-      z.object({
-        achievementDiaries: AchievementDiaryMap.nullable(),
-        acquiredItems: CollectionLogAcquiredItemMap.nullable(),
-        levels: LevelMap.nullable().optional(),
-        musicTracks: z.record(z.string(), z.boolean()).nullable().optional(),
-        totalLevel: z.union([z.number(), z.string()]).nullable(),
-      }),
-    )
-    .returns(z.boolean()),
-});
-
-export type CustomItem = z.infer<typeof CustomItem>;
-
 export const Item = z.union([
   BaseItem,
   CollectionLogItem,
   CombatAchievementItem,
   QuestItem,
-  CustomItem,
 ]);
 
 export type Item = z.infer<typeof Item>;
@@ -89,10 +69,6 @@ export function isCombatAchievementItem(
 
 export function isQuestItem(item: unknown): item is QuestItem {
   return QuestItem.safeParse(item).success;
-}
-
-export function isCustomItem(item: unknown): item is CustomItem {
-  return CustomItem.safeParse(item).success;
 }
 
 export const ItemCategoryMap = z.record(z.string(), ItemCategory);

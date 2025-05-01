@@ -39,6 +39,7 @@ import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/
 import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
 import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
 import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+import { itemList } from '@/data/item-list';
 
 export async function GET(request: NextRequest) {
   try {
@@ -91,7 +92,9 @@ export async function GET(request: NextRequest) {
     }
 
     const dropRates = await fetchItemDropRates(generateRequiredItemList());
-    const items = Object.entries(buildNotableItemList(dropRates, 5));
+    const items = Object.entries(
+      await buildNotableItemList(itemList, dropRates, 5),
+    );
     const scaling = calculateScaling(joinDate);
     const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
       collectionLogCount,

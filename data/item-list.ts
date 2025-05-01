@@ -1,9 +1,9 @@
 import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import {
+  BaseItem,
   CollectionLogItem,
   CombatAchievementItem,
-  CustomItem,
   Item,
   ItemCategoryMap,
   QuestItem,
@@ -11,7 +11,6 @@ import {
 } from '@/app/schemas/items';
 import { CollectionLogItemName, Quest } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
-import { isHolidayTrack } from '@/app/schemas/wiki';
 import { ehbRates, petEhcRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
@@ -27,7 +26,7 @@ type SingleItemOptions = Omit<
     collectionLogCategory: TempleOSRSCollectionLogCategory;
   };
 
-export function singleItem({
+function singleItem({
   name,
   points = 0,
   clogName,
@@ -87,7 +86,7 @@ function compoundItem({
   });
 }
 
-export function combatAchievementItem({
+function combatAchievementItem({
   name,
   image = formatWikiImageUrl(name),
   points,
@@ -115,17 +114,11 @@ function questItem({
   });
 }
 
-function customItem({
-  isAcquired,
-  name,
-  image = formatWikiImageUrl(name),
-  points,
-}: OptionalKeys<CustomItem, 'image'>) {
-  return CustomItem.parse({
-    image,
-    isAcquired,
+function baseItem({ image, name, points }: BaseItem) {
+  return BaseItem.parse({
     name,
     points,
+    image,
   });
 }
 
@@ -1462,19 +1455,12 @@ export const itemList = {
         name: 'Ham joint',
         collectionLogCategory: 'easy_treasure_trails',
       }),
-      customItem({
+      baseItem({
         name: 'Music cape',
         points: calculateXpOrTimeBasedItemPoints(
           estimatedHoursToAcquireMusicCape,
         ),
         image: formatWikiImageUrl('Music cape detail'),
-        isAcquired({ musicTracks }) {
-          return musicTracks
-            ? Object.entries(musicTracks)
-                .filter(([track]) => !isHolidayTrack(track))
-                .every(([, unlocked]) => unlocked)
-            : false;
-        },
       }),
       questItem({
         name: 'Quest cape',

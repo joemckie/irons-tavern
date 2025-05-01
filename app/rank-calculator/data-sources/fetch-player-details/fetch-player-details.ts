@@ -13,14 +13,16 @@ import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
-import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
+import {
+  CollectionLogAcquiredItemMap,
+  isHolidayTrack,
+} from '@/app/schemas/wiki';
 import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
-import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
@@ -190,7 +192,6 @@ export async function fetchPlayerDetails(
 
     const {
       achievementDiaries = null,
-      levels = null,
       quests = null,
       musicTracks = null,
       combatAchievements = null,
@@ -199,7 +200,6 @@ export async function fetchPlayerDetails(
           achievementDiaries: parseAchievementDiaries(
             wikiSyncData.achievement_diaries,
           ),
-          levels: parseLevels(wikiSyncData.levels),
           quests: wikiSyncData.quests,
           musicTracks: wikiSyncData.music_tracks,
           combatAchievements: wikiSyncData.combat_achievements,
@@ -223,11 +223,7 @@ export async function fetchPlayerDetails(
               isItemAcquired(item, {
                 acquiredItems: collectionLogItems,
                 quests,
-                achievementDiaries,
-                levels,
-                musicTracks,
                 combatAchievements,
-                totalLevel,
               }),
             )
             .map(({ name }) => stripEntityName(name))
@@ -245,13 +241,21 @@ export async function fetchPlayerDetails(
         .map(({ name }) => stripEntityName(name)),
     );
 
+    const hasMusicCape = musicTracks
+      ? Object.entries(musicTracks)
+          .filter(([track]) => !isHolidayTrack(track))
+          .every(([, unlocked]) => unlocked)
+      : false;
+
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
         allCurrentNotableItemNames,
       ),
     ].reduce<Record<string, boolean>>(
       (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-      {},
+      {
+        ...(hasMusicCape && { 'Music cape': true }),
+      },
     );
 
     const proofLink =
