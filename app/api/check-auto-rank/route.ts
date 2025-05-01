@@ -34,7 +34,7 @@ import {
   generateRequiredItemList,
 } from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
-import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points copy';
+import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points';
 import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
 import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
 import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
