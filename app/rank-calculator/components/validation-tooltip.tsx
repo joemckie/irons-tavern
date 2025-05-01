@@ -21,7 +21,7 @@ export function ValidationTooltip({
 
   return (
     <Tooltip content={error.message}>
-      <Text asChild color="red" weight="medium" {...props}>
+      <Text asChild {...props} color="red" weight="medium">
         {children}
       </Text>
     </Tooltip>

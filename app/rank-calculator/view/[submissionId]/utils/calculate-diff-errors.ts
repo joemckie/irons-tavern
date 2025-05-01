@@ -57,28 +57,28 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
     };
   }
 
-  if (diff.hasBloodTorva) {
+  if (diff.hasBloodTorva != null) {
     errors.hasBloodTorva = {
       type: 'value',
       message: `Expected ${diff.hasBloodTorva}`,
     };
   }
 
-  if (diff.hasDizanasQuiver) {
+  if (diff.hasDizanasQuiver != null) {
     errors.hasDizanasQuiver = {
       type: 'value',
       message: `Expected ${diff.hasDizanasQuiver}`,
     };
   }
 
-  if (diff.hasAchievementDiaryCape) {
+  if (diff.hasAchievementDiaryCape != null) {
     errors.hasAchievementDiaryCape = {
       type: 'value',
       message: `Expected ${diff.hasAchievementDiaryCape}`,
     };
   }
 
-  if (diff.hasMaxCape) {
+  if (diff.hasMaxCape != null) {
     errors.hasMaxCape = {
       type: 'value',
       message: `Expected ${diff.hasMaxCape}`,

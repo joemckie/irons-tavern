@@ -10,10 +10,19 @@ import {
   RankSubmissionDiff,
   RankSubmissionMetadata,
 } from '@/app/schemas/rank-calculator';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateDiffErrors } from './utils/calculate-diff-errors';
 import { getDiscordUsername } from './get-discord-username';
+import {
+  fetchItemDropRates,
+  generateRequiredItemList,
+} from '../../data-sources/fetch-dropped-item-info';
 
 export default async function ViewSubmissionPage({
   params,
@@ -55,13 +64,22 @@ export default async function ViewSubmissionPage({
     submissionMetadata.actionedBy,
   );
 
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['drop-rates'],
+    queryFn: async () => fetchItemDropRates(generateRequiredItemList()),
+  });
+
   return (
-    <ReadonlyFormWrapper
-      formData={submission}
-      userPermissions={user?.user?.permissions}
-      diffErrors={diffErrors}
-      submissionMetadata={submissionMetadata}
-      actionedByUsername={actionedByUsername}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ReadonlyFormWrapper
+        formData={submission}
+        userPermissions={user?.user?.permissions}
+        diffErrors={diffErrors}
+        submissionMetadata={submissionMetadata}
+        actionedByUsername={actionedByUsername}
+      />
+    </HydrationBoundary>
   );
 }
