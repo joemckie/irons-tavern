@@ -9,5 +9,5 @@ export function useDizanasQuiverPoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return calculateDizanasQuiverPoints(hasDizanasQuiver || false, scaling);
+  return calculateDizanasQuiverPoints(hasDizanasQuiver, scaling);
 }

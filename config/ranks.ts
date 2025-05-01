@@ -56,4 +56,4 @@ export const rankProportions = {
   Elite: 0.79,
   Diseased: 0.9721,
   Blisterwood: 1.1925,
-} satisfies AtLeastOne<Record<Rank, number>>;
+} as const satisfies AtLeastOne<Record<Rank, number>>;

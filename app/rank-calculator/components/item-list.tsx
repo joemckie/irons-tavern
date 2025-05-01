@@ -17,7 +17,7 @@ export function ItemList() {
             <Category
               items={category.items}
               title={title}
-              image={'image' in category ? category.image : undefined}
+              image={category.image}
             />
           </Box>
         ))}

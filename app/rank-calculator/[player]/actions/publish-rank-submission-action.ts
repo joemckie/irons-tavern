@@ -270,10 +270,14 @@ export const publishRankSubmissionAction = authActionClient
             ? !!hasDizanasQuiver
             : null,
         hasAchievementDiaryCape:
+          hasWikiSyncData &&
           hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
             ? !!hasAchievementDiaryCape
             : null,
-        hasMaxCape: hasMaxCape !== savedData.hasMaxCape ? !!hasMaxCape : null,
+        hasMaxCape:
+          hasTemplePlayerStats && hasMaxCape !== savedData.hasMaxCape
+            ? !!hasMaxCape
+            : null,
       } satisfies RankSubmissionDiff;
 
       const submissionTransaction = redis.multi();

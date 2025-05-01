@@ -12,8 +12,5 @@ export function useAchievementDiaryCapePoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return calculateAchievementDiaryCapePoints(
-    hasAchievementDiaryCape || false,
-    scaling,
-  );
+  return calculateAchievementDiaryCapePoints(hasAchievementDiaryCape, scaling);
 }

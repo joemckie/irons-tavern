@@ -30,12 +30,6 @@ function generateCollectionLogCategoryList() {
 }
 
 export async function fetchTemplePlayerCollectionLog(player: string) {
-  /**
-   * Automatically generate the required Temple collection log categories based on the item list.
-   *
-   *
-   *
-   */
   const categories = generateCollectionLogCategoryList();
 
   try {

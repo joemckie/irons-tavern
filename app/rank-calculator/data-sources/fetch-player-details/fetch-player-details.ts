@@ -107,14 +107,15 @@ export async function fetchPlayerDetails(
   const isPlayerNameValid = await validatePlayerExists(player);
 
   if (!isPlayerNameValid) {
-    // // Flag the account as having an invalid name, and force the user to edit it
-    // await redis.hset<Player>(userOSRSAccountsKey(userId), {
-    //   [player.toLowerCase()]: {
-    //     ...playerRecord,
-    //     isNameInvalid: true,
-    //   },
-    // });
-    // redirect(`/rank-calculator/players/edit/${player}`);
+    // Flag the account as having an invalid name, and force the user to edit it
+    await redis.hset<Player>(userOSRSAccountsKey(userId), {
+      [player.toLowerCase()]: {
+        ...playerRecord,
+        isNameInvalid: true,
+      },
+    });
+
+    redirect(`/rank-calculator/players/edit/${player}`);
   }
 
   // Update Temple to get the most up-to-date info

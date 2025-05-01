@@ -9,5 +9,5 @@ export function useMaxCapePoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return calculateMaxCapePoints(hasMaxCape || false, scaling);
+  return calculateMaxCapePoints(hasMaxCape, scaling);
 }

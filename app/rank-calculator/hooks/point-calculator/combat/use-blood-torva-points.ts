@@ -9,5 +9,5 @@ export function useBloodTorvaPoints() {
   });
   const scaling = useCalculatorScaling();
 
-  return calculateBloodTorvaPoints(hasBloodTorva || false, scaling);
+  return calculateBloodTorvaPoints(hasBloodTorva, scaling);
 }
