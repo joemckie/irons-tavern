@@ -25,6 +25,7 @@ export const pointsConfig = {
   maxTotalLevelPoints: 50000,
   maxAchievementDiaryPoints:
     DiaryLocation.options.length * achievementDiaryTierPoints.Elite,
+  maximumCombatAchievementPoints: 50000,
   bloodTorvaPoints: 6500,
   dizanasQuiverPoints: 6500,
   infernalCapePoints: 7000,
