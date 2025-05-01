@@ -29,6 +29,7 @@
     "@vercel/blob": "^0.23.4",
     "@vercel/speed-insights": "^1.1.0",
     "chalk": "^5.4.1",
+    "core-js": "^3.42.0",
     "date-fns": "^4.1.0",
     "decimal.js-light": "^2.5.1",
     "dedent": "^1.5.3",

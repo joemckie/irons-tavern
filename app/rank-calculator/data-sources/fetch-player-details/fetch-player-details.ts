@@ -1,3 +1,4 @@
+import 'core-js/actual/set/intersection';
 import { itemList } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
@@ -240,6 +241,10 @@ export async function fetchPlayerDetails(
       Object.values(itemList)
         .flatMap(({ items }) => items)
         .map(({ name }) => stripEntityName(name)),
+    );
+
+    console.log(
+      new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection,
     );
 
     const acquiredItemsMap = [
