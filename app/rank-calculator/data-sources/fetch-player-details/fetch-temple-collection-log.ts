@@ -11,25 +11,32 @@ function generateCollectionLogCategoryList() {
   return Object.values(itemList)
     .flatMap(({ items }) => items)
     .filter(isCollectionLogItem)
-    .reduce((acc, { collectionLogCategories }) => {
-      collectionLogCategories.forEach(acc.add, acc);
+    .reduce(
+      (acc, { collectionLogCategories }) => {
+        collectionLogCategories.forEach(acc.add, acc);
 
-      return acc;
-    }, new Set<TempleOSRSCollectionLogCategory>());
+        return acc;
+      },
+      new Set<TempleOSRSCollectionLogCategory>([
+        /*
+         * the_inferno, fortis_colosseum, and the_fight_caves are added manually as they are not included
+         * in the item list, and are required to determine the TzHaar capes and Dizana's quiver completion
+         */
+        'the_inferno',
+        'the_fight_caves',
+        'fortis_colosseum',
+      ]),
+    );
 }
 
 export async function fetchTemplePlayerCollectionLog(player: string) {
   /**
    * Automatically generate the required Temple collection log categories based on the item list.
    *
-   * tzhaar, fortis_colosseum, and the_fight_caves are added manually as they are not included in the item list.
    *
-   * These categories are required to determine the TzHaar capes and Dizana's Quiver completion
+   *
    */
-  const categories = generateCollectionLogCategoryList()
-    .add('tzhaar')
-    .add('fortis_colosseum')
-    .add('the_fight_caves');
+  const categories = generateCollectionLogCategoryList();
 
   try {
     const collectionLogQueryParams = new URLSearchParams({

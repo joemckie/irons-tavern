@@ -244,10 +244,6 @@ export async function fetchPlayerDetails(
         .map(({ name }) => stripEntityName(name)),
     );
 
-    console.log(
-      new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection,
-    );
-
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
         allCurrentNotableItemNames,

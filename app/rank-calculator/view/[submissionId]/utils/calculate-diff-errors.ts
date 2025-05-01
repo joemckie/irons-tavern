@@ -71,5 +71,19 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
     };
   }
 
+  if (diff.hasAchievementDiaryCape) {
+    errors.hasAchievementDiaryCape = {
+      type: 'value',
+      message: `Expected ${diff.hasAchievementDiaryCape}`,
+    };
+  }
+
+  if (diff.hasMaxCape) {
+    errors.hasMaxCape = {
+      type: 'value',
+      message: `Expected ${diff.hasMaxCape}`,
+    };
+  }
+
   return errors;
 }
