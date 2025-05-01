@@ -1,19 +1,24 @@
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
-import { rankProportions } from '@/config/ranks';
+import { rankProportions, StandardRank } from '@/config/ranks';
 
 export const calculateRankThresholds = (
   totalPoints: number,
 ): Record<RankStructure, Partial<Record<Rank, number>>> => {
-  const standardRankPoints = Object.entries(rankProportions).reduce(
+  const rankProportionsKeys = Object.entries(rankProportions) as [
+    keyof typeof rankProportions,
+    number,
+  ][];
+
+  const standardRankPoints = rankProportionsKeys.reduce(
     (acc, [rank, proportion]) => {
       const rankPoints = Math.ceil((totalPoints * proportion) / 1000) * 1000;
 
-      acc[rank as keyof typeof rankProportions] = rankPoints;
+      acc[rank] = rankPoints;
 
       return acc;
     },
-    { ...rankProportions },
+    {} as Record<Exclude<StandardRank, 'Air' | 'Pine'>, number>,
   );
 
   return {

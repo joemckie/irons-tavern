@@ -8,7 +8,7 @@ export function useGetItems(h: number) {
   return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
-      return Object.entries(buildNotableItemList(dropRates, h || 5));
+      return Object.entries(buildNotableItemList(dropRates, h));
     },
   });
 }
