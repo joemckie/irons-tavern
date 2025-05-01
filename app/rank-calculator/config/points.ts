@@ -22,8 +22,8 @@ export const pointsConfig = {
   sailingOffset: 4000,
   maxCapePoints: 7000,
   achievementDiaryCapePoints: 1000,
-  maxTotalLevelPoints: 50000,
-  maxAchievementDiaryPoints:
+  maximumTotalLevelPoints: 50000,
+  maximumAchievementDiaryPoints:
     DiaryLocation.options.length * achievementDiaryTierPoints.Elite,
   maximumCombatAchievementPoints: 50000,
   bloodTorvaPoints: 6500,

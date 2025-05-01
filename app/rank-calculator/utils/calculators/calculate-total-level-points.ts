@@ -5,7 +5,7 @@ import { pointsConfig } from '../../config/points';
 // View the function graph below
 // https://www.desmos.com/calculator/pvb3brafeg
 export function calculateTotalLevelPoints(totalLevel: number, scaling: number) {
-  const { maxTotalLevelPoints } = pointsConfig;
+  const { maximumTotalLevelPoints } = pointsConfig;
 
   if (!totalLevel) {
     return 0;
@@ -17,7 +17,7 @@ export function calculateTotalLevelPoints(totalLevel: number, scaling: number) {
 
   const level99MilestonesAchieved = Math.floor(totalLevel / maximumSkillLevel);
 
-  const factor = new Decimal(maxTotalLevelPoints)
+  const factor = new Decimal(maximumTotalLevelPoints)
     .dividedBy(new Decimal(steps).times(steps + 1).dividedBy(2))
     .toDecimalPlaces(7);
 

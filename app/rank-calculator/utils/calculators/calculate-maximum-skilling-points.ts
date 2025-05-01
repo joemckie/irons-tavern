@@ -7,13 +7,13 @@ export function calculateMaximumSkillingPoints(scaling: number) {
     sailingOffset,
     maxCapePoints,
     achievementDiaryCapePoints,
-    maxAchievementDiaryPoints,
-    maxTotalLevelPoints,
+    maximumAchievementDiaryPoints,
+    maximumTotalLevelPoints,
   } = pointsConfig;
 
   return (
-    (maxAchievementDiaryPoints +
-      maxTotalLevelPoints +
+    (maximumAchievementDiaryPoints +
+      maximumTotalLevelPoints +
       achievementDiaryCapePoints +
       maxCapePoints -
       sailingOffset) *
