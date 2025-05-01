@@ -80,6 +80,10 @@ export async function GET(request: NextRequest) {
       hasDizanasQuiver,
       hasAchievementDiaryCape,
       hasMaxCape,
+      collectionLogBonusMultiplier,
+      combatBonusMultiplier,
+      notableItemsBonusMultiplier,
+      skillingBonusMultiplier,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -97,11 +101,16 @@ export async function GET(request: NextRequest) {
       calculateCollectionLogPoints(
         collectionLogSlotPoints,
         collectionLogTotal,
-        0,
+        collectionLogBonusMultiplier,
         scaling,
       );
     const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(items, acquiredItems, 0, scaling);
+      calculateNotableItemsPoints(
+        items,
+        acquiredItems,
+        notableItemsBonusMultiplier,
+        scaling,
+      );
     const { pointsAwarded: achievementDiariesPoints } =
       calculateAchievementDiaryPoints(achievementDiaries, scaling);
     const ehpPoints = calculateEhpPoints(ehp, scaling);
@@ -117,7 +126,7 @@ export async function GET(request: NextRequest) {
       totalLevelPoints,
       achievementDiaryCapePoints,
       maxCapePoints,
-      0,
+      skillingBonusMultiplier,
       scaling,
     );
     const ehbPoints = calculateEhbPoints(ehb, scaling);
@@ -137,7 +146,7 @@ export async function GET(request: NextRequest) {
       tzhaarCapePoints,
       bloodTorvaPoints,
       dizanasQuiverPoints,
-      0,
+      combatBonusMultiplier,
       scaling,
     );
     const totalPointsAwarded = calculateTotalPoints(
