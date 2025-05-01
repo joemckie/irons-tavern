@@ -25,4 +25,8 @@ export const pointsConfig = {
   maxTotalLevelPoints: 50000,
   maxAchievementDiaryPoints:
     DiaryLocation.options.length * achievementDiaryTierPoints.Elite,
+  bloodTorvaPoints: 6500,
+  dizanasQuiverPoints: 6500,
+  infernalCapePoints: 7000,
+  fireCapePoints: 500,
 } as const satisfies Record<string, number>;
