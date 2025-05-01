@@ -18,10 +18,12 @@ export interface CombatPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useCombatPointCalculator() {
-  const rawMultiplier = useWatch<RankCalculatorSchema, 'combatMultiplier'>({
-    name: 'combatMultiplier',
+  const combatBonusMultiplier = useWatch<
+    RankCalculatorSchema,
+    'combatBonusMultiplier'
+  >({
+    name: 'combatBonusMultiplier',
   });
-  const multiplier = 1 + rawMultiplier / 100;
 
   const scaling = useCalculatorScaling();
   const ehbPoints = useEhbPoints();
@@ -37,7 +39,7 @@ export function useCombatPointCalculator() {
       tzhaarCapePoints,
       bloodTorvaPoints,
       dizanasQuiverPoints,
-      multiplier,
+      combatBonusMultiplier,
       scaling,
     );
 

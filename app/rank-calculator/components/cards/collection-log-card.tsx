@@ -95,7 +95,7 @@ export function CollectionLogCard() {
         }
         center={
           <Input
-            {...register('collectionLogMultiplier', {
+            {...register('collectionLogBonusMultiplier', {
               valueAsNumber: true,
               min: 0,
             })}

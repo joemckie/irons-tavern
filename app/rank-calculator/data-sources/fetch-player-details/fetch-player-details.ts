@@ -76,9 +76,9 @@ export const emptyResponse = {
   hasDizanasQuiver: false,
   hasAchievementDiaryCape: false,
   hasMaxCape: false,
-  combatMultiplier: 0,
-  skillingMultiplier: 0,
-  collectionLogMultiplier: 0,
+  combatBonusMultiplier: 0,
+  skillingBonusMultiplier: 0,
+  collectionLogBonusMultiplier: 0,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -322,9 +322,9 @@ export async function fetchPlayerDetails(
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
-        collectionLogMultiplier: 0,
-        combatMultiplier: 0,
-        skillingMultiplier: 0,
+        collectionLogBonusMultiplier: 0,
+        combatBonusMultiplier: 0,
+        skillingBonusMultiplier: 0,
       },
     };
   } catch (error) {

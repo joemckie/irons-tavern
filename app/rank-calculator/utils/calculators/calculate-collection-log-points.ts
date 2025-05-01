@@ -1,3 +1,4 @@
+import { calculateBonusPoints } from './calculate-bonus-points';
 import { calculateCollectionLogSlotPoints } from './calculate-collection-log-slot-points';
 
 export function calculateCollectionLogPoints(
@@ -10,15 +11,13 @@ export function calculateCollectionLogPoints(
     totalCollectionLogSlots,
     scaling,
   );
-  const pointsAwarded = Math.min(
-    Math.floor(collectionLogSlotPoints * multiplier),
-    totalPointsAvailable,
-  );
+  const pointsAwarded = Math.min(collectionLogSlotPoints, totalPointsAvailable);
+  const bonusPointsAwarded = calculateBonusPoints(pointsAwarded, multiplier);
   const pointsRemaining = totalPointsAvailable - pointsAwarded;
   const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
 
   return {
-    pointsAwarded,
+    pointsAwarded: Math.floor(pointsAwarded + bonusPointsAwarded),
     pointsRemaining,
     pointsAwardedPercentage,
   };

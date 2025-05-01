@@ -196,7 +196,7 @@ export function SkillingCard() {
         }
         center={
           <Input
-            {...register('skillingMultiplier', {
+            {...register('skillingBonusMultiplier', {
               valueAsNumber: true,
               min: 0,
             })}

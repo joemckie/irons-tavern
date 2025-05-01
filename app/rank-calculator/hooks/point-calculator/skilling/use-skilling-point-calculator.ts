@@ -19,11 +19,11 @@ export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useSkillingPointCalculator() {
-  const skillingMultiplier = useWatch<
+  const skillingBonusMultiplier = useWatch<
     RankCalculatorSchema,
-    'skillingMultiplier'
+    'skillingBonusMultiplier'
   >({
-    name: 'skillingMultiplier',
+    name: 'skillingBonusMultiplier',
   });
 
   const {
@@ -42,7 +42,7 @@ export function useSkillingPointCalculator() {
       totalLevelPoints,
       achievementDiaryCapePoints,
       maxCapePoints,
-      skillingMultiplier,
+      skillingBonusMultiplier,
       scaling,
     );
 

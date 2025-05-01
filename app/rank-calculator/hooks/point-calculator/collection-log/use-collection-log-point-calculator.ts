@@ -17,13 +17,12 @@ export function useCollectionLogPointCalculator() {
   >({
     name: 'collectionLogTotal',
   });
-  const rawMultiplier = useWatch<
+  const collectionLogBonusMultiplier = useWatch<
     RankCalculatorSchema,
-    'collectionLogMultiplier'
+    'collectionLogBonusMultiplier'
   >({
-    name: 'collectionLogMultiplier',
+    name: 'collectionLogBonusMultiplier',
   });
-  const multiplier = 1 + rawMultiplier / 100;
 
   const scaling = useCalculatorScaling();
   const collectionLogSlotPoints = useCollectionLogSlotPoints();
@@ -31,7 +30,7 @@ export function useCollectionLogPointCalculator() {
     calculateCollectionLogPoints(
       collectionLogSlotPoints,
       totalCollectionLogSlots,
-      multiplier,
+      collectionLogBonusMultiplier,
       scaling,
     );
 

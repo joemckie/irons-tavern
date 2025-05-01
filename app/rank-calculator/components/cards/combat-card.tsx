@@ -185,7 +185,7 @@ export function CombatCard() {
         }
         center={
           <Input
-            {...register('combatMultiplier', {
+            {...register('combatBonusMultiplier', {
               valueAsNumber: true,
               min: 0,
             })}
