@@ -20,7 +20,7 @@ const ClientConfigSchema = z.object({
     baseUrl: z.literal('https://discord.com/api/v10'),
   }),
   calculator: z.object({
-    notableItemsPointsPerHour: z.literal(5),
+    notableItemsPointsPerHour: z.literal(3),
   }),
 });
 
@@ -43,6 +43,6 @@ export const clientConstants = ClientConfigSchema.parse({
     baseUrl: 'https://discord.com/api/v10',
   },
   calculator: {
-    notableItemsPointsPerHour: 5,
+    notableItemsPointsPerHour: 3,
   },
 });

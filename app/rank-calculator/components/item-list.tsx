@@ -1,12 +1,17 @@
 import { Box, Flex, ScrollArea } from '@radix-ui/themes';
 import { useSearchParams } from 'next/navigation';
+import { clientConstants } from '@/config/constants.client';
 import { useGetItems } from '../hooks/use-get-items';
 import { usePageHeight } from '../hooks/use-page-height';
 import { Category } from './category';
 
 export function ItemList() {
   const search = useSearchParams();
-  const { data: categories } = useGetItems(Number(search.get('h')));
+  const { data: categories } = useGetItems(
+    Number(
+      search.get('h') || clientConstants.calculator.notableItemsPointsPerHour,
+    ),
+  );
   const mainHeightCss = usePageHeight();
 
   return (

@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useSearchParams } from 'next/navigation';
+import { clientConstants } from '@/config/constants.client';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateMaximumAvailablePoints } from '../../utils/calculators/calculate-maximum-available-points';
 import { useGetItems } from '../use-get-items';
@@ -12,7 +13,10 @@ export function useMaximumAvailablePoints() {
     name: 'collectionLogTotal',
   });
   const search = useSearchParams();
-  const { data: notableItems } = useGetItems(Number(search.get('h')));
+  const { data: notableItems } = useGetItems(
+    Number(search.get('h')) ||
+      clientConstants.calculator.notableItemsPointsPerHour,
+  );
 
   return calculateMaximumAvailablePoints(
     notableItems,

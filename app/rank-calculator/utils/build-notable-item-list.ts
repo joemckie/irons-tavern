@@ -1,6 +1,7 @@
 import { isCollectionLogItem, Item, ItemCategory } from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
+import { clientConstants } from '@/config/constants.client';
 import { calculateItemPoints } from './calculate-item-points';
 
 export function buildNotableItemList(
@@ -13,14 +14,21 @@ export function buildNotableItemList(
         if (item.points) {
           return {
             ...item,
-            points: (item.points / 5) * h,
+            points:
+              (item.points /
+                clientConstants.calculator.notableItemsPointsPerHour) *
+              h,
           };
         }
 
         if (isCollectionLogItem(item)) {
           return {
             ...item,
-            points: calculateItemPoints(dropRates, item.requiredItems, h || 5),
+            points: calculateItemPoints(
+              dropRates,
+              item.requiredItems,
+              h || clientConstants.calculator.notableItemsPointsPerHour,
+            ),
           };
         }
 
