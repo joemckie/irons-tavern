@@ -76,10 +76,10 @@ export async function GET(request: NextRequest) {
       playerName,
       rankStructure,
       tzhaarCape,
-      hasBloodTorva = false,
-      hasDizanasQuiver = false,
-      hasAchievementDiaryCape = false,
-      hasMaxCape = false,
+      hasBloodTorva,
+      hasDizanasQuiver,
+      hasAchievementDiaryCape,
+      hasMaxCape,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
