@@ -29,7 +29,10 @@ import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
 import { redis } from '@/redis';
 import { calculateMaximumAvailablePoints } from '@/app/rank-calculator/utils/calculators/calculate-maximum-available-points';
-import { fetchItemDropRates } from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
+import {
+  fetchItemDropRates,
+  generateRequiredItemList,
+} from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
 import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points copy';
 import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
@@ -83,7 +86,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    const dropRates = await fetchItemDropRates();
+    const dropRates = await fetchItemDropRates(generateRequiredItemList());
     const items = Object.entries(buildNotableItemList(dropRates, 5));
     const scaling = calculateScaling(joinDate);
     const collectionLogSlotPoints = calculateCollectionLogSlotPoints(

@@ -4,8 +4,9 @@ import * as Sentry from '@sentry/nextjs';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
 import { CollectionLogItem, isCollectionLogItem } from '@/app/schemas/items';
+import { unstable_cache } from 'next/cache';
 
-function generateRequiredItemList() {
+export function generateRequiredItemList() {
   return Object.values(itemList)
     .flatMap(({ items }) => items)
     .filter(
@@ -19,55 +20,60 @@ function generateRequiredItemList() {
     }, new Set<CollectionLogItemName>());
 }
 
-export async function fetchItemDropRates() {
-  const queriedItems = generateRequiredItemList();
-  const batches = [];
-  const batchSize = 10;
+export const fetchItemDropRates = unstable_cache(
+  async (items: Set<CollectionLogItemName>) => {
+    const batches = [];
+    const batchSize = 10;
 
-  for (let i = 0; i < queriedItems.size; i += batchSize) {
-    const batch = [...queriedItems].slice(i, i + batchSize);
-    const query = [
-      `[[Dropped item::${[...batch].join('||')}]]`,
-      '?Drop JSON',
-      'limit=1000',
-    ].join('|');
+    for (let i = 0; i < items.size; i += batchSize) {
+      const batch = [...items].slice(i, i + batchSize);
+      const query = [
+        `[[Dropped item::${[...batch].join('||')}]]`,
+        '?Drop JSON',
+        'limit=1000',
+      ].join('|');
 
-    batches.push(query);
-  }
+      batches.push(query);
+    }
 
-  try {
-    const batchResponses = await Promise.all(
-      batches.map((query) => {
-        const params = new URLSearchParams({
-          action: 'ask',
-          format: 'json',
-          query,
-          api_version: '2',
-          formatversion: '2',
-        });
+    try {
+      const batchResponses = await Promise.all(
+        batches.map((query) => {
+          const params = new URLSearchParams({
+            action: 'ask',
+            format: 'json',
+            query,
+            api_version: '2',
+            formatversion: '2',
+          });
 
-        return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
-          cache: 'force-cache',
-        });
-      }),
-    );
+          return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
+            cache: 'force-cache',
+          });
+        }),
+      );
 
-    const droppedItemResponses = await Promise.all(
-      batchResponses.map(async (res) =>
-        DroppedItemResponse.parse(await res.json()),
-      ),
-    );
+      const droppedItemResponses = await Promise.all(
+        batchResponses.map(async (res) =>
+          DroppedItemResponse.parse(await res.json()),
+        ),
+      );
 
-    return droppedItemResponses.reduce(
-      (acc, val) => ({
-        ...acc,
-        ...val,
-      }),
-      {},
-    );
-  } catch (error) {
-    Sentry.captureException(error);
+      return droppedItemResponses.reduce(
+        (acc, val) => ({
+          ...acc,
+          ...val,
+        }),
+        {},
+      );
+    } catch (error) {
+      Sentry.captureException(error);
 
-    throw new Error('Could not fetch drop rates!');
-  }
-}
+      throw new Error('Could not fetch drop rates!');
+    }
+  },
+  [],
+  {
+    revalidate: 60 * 60 * 24 * 7, // 7 days
+  },
+);

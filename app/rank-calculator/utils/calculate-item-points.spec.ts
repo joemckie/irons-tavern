@@ -6,7 +6,10 @@ import { z } from 'zod';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { RequiredItem } from '@/app/schemas/items';
 import { calculateItemPoints } from './calculate-item-points';
-import { fetchItemDropRates } from '../data-sources/fetch-dropped-item-info';
+import {
+  fetchItemDropRates,
+  generateRequiredItemList,
+} from '../data-sources/fetch-dropped-item-info';
 
 type ItemResult = Omit<
   z.input<typeof DroppedItemJSON>,
@@ -359,7 +362,8 @@ it.each(testCases)(
 
     setup(itemSourcesTuple);
 
-    const dropRates = await fetchItemDropRates();
+    const notableItems = generateRequiredItemList();
+    const dropRates = await fetchItemDropRates(notableItems);
     const points = calculateItemPoints(
       dropRates,
       itemSources.map((itemSource) => ({
@@ -370,6 +374,7 @@ it.each(testCases)(
             ? [itemSource.targetDropSources]
             : undefined,
       })) as NonEmptyArray<RequiredItem>,
+      5,
     );
 
     expect(points).toEqual(expectedPoints);
@@ -399,14 +404,18 @@ it('calculates the correct points when a specific drop source has been selected'
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 1,
-      clogName: item,
-      targetDropSources: ['Unsired'],
-    },
-  ]);
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 1,
+        clogName: item,
+        targetDropSources: ['Unsired'],
+      },
+    ],
+    5,
+  );
   const expectedPoints = 64;
 
   expect(points).toEqual(expectedPoints);
@@ -449,25 +458,29 @@ it('calculates the correct points for items consisting of multiple drops', async
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
 
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 1,
-      clogName: 'Bludgeon axon',
-      targetDropSources: ['Unsired'],
-    },
-    {
-      amount: 1,
-      clogName: 'Bludgeon claw',
-      targetDropSources: ['Unsired'],
-    },
-    {
-      amount: 1,
-      clogName: 'Bludgeon spine',
-      targetDropSources: ['Unsired'],
-    },
-  ]);
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 1,
+        clogName: 'Bludgeon axon',
+        targetDropSources: ['Unsired'],
+      },
+      {
+        amount: 1,
+        clogName: 'Bludgeon claw',
+        targetDropSources: ['Unsired'],
+      },
+      {
+        amount: 1,
+        clogName: 'Bludgeon spine',
+        targetDropSources: ['Unsired'],
+      },
+    ],
+    5,
+  );
   const expectedPoints = 80;
 
   expect(points).toEqual(expectedPoints);
@@ -506,14 +519,18 @@ it('calculates points for items dropped from multiple sources by finding the mea
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
 
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 1,
-      clogName: 'Virtus robe top',
-    },
-  ]);
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 1,
+        clogName: 'Virtus robe top',
+      },
+    ],
+    5,
+  );
   const expectedPoints = 405;
 
   expect(points).toEqual(expectedPoints);
@@ -534,13 +551,17 @@ it('divides the total points by the amount of rolls per drop', async () => {
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 1,
-      clogName: 'Granite hammer',
-    },
-  ]);
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 1,
+        clogName: 'Granite hammer',
+      },
+    ],
+    5,
+  );
   const expectedPoints = 56;
 
   expect(points).toEqual(expectedPoints);
@@ -561,14 +582,18 @@ it('does not modify the drop rate if "ignoreDropRateModifier" is true', async ()
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 1,
-      clogName: 'Thread of elidinis',
-      ignoreDropRateModifier: true,
-    },
-  ]);
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 1,
+        clogName: 'Thread of elidinis',
+        ignoreDropRateModifier: true,
+      },
+    ],
+    5,
+  );
   const expectedPoints = 25;
 
   expect(points).toEqual(expectedPoints);
@@ -589,14 +614,18 @@ it('does not multiply the points by amount of items if "ignoreAmountMultiplier" 
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 2,
-      clogName: 'Zenyte shard',
-      ignoreAmountMultiplier: true,
-    },
-  ]);
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 2,
+        clogName: 'Zenyte shard',
+        ignoreAmountMultiplier: true,
+      },
+    ],
+    5,
+  );
   const expectedPoints = 25;
 
   expect(points).toEqual(expectedPoints);
@@ -617,13 +646,17 @@ it('multiplies the points by amount of items if "amount" is greater than 1 and "
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates();
-  const points = calculateItemPoints(dropRates, [
-    {
-      amount: 2,
-      clogName: 'Zenyte shard',
-    },
-  ]);
+  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const points = calculateItemPoints(
+    dropRates,
+    [
+      {
+        amount: 2,
+        clogName: 'Zenyte shard',
+      },
+    ],
+    5,
+  );
   const expectedPoints = 49;
 
   expect(points).toEqual(expectedPoints);

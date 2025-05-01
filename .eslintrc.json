@@ -16,6 +16,13 @@
         "after": true
       }
     ],
+    "camelcase": [
+      "error",
+      {
+        "allow": ["^unstable_"],
+        "properties": "never"
+      }
+    ],
     "react/jsx-filename-extension": [
       2,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
