@@ -1,4 +1,4 @@
-import { combatAchievementItem, itemList, singleItem } from '@/data/item-list';
+import { itemList } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
@@ -13,7 +13,6 @@ import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
 import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
-import { CollectionLogItem, CombatAchievementItem } from '@/app/schemas/items';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
@@ -27,6 +26,7 @@ import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-vali
 import { validatePlayerExists } from '../../players/validation/player-validation';
 import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
 import { fetchTempleConstants } from './fetch-temple-constants';
+import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -74,6 +74,8 @@ export const emptyResponse = {
   tzhaarCape: 'None',
   hasBloodTorva: false,
   hasDizanasQuiver: false,
+  hasAchievementDiaryCape: false,
+  hasMaxCape: false,
   combatMultiplier: 0,
   skillingMultiplier: 0,
   collectionLogMultiplier: 0,
@@ -209,41 +211,10 @@ export async function fetchPlayerDetails(
         CollectionLogAcquiredItemMap.parse({}),
       ) ?? null;
 
-    /**
-     * Some items must be retrieved from the collection log,
-     * but are not displayed in the notable items list.
-     */
-    const additionalItems = [
-      singleItem({
-        name: 'Fire cape',
-        collectionLogCategory: 'tzhaar',
-      }),
-      singleItem({
-        name: 'Infernal cape',
-        collectionLogCategory: 'tzhaar',
-      }),
-      singleItem({
-        name: "Dizana's quiver",
-        clogName: "Dizana's quiver (uncharged)",
-        collectionLogCategory: 'fortis_colosseum',
-      }),
-      combatAchievementItem({
-        name: 'Ancient blood ornament kit',
-        points: 1,
-        requiredCombatAchievements: [
-          490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
-          499, // https://oldschool.runescape.wiki/w/Whispered
-          508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
-          517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
-        ],
-      }),
-    ] satisfies (CollectionLogItem | CombatAchievementItem)[];
-
     const acquiredItems =
       wikiSyncData || templeCollectionLog
         ? Object.values(itemList)
             .flatMap(({ items }) => items)
-            .concat(additionalItems)
             .filter((item) =>
               isItemAcquired(item, {
                 acquiredItems: collectionLogItems,
@@ -264,27 +235,42 @@ export async function fetchPlayerDetails(
         )
       : [];
 
+    const allCurrentNotableItemNames = new Set(
+      Object.values(itemList)
+        .flatMap(({ items }) => items)
+        .map(({ name }) => stripEntityName(name)),
+    );
+
+    const acquiredItemsMap = [
+      ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
+        allCurrentNotableItemNames,
+      ),
+    ].reduce<Record<string, boolean>>(
+      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
+      {},
+    );
+
     const proofLink =
       savedData?.proofLink ??
       (templeCollectionLog
         ? `${clientConstants.temple.baseUrl}/player/collection-log.php?player=${player}`
         : null);
 
-    const acquiredItemsMap = [
-      ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
-    ].reduce<Record<string, boolean>>(
-      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-      {},
-    );
-
     const tzhaarCape =
-      (acquiredItemsMap['Infernal cape'] && TzHaarCape.enum['Infernal cape']) ||
-      (acquiredItemsMap['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
+      (collectionLogItems?.['Infernal cape'] &&
+        TzHaarCape.enum['Infernal cape']) ||
+      (collectionLogItems?.['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
       TzHaarCape.enum.None;
 
-    const hasBloodTorva = acquiredItemsMap['Ancient blood ornament kit'];
+    const hasBloodTorva = new Set([
+      490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
+      499, // https://oldschool.runescape.wiki/w/Whispered
+      508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
+      517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
+    ]).isSubsetOf(new Set(wikiSyncData?.combat_achievements));
 
-    const hasDizanasQuiver = acquiredItemsMap['Dizanas quiver'];
+    const hasDizanasQuiver =
+      !!collectionLogItems?.['Dizanas quiver (uncharged)'];
 
     const hasAchievementDiaryCape = achievementDiaries
       ? Object.values(achievementDiaries).every((tier) => tier === 'Elite')
@@ -321,17 +307,21 @@ export async function fetchPlayerDetails(
         rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
         currentRank,
+        tzhaarCape: mergeTzhaarCapes(tzhaarCape, savedData?.tzhaarCape),
+        hasBloodTorva: hasBloodTorva || savedData?.hasBloodTorva || false,
+        hasDizanasQuiver:
+          hasDizanasQuiver || savedData?.hasDizanasQuiver || false,
+        hasAchievementDiaryCape:
+          hasAchievementDiaryCape ||
+          savedData?.hasAchievementDiaryCape ||
+          false,
+        hasMaxCape: hasMaxCape || savedData?.hasMaxCape || false,
         hasTemplePlayerStats: !!templePlayerStats,
         hasTempleCollectionLog: !!templeCollectionLog,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
-        tzhaarCape,
-        hasBloodTorva,
-        hasDizanasQuiver,
-        hasAchievementDiaryCape,
-        hasMaxCape,
         collectionLogMultiplier: 0,
         combatMultiplier: 0,
         skillingMultiplier: 0,
