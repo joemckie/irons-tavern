@@ -1,4 +1,5 @@
 import 'core-js/actual/set/intersection';
+import 'core-js/actual/set/is-subset-of';
 import { itemList } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
