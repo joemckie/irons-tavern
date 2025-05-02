@@ -5,7 +5,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { clientConstants } from '@/config/constants.client';
 import { itemList } from '@/data/item-list';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 import { FormWrapper } from './form-wrapper';
@@ -62,11 +61,7 @@ export default async function RankCalculatorPage({
   const queryClient = new QueryClient();
 
   const dropRates = await fetchItemDropRates(generateRequiredItemList());
-  const notableItemList = await buildNotableItemList(
-    itemList,
-    dropRates,
-    clientConstants.calculator.notableItemsPointsPerHour,
-  );
+  const notableItemList = await buildNotableItemList(itemList, dropRates);
 
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));

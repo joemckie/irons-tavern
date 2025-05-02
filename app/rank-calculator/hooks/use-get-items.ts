@@ -3,13 +3,13 @@ import { itemList } from '@/data/item-list';
 import { useDropRates } from './use-drop-rates';
 import { buildNotableItemList } from '../utils/build-notable-item-list';
 
-export function useGetItems(h: number) {
+export function useGetItems() {
   const { data: dropRates } = useDropRates();
 
   return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
-      return Object.entries(await buildNotableItemList(itemList, dropRates, h));
+      return Object.entries(await buildNotableItemList(itemList, dropRates));
     },
   });
 }

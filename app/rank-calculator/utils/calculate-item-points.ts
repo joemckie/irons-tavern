@@ -29,7 +29,6 @@ function calculatePointsForSingleDropSource(
     ignoreDropRateModifier = false,
     ignoreAmountMultiplier = false,
   }: CalculatePointsForSingleDropSourceOptions,
-  h: number,
 ) {
   const bossName =
     collectionLogItemBossNameMap[itemName] ??
@@ -55,7 +54,7 @@ function calculatePointsForSingleDropSource(
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier).div(groupSize))
     .dividedBy(bossEhb ?? defaultEhbRate)
-    .times(h)
+    .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)
     .toNumber();
@@ -64,7 +63,6 @@ function calculatePointsForSingleDropSource(
 export function calculateItemPoints(
   dropRateInfo: DroppedItemResponse,
   items: NonEmptyArray<RequiredItem>,
-  h: number,
 ): number {
   const rawPoints = items.reduce(
     (
@@ -99,7 +97,6 @@ export function calculateItemPoints(
                 ignoreDropRateModifier,
                 ignoreAmountMultiplier,
               },
-              h,
             )
           );
         },
