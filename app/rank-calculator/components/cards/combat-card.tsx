@@ -25,9 +25,8 @@ export function CombatCard() {
     dizanasQuiverPoints,
   } = useCombatPointCalculator();
   const {
-    formState: { defaultValues },
+    formState: { defaultValues, errors },
     getValues,
-    getFieldState,
   } = useFormContext<RankCalculatorSchema>();
   const [hasBloodTorva, hasDizanasQuiver] = getValues([
     'hasBloodTorva',
@@ -144,7 +143,7 @@ export function CombatCard() {
       <DataCard.Row
         left={
           <ValidationTooltip
-            error={getFieldState('hasDizanasQuiver').error}
+            error={errors.hasDizanasQuiver}
             color="gray"
             size="2"
           >
@@ -160,11 +159,7 @@ export function CombatCard() {
       />
       <DataCard.Row
         left={
-          <ValidationTooltip
-            error={getFieldState('hasBloodTorva').error}
-            color="gray"
-            size="2"
-          >
+          <ValidationTooltip error={errors.hasBloodTorva} color="gray" size="2">
             <Text>Blood torva</Text>
           </ValidationTooltip>
         }
