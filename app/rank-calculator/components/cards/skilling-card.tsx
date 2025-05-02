@@ -17,7 +17,6 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ValidationTooltip } from '../validation-tooltip';
 import { Checkbox } from '../checkbox';
-// import { Input } from '../input';
 
 export function SkillingCard() {
   const {
@@ -33,7 +32,6 @@ export function SkillingCard() {
   const {
     formState: { defaultValues, errors },
     getValues,
-    // register,
   } = useFormContext<RankCalculatorSchema>();
   const [hasAchievementDiaryCape, hasMaxCape] = getValues([
     'hasAchievementDiaryCape',
@@ -188,26 +186,6 @@ export function SkillingCard() {
           </Text>
         }
       />
-      {/* <DataCard.Row
-        left={
-          <Text color="gray" size="2">
-            Multiplier
-          </Text>
-        }
-        center={
-          <Input
-            {...register('skillingBonusMultiplier', {
-              valueAsNumber: true,
-              min: 0,
-            })}
-            hasError={false}
-            type="number"
-            size="1"
-            min={0}
-          />
-        }
-        right={null}
-      /> */}
       <DataCard.Row
         left={
           <Text color="gray" size="2">
