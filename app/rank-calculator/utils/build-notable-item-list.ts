@@ -9,6 +9,10 @@ export const buildNotableItemList = unstable_cache(
     Object.entries(notableItemConfig).reduce(
       (acc, [key, category]) => {
         const items = category.items.map((item) => {
+          if (item.points) {
+            return item;
+          }
+
           if (isCollectionLogItem(item)) {
             return {
               ...item,
