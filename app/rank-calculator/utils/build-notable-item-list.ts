@@ -2,6 +2,7 @@ import { isCollectionLogItem, Item, ItemCategory } from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { unstable_cache } from 'next/cache';
+import { clientConstants } from '@/config/constants.client';
 import { calculateItemPoints } from './calculate-item-points';
 
 export const buildNotableItemList = unstable_cache(
@@ -33,4 +34,5 @@ export const buildNotableItemList = unstable_cache(
       },
       {} as Record<keyof typeof itemList, ItemCategory>,
     ),
+  [`points-per-hour:${clientConstants.calculator.notableItemsPointsPerHour}`],
 );
