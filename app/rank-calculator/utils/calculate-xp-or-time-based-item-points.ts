@@ -1,6 +1,6 @@
-import { clientConstants } from '@/config/constants.client';
 import Decimal from 'decimal.js-light';
 import { z } from 'zod';
+import { pointsConfig } from '../config/points';
 
 export function calculateXpOrTimeBasedItemPoints(
   estimatedXpOrTimeToCompletion: number,
@@ -15,7 +15,7 @@ export function calculateXpOrTimeBasedItemPoints(
 
   return new Decimal(parsedEstimatedXpToCompletion)
     .dividedBy(parsedEhpRate)
-    .times(clientConstants.calculator.notableItemsPointsPerHour)
+    .times(pointsConfig.notableItemsPointsPerHour)
     .toDecimalPlaces(0, Decimal.ROUND_CEIL)
     .toNumber();
 }

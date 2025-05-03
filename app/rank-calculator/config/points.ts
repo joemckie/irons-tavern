@@ -19,6 +19,7 @@ export const achievementDiaryTierPoints = {
 } satisfies Record<DiaryTier, number>;
 
 export const pointsConfig = {
+  notableItemsPointsPerHour: 3,
   sailingOffset: 4000,
   maxCapePoints: 7000,
   achievementDiaryCapePoints: 1000,

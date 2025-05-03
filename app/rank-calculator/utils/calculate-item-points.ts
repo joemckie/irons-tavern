@@ -14,6 +14,7 @@ import { CollectionLogItemName } from '@/app/schemas/osrs';
 import chalk from 'chalk';
 import dedent from 'dedent';
 import { clientConstants } from '@/config/constants.client';
+import { pointsConfig } from '../config/points';
 
 interface CalculatePointsForSingleDropSourceOptions {
   ignoreDropRateModifier?: boolean;
@@ -56,7 +57,7 @@ function calculatePointsForSingleDropSource(
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier).div(groupSize))
     .dividedBy(bossEhb)
-    .times(clientConstants.calculator.notableItemsPointsPerHour)
+    .times(pointsConfig.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)
     .toNumber();

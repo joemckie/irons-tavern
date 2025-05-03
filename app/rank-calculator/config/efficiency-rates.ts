@@ -1,13 +1,6 @@
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 
 /**
- * 60 EHB is the default rate given by TempleOSRS when a new boss is added.
- *
- * As they don't provide rates for all bosses, this is used as a fallback.
- */
-export const defaultEhbRate = 60;
-
-/**
  * EHB rates are copied from here:
  *
  * https://templeosrs.com/rates/bosses.php?ehp=imehb

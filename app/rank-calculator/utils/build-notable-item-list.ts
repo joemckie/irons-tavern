@@ -2,11 +2,11 @@ import { isCollectionLogItem, Item, ItemCategory } from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { unstable_cache } from 'next/cache';
-import { clientConstants } from '@/config/constants.client';
 import * as itemPointMap from '@/app/rank-calculator/config/item-point-map';
 import * as efficiencyData from '@/app/rank-calculator/config/efficiency-rates';
 import * as Sentry from '@sentry/nextjs';
 import { calculateItemPoints } from './calculate-item-points';
+import { pointsConfig } from '../config/points';
 
 export const buildNotableItemList = unstable_cache(
   async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
@@ -47,7 +47,7 @@ export const buildNotableItemList = unstable_cache(
       {} as Record<keyof typeof itemList, ItemCategory>,
     ),
   [
-    `points-per-hour:${clientConstants.calculator.notableItemsPointsPerHour}`,
+    `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,
     `efficiency-data:${JSON.stringify(efficiencyData)}`,
     `item-point-map:${JSON.stringify(itemPointMap)}`,
   ],
