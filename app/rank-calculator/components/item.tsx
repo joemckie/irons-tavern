@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
-import { Item } from '@/app/schemas/items';
+import { isCollectionLogItem, Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
@@ -16,7 +16,16 @@ interface ItemProps {
 
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
-  const scaledItemPoints = Math.floor(item.points * scaling);
+  const scaledItemPoints = Intl.NumberFormat('en-gb').format(
+    Math.max(1, Math.floor(item.points * scaling)),
+  );
+  const pointsError =
+    isCollectionLogItem(item) && item.hasPointsError
+      ? ({
+          type: 'value',
+          message: 'Could not determine item points',
+        } satisfies FieldError)
+      : undefined;
 
   return (
     <Table.Row key={item.name} align="center">
@@ -27,7 +36,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
             src={item.image}
             fallback="?"
           />
-          <ValidationTooltip error={error}>
+          <ValidationTooltip error={pointsError || error}>
             <Text>{item.name}</Text>
           </ValidationTooltip>
         </Flex>
@@ -35,7 +44,8 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
       <Table.Cell align="right">
         <Checkbox
           checked={acquired}
-          name={`acquiredItems.${stripEntityName(item.name)}`}
+          disabled={!!(error || pointsError)}
+          name={`acquiredItems.${stripEntityName(item.name)}` as const}
         />
       </Table.Cell>
       <Table.Cell
@@ -43,7 +53,13 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
         align="right"
         width="100px"
       >
-        {`${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
+        {pointsError ? (
+          <Text color="red" weight="medium">
+            -
+          </Text>
+        ) : (
+          `${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`
+        )}
       </Table.Cell>
     </Table.Row>
   );

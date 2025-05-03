@@ -1,7 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
-import { CombatAchievementTier } from '@/app/schemas/osrs';
+import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -10,6 +10,8 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { Checkbox } from '../checkbox';
+import { ValidationTooltip } from '../validation-tooltip';
 
 export function CombatCard() {
   const {
@@ -18,10 +20,18 @@ export function CombatCard() {
     pointsRemaining,
     combatAchievementTierPoints,
     ehbPoints,
+    tzhaarCapePoints,
+    bloodTorvaPoints,
+    dizanasQuiverPoints,
   } = useCombatPointCalculator();
   const {
-    formState: { defaultValues },
+    formState: { defaultValues, errors },
+    getValues,
   } = useFormContext<RankCalculatorSchema>();
+  const [hasBloodTorva, hasDizanasQuiver] = getValues([
+    'hasBloodTorva',
+    'hasDizanasQuiver',
+  ]);
 
   return (
     <DataCard.Root>
@@ -107,6 +117,56 @@ export function CombatCard() {
             size="2"
           >
             {formatNumber(combatAchievementTierPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            TzHaar cape
+          </Text>
+        }
+        center={
+          <Select
+            aria-label="TzHaar cape value"
+            name="tzhaarCape"
+            placeholder="Select a cape"
+            options={TzHaarCape.options}
+          />
+        }
+        right={
+          <Text aria-label="TzHaar cape points" color="gray" size="2">
+            {formatNumber(tzhaarCapePoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <ValidationTooltip
+            error={errors.hasDizanasQuiver}
+            color="gray"
+            size="2"
+          >
+            <Text>Dizana&apos;s quiver</Text>
+          </ValidationTooltip>
+        }
+        center={<Checkbox name="hasDizanasQuiver" checked={hasDizanasQuiver} />}
+        right={
+          <Text aria-label="Dizana's quiver points" color="gray" size="2">
+            {formatNumber(dizanasQuiverPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <ValidationTooltip error={errors.hasBloodTorva} color="gray" size="2">
+            <Text>Blood torva</Text>
+          </ValidationTooltip>
+        }
+        center={<Checkbox name="hasBloodTorva" checked={hasBloodTorva} />}
+        right={
+          <Text aria-label="Blood torva points" color="gray" size="2">
+            {formatNumber(bloodTorvaPoints)}
           </Text>
         }
       />

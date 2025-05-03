@@ -1,8 +1,6 @@
 import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
-import {
-  AchievementDiaryMap,
-  achievementDiaryTierPoints,
-} from '@/app/schemas/rank-calculator';
+import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
+import { achievementDiaryTierPoints } from '../../config/points';
 
 export function calculateAchievementDiaryPoints(
   achievementDiaries: AchievementDiaryMap,

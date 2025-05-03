@@ -1,14 +1,20 @@
-import { itemList } from '@/data/item-list';
 import Decimal from 'decimal.js-light';
+import { ItemCategory } from '@/app/schemas/items';
 import { stripEntityName } from '../strip-entity-name';
 import { calculateMaximumNotableItemsPoints } from './calculate-maximum-notable-items-points';
+import { calculateBonusPoints } from './calculate-bonus-points';
 
 export function calculateNotableItemsPoints(
+  notableItems: [string, ItemCategory][],
   itemFields: Record<string, boolean | undefined>,
+  multiplier: number,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumNotableItemsPoints(scaling);
-  const { totalItems, itemPoints } = Object.entries(itemList).reduce(
+  const totalPointsAvailable = calculateMaximumNotableItemsPoints(
+    notableItems,
+    scaling,
+  );
+  const { totalItems, itemPoints } = notableItems.reduce(
     (acc, [, { items }]) => {
       const { categoryItemPointMap } = items.reduce(
         (categoryAcc, val) => ({
@@ -48,11 +54,12 @@ export function calculateNotableItemsPoints(
     .times(scaling)
     .toDecimalPlaces(0, Decimal.ROUND_FLOOR)
     .toNumber();
+  const bonusPointAwarded = calculateBonusPoints(pointsAwarded, multiplier);
   const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
   const pointsRemaining = totalPointsAvailable - pointsAwarded;
 
   return {
-    pointsAwarded,
+    pointsAwarded: Math.floor(pointsAwarded + bonusPointAwarded),
     pointsAwardedPercentage,
     pointsRemaining,
     percentageCollected,

@@ -5,6 +5,7 @@ import {
   DiaryTier,
   maximumTotalLevel,
   minimumTotalLevel,
+  TzHaarCape,
 } from '@/app/schemas/osrs';
 import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/app/schemas/rank-calculator';
@@ -28,6 +29,15 @@ export const RankCalculatorSchema = z.object({
   rank: Rank,
   points: z.coerce.number().nonnegative(),
   proofLink: z.union([z.string().url().nullish(), z.literal('')]),
+  tzhaarCape: TzHaarCape,
+  hasBloodTorva: z.boolean().default(false),
+  hasDizanasQuiver: z.boolean().default(false),
+  hasMaxCape: z.boolean().default(false),
+  hasAchievementDiaryCape: z.boolean().default(false),
+  combatBonusMultiplier: z.number().min(0).default(0),
+  skillingBonusMultiplier: z.number().min(0).default(0),
+  collectionLogBonusMultiplier: z.number().min(0).default(0),
+  notableItemsBonusMultiplier: z.number().min(0).default(0),
 });
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

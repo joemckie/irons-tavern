@@ -1,0 +1,121 @@
+import { CollectionLogItemName } from '@/app/schemas/osrs';
+
+/**
+ * EHB rates are copied from here:
+ *
+ * https://templeosrs.com/rates/bosses.php?ehp=imehb
+ *
+ * **Note**: Only IM EHB should be used!
+ */
+export const ehbRates = {
+  'Abyssal Sire': 39,
+  'Alchemical Hydra': 29,
+  'Barrows Chests': 22,
+  Bryophyta: 9,
+  Callisto: 135,
+  Cerberus: 54,
+  'Chambers of Xeric': 3.5,
+  'Chambers of Xeric Challenge Mode': 3,
+  'Chaos Elemental': 48,
+  'Chaos Fanatic': 80,
+  'Commander Zilyana': 30,
+  'Corporeal Beast': 8.5,
+  'Crazy Archaeologist': 75,
+  'Dagannoth Prime': 100,
+  'Dagannoth Rex': 100,
+  'Dagannoth Supreme': 100,
+  'Deranged Archaeologist': 80,
+  'General Graardor': 31,
+  'Giant Mole': 97,
+  'Grotesque Guardians': 34,
+  Hespori: 50,
+  'Kalphite Queen': 37,
+  'King Black Dragon': 75,
+  Kraken: 90,
+  "Kree'arra": 30,
+  "K'ril Tsutsaroth": 32,
+  Mimic: 50,
+  Obor: 12,
+  Sarachnis: 67,
+  Scorpia: 80,
+  'The Gauntlet': 10,
+  'The Corrupted Gauntlet': 7.2,
+  'Theatre of Blood': 3.2,
+  'Thermonuclear Smoke Devil': 100,
+  'TzKal-Zuk': 0.9,
+  'TzTok-Jad': 2.2,
+  Venenatis: 80,
+  "Vet'ion": 39,
+  Vorkath: 34,
+  Zulrah: 39,
+  'The Nightmare': 11,
+  'Theatre of Blood Hard Mode': 3,
+  "Phosani's Nightmare": 6.7,
+  Nex: 15,
+  'Tombs of Amascut': 3.7,
+  'Tombs of Amascut (Expert)': 3,
+  'Phantom Muspah': 27,
+  Artio: 50,
+  "Calvar'ion": 45,
+  Spindel: 50,
+  'Duke Sucellus': 30,
+  'The Leviathan': 27,
+  'The Whisperer': 21,
+  Vardorvis: 35,
+  Scurrius: 60,
+  'Lunar Chests': 10,
+  'Sol Heredit': 2.5,
+  Araxxor: 38,
+  'The Hueycoatl': 9,
+  Amoxliatl: 71,
+  'The Royal Titans': 55,
+  'Soul Wars Zeal': 375,
+  Wintertodt: 12,
+  Zalcano: 40,
+  'Colosseum Glory': 15000,
+
+  // These rates are self-calculated and are not from TempleOSRS
+  Skotizo: 1, // Temple doesn't account for the time taken to gather totems, assuming 1 totem acquired per hour
+  'Easy Clue': 18, // https://oldschool.runescape.wiki/w/Money_making_guide/Pickpocketing_H.A.M._members
+  'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
+  'Master Clue': 1, // Probably wrong, needs to be calculated
+  'Guardians of the Rift': 60, // Assuming an average of 6 games per hour with 10 points per game
+  'Tormented Demon': 55, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Tormented_Demons
+  'Araxyte#Level 146': 900, // Assuming an average of a 20 minute task consisting of 300 kills
+  'Demonic gorilla': 62, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_demonic_gorillas,
+  'Expert Hunter Contracts': 24,
+  Herbiboar: 60,
+  Tempoross: 80, // Assuming an average of 80 permits per hour
+  'Chompy bird': 350,
+  'Barbarian Assault': 3,
+  "Armoured zombie (Zemouregal's Fort)": 250,
+  'Lizardman shaman': 180, // Assuming cannoning in the Lizardman Canyon https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Lizardman_Shamans_(Canyon)
+  'Hallowed Sepulchre': 8.4, // https://oldschool.runescape.wiki/w/Hallowed_Sepulchre#Experience_rates
+  'Revenant ork': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
+  'Revenant ork#On-task': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
+  'Black dragon#Wilderness Slayer Cave': 50, // Assumed value - can cannon in the Wilderness Slayer Cave
+  'Spitting Wyvern': 100,
+  'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
+  'Basilisk Knight': 100, // Assuming an average of a 100 minute task consisting of 165 kills
+  'Dark beast': 60,
+  'LMS Points': 25,
+  Drake: 164,
+  Kurask: 280,
+  'Warped Terrorbird': 450,
+  'Cave horror': 528,
+} satisfies Record<string, number>;
+
+/**
+ * EHC rates are pulled from the TempleOSRS Collection Log
+ */
+export const petEhcRates = {
+  'Baby chinchompa': 91.5,
+  Beaver: 111.3,
+  'Giant squirrel': 132.8,
+  Heron: 84.3,
+  Phoenix: 85.4,
+  'Rift guardian': 67.9,
+  'Rock golem': 118.3,
+  Rocky: 25,
+  Tangleroot: 82,
+} satisfies Partial<Record<CollectionLogItemName, number>>;

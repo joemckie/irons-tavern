@@ -44,16 +44,16 @@ export type StandardRank = z.infer<typeof StandardRank>;
  * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.
  */
 export const rankProportions = {
-  Water: 0.0091,
-  Oak: 0.0364,
-  Earth: 0.0742,
-  Willow: 0.1226,
-  Nature: 0.1836,
-  Maple: 0.2562,
-  Law: 0.3497,
-  Yew: 0.4618,
-  Achiever: 0.5993,
-  Elite: 0.79,
-  Diseased: 0.9721,
-  Blisterwood: 1.1925,
-} satisfies AtLeastOne<Record<Rank, number>>;
+  Water: 0.01,
+  Oak: 0.033,
+  Earth: 0.066,
+  Willow: 0.111,
+  Nature: 0.164,
+  Maple: 0.23,
+  Law: 0.31,
+  Yew: 0.411,
+  Achiever: 0.533,
+  Elite: 0.7,
+  Diseased: 0.87,
+  Blisterwood: 1.064,
+} as const satisfies AtLeastOne<Record<Rank, number>>;

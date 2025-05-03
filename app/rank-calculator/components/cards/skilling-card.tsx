@@ -15,6 +15,8 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
 import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { ValidationTooltip } from '../validation-tooltip';
+import { Checkbox } from '../checkbox';
 
 export function SkillingCard() {
   const {
@@ -24,10 +26,17 @@ export function SkillingCard() {
     totalLevelPoints,
     achievementDiariesPoints,
     ehpPoints,
+    achievementDiaryCapePoints,
+    maxCapePoints,
   } = useSkillingPointCalculator();
   const {
-    formState: { defaultValues },
+    formState: { defaultValues, errors },
+    getValues,
   } = useFormContext<RankCalculatorSchema>();
+  const [hasAchievementDiaryCape, hasMaxCape] = getValues([
+    'hasAchievementDiaryCape',
+    'hasMaxCape',
+  ]);
 
   return (
     <DataCard.Root>
@@ -138,6 +147,45 @@ export function SkillingCard() {
           }
         />
       ))}
+      <DataCard.Row
+        left={
+          <ValidationTooltip
+            error={errors.hasAchievementDiaryCape}
+            color="gray"
+            size="2"
+          >
+            <Text>Diary cape</Text>
+          </ValidationTooltip>
+        }
+        center={
+          <Checkbox
+            name="hasAchievementDiaryCape"
+            checked={hasAchievementDiaryCape}
+          />
+        }
+        right={
+          <Text
+            aria-label="Achievement diary cape points"
+            color="gray"
+            size="2"
+          >
+            {formatNumber(achievementDiaryCapePoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <ValidationTooltip error={errors.hasMaxCape} color="gray" size="2">
+            <Text>Max cape</Text>
+          </ValidationTooltip>
+        }
+        center={<Checkbox name="hasMaxCape" checked={hasMaxCape} />}
+        right={
+          <Text aria-label="Max cape points" color="gray" size="2">
+            {formatNumber(maxCapePoints)}
+          </Text>
+        }
+      />
       <DataCard.Row
         left={
           <Text color="gray" size="2">

@@ -1,11 +1,18 @@
 import { z, ZodNumber } from 'zod';
 import {
+  altRarityItems,
+  rarityOverrides,
+  rollOverrides,
+} from '@/app/rank-calculator/config/item-point-map';
+import {
+  CollectionLogItemName,
   CombatAchievementTier,
   DiaryLocation,
   DiaryTier,
   maximumSkillLevel,
   Skill,
 } from './osrs';
+import { fractionToDecimal } from './transformers/fraction-to-decimal';
 
 export const DiaryTierData = z.object({
   complete: z.boolean(),
@@ -130,6 +137,94 @@ export const CombatAchievementListResponse = z.object({
 export type CombatAchievementListResponse = z.infer<
   typeof CombatAchievementListResponse
 >;
+
+const ItemRarity = z
+  .string()
+  .transform(fractionToDecimal)
+  .pipe(
+    z.union([
+      z.nan(),
+      z
+        .number()
+        .lt(1, 'Item rarity must be less than 1')
+        .gt(0, 'Item rarity must be more than 0'),
+    ]),
+  );
+
+export const DroppedItemJSON = z
+  .object({
+    'Alt Rarity': ItemRarity,
+    Rarity: ItemRarity,
+    'Dropped from': z.string(),
+    'Dropped item': z.string(),
+    Rolls: z.number().positive(),
+  })
+  .transform((data) => ({
+    altRarity: data['Alt Rarity'],
+    rarity: data.Rarity,
+    dropSource: data['Dropped from'],
+    itemName: data['Dropped item'],
+    rolls: data.Rolls,
+  }));
+
+export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
+
+export const DroppedItemResponse = z
+  .object({
+    query: z.object({
+      results: z.record(
+        z.string(),
+        z.object({
+          printouts: z.object({
+            'Drop JSON': z.array(
+              z
+                .string()
+                .transform((jsonString) =>
+                  DroppedItemJSON.parse(JSON.parse(jsonString)),
+                ),
+            ),
+          }),
+        }),
+      ),
+    }),
+  })
+  .transform((data) =>
+    Object.values(data.query.results).reduce(
+      (
+        acc,
+        {
+          printouts: {
+            'Drop JSON': [{ altRarity, itemName, dropSource, rarity, rolls }],
+          },
+        },
+      ) => {
+        acc[itemName] = acc[itemName] ?? {};
+
+        const rarityOverride =
+          rarityOverrides[itemName as CollectionLogItemName];
+        const useAltRarity =
+          !!altRarityItems[itemName as CollectionLogItemName]?.[dropSource];
+
+        if (useAltRarity && !altRarity) {
+          throw new Error(
+            `Could not find alt rarity for ${itemName} from ${dropSource}!`,
+          );
+        }
+
+        // Certain items are rolled multiple times, e.g. Granite Hammer.
+        // As the rarity is for an individual roll, we multiply the
+        // individual rarity by the number of rolls to get the final item rarity
+        acc[itemName][dropSource] =
+          (rarityOverride ?? (useAltRarity ? altRarity : rarity)) *
+          (rollOverrides[dropSource] ?? rolls);
+
+        return acc;
+      },
+      {} as Record<string, Record<string, number>>,
+    ),
+  );
+
+export type DroppedItemResponse = z.infer<typeof DroppedItemResponse>;
 
 export const CombatAchievementJson = z.object({
   monster: z.string(),

@@ -1,22 +1,40 @@
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { calculateMaximumSkillingPoints } from './calculate-maximum-skilling-points';
+import { calculateBonusPoints } from './calculate-bonus-points';
 
 export function calculateSkillingPoints(
   achievementDiaryPoints: number,
   ehpPoints: number,
   totalLevelPoints: number,
+  achievementDiaryCapePoints: number,
+  maxCapePoints: number,
+  multiplier: number,
   scaling: number,
-) {
+): CommonPointCalculatorData {
   const totalPointsAvailable = calculateMaximumSkillingPoints(scaling);
 
-  const pointsAwarded = Math.min(
-    achievementDiaryPoints + totalLevelPoints,
+  const pointsAwardedWithEhp =
+    achievementDiaryPoints +
+    totalLevelPoints +
+    achievementDiaryCapePoints +
+    maxCapePoints +
+    ehpPoints;
+
+  const bonusPointsAwarded = calculateBonusPoints(
+    pointsAwardedWithEhp,
+    multiplier,
+  );
+
+  const pointsAwardedWithoutEhp = Math.min(
+    Math.floor(pointsAwardedWithEhp - ehpPoints),
     totalPointsAvailable,
   );
-  const pointsRemaining = totalPointsAvailable - pointsAwarded;
-  const pointsAwardedPercentage = pointsAwarded / totalPointsAvailable;
+  const pointsRemaining = totalPointsAvailable - pointsAwardedWithoutEhp;
+  const pointsAwardedPercentage =
+    pointsAwardedWithoutEhp / totalPointsAvailable;
 
   return {
-    pointsAwarded: pointsAwarded + ehpPoints,
+    pointsAwarded: Math.floor(pointsAwardedWithEhp + bonusPointsAwarded),
     pointsAwardedPercentage,
     pointsRemaining,
   };

@@ -29,6 +29,17 @@ import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
 import { redis } from '@/redis';
 import { calculateMaximumAvailablePoints } from '@/app/rank-calculator/utils/calculators/calculate-maximum-available-points';
+import {
+  fetchItemDropRates,
+  generateRequiredItemList,
+} from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
+import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
+import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points';
+import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
+import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
+import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
+import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+import { itemList } from '@/data/item-list';
 
 export async function GET(request: NextRequest) {
   try {
@@ -65,12 +76,25 @@ export async function GET(request: NextRequest) {
       hasThirdPartyData,
       playerName,
       rankStructure,
+      tzhaarCape,
+      hasBloodTorva,
+      hasDizanasQuiver,
+      hasAchievementDiaryCape,
+      hasMaxCape,
+      collectionLogBonusMultiplier,
+      combatBonusMultiplier,
+      notableItemsBonusMultiplier,
+      skillingBonusMultiplier,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
       return NextResponse.json({ success: true });
     }
 
+    const dropRates = await fetchItemDropRates(generateRequiredItemList());
+    const items = Object.entries(
+      await buildNotableItemList(itemList, dropRates),
+    );
     const scaling = calculateScaling(joinDate);
     const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
       collectionLogCount,
@@ -80,18 +104,32 @@ export async function GET(request: NextRequest) {
       calculateCollectionLogPoints(
         collectionLogSlotPoints,
         collectionLogTotal,
+        collectionLogBonusMultiplier,
         scaling,
       );
     const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(acquiredItems, scaling);
+      calculateNotableItemsPoints(
+        items,
+        acquiredItems,
+        notableItemsBonusMultiplier,
+        scaling,
+      );
     const { pointsAwarded: achievementDiariesPoints } =
       calculateAchievementDiaryPoints(achievementDiaries, scaling);
     const ehpPoints = calculateEhpPoints(ehp, scaling);
     const totalLevelPoints = calculateTotalLevelPoints(totalLevel, scaling);
+    const achievementDiaryCapePoints = calculateAchievementDiaryCapePoints(
+      hasAchievementDiaryCape,
+      scaling,
+    );
+    const maxCapePoints = calculateMaxCapePoints(hasMaxCape, scaling);
     const { pointsAwarded: totalSkillingPoints } = calculateSkillingPoints(
       achievementDiariesPoints,
       ehpPoints,
       totalLevelPoints,
+      achievementDiaryCapePoints,
+      maxCapePoints,
+      skillingBonusMultiplier,
       scaling,
     );
     const ehbPoints = calculateEhbPoints(ehb, scaling);
@@ -99,9 +137,19 @@ export async function GET(request: NextRequest) {
       combatAchievementTier,
       scaling,
     );
+    const tzhaarCapePoints = calculateTzhaarCapePoints(tzhaarCape, scaling);
+    const bloodTorvaPoints = calculateBloodTorvaPoints(hasBloodTorva, scaling);
+    const dizanasQuiverPoints = calculateDizanasQuiverPoints(
+      hasDizanasQuiver,
+      scaling,
+    );
     const { pointsAwarded: totalCombatPoints } = calculateCombatPoints(
       ehbPoints,
       combatAchievementTierPoints,
+      tzhaarCapePoints,
+      bloodTorvaPoints,
+      dizanasQuiverPoints,
+      combatBonusMultiplier,
       scaling,
     );
     const totalPointsAwarded = calculateTotalPoints(
@@ -110,8 +158,10 @@ export async function GET(request: NextRequest) {
       totalSkillingPoints,
       totalCombatPoints,
     );
-    const maximumAvailablePoints =
-      calculateMaximumAvailablePoints(collectionLogTotal);
+    const maximumAvailablePoints = calculateMaximumAvailablePoints(
+      items,
+      collectionLogTotal,
+    );
     const { rank } = calculateRank(
       maximumAvailablePoints,
       totalPointsAwarded,

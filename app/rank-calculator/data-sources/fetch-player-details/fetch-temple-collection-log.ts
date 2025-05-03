@@ -11,11 +11,22 @@ function generateCollectionLogCategoryList() {
   return Object.values(itemList)
     .flatMap(({ items }) => items)
     .filter(isCollectionLogItem)
-    .reduce((acc, { collectionLogCategories }) => {
-      collectionLogCategories.forEach(acc.add, acc);
+    .reduce(
+      (acc, { collectionLogCategories }) => {
+        collectionLogCategories.forEach(acc.add, acc);
 
-      return acc;
-    }, new Set<TempleOSRSCollectionLogCategory>());
+        return acc;
+      },
+      new Set<TempleOSRSCollectionLogCategory>([
+        /*
+         * the_inferno, fortis_colosseum, and the_fight_caves are added manually as they are not included
+         * in the item list, and are required to determine the TzHaar capes and Dizana's quiver completion
+         */
+        'the_inferno',
+        'the_fight_caves',
+        'fortis_colosseum',
+      ]),
+    );
 }
 
 export async function fetchTemplePlayerCollectionLog(player: string) {
@@ -33,8 +44,9 @@ export async function fetchTemplePlayerCollectionLog(player: string) {
       `${clientConstants.temple.baseUrl}/api/collection-log/player_collection_log.php?${collectionLogQueryParams}`,
     );
 
-    return TempleOSRSPlayerCollectionLog.parse(await collectionLogResponse.json())
-      .data;
+    return TempleOSRSPlayerCollectionLog.parse(
+      await collectionLogResponse.json(),
+    ).data;
   } catch {
     Sentry.captureMessage('TempleOSRS collection log not found', 'info');
 

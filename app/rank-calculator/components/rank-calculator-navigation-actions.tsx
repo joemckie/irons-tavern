@@ -17,7 +17,7 @@ import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-su
 import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
 import { DeleteSubmissionDataDialog } from './delete-submission-data-dialog';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
-import { useCurrentPlayer } from '../contexts/current-rank-context';
+import { useCurrentPlayer } from '../contexts/current-player-context';
 
 interface RankCalculatorNavigationActionsProps {
   isActionActive: boolean;

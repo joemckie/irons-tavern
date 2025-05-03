@@ -8,6 +8,7 @@ import { redis, redisRaw } from '@/redis';
 import { ActionError } from '@/app/action-error';
 import {
   RankStructure,
+  RankSubmissionDiff,
   RankSubmissionStatus,
 } from '@/app/schemas/rank-calculator';
 import {
@@ -66,13 +67,13 @@ export const approveSubmissionAction = authActionClient
         '$.playerName': [string];
         '$.rankStructure': [RankStructure];
         '$.combatAchievementTier': [CombatAchievementTier];
-        '$.acquiredItems["Ancient blood ornament kit"]': [boolean];
+        '$.hasBloodTorva': [boolean];
       }>(
         rankSubmissionKey(submissionId),
         '$.rankStructure',
         '$.playerName',
         '$.combatAchievementTier',
-        '$.acquiredItems["Ancient blood ornament kit"]',
+        '$.hasBloodTorva',
       );
 
       if (!submissionData) {
@@ -83,18 +84,15 @@ export const approveSubmissionAction = authActionClient
         '$.playerName': [playerName],
         '$.rankStructure': [rankStructure],
         '$.combatAchievementTier': [combatAchievementTier],
-        '$.acquiredItems["Ancient blood ornament kit"]': [
-          isAncientBloodOrnamentKitChecked,
-        ],
+        '$.hasBloodTorva': [isBloodTorvaChecked],
       } = submissionData;
 
-      const submissionDiff = await redis.hmget<{
-        acquiredItems: string[];
-        combatAchievementTier: CombatAchievementTier | null;
-      }>(
+      const submissionDiff = await redis.hmget<
+        Pick<RankSubmissionDiff, 'combatAchievementTier' | 'hasBloodTorva'>
+      >(
         rankSubmissionDiffKey(submissionId),
-        'acquiredItems',
         'combatAchievementTier',
+        'hasBloodTorva',
       );
 
       if (!submissionDiff) {
@@ -102,8 +100,8 @@ export const approveSubmissionAction = authActionClient
       }
 
       const {
-        acquiredItems: acquiredItemsDiscrepancies,
         combatAchievementTier: combatAchievementTierDiscrepancy,
+        hasBloodTorva: hasBloodTorvaDiscrepancy,
       } = submissionDiff;
 
       // If the player has WikiSync data available and has the Grandmaster CA tier,
@@ -118,8 +116,8 @@ export const approveSubmissionAction = authActionClient
       // This item is based on multiple combat achievements that are available via WikiSync.
       const hasVerifiedAncientBloodOrnamentKit =
         hasWikiSyncData === 'true' &&
-        isAncientBloodOrnamentKitChecked &&
-        !acquiredItemsDiscrepancies.includes('Ancient blood ornament kit');
+        isBloodTorvaChecked &&
+        !hasBloodTorvaDiscrepancy;
 
       const applicableAchievementDiscordRoles = {
         'Blood Torva': hasVerifiedAncientBloodOrnamentKit,

@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { CombatAchievementTier, DiaryLocation, DiaryTier } from './osrs';
+import {
+  CombatAchievementTier,
+  DiaryLocation,
+  DiaryTier,
+  TzHaarCape,
+} from './osrs';
 
 export const RankStructure = z.enum([
   'Standard',
@@ -23,24 +28,6 @@ export interface CommonPointCalculatorData {
   pointsAwardedPercentage: number;
   pointsRemaining: number;
 }
-
-export const achievementDiaryTierPoints = {
-  get None() {
-    return this.Elite * 0;
-  },
-  get Easy() {
-    return this.Elite * 0.1;
-  },
-  get Medium() {
-    return this.Elite * 0.3;
-  },
-  get Hard() {
-    return this.Elite * 0.6;
-  },
-  get Elite() {
-    return 1000;
-  },
-} satisfies Record<DiaryTier, number>;
 
 export const RankSubmissionStatus = z.enum(['Pending', 'Approved', 'Rejected']);
 
@@ -66,6 +53,11 @@ export const RankSubmissionDiff = z.object({
   combatAchievementTier: CombatAchievementTier.nullable(),
   totalLevel: z.number().nullable(),
   collectionLogCount: z.number().nullable(),
+  tzhaarCape: TzHaarCape.nullable(),
+  hasBloodTorva: z.boolean().nullable(),
+  hasDizanasQuiver: z.boolean().nullable(),
+  hasAchievementDiaryCape: z.boolean().nullable(),
+  hasMaxCape: z.boolean().nullable(),
 });
 
 export type RankSubmissionDiff = z.infer<typeof RankSubmissionDiff>;

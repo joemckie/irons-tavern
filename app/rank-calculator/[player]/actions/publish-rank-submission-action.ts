@@ -99,6 +99,11 @@ export const publishRankSubmissionAction = authActionClient
           hasTempleCollectionLog,
           hasWikiSyncData,
           isTempleCollectionLogOutdated,
+          tzhaarCape,
+          hasBloodTorva,
+          hasDizanasQuiver,
+          hasAchievementDiaryCape,
+          hasMaxCape,
         },
       } = playerDetails;
 
@@ -250,6 +255,28 @@ export const publishRankSubmissionAction = authActionClient
         totalLevel:
           hasTemplePlayerStats && totalLevel < savedData.totalLevel
             ? totalLevel
+            : null,
+        tzhaarCape:
+          hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape
+            ? tzhaarCape
+            : null,
+        hasBloodTorva:
+          hasWikiSyncData && hasBloodTorva !== savedData.hasBloodTorva
+            ? !!hasBloodTorva
+            : null,
+        hasDizanasQuiver:
+          hasTempleCollectionLog &&
+          hasDizanasQuiver !== savedData.hasDizanasQuiver
+            ? !!hasDizanasQuiver
+            : null,
+        hasAchievementDiaryCape:
+          hasWikiSyncData &&
+          hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
+            ? !!hasAchievementDiaryCape
+            : null,
+        hasMaxCape:
+          hasTemplePlayerStats && hasMaxCape !== savedData.hasMaxCape
+            ? !!hasMaxCape
             : null,
       } satisfies RankSubmissionDiff;
 

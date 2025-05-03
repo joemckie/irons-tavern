@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { FieldError, useWatch } from 'react-hook-form';
 import { Item } from '@/app/schemas/items';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
@@ -9,12 +9,12 @@ import { EntityImage } from './entity-image';
 import { parseInitials } from '../utils/parse-initials';
 import { formatPercentage } from '../utils/format-percentage';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { MemoisedAutomaticItem } from './automatic-item';
 
 interface CategoryProps {
   title: string;
   image?: string;
   items: Item[];
+  errors: (FieldError | undefined)[];
 }
 
 export const Category = memo(
@@ -22,17 +22,13 @@ export const Category = memo(
     title,
     items,
     image = formatWikiImageUrl(title, 'category'),
+    errors,
   }: CategoryProps) => {
-    const { getFieldState } = useFormContext();
     const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
       name: items.map(
         ({ name }) => `acquiredItems.${stripEntityName(name)}` as const,
       ),
     });
-    const fieldErrors = items.map(
-      ({ name }) =>
-        getFieldState(`acquiredItems.${stripEntityName(name)}`).error,
-    );
     const completedCount = fields.filter(Boolean).length;
     const percentComplete = formatPercentage(completedCount / items.length, 0);
 
@@ -94,22 +90,14 @@ export const Category = memo(
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {items.map((item, i) =>
-              item.isAutomatic ? (
-                <MemoisedAutomaticItem
-                  key={item.name}
-                  item={item}
-                  error={fieldErrors[i]}
-                />
-              ) : (
-                <MemoisedItem
-                  acquired={!!fields[i]}
-                  key={item.name}
-                  item={item}
-                  error={fieldErrors[i]}
-                />
-              ),
-            )}
+            {items.map((item, i) => (
+              <MemoisedItem
+                acquired={!!fields[i]}
+                key={item.name}
+                item={item}
+                error={errors[i]}
+              />
+            ))}
           </Table.Body>
         </Table.Root>
       </Card>

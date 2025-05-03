@@ -1,5 +1,4 @@
-import { maxTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/max-total-level-points';
-import { maxDiaryPoints } from '@/app/rank-calculator/utils/calculators/max-diary-points';
+import { pointsConfig } from '@/app/rank-calculator/config/points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export function useMaxSkillingPoints() {
@@ -7,7 +6,14 @@ export function useMaxSkillingPoints() {
 
   // Remove this when Sailing is released
   // It is used to make max points equal 100% pre-Sailing
-  const sailingOffset = 4000;
+  const {
+    sailingOffset,
+    maximumTotalLevelPoints,
+    maximumAchievementDiaryPoints,
+  } = pointsConfig;
 
-  return (maxDiaryPoints + maxTotalLevelPoints - sailingOffset) * scaling;
+  return (
+    (maximumAchievementDiaryPoints + maximumTotalLevelPoints - sailingOffset) *
+    scaling
+  );
 }

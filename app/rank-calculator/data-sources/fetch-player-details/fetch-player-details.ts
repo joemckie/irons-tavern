@@ -1,3 +1,5 @@
+import 'core-js/actual/set/intersection';
+import 'core-js/actual/set/is-subset-of';
 import { itemList } from '@/data/item-list';
 import {
   userDraftRankSubmissionKey,
@@ -11,13 +13,16 @@ import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
-import { CollectionLogAcquiredItemMap } from '@/app/schemas/wiki';
+import {
+  CollectionLogAcquiredItemMap,
+  isHolidayTrack,
+} from '@/app/schemas/wiki';
+import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
 import { isItemAcquired } from './utils/is-item-acquired';
 import { getWikiSyncData } from './get-wikisync-data';
 import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
 import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
 import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
-import { parseLevels } from './utils/parse-levels';
 import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
 import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
 import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
@@ -25,6 +30,7 @@ import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-vali
 import { validatePlayerExists } from '../../players/validation/player-validation';
 import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
 import { fetchTempleConstants } from './fetch-temple-constants';
+import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -69,6 +75,15 @@ export const emptyResponse = {
   hasThirdPartyData: false,
   isTempleCollectionLogOutdated: false,
   isMobileOnly: false,
+  tzhaarCape: 'None',
+  hasBloodTorva: false,
+  hasDizanasQuiver: false,
+  hasAchievementDiaryCape: false,
+  hasMaxCape: false,
+  combatBonusMultiplier: 0,
+  skillingBonusMultiplier: 0,
+  collectionLogBonusMultiplier: 0,
+  notableItemsBonusMultiplier: 0,
 } satisfies PlayerDetailsResponse;
 
 export async function fetchPlayerDetails(
@@ -177,7 +192,6 @@ export async function fetchPlayerDetails(
 
     const {
       achievementDiaries = null,
-      levels = null,
       quests = null,
       musicTracks = null,
       combatAchievements = null,
@@ -186,7 +200,6 @@ export async function fetchPlayerDetails(
           achievementDiaries: parseAchievementDiaries(
             wikiSyncData.achievement_diaries,
           ),
-          levels: parseLevels(wikiSyncData.levels),
           quests: wikiSyncData.quests,
           musicTracks: wikiSyncData.music_tracks,
           combatAchievements: wikiSyncData.combat_achievements,
@@ -210,11 +223,7 @@ export async function fetchPlayerDetails(
               isItemAcquired(item, {
                 acquiredItems: collectionLogItems,
                 quests,
-                achievementDiaries,
-                levels,
-                musicTracks,
                 combatAchievements,
-                totalLevel,
               }),
             )
             .map(({ name }) => stripEntityName(name))
@@ -226,18 +235,56 @@ export async function fetchPlayerDetails(
         )
       : [];
 
+    const allCurrentNotableItemNames = new Set(
+      Object.values(itemList)
+        .flatMap(({ items }) => items)
+        .map(({ name }) => stripEntityName(name)),
+    );
+
+    const hasMusicCape = musicTracks
+      ? Object.entries(musicTracks)
+          .filter(([track]) => !isHolidayTrack(track))
+          .every(([, unlocked]) => unlocked)
+      : false;
+
+    const acquiredItemsMap = [
+      ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
+        allCurrentNotableItemNames,
+      ),
+    ].reduce<Record<string, boolean>>(
+      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
+      {
+        ...(hasMusicCape && { 'Music cape': true }),
+      },
+    );
+
     const proofLink =
       savedData?.proofLink ??
       (templeCollectionLog
         ? `${clientConstants.temple.baseUrl}/player/collection-log.php?player=${player}`
         : null);
 
-    const acquiredItemsMap = [
-      ...new Set(acquiredItems.concat(previouslyAcquiredItems)),
-    ].reduce<Record<string, boolean>>(
-      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-      {},
-    );
+    const tzhaarCape =
+      (collectionLogItems?.['Infernal cape'] &&
+        TzHaarCape.enum['Infernal cape']) ||
+      (collectionLogItems?.['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
+      TzHaarCape.enum.None;
+
+    const hasBloodTorva = new Set([
+      490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
+      499, // https://oldschool.runescape.wiki/w/Whispered
+      508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
+      517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
+    ]).isSubsetOf(new Set(wikiSyncData?.combat_achievements));
+
+    const hasDizanasQuiver =
+      !!collectionLogItems?.['Dizanas quiver (uncharged)'];
+
+    const hasAchievementDiaryCape = achievementDiaries
+      ? Object.values(achievementDiaries).every((tier) => tier === 'Elite')
+      : false;
+
+    const hasMaxCape = totalLevel === maximumTotalLevel;
 
     return {
       success: true,
@@ -268,12 +315,25 @@ export async function fetchPlayerDetails(
         rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
         currentRank,
+        tzhaarCape: mergeTzhaarCapes(tzhaarCape, savedData?.tzhaarCape),
+        hasBloodTorva: hasBloodTorva || savedData?.hasBloodTorva || false,
+        hasDizanasQuiver:
+          hasDizanasQuiver || savedData?.hasDizanasQuiver || false,
+        hasAchievementDiaryCape:
+          hasAchievementDiaryCape ||
+          savedData?.hasAchievementDiaryCape ||
+          false,
+        hasMaxCape: hasMaxCape || savedData?.hasMaxCape || false,
         hasTemplePlayerStats: !!templePlayerStats,
         hasTempleCollectionLog: !!templeCollectionLog,
         hasWikiSyncData: !!wikiSyncData,
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
+        collectionLogBonusMultiplier: 0,
+        combatBonusMultiplier: 0,
+        skillingBonusMultiplier: 0,
+        notableItemsBonusMultiplier: 0,
       },
     };
   } catch (error) {

@@ -12,7 +12,7 @@ import { RankCalculatorNavigationActions } from '../components/rank-calculator-n
 import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
-import { CurrentPlayerProvider } from '../contexts/current-rank-context';
+import { CurrentPlayerProvider } from '../contexts/current-player-context';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;

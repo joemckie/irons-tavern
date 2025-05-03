@@ -26,6 +26,8 @@ export const Skill = z.enum([
   'Hunter',
 ]);
 
+export type Skill = z.infer<typeof Skill>;
+
 export const Quest = z.enum([
   'A Kingdom Divided',
   'A Night at the Theatre',
@@ -283,6 +285,11 @@ export const minimumTotalLevel = skillsCount + 9; // Hitpoints starts at 10
 
 export const maximumTotalLevel = skillsCount * maximumSkillLevel;
 
+/**
+ * A complete list of collection log item names, as found on OSRSWiki.
+ *
+ * https://oldschool.runescape.wiki/?title=Module:Collection_log/data.json&action=raw&ctype=application%2Fjson
+ */
 export const CollectionLogItemName = z.enum([
   'Dragon spear',
   'Shield left half',
@@ -1770,3 +1777,10 @@ export const CollectionLogItemName = z.enum([
 ]);
 
 export type CollectionLogItemName = z.infer<typeof CollectionLogItemName>;
+
+export const TzHaarCape = z.enum([
+  'None',
+  ...CollectionLogItemName.extract(['Fire cape', 'Infernal cape']).options,
+]);
+
+export type TzHaarCape = z.infer<typeof TzHaarCape>;
