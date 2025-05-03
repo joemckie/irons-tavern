@@ -69,6 +69,9 @@ export const TempleOSRSPlayerStats = z.object({
     Im_ehb: z.number().nonnegative(),
     Uim_ehp: z.number().nonnegative(),
     Collections: z.number().nonnegative(),
+    'TzKal-Zuk': z.number().nonnegative(),
+    'TzTok-Jad': z.number().nonnegative(),
+    'Sol Heredit': z.number().nonnegative(),
   }),
 });
 

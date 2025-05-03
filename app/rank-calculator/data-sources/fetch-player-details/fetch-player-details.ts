@@ -179,7 +179,16 @@ export async function fetchPlayerDetails(
     const {
       Overall_level: totalLevel = null,
       Collections: hiscoresCollectionLogCount = null,
+      'TzKal-Zuk': infernoKc = 0,
+      'TzTok-Jad': fightCavesKc = 0,
+      'Sol Heredit': colosseumKc = 0,
     } = templePlayerStats ?? {};
+
+    const hasInfernalCape = infernoKc > 0;
+    const hasFireCape = fightCavesKc > 0;
+    const hasDizanasQuiver = colosseumKc > 0;
+    const hasMaxCape = totalLevel === maximumTotalLevel;
+
     const { ehb, ehp } = calculateEfficiencyData(templePlayerStats);
 
     const { total_collections_finished: templeCollectionLogCount = null } =
@@ -205,6 +214,12 @@ export async function fetchPlayerDetails(
           combatAchievements: wikiSyncData.combat_achievements,
         }
       : {};
+
+    const hasMusicCape = musicTracks
+      ? Object.entries(musicTracks)
+          .filter(([track]) => !isHolidayTrack(track))
+          .every(([, unlocked]) => unlocked)
+      : false;
 
     const collectionLogItems =
       templeCollectionLog?.items.reduce(
@@ -241,12 +256,6 @@ export async function fetchPlayerDetails(
         .map(({ name }) => stripEntityName(name)),
     );
 
-    const hasMusicCape = musicTracks
-      ? Object.entries(musicTracks)
-          .filter(([track]) => !isHolidayTrack(track))
-          .every(([, unlocked]) => unlocked)
-      : false;
-
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
         allCurrentNotableItemNames,
@@ -265,9 +274,8 @@ export async function fetchPlayerDetails(
         : null);
 
     const tzhaarCape =
-      (collectionLogItems?.['Infernal cape'] &&
-        TzHaarCape.enum['Infernal cape']) ||
-      (collectionLogItems?.['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
+      (hasInfernalCape && TzHaarCape.enum['Infernal cape']) ||
+      (hasFireCape && TzHaarCape.enum['Fire cape']) ||
       TzHaarCape.enum.None;
 
     const hasBloodTorva = new Set([
@@ -277,14 +285,9 @@ export async function fetchPlayerDetails(
       517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
     ]).isSubsetOf(new Set(wikiSyncData?.combat_achievements));
 
-    const hasDizanasQuiver =
-      !!collectionLogItems?.['Dizanas quiver (uncharged)'];
-
     const hasAchievementDiaryCape = achievementDiaries
       ? Object.values(achievementDiaries).every((tier) => tier === 'Elite')
       : false;
-
-    const hasMaxCape = totalLevel === maximumTotalLevel;
 
     return {
       success: true,
