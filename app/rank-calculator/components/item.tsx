@@ -14,8 +14,6 @@ interface ItemProps {
   error: FieldError | undefined;
 }
 
-const pointsErrorMessage = 'Could not determine item points';
-
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
   const scaledItemPoints = Intl.NumberFormat('en-gb').format(
@@ -25,7 +23,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
     isCollectionLogItem(item) && item.hasPointsError
       ? ({
           type: 'value',
-          message: pointsErrorMessage,
+          message: 'Could not determine item points',
         } satisfies FieldError)
       : undefined;
 
