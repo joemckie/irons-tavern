@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import {
   DiaryLocation,
@@ -32,11 +33,26 @@ export function SkillingCard() {
   const {
     formState: { defaultValues, errors },
     getValues,
+    setValue,
   } = useFormContext<RankCalculatorSchema>();
-  const [hasAchievementDiaryCape, hasMaxCape] = getValues([
+  const [hasAchievementDiaryCape, hasMaxCape, achievementDiaries] = getValues([
     'hasAchievementDiaryCape',
     'hasMaxCape',
+    'achievementDiaries',
   ]);
+  const allDiariesElite = Object.values(achievementDiaries).every(
+    (tier) => tier === 'Elite',
+  );
+
+  useEffect(() => {
+    if (allDiariesElite && !hasAchievementDiaryCape) {
+      setValue('hasAchievementDiaryCape', true);
+    }
+
+    if (!allDiariesElite && hasAchievementDiaryCape) {
+      setValue('hasAchievementDiaryCape', false);
+    }
+  }, [allDiariesElite, hasAchievementDiaryCape, setValue]);
 
   return (
     <DataCard.Root>
@@ -116,6 +132,7 @@ export function SkillingCard() {
             min={minimumTotalLevel}
             max={maximumTotalLevel}
             defaultValue={defaultValues?.totalLevel}
+            readOnly
           />
         }
         right={
@@ -158,10 +175,12 @@ export function SkillingCard() {
           </ValidationTooltip>
         }
         center={
-          <Checkbox
-            name="hasAchievementDiaryCape"
-            checked={hasAchievementDiaryCape}
-          />
+          <fieldset disabled>
+            <Checkbox
+              name="hasAchievementDiaryCape"
+              checked={hasAchievementDiaryCape}
+            />
+          </fieldset>
         }
         right={
           <Text
@@ -179,7 +198,11 @@ export function SkillingCard() {
             <Text>Max cape</Text>
           </ValidationTooltip>
         }
-        center={<Checkbox name="hasMaxCape" checked={hasMaxCape} />}
+        center={
+          <fieldset disabled>
+            <Checkbox name="hasMaxCape" checked={hasMaxCape} />
+          </fieldset>
+        }
         right={
           <Text aria-label="Max cape points" color="gray" size="2">
             {formatNumber(maxCapePoints)}
