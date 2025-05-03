@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import {
   DiaryLocation,
@@ -18,6 +17,7 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ValidationTooltip } from '../validation-tooltip';
 import { Checkbox } from '../checkbox';
+import { AchievementDiaryCapeCheckbox } from './skilling/achievement-diary-cape-checkbox';
 
 export function SkillingCard() {
   const {
@@ -33,26 +33,8 @@ export function SkillingCard() {
   const {
     formState: { defaultValues, errors },
     getValues,
-    setValue,
   } = useFormContext<RankCalculatorSchema>();
-  const [hasAchievementDiaryCape, hasMaxCape, achievementDiaries] = getValues([
-    'hasAchievementDiaryCape',
-    'hasMaxCape',
-    'achievementDiaries',
-  ]);
-  const allDiariesElite = Object.values(achievementDiaries).every(
-    (tier) => tier === 'Elite',
-  );
-
-  useEffect(() => {
-    if (allDiariesElite && !hasAchievementDiaryCape) {
-      setValue('hasAchievementDiaryCape', true);
-    }
-
-    if (!allDiariesElite && hasAchievementDiaryCape) {
-      setValue('hasAchievementDiaryCape', false);
-    }
-  }, [allDiariesElite, hasAchievementDiaryCape, setValue]);
+  const hasMaxCape = getValues('hasMaxCape');
 
   return (
     <DataCard.Root>
@@ -176,10 +158,7 @@ export function SkillingCard() {
         }
         center={
           <fieldset disabled>
-            <Checkbox
-              name="hasAchievementDiaryCape"
-              checked={hasAchievementDiaryCape}
-            />
+            <AchievementDiaryCapeCheckbox />
           </fieldset>
         }
         right={
