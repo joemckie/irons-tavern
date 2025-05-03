@@ -44,29 +44,27 @@ export interface GroupUpdateRequest {
   key: string;
 }
 
-export enum GameMode {
-  GroupIronman = 0,
-  Ironman = 1,
-  UltimateIronman = 2,
-  HardcoreIronman = 3,
-}
+export const GameMode = {
+  GroupIronman: 0,
+  Ironman: 1,
+  UltimateIronman: 2,
+  HardcoreIronman: 3,
+} as const;
 
 export const TempleOSRSPlayerStats = z.object({
   data: z.object({
     info: z.object({
       Username: z.string(),
-      'Game mode': z.nativeEnum({
-        GroupIronman: 0,
-        Ironman: 1,
-        UltimateIronman: 2,
-        HardcoreIronman: 3,
-      }),
+      'Game mode': z.nativeEnum(GameMode),
+      Primary_ehb: z.enum(['Ehb', 'Im_ehb', 'Uim_ehb']),
+      Primary_ehp: z.enum(['Ehp', 'Im_ehp', 'Uim_ehp']),
     }),
+    Overall_level: z.number().nonnegative(),
     Ehb: z.number().nonnegative(),
     Ehp: z.number().nonnegative(),
-    Overall_level: z.number().nonnegative(),
-    Im_ehp: z.number().nonnegative(),
     Im_ehb: z.number().nonnegative(),
+    Im_ehp: z.number().nonnegative(),
+    Uim_ehb: z.number().nonnegative(),
     Uim_ehp: z.number().nonnegative(),
     Collections: z.number().nonnegative(),
   }),
