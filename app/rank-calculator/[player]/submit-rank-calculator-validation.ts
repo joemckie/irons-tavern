@@ -40,4 +40,16 @@ export const RankCalculatorSchema = z.object({
   notableItemsBonusMultiplier: z.number().min(0).default(0),
 });
 
+export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
+  ({ hasMaxCape, totalLevel }, ctx) => {
+    if (hasMaxCape && totalLevel !== maximumTotalLevel) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `Total level must be ${maximumTotalLevel} if you have a max cape.`,
+        path: ['hasMaxCape'],
+      });
+    }
+  },
+);
+
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

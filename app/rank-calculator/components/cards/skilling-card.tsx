@@ -17,6 +17,7 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ValidationTooltip } from '../validation-tooltip';
 import { Checkbox } from '../checkbox';
+import { AchievementDiaryCapeCheckbox } from './skilling/achievement-diary-cape-checkbox';
 
 export function SkillingCard() {
   const {
@@ -33,10 +34,7 @@ export function SkillingCard() {
     formState: { defaultValues, errors },
     getValues,
   } = useFormContext<RankCalculatorSchema>();
-  const [hasAchievementDiaryCape, hasMaxCape] = getValues([
-    'hasAchievementDiaryCape',
-    'hasMaxCape',
-  ]);
+  const hasMaxCape = getValues('hasMaxCape');
 
   return (
     <DataCard.Root>
@@ -116,6 +114,7 @@ export function SkillingCard() {
             min={minimumTotalLevel}
             max={maximumTotalLevel}
             defaultValue={defaultValues?.totalLevel}
+            readOnly
           />
         }
         right={
@@ -158,10 +157,9 @@ export function SkillingCard() {
           </ValidationTooltip>
         }
         center={
-          <Checkbox
-            name="hasAchievementDiaryCape"
-            checked={hasAchievementDiaryCape}
-          />
+          <fieldset disabled>
+            <AchievementDiaryCapeCheckbox />
+          </fieldset>
         }
         right={
           <Text
@@ -179,7 +177,11 @@ export function SkillingCard() {
             <Text>Max cape</Text>
           </ValidationTooltip>
         }
-        center={<Checkbox name="hasMaxCape" checked={hasMaxCape} />}
+        center={
+          <fieldset disabled>
+            <Checkbox name="hasMaxCape" checked={hasMaxCape} />
+          </fieldset>
+        }
         right={
           <Text aria-label="Max cape points" color="gray" size="2">
             {formatNumber(maxCapePoints)}

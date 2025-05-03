@@ -5,19 +5,15 @@ import { StatusCodes } from 'http-status-codes';
 export async function validatePlayerExists(playerName: string) {
   'use server';
 
-  const response = await fetch(
-    `https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=${playerName}`,
-  );
+  try {
+    const response = await fetch(
+      `https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=${playerName}`,
+    );
 
-  if (
-    [StatusCodes.TOO_MANY_REQUESTS, StatusCodes.INTERNAL_SERVER_ERROR].includes(
-      response.status,
-    )
-  ) {
+    return response.status !== StatusCodes.NOT_FOUND;
+  } catch {
     // Bail early if the query is unhealthy, as this doesn't
     // mean the player name is non-existent
     return true;
   }
-
-  return response.status === StatusCodes.OK;
 }

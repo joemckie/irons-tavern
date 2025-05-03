@@ -7,7 +7,10 @@ import { Rank } from '@/config/enums';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { RankCalculator } from './rank-calculator';
-import { RankCalculatorSchema } from './submit-rank-calculator-validation';
+import {
+  RankCalculatorSchema,
+  RankCalculatorValidator,
+} from './submit-rank-calculator-validation';
 import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
 import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
@@ -38,7 +41,7 @@ export function FormWrapper({
     },
   } = useHookFormAction(
     saveDraftRankSubmissionAction,
-    zodResolver(RankCalculatorSchema),
+    zodResolver(RankCalculatorValidator),
     {
       formProps: {
         defaultValues: formData,

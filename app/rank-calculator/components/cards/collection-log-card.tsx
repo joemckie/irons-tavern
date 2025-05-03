@@ -77,6 +77,7 @@ export function CollectionLogCard() {
             min={0}
             max={collectionLogTotal}
             defaultValue={defaultValues?.collectionLogCount}
+            readOnly
           />
         }
         right={
