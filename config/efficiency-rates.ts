@@ -94,7 +94,7 @@ export const ehbRates = {
   Herbiboar: 60,
   Tempoross: 80, // Assuming an average of 80 permits per hour
   'Chompy bird': 350,
-  'Barbarian Assault': 3.5,
+  'Barbarian Assault': 3,
   "Armoured zombie (Zemouregal's Fort)": 250,
   'Lizardman shaman': 180, // Assuming cannoning in the Lizardman Canyon https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Lizardman_Shamans_(Canyon)
   'Hallowed Sepulchre': 8.4, // https://oldschool.runescape.wiki/w/Hallowed_Sepulchre#Experience_rates

@@ -33,8 +33,8 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Eldric the Ice King': 'The Royal Titans',
   'Lunar Chest': 'Lunar Chests',
   'Scurrius#MVP': 'Scurrius',
-  'Reward casket (easy)': 'Easy Clue',
-  'Reward casket (medium)': 'Medium Clue',
+  'Reward casket (easy)#Standard': 'Easy Clue',
+  'Reward casket (medium)#Stadard': 'Medium Clue',
   'Reward casket (master)': 'Master Clue',
   'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
   'Cave kraken': 'Kraken',
@@ -112,8 +112,8 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
  * This map is used to overrides the rolls provided by OSRSWiki to get the correct drop rate.
  */
 export const rollOverrides: Record<string, number> = {
-  'Reward casket (medium)': 4,
-  'Reward casket (easy)': 3,
+  'Reward casket (easy)#Standard': 3,
+  'Reward casket (medium)#Standard': 4,
 };
 
 /**
