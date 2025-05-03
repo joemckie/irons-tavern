@@ -34,7 +34,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Lunar Chest': 'Lunar Chests',
   'Scurrius#MVP': 'Scurrius',
   'Reward casket (easy)#Standard': 'Easy Clue',
-  'Reward casket (medium)#Stadard': 'Medium Clue',
+  'Reward casket (medium)#Standard': 'Medium Clue',
   'Reward casket (master)': 'Master Clue',
   'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
   'Cave kraken': 'Kraken',

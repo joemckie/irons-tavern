@@ -1,5 +1,5 @@
-import { memo, useEffect } from 'react';
-import { FieldError, useFormContext } from 'react-hook-form';
+import { memo } from 'react';
+import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { isCollectionLogItem, Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
@@ -14,26 +14,20 @@ interface ItemProps {
   error: FieldError | undefined;
 }
 
+const pointsErrorMessage = 'Could not determine item points';
+
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
   const scaledItemPoints = Intl.NumberFormat('en-gb').format(
     Math.max(1, Math.floor(item.points * scaling)),
   );
-  const fieldName = `acquiredItems.${stripEntityName(item.name)}` as const;
-  const { setError } = useFormContext();
-
-  useEffect(() => {
-    if (isCollectionLogItem(item) && item.hasPointsError) {
-      setError(
-        fieldName,
-        {
+  const pointsError =
+    isCollectionLogItem(item) && item.hasPointsError
+      ? ({
           type: 'value',
-          message: 'Could not calculate points',
-        },
-        { shouldFocus: false },
-      );
-    }
-  }, [item, setError, fieldName]);
+          message: pointsErrorMessage,
+        } satisfies FieldError)
+      : undefined;
 
   return (
     <Table.Row key={item.name} align="center">
@@ -44,25 +38,30 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
             src={item.image}
             fallback="?"
           />
-          <ValidationTooltip error={error}>
+          <ValidationTooltip error={pointsError || error}>
             <Text>{item.name}</Text>
           </ValidationTooltip>
         </Flex>
       </Table.Cell>
       <Table.Cell align="right">
-        <Checkbox checked={acquired} disabled={!!error} name={fieldName} />
+        <Checkbox
+          checked={acquired}
+          disabled={!!(error || pointsError)}
+          name={`acquiredItems.${stripEntityName(item.name)}` as const}
+        />
       </Table.Cell>
       <Table.Cell
         aria-label={`${item.name} points`}
         align="right"
         width="100px"
       >
-        {error && (
+        {pointsError ? (
           <Text color="red" weight="medium">
-            0
+            -
           </Text>
+        ) : (
+          `${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`
         )}
-        {!error && `${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
       </Table.Cell>
     </Table.Row>
   );
