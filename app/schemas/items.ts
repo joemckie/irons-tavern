@@ -25,6 +25,7 @@ export const CollectionLogItem = BaseItem.extend({
   requiredLevels: z.record(Skill, z.number()).optional(),
   requiredItems: z.array(RequiredItem).nonempty(),
   collectionLogCategories: z.array(TempleOSRSCollectionLogCategory).nonempty(),
+  hasPointsError: z.boolean(),
 });
 
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;

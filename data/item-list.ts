@@ -14,7 +14,7 @@ import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
 import { ehbRates, petEhcRates } from '@/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
-  OptionalKeys<CollectionLogItem, 'image' | 'points'>,
+  OptionalKeys<CollectionLogItem, 'image' | 'points' | 'hasPointsError'>,
   'requiredItems' | 'collectionLogCategories'
 > &
   Pick<
@@ -41,6 +41,7 @@ function singleItem({
     image,
     name,
     points,
+    hasPointsError: false,
     requiredItems: [
       {
         amount: requiredAmount,
@@ -55,7 +56,7 @@ function singleItem({
 }
 
 type CompoundItemOptions = Omit<
-  OptionalKeys<CollectionLogItem, 'image' | 'points'>,
+  OptionalKeys<CollectionLogItem, 'image' | 'points' | 'hasPointsError'>,
   'requiredItems'
 > & {
   requiredItems: NonEmptyArray<
@@ -75,6 +76,7 @@ function compoundItem({
     image,
     name,
     points,
+    hasPointsError: false,
     requiredItems: requiredItems.map<RequiredItem>(
       ({ amount = 1, ...item }) => ({
         ...item,

@@ -3,26 +3,38 @@ import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { unstable_cache } from 'next/cache';
 import { clientConstants } from '@/config/constants.client';
+import * as itemPointMap from '@/config/item-point-map';
+import * as efficiencyData from '@/config/efficiency-rates';
+import * as Sentry from '@sentry/nextjs';
 import { calculateItemPoints } from './calculate-item-points';
 
 export const buildNotableItemList = unstable_cache(
   async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
     Object.entries(notableItemConfig).reduce(
       (acc, [key, category]) => {
-        const items = category.items.map((item) => {
+        const items = category.items.reduce((itemsAcc, item) => {
           if (item.points) {
-            return item;
+            return itemsAcc.concat(item);
           }
 
           if (isCollectionLogItem(item)) {
-            return {
-              ...item,
-              points: calculateItemPoints(dropRates, item.requiredItems),
-            };
+            try {
+              return itemsAcc.concat({
+                ...item,
+                points: calculateItemPoints(dropRates, item.requiredItems),
+              });
+            } catch (error) {
+              Sentry.captureException(error);
+
+              return itemsAcc.concat({
+                ...item,
+                hasPointsError: true,
+              });
+            }
           }
 
           throw new Error(`Could not calculate item points for ${item.name}`);
-        }) as NonEmptyArray<Item>;
+        }, [] as Item[]);
 
         return {
           ...acc,
@@ -34,5 +46,9 @@ export const buildNotableItemList = unstable_cache(
       },
       {} as Record<keyof typeof itemList, ItemCategory>,
     ),
-  [`points-per-hour:${clientConstants.calculator.notableItemsPointsPerHour}`],
+  [
+    `points-per-hour:${clientConstants.calculator.notableItemsPointsPerHour}`,
+    `efficiency-data:${JSON.stringify(efficiencyData)}`,
+    `item-point-map:${JSON.stringify(itemPointMap)}`,
+  ],
 );

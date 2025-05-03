@@ -1,4 +1,4 @@
-import { defaultEhbRate, ehbRates } from '@/config/efficiency-rates';
+import { ehbRates } from '@/config/efficiency-rates';
 import {
   dropRateModifiers,
   rewardItemBossNameMap,
@@ -44,16 +44,18 @@ function calculatePointsForSingleDropSource(
   if (!bossEhb) {
     console.warn(
       dedent`
-        ${chalk.underline.yellow(bossName)}: No EHB rate found whilst calculating "${chalk.underline.red(itemName)}". Using default of ${chalk.bold.underline('60 EHB')}.
+        ${chalk.underline.yellow(bossName)}: No EHB rate found whilst calculating "${chalk.underline.red(itemName)}". Returning 0 points.
 
         ${encodeURI(`${clientConstants.wiki.baseUrl}/api.php?action=ask&query=[[Dropped item::${itemName}]]|?Drop JSON|limit=1000&format=json`)}
       `,
     );
+
+    throw new Error(`No EHB rate found for ${bossName}`);
   }
 
   return new Decimal(1)
     .dividedBy(new Decimal(itemDropRate).times(dropRateModifier).div(groupSize))
-    .dividedBy(bossEhb ?? defaultEhbRate)
+    .dividedBy(bossEhb)
     .times(clientConstants.calculator.notableItemsPointsPerHour)
     .times(pointModifier)
     .times(ignoreAmountMultiplier ? 1 : amount)

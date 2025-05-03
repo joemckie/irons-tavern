@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { FieldError } from 'react-hook-form';
+import { memo, useEffect } from 'react';
+import { FieldError, useFormContext } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
-import { Item } from '@/app/schemas/items';
+import { isCollectionLogItem, Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
 import { stripEntityName } from '../utils/strip-entity-name';
 import { EntityImage } from './entity-image';
@@ -19,6 +19,21 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaledItemPoints = Intl.NumberFormat('en-gb').format(
     Math.max(1, Math.floor(item.points * scaling)),
   );
+  const fieldName = `acquiredItems.${stripEntityName(item.name)}` as const;
+  const { setError } = useFormContext();
+
+  useEffect(() => {
+    if (isCollectionLogItem(item) && item.hasPointsError) {
+      setError(
+        fieldName,
+        {
+          type: 'value',
+          message: 'Could not calculate points',
+        },
+        { shouldFocus: false },
+      );
+    }
+  }, [item, setError, fieldName]);
 
   return (
     <Table.Row key={item.name} align="center">
@@ -35,17 +50,19 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
         </Flex>
       </Table.Cell>
       <Table.Cell align="right">
-        <Checkbox
-          checked={acquired}
-          name={`acquiredItems.${stripEntityName(item.name)}`}
-        />
+        <Checkbox checked={acquired} disabled={!!error} name={fieldName} />
       </Table.Cell>
       <Table.Cell
         aria-label={`${item.name} points`}
         align="right"
         width="100px"
       >
-        {`${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
+        {error && (
+          <Text color="red" weight="medium">
+            0
+          </Text>
+        )}
+        {!error && `${acquired ? scaledItemPoints : 0} / ${scaledItemPoints}`}
       </Table.Cell>
     </Table.Row>
   );
