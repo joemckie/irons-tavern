@@ -45,7 +45,7 @@ export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
     if (hasMaxCape && totalLevel !== maximumTotalLevel) {
       ctx.addIssue({
         code: 'custom',
-        message: 'Total level must be 2277 if you have a max cape.',
+        message: `Total level must be ${maximumTotalLevel} if you have a max cape.`,
         path: ['hasMaxCape'],
       });
     }
