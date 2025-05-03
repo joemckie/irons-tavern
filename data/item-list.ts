@@ -11,7 +11,10 @@ import {
 } from '@/app/schemas/items';
 import { CollectionLogItemName, Quest } from '@/app/schemas/osrs';
 import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
-import { ehbRates, petEhcRates } from '@/config/efficiency-rates';
+import {
+  ehbRates,
+  petEhcRates,
+} from '@/app/rank-calculator/config/efficiency-rates';
 
 type SingleItemOptions = Omit<
   OptionalKeys<CollectionLogItem, 'image' | 'points' | 'hasPointsError'>,

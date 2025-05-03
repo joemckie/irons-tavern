@@ -1,11 +1,11 @@
-import { ehbRates } from '@/config/efficiency-rates';
+import { ehbRates } from '@/app/rank-calculator/config/efficiency-rates';
 import {
   dropRateModifiers,
   rewardItemBossNameMap,
   pointModifiers,
   collectionLogItemBossNameMap,
   groupSizes,
-} from '@/config/item-point-map';
+} from '@/app/rank-calculator/config/item-point-map';
 import { RequiredItem } from '@/app/schemas/items';
 import Decimal from 'decimal.js-light';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
