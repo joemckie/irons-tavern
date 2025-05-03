@@ -11,13 +11,12 @@ interface CheckboxProps<T extends FieldValues = FieldValues>
 }
 
 export function Checkbox(props: CheckboxProps) {
-  const { required, name, checked, disabled } = props;
+  const { required, name, checked } = props;
   const { field } = useController({
     rules: {
       required,
     },
     name,
-    disabled,
     defaultValue: checked,
   });
 
@@ -31,7 +30,6 @@ export function Checkbox(props: CheckboxProps) {
     <BaseCheckbox
       {...props}
       {...field}
-      disabled={disabled}
       onCheckedChange={(value) => {
         field.onChange(value);
       }}
