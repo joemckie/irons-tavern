@@ -20,6 +20,7 @@ export function Select({
   options,
   placeholder,
   required,
+  onValueChange,
   ...props
 }: SelectProps) {
   const {
@@ -42,6 +43,7 @@ export function Select({
       setValue={(value) =>
         startTransition(() => {
           field.onChange(value);
+          onValueChange?.(value);
         })
       }
       value={field.value ?? ''}

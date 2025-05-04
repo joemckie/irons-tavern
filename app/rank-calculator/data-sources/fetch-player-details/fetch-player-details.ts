@@ -31,6 +31,7 @@ import { validatePlayerExists } from '../../players/validation/player-validation
 import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
 import { fetchTempleConstants } from './fetch-temple-constants';
 import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
+import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -281,7 +282,7 @@ export async function fetchPlayerDetails(
       !!collectionLogItems?.['Dizanas quiver (uncharged)'];
 
     const hasAchievementDiaryCape = achievementDiaries
-      ? Object.values(achievementDiaries).every((tier) => tier === 'Elite')
+      ? isAchievementDiaryCapeAchieved(achievementDiaries)
       : false;
 
     const hasMaxCape = totalLevel === maximumTotalLevel;
