@@ -39,6 +39,7 @@ import {
   isQuestItem,
   Item,
 } from '@/app/schemas/items';
+import * as Sentry from '@sentry/nextjs';
 import { calculateScaling } from '../../utils/calculators/calculate-scaling';
 import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
@@ -166,9 +167,25 @@ export const publishRankSubmissionAction = authActionClient
         },
       });
 
-      await discordBotClient.put(
-        Routes.threadMembers(discordMessageId, userId),
-      );
+      try {
+        await discordBotClient.put(
+          Routes.threadMembers(discordMessageId, userId),
+        );
+      } catch (error) {
+        try {
+          // If the user can't be added to the thread, send a comment that mentions them instead
+          await sendDiscordMessage(
+            {
+              content: `<@${userId}>`,
+            },
+            discordMessageId,
+          );
+        } catch {
+          // Adding the user to the thread is not critical to the process,
+          // so if both attempts fail, just capture the exception and continue.
+          Sentry.captureException(error);
+        }
+      }
 
       const itemMap = Object.values(itemList)
         .flatMap(({ items }) => items)
