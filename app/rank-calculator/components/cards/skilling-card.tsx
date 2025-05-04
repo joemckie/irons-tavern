@@ -169,12 +169,11 @@ export function SkillingCard() {
           </ValidationTooltip>
         }
         center={
-          <fieldset disabled>
-            <Checkbox
-              name="hasAchievementDiaryCape"
-              checked={hasAchievementDiaryCape}
-            />
-          </fieldset>
+          <Checkbox
+            name="hasAchievementDiaryCape"
+            checked={hasAchievementDiaryCape}
+            disabled
+          />
         }
         right={
           <Text
@@ -192,11 +191,7 @@ export function SkillingCard() {
             <Text>Max cape</Text>
           </ValidationTooltip>
         }
-        center={
-          <fieldset disabled>
-            <Checkbox name="hasMaxCape" checked={hasMaxCape} />
-          </fieldset>
-        }
+        center={<Checkbox name="hasMaxCape" checked={hasMaxCape} disabled />}
         right={
           <Text aria-label="Max cape points" color="gray" size="2">
             {formatNumber(maxCapePoints)}
