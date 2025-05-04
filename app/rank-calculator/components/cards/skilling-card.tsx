@@ -17,7 +17,7 @@ import { formatNumber } from '../../utils/format-number';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ValidationTooltip } from '../validation-tooltip';
 import { Checkbox } from '../checkbox';
-import { AchievementDiaryCapeCheckbox } from './skilling/achievement-diary-cape-checkbox';
+import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
 
 export function SkillingCard() {
   const {
@@ -33,8 +33,12 @@ export function SkillingCard() {
   const {
     formState: { defaultValues, errors },
     getValues,
+    setValue,
   } = useFormContext<RankCalculatorSchema>();
-  const hasMaxCape = getValues('hasMaxCape');
+  const [hasMaxCape, hasAchievementDiaryCape] = getValues([
+    'hasMaxCape',
+    'hasAchievementDiaryCape',
+  ]);
 
   return (
     <DataCard.Root>
@@ -137,6 +141,14 @@ export function SkillingCard() {
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"
               options={DiaryTier.options}
+              onValueChange={() => {
+                const achievementDiaries = getValues('achievementDiaries');
+
+                setValue(
+                  'hasAchievementDiaryCape',
+                  isAchievementDiaryCapeAchieved(achievementDiaries),
+                );
+              }}
             />
           }
           right={
@@ -157,9 +169,11 @@ export function SkillingCard() {
           </ValidationTooltip>
         }
         center={
-          <fieldset disabled>
-            <AchievementDiaryCapeCheckbox />
-          </fieldset>
+          <Checkbox
+            name="hasAchievementDiaryCape"
+            checked={hasAchievementDiaryCape}
+            disabled
+          />
         }
         right={
           <Text
@@ -177,11 +191,7 @@ export function SkillingCard() {
             <Text>Max cape</Text>
           </ValidationTooltip>
         }
-        center={
-          <fieldset disabled>
-            <Checkbox name="hasMaxCape" checked={hasMaxCape} />
-          </fieldset>
-        }
+        center={<Checkbox name="hasMaxCape" checked={hasMaxCape} disabled />}
         right={
           <Text aria-label="Max cape points" color="gray" size="2">
             {formatNumber(maxCapePoints)}
