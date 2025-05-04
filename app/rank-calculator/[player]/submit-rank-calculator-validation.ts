@@ -11,6 +11,7 @@ import { PlayerName } from '@/app/schemas/player';
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
 import { pickBy } from 'lodash';
+import { isAchievementDiaryCapeAchieved } from '../utils/is-achievement-diary-cape-achieved';
 
 export const RankCalculatorSchema = z.object({
   acquiredItems: z
@@ -41,7 +42,22 @@ export const RankCalculatorSchema = z.object({
 });
 
 export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
-  ({ hasMaxCape, totalLevel }, ctx) => {
+  (
+    { hasMaxCape, totalLevel, achievementDiaries, hasAchievementDiaryCape },
+    ctx,
+  ) => {
+    if (
+      hasAchievementDiaryCape &&
+      !isAchievementDiaryCapeAchieved(achievementDiaries)
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        message:
+          'You must have all achievement diaries completed to have the cape.',
+        path: ['hasAchievementDiaryCape'],
+      });
+    }
+
     if (hasMaxCape && totalLevel !== maximumTotalLevel) {
       ctx.addIssue({
         code: 'custom',
