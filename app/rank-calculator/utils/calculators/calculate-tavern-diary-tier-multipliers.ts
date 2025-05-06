@@ -14,15 +14,13 @@ export function calculateTavernDiaryTierMultipliers(discordRoles: Set<string>) {
   ).reduce(
     (acc, key) => ({
       ...acc,
-      [key]: tavernDiaryDiscordRoles[key]
-        .entries()
-        .reduce(
-          (tierMultiplier, [tier, roleId]) =>
-            discordRoles.has(roleId)
-              ? tavernDiaryTierMultipliers[tier]
-              : tierMultiplier,
-          0,
-        ),
+      [key]: [...tavernDiaryDiscordRoles[key]].reduce(
+        (tierMultiplier, [tier, roleId]) =>
+          discordRoles.has(roleId)
+            ? tavernDiaryTierMultipliers[tier]
+            : tierMultiplier,
+        0,
+      ),
     }),
     {} as Record<TavernDiarySection, number>,
   );
