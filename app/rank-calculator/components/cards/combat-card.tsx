@@ -24,7 +24,8 @@ export function CombatCard() {
     tzhaarCapePoints,
     bloodTorvaPoints,
     dizanasQuiverPoints,
-    combatBonusMultiplier,
+    bonusMultiplier,
+    bonusPointsAwarded,
   } = useCombatPointCalculator();
   const {
     formState: { defaultValues, errors },
@@ -180,12 +181,12 @@ export function CombatCard() {
         }
         center={
           <Text aria-label="Combat diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[combatBonusMultiplier]}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
           </Text>
         }
         right={
           <Text aria-label="Combat point bonus multiplier" size="2">
-            +{formatPercentage(combatBonusMultiplier)}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
           </Text>
         }
       />

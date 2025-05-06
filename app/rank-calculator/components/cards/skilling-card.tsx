@@ -30,7 +30,8 @@ export function SkillingCard() {
     ehpPoints,
     achievementDiaryCapePoints,
     maxCapePoints,
-    skillingBonusMultiplier,
+    bonusMultiplier,
+    bonusPointsAwarded,
   } = useSkillingPointCalculator();
   const {
     formState: { defaultValues, errors },
@@ -208,12 +209,12 @@ export function SkillingCard() {
         }
         center={
           <Text aria-label="Skilling diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[skillingBonusMultiplier]}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
           </Text>
         }
         right={
           <Text aria-label="Skilling point bonus multiplier" size="2">
-            +{formatPercentage(skillingBonusMultiplier)}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
           </Text>
         }
       />

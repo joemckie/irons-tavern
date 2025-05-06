@@ -1,4 +1,3 @@
-import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { calculateMaximumSkillingPoints } from './calculate-maximum-skilling-points';
 import { calculateBonusPoints } from './calculate-bonus-points';
 
@@ -10,7 +9,7 @@ export function calculateSkillingPoints(
   maxCapePoints: number,
   multiplier: number,
   scaling: number,
-): CommonPointCalculatorData {
+) {
   const totalPointsAvailable = calculateMaximumSkillingPoints(scaling);
 
   const pointsAwardedWithEhp =
@@ -37,5 +36,6 @@ export function calculateSkillingPoints(
     pointsAwarded: Math.floor(pointsAwardedWithEhp + bonusPointsAwarded),
     pointsAwardedPercentage,
     pointsRemaining,
+    bonusPointsAwarded: Math.floor(bonusPointsAwarded),
   };
 }

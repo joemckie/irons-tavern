@@ -16,7 +16,8 @@ export function CollectionLogCard() {
     pointsAwardedPercentage,
     pointsRemaining,
     collectionLogSlotPoints,
-    collectionLogBonusMultiplier,
+    bonusMultiplier,
+    bonusPointsAwarded,
   } = useCollectionLogPointCalculator();
   const {
     getValues,
@@ -96,12 +97,12 @@ export function CollectionLogCard() {
         }
         center={
           <Text aria-label="Collection log diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[collectionLogBonusMultiplier]}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
           </Text>
         }
         right={
           <Text aria-label="Collection log point bonus multiplier" size="2">
-            +{formatPercentage(collectionLogBonusMultiplier)}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
           </Text>
         }
       />
