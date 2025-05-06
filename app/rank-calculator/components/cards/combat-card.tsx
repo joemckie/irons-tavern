@@ -2,6 +2,7 @@ import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
+import { tavernDiaryTierNameByMultiplier } from '@/config/tavern-diaries';
 import { DataCard } from '../data-card';
 import { Select } from '../select';
 import { EditableText } from '../editable-text';
@@ -23,6 +24,7 @@ export function CombatCard() {
     tzhaarCapePoints,
     bloodTorvaPoints,
     dizanasQuiverPoints,
+    combatBonusMultiplier,
   } = useCombatPointCalculator();
   const {
     formState: { defaultValues, errors },
@@ -167,6 +169,23 @@ export function CombatCard() {
         right={
           <Text aria-label="Blood torva points" color="gray" size="2">
             {formatNumber(bloodTorvaPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Tavern diary tier
+          </Text>
+        }
+        center={
+          <Text aria-label="Combat diary tier" size="2">
+            {tavernDiaryTierNameByMultiplier[combatBonusMultiplier]}
+          </Text>
+        }
+        right={
+          <Text aria-label="Combat point bonus multiplier" size="2">
+            +{formatPercentage(combatBonusMultiplier)}
           </Text>
         }
       />

@@ -8,6 +8,7 @@ import { useCalculatorScaling } from '../use-calculator-scaling';
 export interface CollectionLogPointCalculatorData
   extends CommonPointCalculatorData {
   collectionLogSlotPoints: number;
+  collectionLogBonusMultiplier: number;
 }
 
 export function useCollectionLogPointCalculator() {
@@ -39,5 +40,6 @@ export function useCollectionLogPointCalculator() {
     pointsAwardedPercentage,
     pointsRemaining,
     collectionLogSlotPoints,
+    collectionLogBonusMultiplier,
   } satisfies CollectionLogPointCalculatorData;
 }

@@ -15,6 +15,7 @@ export interface CombatPointCalculatorData extends CommonPointCalculatorData {
   tzhaarCapePoints: number;
   bloodTorvaPoints: number;
   dizanasQuiverPoints: number;
+  combatBonusMultiplier: number;
 }
 
 export function useCombatPointCalculator() {
@@ -52,5 +53,6 @@ export function useCombatPointCalculator() {
     tzhaarCapePoints,
     bloodTorvaPoints,
     dizanasQuiverPoints,
+    combatBonusMultiplier,
   } satisfies CombatPointCalculatorData;
 }

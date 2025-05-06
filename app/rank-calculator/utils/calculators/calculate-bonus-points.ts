@@ -1,3 +1,3 @@
 export function calculateBonusPoints(points: number, multiplier: number) {
-  return points * (multiplier / 100);
+  return points * multiplier;
 }

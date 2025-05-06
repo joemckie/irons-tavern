@@ -16,6 +16,7 @@ export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
   achievementDiariesPoints: Record<DiaryLocation, number>;
   achievementDiaryCapePoints: number;
   maxCapePoints: number;
+  skillingBonusMultiplier: number;
 }
 
 export function useSkillingPointCalculator() {
@@ -55,5 +56,6 @@ export function useSkillingPointCalculator() {
     achievementDiariesPoints,
     achievementDiaryCapePoints,
     maxCapePoints,
+    skillingBonusMultiplier,
   } satisfies SkillingPointCalculatorData;
 }
