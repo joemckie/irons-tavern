@@ -17,6 +17,6 @@ export async function fetchUserDiscordRoles(userId: string) {
   } catch (error) {
     Sentry.captureException(error);
 
-    return new Set<string>();
+    return null;
   }
 }

@@ -2,7 +2,17 @@ import { TavernDiarySection } from '@/app/schemas/tavern-diaries';
 import { tavernDiaryDiscordRoles } from '@/config/discord-roles';
 import { tavernDiaryTierMultipliers } from '@/config/tavern-diaries';
 
-export function calculateTavernDiaryTierMultipliers(discordRoles: Set<string>) {
+export function calculateTavernDiaryTierMultipliers(
+  discordRoles: Set<string> | null,
+) {
+  if (!discordRoles) {
+    return {
+      collectionLogBonusMultiplier: 0,
+      combatBonusMultiplier: 0,
+      skillingBonusMultiplier: 0,
+    };
+  }
+
   const {
     'Collection Log': collectionLogBonusMultiplier,
     Combat: combatBonusMultiplier,
