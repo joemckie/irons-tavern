@@ -19,6 +19,9 @@ export const rankNames: Partial<Record<Rank, string>> = {
   Onyx: 'Onyxian',
   Legend: 'Legacy',
   Blisterwood: 'Hollow',
+  General: 'Major',
+  Admiral: 'General',
+  Marshal: 'Field Marshal',
 };
 
 export const StandardRank = Rank.extract([
@@ -52,8 +55,8 @@ export const rankProportions = {
   Maple: 0.23,
   Law: 0.31,
   Yew: 0.411,
-  Achiever: 0.533,
-  Elite: 0.7,
-  Diseased: 0.87,
-  Blisterwood: 1.064,
+  Achiever: 0.54,
+  Elite: 0.724,
+  Diseased: 0.925,
+  Blisterwood: 1.178,
 } as const satisfies AtLeastOne<Record<Rank, number>>;

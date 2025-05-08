@@ -27,24 +27,20 @@ export const calculateRankThresholds = (
       Pine: 1,
       ...standardRankPoints,
     },
-    'Bingo Winner': {
-      'Gnome Child': 0,
-    },
     Legacy: {
       Legend: 0,
     },
-    Inviter: {
-      Hero: 0,
-      Warlock: standardRankPoints.Law,
-      Dragonstone: standardRankPoints.Elite,
-    },
     Admin: {
-      Defiler: 0,
-      Onyx: standardRankPoints.Achiever,
+      Lieutenant: 0,
+      Captain: standardRankPoints.Nature,
+      General: standardRankPoints.Law,
+      Colonel: standardRankPoints.Achiever,
+      Brigadier: standardRankPoints.Elite,
+      Admiral: standardRankPoints.Diseased,
+      Marshal: standardRankPoints.Blisterwood,
     },
     Moderator: {
-      Pure: 0,
-      Zenyte: standardRankPoints.Achiever,
+      Moderator: 0,
     },
     'Deputy Owner': {
       'Deputy Owner': 0,

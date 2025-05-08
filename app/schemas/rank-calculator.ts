@@ -8,9 +8,7 @@ import {
 
 export const RankStructure = z.enum([
   'Standard',
-  'Bingo Winner',
   'Legacy',
-  'Inviter',
   'Admin',
   'Moderator',
   'Deputy Owner',
