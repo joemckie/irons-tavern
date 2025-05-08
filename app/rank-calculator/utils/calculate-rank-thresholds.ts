@@ -31,10 +31,9 @@ export const calculateRankThresholds = (
       Legend: 0,
     },
     Admin: {
-      Lieutenant: 0,
-      Captain: standardRankPoints.Nature,
-      General: standardRankPoints.Law,
-      Colonel: standardRankPoints.Achiever,
+      Captain: 0,
+      General: standardRankPoints.Nature,
+      Colonel: standardRankPoints.Yew,
       Brigadier: standardRankPoints.Elite,
       Admiral: standardRankPoints.Diseased,
       Marshal: standardRankPoints.Blisterwood,
