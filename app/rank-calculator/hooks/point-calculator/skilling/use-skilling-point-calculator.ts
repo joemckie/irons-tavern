@@ -1,5 +1,8 @@
 import { DiaryLocation } from '@/app/schemas/osrs';
-import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
+import {
+  BonusPointCalculatorData,
+  CommonPointCalculatorData,
+} from '@/app/schemas/rank-calculator';
 import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
@@ -10,7 +13,9 @@ import { useCalculatorScaling } from '../use-calculator-scaling';
 import { useAchievementDiaryCapePoints } from './use-achievement-diary-cape-points';
 import { useMaxCapePoints } from './use-max-cape-points';
 
-export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
+export interface SkillingPointCalculatorData
+  extends CommonPointCalculatorData,
+    BonusPointCalculatorData {
   ehpPoints: number;
   totalLevelPoints: number;
   achievementDiariesPoints: Record<DiaryLocation, number>;
@@ -19,7 +24,7 @@ export interface SkillingPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useSkillingPointCalculator() {
-  const skillingBonusMultiplier = useWatch<
+  const bonusMultiplier = useWatch<
     RankCalculatorSchema,
     'skillingBonusMultiplier'
   >({
@@ -35,16 +40,20 @@ export function useSkillingPointCalculator() {
   const achievementDiaryCapePoints = useAchievementDiaryCapePoints();
   const maxCapePoints = useMaxCapePoints();
   const scaling = useCalculatorScaling();
-  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining } =
-    calculateSkillingPoints(
-      totalAchievementDiaryPointsAwarded,
-      ehpPoints,
-      totalLevelPoints,
-      achievementDiaryCapePoints,
-      maxCapePoints,
-      skillingBonusMultiplier,
-      scaling,
-    );
+  const {
+    pointsAwarded,
+    pointsAwardedPercentage,
+    pointsRemaining,
+    bonusPointsAwarded,
+  } = calculateSkillingPoints(
+    totalAchievementDiaryPointsAwarded,
+    ehpPoints,
+    totalLevelPoints,
+    achievementDiaryCapePoints,
+    maxCapePoints,
+    bonusMultiplier,
+    scaling,
+  );
 
   return {
     pointsAwarded,
@@ -55,5 +64,7 @@ export function useSkillingPointCalculator() {
     achievementDiariesPoints,
     achievementDiaryCapePoints,
     maxCapePoints,
+    bonusPointsAwarded,
+    bonusMultiplier,
   } satisfies SkillingPointCalculatorData;
 }

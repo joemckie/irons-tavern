@@ -32,6 +32,8 @@ import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
 import { fetchTempleConstants } from './fetch-temple-constants';
 import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
 import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
+import { fetchUserDiscordRoles } from '../fetch-user-discord-roles';
+import { calculateTavernDiaryTierMultipliers } from '../../utils/calculators/calculate-tavern-diary-tier-multipliers';
 
 interface PlayerDetailsResponse
   extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
@@ -287,6 +289,13 @@ export async function fetchPlayerDetails(
 
     const hasMaxCape = totalLevel === maximumTotalLevel;
 
+    const discordRoles = await fetchUserDiscordRoles(userId);
+    const {
+      collectionLogBonusMultiplier,
+      combatBonusMultiplier,
+      skillingBonusMultiplier,
+    } = calculateTavernDiaryTierMultipliers(discordRoles);
+
     return {
       success: true,
       error: null,
@@ -331,10 +340,10 @@ export async function fetchPlayerDetails(
         hasThirdPartyData,
         isTempleCollectionLogOutdated,
         isMobileOnly: playerRecord.isMobileOnly,
-        collectionLogBonusMultiplier: 0,
-        combatBonusMultiplier: 0,
-        skillingBonusMultiplier: 0,
-        notableItemsBonusMultiplier: 0,
+        collectionLogBonusMultiplier,
+        combatBonusMultiplier,
+        skillingBonusMultiplier,
+        notableItemsBonusMultiplier: 0, // Leaving this in for future use, if we decide to add a notable items diary
       },
     };
   } catch (error) {

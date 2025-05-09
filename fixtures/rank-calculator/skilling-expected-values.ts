@@ -25,6 +25,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 22781,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 18942,
@@ -48,6 +50,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 15946,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 10824,
@@ -71,6 +75,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 9112,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 4732,
@@ -94,6 +100,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 3986,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     noScaling: {
       pointsAwarded: 2706,
@@ -117,6 +125,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 2278,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
   },
   midGamePlayer: {
@@ -142,6 +152,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 42018,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 45820,
@@ -165,6 +177,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 29412,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 26183,
@@ -188,6 +202,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 16807,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 11455,
@@ -211,6 +227,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 7353,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     noScaling: {
       pointsAwarded: 6545,
@@ -234,6 +252,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 4201,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
   },
   endGamePlayer: {
@@ -259,6 +279,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 46000,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     fourMonthScaling: {
       pointsAwarded: 60032,
@@ -282,6 +304,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 32200,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     twoMonthScaling: {
       pointsAwarded: 34304,
@@ -305,6 +329,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 18400,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     threeWeekScaling: {
       pointsAwarded: 15008,
@@ -328,6 +354,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 8050,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
     noScaling: {
       pointsAwarded: 8576,
@@ -351,6 +379,8 @@ export const skillingExpectedValues = {
       totalLevelPoints: 4600,
       achievementDiaryCapePoints: 0,
       maxCapePoints: 0,
+      bonusMultiplier: 0,
+      bonusPointsAwarded: 0,
     },
   },
 } satisfies CategoryFixture<SkillingPointCalculatorData>;

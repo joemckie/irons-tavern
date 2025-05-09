@@ -8,9 +8,7 @@ import {
 
 export const RankStructure = z.enum([
   'Standard',
-  'Bingo Winner',
   'Legacy',
-  'Inviter',
   'Admin',
   'Moderator',
   'Deputy Owner',
@@ -27,6 +25,11 @@ export interface CommonPointCalculatorData {
   pointsAwarded: number;
   pointsAwardedPercentage: number;
   pointsRemaining: number;
+}
+
+export interface BonusPointCalculatorData {
+  bonusPointsAwarded: number;
+  bonusMultiplier: number;
 }
 
 export const RankSubmissionStatus = z.enum(['Pending', 'Approved', 'Rejected']);

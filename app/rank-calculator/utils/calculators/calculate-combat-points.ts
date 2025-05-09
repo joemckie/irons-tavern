@@ -26,5 +26,6 @@ export function calculateCombatPoints(
     pointsAwarded: Math.floor(pointsAwarded + bonusPointsAwarded),
     pointsAwardedPercentage,
     pointsRemaining,
+    bonusPointsAwarded: Math.floor(bonusPointsAwarded),
   };
 }

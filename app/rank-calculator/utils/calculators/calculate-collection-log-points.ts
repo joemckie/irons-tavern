@@ -20,5 +20,6 @@ export function calculateCollectionLogPoints(
     pointsAwarded: Math.floor(pointsAwarded + bonusPointsAwarded),
     pointsRemaining,
     pointsAwardedPercentage,
+    bonusPointsAwarded: Math.floor(bonusPointsAwarded),
   };
 }

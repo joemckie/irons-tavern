@@ -1,4 +1,7 @@
-import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
+import {
+  BonusPointCalculatorData,
+  CommonPointCalculatorData,
+} from '@/app/schemas/rank-calculator';
 import { calculateCombatPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-points';
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
@@ -9,7 +12,9 @@ import { useTzhaarCapePoints } from './use-tzhaar-cape-points';
 import { useBloodTorvaPoints } from './use-blood-torva-points';
 import { useDizanasQuiverPoints } from './use-dizanas-quiver-points';
 
-export interface CombatPointCalculatorData extends CommonPointCalculatorData {
+export interface CombatPointCalculatorData
+  extends CommonPointCalculatorData,
+    BonusPointCalculatorData {
   combatAchievementTierPoints: number;
   ehbPoints: number;
   tzhaarCapePoints: number;
@@ -18,7 +23,7 @@ export interface CombatPointCalculatorData extends CommonPointCalculatorData {
 }
 
 export function useCombatPointCalculator() {
-  const combatBonusMultiplier = useWatch<
+  const bonusMultiplier = useWatch<
     RankCalculatorSchema,
     'combatBonusMultiplier'
   >({
@@ -32,16 +37,20 @@ export function useCombatPointCalculator() {
   const bloodTorvaPoints = useBloodTorvaPoints();
   const dizanasQuiverPoints = useDizanasQuiverPoints();
 
-  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining } =
-    calculateCombatPoints(
-      ehbPoints,
-      combatAchievementTierPoints,
-      tzhaarCapePoints,
-      bloodTorvaPoints,
-      dizanasQuiverPoints,
-      combatBonusMultiplier,
-      scaling,
-    );
+  const {
+    pointsAwarded,
+    pointsAwardedPercentage,
+    pointsRemaining,
+    bonusPointsAwarded,
+  } = calculateCombatPoints(
+    ehbPoints,
+    combatAchievementTierPoints,
+    tzhaarCapePoints,
+    bloodTorvaPoints,
+    dizanasQuiverPoints,
+    bonusMultiplier,
+    scaling,
+  );
 
   return {
     pointsAwarded,
@@ -52,5 +61,7 @@ export function useCombatPointCalculator() {
     tzhaarCapePoints,
     bloodTorvaPoints,
     dizanasQuiverPoints,
+    bonusMultiplier,
+    bonusPointsAwarded,
   } satisfies CombatPointCalculatorData;
 }

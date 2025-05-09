@@ -1,6 +1,7 @@
 import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
+import { tavernDiaryTierNameByMultiplier } from '@/config/tavern-diaries';
 import { DataCard } from '../data-card';
 import { EditableText } from '../editable-text';
 import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
@@ -15,6 +16,8 @@ export function CollectionLogCard() {
     pointsAwardedPercentage,
     pointsRemaining,
     collectionLogSlotPoints,
+    bonusMultiplier,
+    bonusPointsAwarded,
   } = useCollectionLogPointCalculator();
   const {
     getValues,
@@ -83,6 +86,23 @@ export function CollectionLogCard() {
         right={
           <Text aria-label="Collection log slot points" color="gray" size="2">
             {formatNumber(collectionLogSlotPoints)}
+          </Text>
+        }
+      />
+      <DataCard.Row
+        left={
+          <Text color="gray" size="2">
+            Tavern diary tier
+          </Text>
+        }
+        center={
+          <Text aria-label="Collection log diary tier" size="2">
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
+          </Text>
+        }
+        right={
+          <Text aria-label="Collection log point bonus multiplier" size="2">
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
           </Text>
         }
       />
