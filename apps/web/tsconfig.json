@@ -24,7 +24,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "jest.setup.ts"
+    "jest.setup.ts",
+    "../../packages/templeosrs/lib/fetch-temple-collection-log.ts",
+    "../../packages/templeosrs/lib/fetch-temple-constants.ts",
+    "../../packages/templeosrs/lib/fetch-temple-player-stats.ts"
   ],
   "exclude": ["cypress.config.ts", "cypress", "node_modules"]
 }

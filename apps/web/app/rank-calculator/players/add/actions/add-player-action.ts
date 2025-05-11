@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/nextjs';
 import { Player } from '@/app/schemas/player';
 import { ActionError } from '@/app/action-error';
 import { fetchPlayerMeta } from '../../../data-sources/fetch-player-meta';
-import { fetchTemplePlayerStats } from '../../../data-sources/fetch-temple-player-stats';
+import { fetchTemplePlayerStats } from '@repo/templeosrs/fetch-temple-player-stats';
 import { AddPlayerSchema } from './add-player-schema';
 
 async function assertUniquePlayerRecord(userId: string, playerName: string) {
