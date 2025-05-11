@@ -6,16 +6,6 @@
 .pnp.js
 .yarn/install-state.gz
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
 # misc
 .DS_Store
 *.pem
@@ -38,7 +28,12 @@ next-env.d.ts
 .env
 !.env.sample
 
+# Cypress
 cypress/screenshots
 cypress/downloads
+
 # Sentry Config File
 .env.sentry-build-plugin
+
+# Turborepo
+.turbo
