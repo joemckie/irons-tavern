@@ -3,14 +3,31 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "passThroughEnv": [
+        "BLOB_READ_WRITE_TOKEN",
+        "AUTH_SECRET",
+        "AUTH_DISCORD_ID",
+        "AUTH_DISCORD_SECRET",
+        "DISCORD_TOKEN",
+        "REDIS_RETRIES",
+        "SENTRY_AUTH_TOKEN",
+        "DISCORD_CHANNEL_ID",
+        "AUTH_REDIRECT_PROXY_URL",
+        "KV_URL",
+        "KV_REST_API_READ_ONLY_TOKEN",
+        "KV_REST_API_TOKEN",
+        "KV_REST_API_URL",
+        "TEMPLE_GROUP_ID",
+        "TEMPLE_GROUP_NAME",
+        "TEMPLE_GROUP_KEY",
+        "ZEPLO_API_KEY",
+        "ZEPLO_URL",
+        "TEMPLE_PRIVATE_GROUP",
+        "DISCORD_GUILD_ID"
+      ],
       "outputs": [".next/**", "!.next/cache/**"]
     },
-    "check-types": {
-      "dependsOn": ["^check-types"]
-    },
-    "dev": {
-      "persistent": true,
-      "cache": false
-    }
+    "check-types": { "dependsOn": ["^check-types"] },
+    "dev": { "persistent": true, "cache": false }
   }
 }
