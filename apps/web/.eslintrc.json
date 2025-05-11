@@ -9,6 +9,13 @@
   ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@stylistic", "@typescript-eslint"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "apps/web"
+      }
+    }
+  },
   "rules": {
     "@stylistic/type-annotation-spacing": [
       "warn",

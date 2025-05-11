@@ -3278,6 +3278,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@repo/rank-calculator@workspace:packages/rank-calculator":
+  version: 0.0.0-use.local
+  resolution: "@repo/rank-calculator@workspace:packages/rank-calculator"
+  languageName: unknown
+  linkType: soft
+
 "@repo/web@workspace:apps/web":
   version: 0.0.0-use.local
   resolution: "@repo/web@workspace:apps/web"

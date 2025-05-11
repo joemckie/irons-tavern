@@ -1,5 +1,5 @@
 import { sub } from 'date-fns';
-import { CommonPointCalculatorData } from '@/types/rank-calculator';
+import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
 import { ScalingFixtureMap } from '../types';
 
 export const generateScalingTests = <T extends CommonPointCalculatorData>(
