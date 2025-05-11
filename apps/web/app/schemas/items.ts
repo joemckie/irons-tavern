@@ -1,6 +1,6 @@
 import { z } from 'zod';
+import { TempleOSRSCollectionLogCategory } from '@repo/templeosrs/api-schema';
 import { CollectionLogItemName, MiniQuest, Quest, Skill } from './osrs';
-import { TempleOSRSCollectionLogCategory } from './temple-api';
 
 export const BaseItem = z.object({
   image: z.string(),

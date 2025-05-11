@@ -29,6 +29,7 @@
     },
     "check-types": { "dependsOn": ["^check-types"] },
     "dev": { "persistent": true, "cache": false },
-    "lint": { "dependsOn": ["^lint"] }
+    "lint": { "dependsOn": ["^lint"] },
+    "test": { "dependsOn": ["^test"] }
   }
 }

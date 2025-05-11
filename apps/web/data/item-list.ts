@@ -10,7 +10,7 @@ import {
   RequiredItem,
 } from '@/app/schemas/items';
 import { CollectionLogItemName, Quest } from '@/app/schemas/osrs';
-import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
+import { TempleOSRSCollectionLogCategory } from '@repo/templeosrs/api-schema';
 import {
   ehbRates,
   petEhcRates,

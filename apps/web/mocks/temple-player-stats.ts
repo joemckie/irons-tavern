@@ -1,7 +1,7 @@
 import {
   PlayerStatsError,
   TempleOSRSPlayerStats,
-} from '@/app/schemas/temple-api';
+} from '@repo/templeosrs/api-schema';
 
 export const emptyResponseFixture = {
   error: {

@@ -1,4 +1,4 @@
-import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
+import { TempleOSRSPlayerStats } from '@repo/templeosrs/api-schema';
 
 interface EfficiencyData {
   ehb: number | null;

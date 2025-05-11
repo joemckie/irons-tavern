@@ -1,6 +1,6 @@
 import { clientConstants } from '@/config/constants.client';
 import * as Sentry from '@sentry/nextjs';
-import { TempleOSRSConstants } from '@/app/schemas/temple-api';
+import { TempleOSRSConstants } from '@repo/templeosrs/api-schema';
 
 export async function fetchTempleConstants() {
   try {

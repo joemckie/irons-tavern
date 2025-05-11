@@ -14,7 +14,7 @@
 // import * as templePlayerStats from '@/mocks/temple-player-stats';
 // import { ApiSuccess } from '@/types/api';
 // import { combatAchievementListFixture } from '@/mocks/wiki-data/combat-achievement-list';
-// import { GameMode, TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
+// import { GameMode, TempleOSRSPlayerStats } from '@repo/templeosrs/api-schema';
 // import * as auth from '@/auth';
 // import { mockUUID } from '@/test-utils/mock-uuid';
 // import {

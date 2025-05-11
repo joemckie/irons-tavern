@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
+import { GroupMemberInfoResponse } from '@repo/templeosrs/api-schema';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';

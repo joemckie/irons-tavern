@@ -1,0 +1,11 @@
+{
+  "name": "@repo/templeosrs",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./api-schema": "./lib/api-schema.ts"
+  },
+  "scripts": {
+    "lint": "echo 'Add lint script here'"
+  }
+}

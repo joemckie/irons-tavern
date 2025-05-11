@@ -4,7 +4,7 @@ import { list } from '@vercel/blob';
 import Image from 'next/image';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
+import { GroupMemberInfoResponse } from '@repo/templeosrs/api-schema';
 import * as Sentry from '@sentry/nextjs';
 import { ClanMember } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';

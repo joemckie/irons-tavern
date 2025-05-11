@@ -3,7 +3,7 @@ import { serverConstants } from '@/config/constants.server';
 import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
 import { ClanMember } from '@/app/api/update-member-list/route';
-import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
+import { TempleOSRSPlayerStats } from '@repo/templeosrs/api-schema';
 import * as wikiSync from './wiki-sync';
 import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';

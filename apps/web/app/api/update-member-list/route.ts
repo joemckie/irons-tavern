@@ -2,7 +2,7 @@ import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 import { clientConstants } from '@/config/constants.client';
 import { Rank } from '@/config/enums';
-import { GroupUpdateRequest } from '@/app/schemas/temple-api';
+import { GroupUpdateRequest } from '@repo/templeosrs/api-schema';
 import { serverConstants } from '@/config/constants.server';
 
 export interface ClanMember {

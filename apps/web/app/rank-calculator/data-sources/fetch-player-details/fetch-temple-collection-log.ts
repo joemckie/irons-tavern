@@ -3,7 +3,7 @@ import { clientConstants } from '@/config/constants.client';
 import {
   TempleOSRSCollectionLogCategory,
   TempleOSRSPlayerCollectionLog,
-} from '@/app/schemas/temple-api';
+} from '@repo/templeosrs/api-schema';
 import { itemList } from '@/data/item-list';
 import { isCollectionLogItem } from '@/app/schemas/items';
 

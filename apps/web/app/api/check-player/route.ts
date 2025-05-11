@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { clientConstants } from '@/config/constants.client';
-import { PlayerInfoResponse } from '@/app/schemas/temple-api';
+import { PlayerInfoResponse } from '@repo/templeosrs/api-schema';
 import * as Sentry from '@sentry/nextjs';
 import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
