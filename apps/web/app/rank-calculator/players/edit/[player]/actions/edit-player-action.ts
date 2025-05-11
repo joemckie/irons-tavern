@@ -7,8 +7,8 @@ import { authActionClient } from '@/app/safe-action';
 import { returnValidationErrors } from 'next-safe-action';
 import { Player, PlayerName } from '@/app/schemas/player';
 import { Rank } from '@/config/enums';
-import { fetchPlayerMeta } from '../../../../data-sources/fetch-player-meta';
 import { fetchTemplePlayerStats } from '@repo/templeosrs/fetch-temple-player-stats';
+import { fetchPlayerMeta } from '../../../../data-sources/fetch-player-meta';
 import { assertUniquePlayerRecord } from '../../../validation/assert-unique-player-record';
 import { EditPlayerSchema } from './edit-player-schema';
 
