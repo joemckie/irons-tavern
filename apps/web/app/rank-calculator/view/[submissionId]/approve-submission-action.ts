@@ -154,7 +154,7 @@ export const approveSubmissionAction = authActionClient
                 .map((role) => `- ${role}`)
                 .join('\n')}
 
-              Please reach out to a mod to update your in-game rank!
+              Please reach out to any member of staff to update your in-game rank!
             `,
           },
           messageId,
@@ -174,7 +174,7 @@ export const approveSubmissionAction = authActionClient
 
               Your application has been approved by <@${approverId}>.
 
-              Please reach out to a mod to update your ranks!
+              Please reach out to a mod or key to update your ranks!
             `,
           },
           messageId,
