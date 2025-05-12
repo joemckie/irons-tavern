@@ -5,6 +5,7 @@
   "exports": {
     "./api-schema": "./lib/api-schema.ts",
     "./fetch-temple-collection-log": "./lib/fetch-temple-collection-log.ts",
+    "./fetch-temple-collection-log-with-categories": "./lib/fetch-temple-collection-log-with-categories.ts",
     "./fetch-temple-constants": "./lib/fetch-temple-constants.ts",
     "./fetch-temple-player-stats": "./lib/fetch-temple-player-stats.ts"
   },

@@ -1784,3 +1784,22 @@ export const TzHaarCape = z.enum([
 ]);
 
 export type TzHaarCape = z.infer<typeof TzHaarCape>;
+
+export const SkillingPet = CollectionLogItemName.extract([
+  'Heron',
+  'Rock golem',
+  'Beaver',
+  'Baby chinchompa',
+  'Giant squirrel',
+  'Tangleroot',
+  'Rocky',
+  'Rift guardian',
+  'Tiny tempor',
+  'Quetzin',
+  'Phoenix',
+  'Herbi',
+  'Abyssal protector',
+  'Smolcano',
+]);
+
+export type SkillingPet = z.infer<typeof SkillingPet>;

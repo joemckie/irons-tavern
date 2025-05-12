@@ -85,6 +85,10 @@ const TempleOSRSCollectionLogItem = z.object({
   name: z.string().min(1),
 });
 
+export type TempleOSRSCollectionLogItem = z.infer<
+  typeof TempleOSRSCollectionLogItem
+>;
+
 export const TempleOSRSPlayerCollectionLog = z.object({
   data: z.object({
     total_collections_available: z.number().nonnegative(),
@@ -98,6 +102,12 @@ export type TempleOSRSPlayerCollectionLog = z.infer<
 >;
 
 export const TempleOSRSCollectionLogCategory = z.enum([
+  'all',
+  'bosses',
+  'raids',
+  'clues',
+  'minigames',
+  'other',
   'abyssal_sire',
   'alchemical_hydra',
   'amoxliatl',
@@ -148,15 +158,18 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'wintertodt',
   'zalcano',
   'zulrah',
+  'chambers_of_xeric',
+  'theatre_of_blood',
+  'tombs_of_amascut',
   'beginner_treasure_trails',
   'easy_treasure_trails',
   'medium_treasure_trails',
   'hard_treasure_trails',
   'elite_treasure_trails',
   'master_treasure_trails',
-  'hard_treasure_trails_rare',
-  'elite_treasure_trails_rare',
-  'master_treasure_trails_rare',
+  'gilded',
+  'third_age',
+  'mimic',
   'shared_treasure_trail_rewards',
   'barbarian_assault',
   'brimhaven_agility_arena',
@@ -204,13 +217,148 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'tormented_demons',
   'tzhaar',
   'miscellaneous',
-  'chambers_of_xeric',
-  'theatre_of_blood',
-  'tombs_of_amascut',
 ]);
 
 export type TempleOSRSCollectionLogCategory = z.infer<
   typeof TempleOSRSCollectionLogCategory
+>;
+
+export const TempleOSRSCollectionLogCategoryBosses =
+  TempleOSRSCollectionLogCategory.extract([
+    'abyssal_sire',
+    'alchemical_hydra',
+    'amoxliatl',
+    'araxxor',
+    'barrows_chests',
+    'bryophyta',
+    'callisto_and_artio',
+    'cerberus',
+    'chaos_elemental',
+    'chaos_fanatic',
+    'commander_zilyana',
+    'corporeal_beast',
+    'crazy_archaeologist',
+    'dagannoth_kings',
+    'duke_sucellus',
+    'the_fight_caves',
+    'fortis_colosseum',
+    'the_gauntlet',
+    'general_graardor',
+    'giant_mole',
+    'grotesque_guardians',
+    'hespori',
+    'hueycoatl',
+    'the_inferno',
+    'kalphite_queen',
+    'king_black_dragon',
+    'kraken',
+    'kree_arra',
+    'kril_tsutsaroth',
+    'the_leviathan',
+    'moons_of_peril',
+    'nex',
+    'the_nightmare',
+    'obor',
+    'phantom_muspah',
+    'royal_titans',
+    'sarachnis',
+    'scorpia',
+    'scurrius',
+    'skotizo',
+    'tempoross',
+    'thermonuclear_smoke_devil',
+    'vardorvis',
+    'venenatis_and_spindel',
+    'vetion_and_calvarion',
+    'vorkath',
+    'the_whisperer',
+    'wintertodt',
+    'zalcano',
+    'zulrah',
+  ]);
+
+export type TempleOSRSCollectionLogCategoryBosses = z.infer<
+  typeof TempleOSRSCollectionLogCategoryBosses
+>;
+
+export const TempleOSRSCollectionLogCategoryMinigames =
+  TempleOSRSCollectionLogCategory.extract([
+    'barbarian_assault',
+    'brimhaven_agility_arena',
+    'castle_wars',
+    'fishing_trawler',
+    'giants_foundry',
+    'gnome_restaurant',
+    'guardians_of_the_rift',
+    'hallowed_sepulchre',
+    'last_man_standing',
+    'magic_training_arena',
+    'mahogany_homes',
+    'pest_control',
+    'mastering_mixology',
+    'rogues_den',
+    'shades_of_mortton',
+    'soul_wars',
+    'temple_trekking',
+    'tithe_farm',
+    'trouble_brewing',
+    'volcanic_mine',
+  ]);
+
+export type TempleOSRSCollectionLogCategoryMinigames = z.infer<
+  typeof TempleOSRSCollectionLogCategoryMinigames
+>;
+
+export const TempleOSRSCollectionLogCategoryOther =
+  TempleOSRSCollectionLogCategory.extract([
+    'aerial_fishing',
+    'all_pets',
+    'camdozaal',
+    'champions_challenge',
+    'chaos_druids',
+    'chompy_bird_hunting',
+    'colossal_wyrm_agility',
+    'creature_creation',
+    'cyclopes',
+    'forestry',
+    'fossil_island_notes',
+    'gloughs_experiments',
+    'hunter_guild',
+    'monkey_backpacks',
+    'motherlode_mine',
+    'my_notes',
+    'random_events',
+    'revenants',
+    'rooftop_agility',
+    'shayzien_armour',
+    'shooting_stars',
+    'skilling_pets',
+    'slayer',
+    'tormented_demons',
+    'tzhaar',
+    'miscellaneous',
+  ]);
+
+export type TempleOSRSCollectionLogCategoryOther = z.infer<
+  typeof TempleOSRSCollectionLogCategoryOther
+>;
+
+export const TempleOSRSCollectionLogCategoryClues =
+  TempleOSRSCollectionLogCategory.extract([
+    'beginner_treasure_trails',
+    'easy_treasure_trails',
+    'medium_treasure_trails',
+    'hard_treasure_trails',
+    'elite_treasure_trails',
+    'master_treasure_trails',
+    'gilded',
+    'third_age',
+    'mimic',
+    'shared_treasure_trail_rewards',
+  ]);
+
+export type TempleOSRSCollectionLogCategoryClues = z.infer<
+  typeof TempleOSRSCollectionLogCategoryClues
 >;
 
 export const TempleOSRSConstants = z.object({
@@ -220,3 +368,18 @@ export const TempleOSRSConstants = z.object({
 });
 
 export type TempleOSRSConstants = z.infer<typeof TempleOSRSConstants>;
+
+export const TempleOSRSPlayerCollectionLogWithCategories = z.object({
+  data: z.object({
+    total_collections_available: z.number().nonnegative(),
+    total_collections_finished: z.number().nonnegative(),
+    items: z.record(
+      TempleOSRSCollectionLogCategory,
+      z.array(TempleOSRSCollectionLogItem),
+    ),
+  }),
+});
+
+export type TempleOSRSPlayerCollectionLogWithCategories = z.infer<
+  typeof TempleOSRSPlayerCollectionLogWithCategories
+>;

@@ -1,6 +1,11 @@
 import { z } from 'zod';
-import { TempleOSRSCollectionLogCategory } from '@repo/templeosrs/api-schema';
+import {
+  TempleOSRSCollectionLogCategory,
+  TempleOSRSPlayerCollectionLogWithCategories,
+} from '@repo/templeosrs/api-schema';
 import { CollectionLogItemName, MiniQuest, Quest, Skill } from './osrs';
+import { CollectionLogAcquiredItemMap, LevelMap } from './wiki';
+import { AchievementDiaryMap } from './rank-calculator';
 
 export const BaseItem = z.object({
   image: z.string(),
@@ -29,6 +34,25 @@ export const CollectionLogItem = BaseItem.extend({
 });
 
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;
+
+export const CustomItem = CollectionLogItem.omit({
+  requiredItems: true,
+}).extend({
+  isAcquired: z
+    .function()
+    .args(
+      z.object({
+        achievementDiaryMap: AchievementDiaryMap,
+        playerCollectionLog:
+          TempleOSRSPlayerCollectionLogWithCategories.shape.data,
+        collectionLogItemMap: CollectionLogAcquiredItemMap,
+        levelMap: LevelMap,
+      }),
+    )
+    .returns(z.boolean()),
+});
+
+export type CustomItem = z.infer<typeof CustomItem>;
 
 export const CombatAchievementItem = BaseItem.extend({
   requiredCombatAchievements: z.array(z.number()).nonempty(),
