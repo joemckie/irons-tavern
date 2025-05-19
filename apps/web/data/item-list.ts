@@ -774,21 +774,6 @@ export const itemList = {
       }),
     ],
   },
-  Jars: {
-    image: formatWikiImageUrl('Jar of venom', 'category'),
-    items: [
-      singleItem({
-        name: 'Jar of darkness (Skotizo)',
-        clogName: 'Jar of darkness',
-        collectionLogCategory: 'skotizo',
-      }),
-      singleItem({
-        name: 'Jar of eyes (Sarachnis)',
-        clogName: 'Jar of eyes',
-        collectionLogCategory: 'sarachnis',
-      }),
-    ],
-  },
   'Kalphite Queen': {
     items: [
       singleItem({
@@ -1270,9 +1255,7 @@ export const itemList = {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
       },
       Scurry: {},
-      Skotos: {},
       Smolcano: {},
-      Sraracha: {},
       Tangleroot: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
       },
@@ -1359,6 +1342,27 @@ export const itemList = {
       singleItem({
         name: 'Sarachnis cudgel',
         collectionLogCategory: 'sarachnis',
+      }),
+      singleItem({
+        name: 'Jar of eyes',
+        collectionLogCategory: 'sarachnis',
+      }),
+      singleItem({
+        name: 'Sraracha',
+        collectionLogCategory: 'sarachnis',
+      }),
+    ],
+  },
+  Skotizo: {
+    image: formatWikiImageUrl('Skotos_detail', 'category'),
+    items: [
+      singleItem({
+        name: 'Jar of darkness',
+        collectionLogCategory: 'skotizo',
+      }),
+      singleItem({
+        name: 'Skotos',
+        collectionLogCategory: 'skotizo',
       }),
     ],
   },
