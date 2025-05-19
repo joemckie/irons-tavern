@@ -207,6 +207,7 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'chambers_of_xeric',
   'theatre_of_blood',
   'tombs_of_amascut',
+  'yama',
 ]);
 
 export type TempleOSRSCollectionLogCategory = z.infer<

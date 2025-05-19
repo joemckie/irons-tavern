@@ -1243,6 +1243,9 @@ export const itemList = {
       },
       Vorki: {},
       Wisp: {},
+      Yami: {
+        targetDropSources: ['Yama'],
+      },
       Youngllef: {
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
       },
@@ -1682,6 +1685,30 @@ export const itemList = {
         name: 'Teleport anchoring scroll',
         collectionLogCategory: 'slayer',
         targetDropSources: ["Zombie Pirate's Locker"],
+      }),
+    ],
+  },
+  Yama: {
+    items: [
+      singleItem({
+        name: 'Soulflame horn',
+        collectionLogCategory: 'yama',
+        targetDropSources: ['Yama'],
+      }),
+      singleItem({
+        name: 'Oathplate helm',
+        collectionLogCategory: 'yama',
+        targetDropSources: ['Yama'],
+      }),
+      singleItem({
+        name: 'Oathplate chest',
+        collectionLogCategory: 'yama',
+        targetDropSources: ['Yama'],
+      }),
+      singleItem({
+        name: 'Oathplate legs',
+        collectionLogCategory: 'yama',
+        targetDropSources: ['Yama'],
       }),
     ],
   },
