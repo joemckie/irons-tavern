@@ -261,6 +261,15 @@ export const itemList = {
       }),
     ],
   },
+  'Barbarian Assault': {
+    image: formatWikiImageUrl('Penance Runner (wave_4)', 'category'),
+    items: [
+      singleItem({
+        name: 'Pet penance queen',
+        collectionLogCategory: 'barbarian_assault',
+      }),
+    ],
+  },
   Cerberus: {
     image: formatWikiImageUrl('Hellpuppy detail', 'category'),
     items: [
@@ -357,6 +366,15 @@ export const itemList = {
       singleItem({
         name: 'Olmlet',
         collectionLogCategory: 'chambers_of_xeric',
+      }),
+    ],
+  },
+  'Chompy Bird Hunting': {
+    image: formatWikiImageUrl('Chompy chick chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Chompy chick',
+        collectionLogCategory: 'chompy_bird_hunting',
       }),
     ],
   },
@@ -757,6 +775,14 @@ export const itemList = {
       }),
     ],
   },
+  'Giant Mole': {
+    items: [
+      singleItem({
+        name: 'Baby mole',
+        collectionLogCategory: 'giant_mole',
+      }),
+    ],
+  },
   'The Hueycoatl': {
     items: [
       singleItem({
@@ -783,6 +809,14 @@ export const itemList = {
       singleItem({
         name: 'Jar of sand',
         collectionLogCategory: 'kalphite_queen',
+      }),
+    ],
+  },
+  'King Black Dragon': {
+    items: [
+      singleItem({
+        name: 'Prince black dragon',
+        collectionLogCategory: 'king_black_dragon',
       }),
     ],
   },
@@ -999,10 +1033,7 @@ export const itemList = {
         ],
         collectionLogCategories: ['rooftop_agility'],
       }),
-      singleItem({
-        name: 'Ham joint',
-        collectionLogCategory: 'easy_treasure_trails',
-      }),
+
       baseItem({
         name: 'Music cape',
         points: calculateXpOrTimeBasedItemPoints(
@@ -1018,10 +1049,7 @@ export const itemList = {
         image: formatWikiImageUrl('Quest point cape detail'),
         requiredQuests: Quest.options,
       }),
-      singleItem({
-        name: 'Ranger boots',
-        collectionLogCategory: 'medium_treasure_trails',
-      }),
+
       singleItem({
         name: 'Ring of endurance',
         clogName: 'Ring of endurance (uncharged)',
@@ -1055,22 +1083,6 @@ export const itemList = {
         targetDropSources: ["Armoured zombie (Zemouregal's Fort)"],
       }),
     ],
-  },
-  'Miscellaneous Pets': {
-    image: formatWikiImageUrl('Bloodhound_detail', 'category'),
-    items: CollectionLogItemName.extract([
-      'Baby mole',
-      'Chompy chick',
-      "Lil' creator",
-      'Pet penance queen',
-      'Prince black dragon',
-      'Scurry',
-    ]).options.map((name) =>
-      singleItem({
-        name,
-        collectionLogCategory: 'all_pets',
-      }),
-    ) as NonEmptyArray<Item>,
   },
   Nex: {
     image: formatWikiImageUrl('Nexling detail', 'category'),
@@ -1295,6 +1307,15 @@ export const itemList = {
       }),
     ],
   },
+  Scurrius: {
+    image: formatWikiImageUrl('Scurry_chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Scurry',
+        collectionLogCategory: 'scurrius',
+      }),
+    ],
+  },
   'Skilling Pets': {
     image: formatWikiImageUrl('Phoenix_detail', 'category'),
     items: Object.entries({
@@ -1368,6 +1389,15 @@ export const itemList = {
       singleItem({
         name: 'Skotos',
         collectionLogCategory: 'skotizo',
+      }),
+    ],
+  },
+  'Soul Wars': {
+    image: formatWikiImageUrl("Lil' Creator chathead", 'category'),
+    items: [
+      singleItem({
+        name: "Lil' creator",
+        collectionLogCategory: 'soul_wars',
       }),
     ],
   },
@@ -1560,7 +1590,16 @@ export const itemList = {
     ],
   },
   'Treasure Trails': {
+    image: formatWikiImageUrl('Clue scroll (master) detail', 'category'),
     items: [
+      singleItem({
+        name: 'Ranger boots',
+        collectionLogCategory: 'medium_treasure_trails',
+      }),
+      singleItem({
+        name: 'Ham joint',
+        collectionLogCategory: 'easy_treasure_trails',
+      }),
       singleItem({
         name: 'Bloodhound',
         collectionLogCategory: 'master_treasure_trails',
