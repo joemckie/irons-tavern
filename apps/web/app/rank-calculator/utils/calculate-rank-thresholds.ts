@@ -23,7 +23,7 @@ export const calculateRankThresholds = (
 
   return {
     Standard: { Helper: 0, Steel: 1, ...standardRankPoints },
-    Legacy: { Legend: 0 },
+    Legacy: { Legacy: 0 },
     Admin: {
       Captain: 0,
       General: standardRankPoints.Striker,
