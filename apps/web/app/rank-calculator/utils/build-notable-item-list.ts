@@ -1,3 +1,4 @@
+import JSum from 'jsum';
 import { isCollectionLogItem, Item, ItemCategory } from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
@@ -7,6 +8,9 @@ import * as efficiencyData from '@/app/rank-calculator/config/efficiency-rates';
 import * as Sentry from '@sentry/nextjs';
 import { calculateItemPoints } from './calculate-item-points';
 import { pointsConfig } from '../config/points';
+
+const efficiencyDataChecksum = JSum.digest(efficiencyData, 'SHA256', 'hex');
+const itemPointMapChecksum = JSum.digest(itemPointMap, 'SHA256', 'hex');
 
 export const buildNotableItemList = unstable_cache(
   async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
@@ -39,7 +43,7 @@ export const buildNotableItemList = unstable_cache(
     ),
   [
     `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,
-    `efficiency-data:${JSON.stringify(efficiencyData)}`,
-    `item-point-map:${JSON.stringify(itemPointMap)}`,
+    `efficiency-data:${efficiencyDataChecksum}`,
+    `item-point-map:${itemPointMapChecksum}`,
   ],
 );

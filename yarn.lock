@@ -3301,6 +3301,7 @@ __metadata:
     "@testing-library/react": "npm:^16.0.1"
     "@types/eslint-plugin-jsx-a11y": "npm:^6"
     "@types/jest": "npm:^29.5.14"
+    "@types/jsum": "npm:^0.1.2"
     "@types/lodash": "npm:^4"
     "@types/node": "npm:^20"
     "@types/pluralize": "npm:^0.0.33"
@@ -3332,6 +3333,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-fixed-jsdom: "npm:^0.0.6"
+    jsum: "npm:^2.0.0-alpha.4"
     lodash: "npm:^4.17.21"
     msw: "npm:^2.5.2"
     next: "npm:15.0.1"
@@ -4134,6 +4136,13 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: 10c0/6bf5337bc447b706bb5b4431d37686aa2ea6d07cfd6f79cc31de80170d6ff9b1c7384a9c0ccbc45b3f512bae9e9f75c2e12109806a15331dc94e8a8db6dbb4ac
+  languageName: node
+  linkType: hard
+
+"@types/jsum@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@types/jsum@npm:0.1.2"
+  checksum: 10c0/1ca2c435ee6f6ef8b026e352e4ea8dffe40d4e43abf8c001ff0ffe11816f96e84c20d98e4505903f9224026fb8a0535c9cf1efc6c77effb0d5535c665cbc85c7
   languageName: node
   linkType: hard
 
@@ -8985,6 +8994,13 @@ __metadata:
     json-schema: "npm:0.4.0"
     verror: "npm:1.10.0"
   checksum: 10c0/677be2d41df536c92c6d0114a492ef197084018cfbb1a3e10b1fa1aad889564b2e3a7baa6af7949cc2d73678f42368b0be165a26bd4e4de6883a30dd6a24e98d
+  languageName: node
+  linkType: hard
+
+"jsum@npm:^2.0.0-alpha.4":
+  version: 2.0.0-alpha.4
+  resolution: "jsum@npm:2.0.0-alpha.4"
+  checksum: 10c0/2348f019e1ac2d0099e7857dee001801ba40a9840322b948087f45fd78912759b2f23ac37b34e9190c4b0f68778549d9fcb407afdbbd4506bf4a931d8b70a1a8
   languageName: node
   linkType: hard
 
