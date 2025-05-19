@@ -159,6 +159,10 @@ export const itemList = {
         targetDropSources: ['Unsired'],
         collectionLogCategory: 'abyssal_sire',
       }),
+      singleItem({
+        name: 'Abyssal orphan',
+        collectionLogCategory: 'abyssal_sire',
+      }),
     ],
   },
   'Alchemical Hydra': {
@@ -542,6 +546,10 @@ export const itemList = {
           'the_whisperer',
           'duke_sucellus',
         ],
+      }),
+      singleItem({
+        name: 'Baron',
+        collectionLogCategory: 'duke_sucellus',
       }),
     ],
   },
@@ -1144,7 +1152,6 @@ export const itemList = {
   Pets: {
     image: formatWikiImageUrl('Nid', 'category'),
     items: Object.entries({
-      'Abyssal orphan': {},
       'Abyssal protector': {},
       'Baby chinchompa': {
         points: calculateXpOrTimeBasedItemPoints(
@@ -1153,7 +1160,6 @@ export const itemList = {
         image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
       },
       'Baby mole': {},
-      Baron: {},
       Beaver: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
       },
