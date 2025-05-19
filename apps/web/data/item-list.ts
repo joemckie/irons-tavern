@@ -629,6 +629,124 @@ export const itemList = {
       }),
     ],
   },
+  'The Gauntlet': {
+    image: formatWikiImageUrl('Corrupted Youngllef chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Crystal weapon seed',
+        collectionLogCategory: 'the_gauntlet',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      }),
+      singleItem({
+        name: 'Crystal armour seed',
+        collectionLogCategory: 'the_gauntlet',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      }),
+      singleItem({
+        name: 'Enhanced crystal weapon seed (1)',
+        clogName: 'Enhanced crystal weapon seed',
+        requiredAmount: 1,
+        collectionLogCategory: 'the_gauntlet',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      }),
+      singleItem({
+        name: 'Enhanced crystal weapon seed (2)',
+        clogName: 'Enhanced crystal weapon seed',
+        requiredAmount: 2,
+        collectionLogCategory: 'the_gauntlet',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+        ignoreAmountMultiplier: true,
+      }),
+    ],
+  },
+  'The Hueycoatl': {
+    items: [
+      singleItem({
+        name: 'Dragon hunter wand',
+        collectionLogCategory: 'hueycoatl',
+      }),
+      singleItem({
+        name: 'Tome of earth',
+        clogName: 'Tome of earth (empty)',
+        collectionLogCategory: 'hueycoatl',
+      }),
+    ],
+  },
+  Jars: {
+    image: formatWikiImageUrl('Jar of venom', 'category'),
+    items: [
+      singleItem({
+        name: 'Jar of chemicals (Hydra)',
+        clogName: 'Jar of chemicals',
+        collectionLogCategory: 'alchemical_hydra',
+      }),
+      singleItem({
+        name: 'Jar of darkness (Skotizo)',
+        clogName: 'Jar of darkness',
+        collectionLogCategory: 'skotizo',
+      }),
+      singleItem({
+        name: 'Jar of decay (Vorkath)',
+        clogName: 'Jar of decay',
+        collectionLogCategory: 'vorkath',
+      }),
+      singleItem({
+        name: 'Jar of dirt (Kraken)',
+        clogName: 'Jar of dirt',
+        collectionLogCategory: 'kraken',
+      }),
+      singleItem({
+        name: 'Jar of dreams (Nightmare)',
+        clogName: 'Jar of dreams',
+        collectionLogCategory: 'the_nightmare',
+      }),
+      singleItem({
+        name: 'Jar of eyes (Sarachnis)',
+        clogName: 'Jar of eyes',
+        collectionLogCategory: 'sarachnis',
+      }),
+      singleItem({
+        name: 'Jar of miasma (Sire)',
+        clogName: 'Jar of miasma',
+        collectionLogCategory: 'abyssal_sire',
+      }),
+      singleItem({
+        name: 'Jar of sand (Kalphite Queen)',
+        clogName: 'Jar of sand',
+        collectionLogCategory: 'kalphite_queen',
+      }),
+      singleItem({
+        name: 'Jar of smoke (Thermy)',
+        clogName: 'Jar of smoke',
+        collectionLogCategory: 'thermonuclear_smoke_devil',
+      }),
+      singleItem({
+        name: 'Jar of souls (Cerberus)',
+        clogName: 'Jar of souls',
+        collectionLogCategory: 'cerberus',
+      }),
+      singleItem({
+        name: 'Jar of spirits (Corp)',
+        clogName: 'Jar of spirits',
+        collectionLogCategory: 'corporeal_beast',
+      }),
+      singleItem({
+        name: 'Jar of stone (GGs)',
+        clogName: 'Jar of stone',
+        collectionLogCategory: 'grotesque_guardians',
+      }),
+      singleItem({
+        name: 'Jar of swamp (Zulrah)',
+        clogName: 'Jar of swamp',
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Jar of venom (Araxxor)',
+        clogName: 'Jar of venom',
+        collectionLogCategory: 'araxxor',
+      }),
+    ],
+  },
   Kraken: {
     items: [
       singleItem({
@@ -687,54 +805,520 @@ export const itemList = {
       }),
     ],
   },
+  'Major Slayer Items': {
+    image: formatWikiImageUrl('Slayer icon (detail)', 'category'),
+    items: [
+      singleItem({
+        name: 'Black mask',
+        collectionLogCategory: 'slayer',
+        clogName: 'Black mask (10)',
+        targetDropSources: ['Cave horror'],
+      }),
+      singleItem({
+        name: 'Leaf-bladed battleaxe',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Kurask'],
+      }),
+      singleItem({
+        name: 'Warped sceptre',
+        clogName: 'Warped sceptre (uncharged)',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Warped Terrorbird'],
+      }),
+      compoundItem({
+        name: 'Devout boots',
+        requiredItems: [
+          {
+            clogName: "Drake's tooth",
+            targetDropSources: ['Drake'],
+          },
+          { clogName: 'Holy sandals' },
+        ],
+        collectionLogCategories: ['slayer', 'medium_treasure_trails'],
+      }),
+      singleItem({
+        name: 'Boots of brimstone',
+        clogName: "Drake's claw",
+        image: formatWikiImageUrl('Boots of brimstone'),
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Drake'],
+      }),
+      singleItem({
+        name: 'Neitiznot faceguard',
+        clogName: 'Basilisk jaw',
+        image: formatWikiImageUrl('Neitiznot faceguard'),
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Basilisk Knight'],
+      }),
+      singleItem({
+        name: 'Abyssal whip',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Abyssal demon#Standard'],
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToObtainAbyssalWhip,
+        ),
+      }),
+      singleItem({
+        name: 'Dark bow',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Dark beast'],
+      }),
+      singleItem({
+        name: 'Mist battlestaff',
+        collectionLogCategory: 'slayer',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursForImbuedHeart / 3.5,
+        ),
+      }),
+      singleItem({
+        name: 'Dust battlestaff',
+        collectionLogCategory: 'slayer',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursForImbuedHeart / 3.5,
+        ),
+      }),
+      singleItem({
+        name: 'Eternal gem',
+        collectionLogCategory: 'slayer',
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
+      }),
+      singleItem({
+        name: 'Imbued heart',
+        collectionLogCategory: 'slayer',
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
+      }),
+      singleItem({
+        name: 'Aranea boots',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Araxyte#Level 146'],
+      }),
+    ],
+  },
+  'Miscellaneous Items': {
+    image: formatWikiImageUrl('Inventory', 'category'),
+    items: [
+      questItem({
+        name: 'Barrows gloves',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireBarrowsGloves,
+        ),
+        requiredQuests: ['Recipe for Disaster'],
+      }),
+      questItem({
+        name: 'Book of the dead',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireBookOfTheDead,
+        ),
+        requiredQuests: ['A Kingdom Divided'],
+      }),
+      singleItem({
+        name: 'Bottomless compost bucket',
+        collectionLogCategory: 'hespori',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToObtainBottomlessCompostBucket,
+        ),
+      }),
+      singleItem({
+        name: "Bryophyta's essence",
+        collectionLogCategory: 'bryophyta',
+      }),
+      singleItem({
+        name: 'Crystal tool seed',
+        collectionLogCategory: 'zalcano',
+      }),
+      singleItem({
+        name: 'Dragon warhammer',
+        collectionLogCategory: 'miscellaneous',
+      }),
+      compoundItem({
+        name: 'Graceful set',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireGracefulSet,
+        ),
+        image: formatWikiImageUrl('Graceful hood'),
+        requiredItems: [
+          { clogName: 'Graceful hood' },
+          { clogName: 'Graceful top' },
+          { clogName: 'Graceful legs' },
+          { clogName: 'Graceful gloves' },
+          { clogName: 'Graceful boots' },
+          { clogName: 'Graceful cape' },
+        ],
+        collectionLogCategories: ['rooftop_agility'],
+      }),
+      singleItem({
+        name: 'Ham joint',
+        collectionLogCategory: 'easy_treasure_trails',
+      }),
+      baseItem({
+        name: 'Music cape',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireMusicCape,
+        ),
+        image: formatWikiImageUrl('Music cape detail'),
+      }),
+      questItem({
+        name: 'Quest cape',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireQuestCape,
+        ),
+        image: formatWikiImageUrl('Quest point cape detail'),
+        requiredQuests: Quest.options,
+      }),
+      singleItem({
+        name: 'Ranger boots',
+        collectionLogCategory: 'medium_treasure_trails',
+      }),
+      singleItem({
+        name: 'Ring of endurance',
+        clogName: 'Ring of endurance (uncharged)',
+        collectionLogCategory: 'hallowed_sepulchre',
+      }),
+      singleItem({
+        name: 'Swift blade',
+        points: calculateXpOrTimeBasedItemPoints(
+          swiftBladeLmsPointsRequired,
+          ehbRates['LMS Points'],
+        ),
+        collectionLogCategory: 'last_man_standing',
+      }),
+      singleItem({
+        name: 'Tome of fire',
+        clogName: 'Tome of fire (empty)',
+        collectionLogCategory: 'wintertodt',
+      }),
+      singleItem({
+        name: 'Tome of water',
+        clogName: 'Tome of water (empty)',
+        collectionLogCategory: 'tempoross',
+      }),
+      singleItem({
+        name: 'Zombie axe',
+        clogName: 'Broken zombie axe',
+        requiredLevels: {
+          Smithing: 65,
+        },
+        collectionLogCategory: 'miscellaneous',
+        targetDropSources: ["Armoured zombie (Zemouregal's Fort)"],
+      }),
+    ],
+  },
+  Nex: {
+    image: formatWikiImageUrl('Nexling detail', 'category'),
+    items: [
+      singleItem({
+        name: 'Zaryte vambraces',
+        collectionLogCategory: 'nex',
+      }),
+      singleItem({
+        name: 'Nihil horn',
+        collectionLogCategory: 'nex',
+      }),
+      singleItem({
+        name: 'Torva full helm',
+        clogName: 'Torva full helm (damaged)',
+        image: formatWikiImageUrl('Torva full helm'),
+        collectionLogCategory: 'nex',
+      }),
+      singleItem({
+        name: 'Torva platebody',
+        clogName: 'Torva platebody (damaged)',
+        image: formatWikiImageUrl('Torva platebody'),
+        collectionLogCategory: 'nex',
+      }),
+      singleItem({
+        name: 'Torva platelegs',
+        clogName: 'Torva platelegs (damaged)',
+        image: formatWikiImageUrl('Torva platelegs'),
+        collectionLogCategory: 'nex',
+      }),
+      singleItem({
+        name: 'Ancient hilt',
+        collectionLogCategory: 'nex',
+      }),
+    ],
+  },
+  'The Nightmare': {
+    image: formatWikiImageUrl('Little nightmare chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Nightmare staff',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: "Inquisitor's great helm",
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: "Inquisitor's hauberk",
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: "Inquisitor's plateskirt",
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: "Inquisitor's mace",
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: 'Eldritch orb',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: 'Harmonised orb',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: 'Volatile orb',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: 'Parasitic egg',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+    ],
+  },
+  'Perilous Moons': {
+    image: formatWikiImageUrl('Blood Moon', 'category'),
+    items: [
+      singleItem({
+        name: 'Eclipse atlatl',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Eclipse moon helm',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Eclipse moon chestplate',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Eclipse moon tassets',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Dual macuahuitl',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blood moon helm',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blood moon chestplate',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blood moon tassets',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blue moon spear',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blue moon helm',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blue moon chestplate',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+      singleItem({
+        name: 'Blue moon tassets',
+        collectionLogCategory: 'moons_of_peril',
+      }),
+    ],
+  },
+  Pets: {
+    image: formatWikiImageUrl('Nid', 'category'),
+    items: Object.entries({
+      'Abyssal orphan': {},
+      'Abyssal protector': {},
+      'Baby chinchompa': {
+        points: calculateXpOrTimeBasedItemPoints(
+          petEhcRates['Baby chinchompa'],
+        ),
+        image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
+      },
+      'Baby mole': {},
+      Baron: {},
+      Beaver: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
+      },
+      Bloodhound: {},
+      Bran: {},
+      Butch: {},
+      'Callisto cub': {
+        targetDropSources: ['Artio'],
+      },
+      'Chompy chick': {},
+      'Giant squirrel': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
+      },
+      Hellpuppy: {},
+      Herbi: {},
+      Heron: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
+      },
+      Huberte: {},
+      'Ikkle hydra': {
+        image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
+      },
+      'Jal-nib-rek': {},
+      'Kalphite princess': {},
+      "Lil' creator": {},
+      "Lil'viathan": {},
+      "Lil' zik": {},
+      'Little nightmare': {
+        targetDropSources: ["Phosani's Nightmare"],
+      },
+      Muphin: {
+        image: formatWikiImageUrl('Muphin (shielded) chathead'),
+      },
+      Nexling: {},
+      Nid: {},
+      Noon: {},
+      Olmlet: {},
+      'Pet chaos elemental': {},
+      'Pet dagannoth prime': {},
+      'Pet dagannoth rex': {},
+      'Pet dagannoth supreme': {},
+      'Pet dark core': {},
+      'Pet general graardor': {},
+      'Pet kraken': {},
+      "Pet kree'arra": {},
+      "Pet k'ril tsutsaroth": {
+        image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
+      },
+      'Pet penance queen': {},
+      'Pet smoke devil': {},
+      'Pet snakeling': {},
+      'Pet zilyana': {},
+      Phoenix: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
+      },
+      'Prince black dragon': {},
+      Quetzin: {
+        targetDropSources: ["Hunters' loot sack (expert)"],
+      },
+      'Rift guardian': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
+        image: formatWikiImageUrl('Rift guardian (follower, fire)'),
+      },
+      'Rock golem': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
+      },
+      Rocky: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
+      },
+      "Scorpia's offspring": {},
+      Scurry: {},
+      Skotos: {},
+      Smolcano: {},
+      'Smol heredit': {},
+      Sraracha: {},
+      Tangleroot: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
+      },
+      'Tiny tempor': {},
+      "Tumeken's guardian": {},
+      'Tzrek-jad': {},
+      'Venenatis spiderling': {
+        targetDropSources: ['Spindel'],
+      },
+      "Vet'ion jr.": {
+        targetDropSources: ["Calvar'ion"],
+      },
+      Vorki: {},
+      Wisp: {},
+      Youngllef: {
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      },
+    } satisfies Partial<
+      Record<
+        CollectionLogItemName,
+        {
+          points?: number;
+          image?: string;
+          targetDropSources?: NonEmptyArray<string>;
+        }
+      >
+    >).map(
+      ([
+        name,
+        { points, image = formatWikiImageUrl(name), targetDropSources },
+      ]) =>
+        singleItem({
+          name,
+          points,
+          image,
+          collectionLogCategory: 'all_pets',
+          targetDropSources,
+        }),
+    ) as NonEmptyArray<Item>,
+  },
+  'Phantom Muspah': {
+    image: formatWikiImageUrl('Phantom Muspah (shielded)', 'category'),
+    items: [
+      singleItem({
+        name: 'Ancient sceptre',
+        clogName: 'Ancient icon',
+        collectionLogCategory: 'phantom_muspah',
+        targetDropSources: ['Phantom Muspah'],
+      }),
+      compoundItem({
+        name: 'Venator bow',
+        requiredItems: [
+          {
+            clogName: 'Venator shard',
+            amount: 5,
+            targetDropSources: ['Phantom Muspah'],
+          },
+        ],
+        collectionLogCategories: ['phantom_muspah'],
+      }),
+    ],
+  },
+  'Royal Titans': {
+    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
+    items: [
+      singleItem({
+        name: 'Deadeye prayer scroll',
+        image: formatWikiImageUrl('Deadeye'),
+        collectionLogCategory: 'royal_titans',
+      }),
+      singleItem({
+        name: 'Mystic vigour prayer scroll',
+        image: formatWikiImageUrl('Mystic Vigour'),
+        collectionLogCategory: 'royal_titans',
+      }),
+      compoundItem({
+        name: 'Twinflame staff',
+        requiredItems: [
+          { clogName: 'Ice element staff crown' },
+          { clogName: 'Fire element staff crown' },
+        ],
+        collectionLogCategories: ['royal_titans'],
+      }),
+    ],
+  },
   Sarachnis: {
     items: [
       singleItem({
         name: 'Sarachnis cudgel',
         collectionLogCategory: 'sarachnis',
-      }),
-    ],
-  },
-  'The Gauntlet': {
-    image: formatWikiImageUrl('Corrupted Youngllef chathead', 'category'),
-    items: [
-      singleItem({
-        name: 'Crystal weapon seed',
-        collectionLogCategory: 'the_gauntlet',
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-      }),
-      singleItem({
-        name: 'Crystal armour seed',
-        collectionLogCategory: 'the_gauntlet',
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-      }),
-      singleItem({
-        name: 'Enhanced crystal weapon seed (1)',
-        clogName: 'Enhanced crystal weapon seed',
-        requiredAmount: 1,
-        collectionLogCategory: 'the_gauntlet',
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-      }),
-      singleItem({
-        name: 'Enhanced crystal weapon seed (2)',
-        clogName: 'Enhanced crystal weapon seed',
-        requiredAmount: 2,
-        collectionLogCategory: 'the_gauntlet',
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-        ignoreAmountMultiplier: true,
-      }),
-    ],
-  },
-  'The Hueycoatl': {
-    items: [
-      singleItem({
-        name: 'Dragon hunter wand',
-        collectionLogCategory: 'hueycoatl',
-      }),
-      singleItem({
-        name: 'Tome of earth',
-        clogName: 'Tome of earth (empty)',
-        collectionLogCategory: 'hueycoatl',
       }),
     ],
   },
@@ -803,167 +1387,6 @@ export const itemList = {
       singleItem({
         name: 'Smoke battlestaff',
         collectionLogCategory: 'thermonuclear_smoke_devil',
-      }),
-    ],
-  },
-  'Tormented Demons': {
-    image: formatWikiImageUrl('Tormented Demon (1)', 'category'),
-    items: [
-      compoundItem({
-        name: 'Burning claws',
-        requiredItems: [{ clogName: 'Burning claw', amount: 2 }],
-        collectionLogCategories: ['tormented_demons'],
-      }),
-      ...Array.from({ length: 3 }).map((_, i) =>
-        singleItem({
-          name: `Tormented synapse (${i + 1})`,
-          clogName: 'Tormented synapse',
-          requiredAmount: i + 1,
-          collectionLogCategory: 'tormented_demons',
-          ignoreAmountMultiplier: true,
-        }),
-      ),
-    ],
-  },
-  'TzHaar Challenges': {
-    image: formatWikiImageUrl('TzKal-Zuk', 'category'),
-    items: [
-      combatAchievementItem({
-        name: '6 Jads',
-        points: calculateXpOrTimeBasedItemPoints(estimatedHoursToComplete6Jads),
-        image: formatWikiImageUrl('TzTok-Jad'),
-        requiredCombatAchievements: [
-          363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
-        ],
-      }),
-    ],
-  },
-  Vorkath: {
-    image: formatWikiImageUrl('Vorki detail', 'category'),
-    items: [
-      singleItem({
-        name: "Vorkath's head",
-        collectionLogCategory: 'vorkath',
-      }),
-      singleItem({
-        name: 'Dragonbone necklace',
-        collectionLogCategory: 'vorkath',
-      }),
-    ],
-  },
-  Zulrah: {
-    image: formatWikiImageUrl('Snakeling (tanzanite)', 'category'),
-    items: [
-      singleItem({
-        name: 'Toxic blowpipe',
-        clogName: 'Tanzanite fang',
-        image: formatWikiImageUrl('Toxic blowpipe'),
-        requiredLevels: {
-          Fletching: 73,
-        },
-        collectionLogCategory: 'zulrah',
-      }),
-      singleItem({
-        name: 'Magic fang',
-        collectionLogCategory: 'zulrah',
-      }),
-      singleItem({
-        name: 'Serpentine visage',
-        image: formatWikiImageUrl('Serpentine helm'),
-        collectionLogCategory: 'zulrah',
-      }),
-      singleItem({
-        name: 'Tanzanite mutagen',
-        collectionLogCategory: 'zulrah',
-      }),
-      singleItem({
-        name: 'Magma mutagen',
-        collectionLogCategory: 'zulrah',
-      }),
-    ],
-  },
-  'The Nightmare': {
-    image: formatWikiImageUrl('Little nightmare chathead', 'category'),
-    items: [
-      singleItem({
-        name: 'Nightmare staff',
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: "Inquisitor's great helm",
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: "Inquisitor's hauberk",
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: "Inquisitor's plateskirt",
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: "Inquisitor's mace",
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: 'Eldritch orb',
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: 'Harmonised orb',
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: 'Volatile orb',
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-      singleItem({
-        name: 'Parasitic egg',
-        collectionLogCategory: 'the_nightmare',
-        targetDropSources: ["Phosani's Nightmare"],
-      }),
-    ],
-  },
-  Nex: {
-    image: formatWikiImageUrl('Nexling detail', 'category'),
-    items: [
-      singleItem({
-        name: 'Zaryte vambraces',
-        collectionLogCategory: 'nex',
-      }),
-      singleItem({
-        name: 'Nihil horn',
-        collectionLogCategory: 'nex',
-      }),
-      singleItem({
-        name: 'Torva full helm',
-        clogName: 'Torva full helm (damaged)',
-        image: formatWikiImageUrl('Torva full helm'),
-        collectionLogCategory: 'nex',
-      }),
-      singleItem({
-        name: 'Torva platebody',
-        clogName: 'Torva platebody (damaged)',
-        image: formatWikiImageUrl('Torva platebody'),
-        collectionLogCategory: 'nex',
-      }),
-      singleItem({
-        name: 'Torva platelegs',
-        clogName: 'Torva platelegs (damaged)',
-        image: formatWikiImageUrl('Torva platelegs'),
-        collectionLogCategory: 'nex',
-      }),
-      singleItem({
-        name: 'Ancient hilt',
-        collectionLogCategory: 'nex',
       }),
     ],
   },
@@ -1052,101 +1475,73 @@ export const itemList = {
       }),
     ],
   },
-  'Perilous Moons': {
-    image: formatWikiImageUrl('Blood Moon', 'category'),
+  'Tormented Demons': {
+    image: formatWikiImageUrl('Tormented Demon (1)', 'category'),
     items: [
-      singleItem({
-        name: 'Eclipse atlatl',
-        collectionLogCategory: 'moons_of_peril',
+      compoundItem({
+        name: 'Burning claws',
+        requiredItems: [{ clogName: 'Burning claw', amount: 2 }],
+        collectionLogCategories: ['tormented_demons'],
       }),
-      singleItem({
-        name: 'Eclipse moon helm',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Eclipse moon chestplate',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Eclipse moon tassets',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Dual macuahuitl',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blood moon helm',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blood moon chestplate',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blood moon tassets',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blue moon spear',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blue moon helm',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blue moon chestplate',
-        collectionLogCategory: 'moons_of_peril',
-      }),
-      singleItem({
-        name: 'Blue moon tassets',
-        collectionLogCategory: 'moons_of_peril',
+      ...Array.from({ length: 3 }).map((_, i) =>
+        singleItem({
+          name: `Tormented synapse (${i + 1})`,
+          clogName: 'Tormented synapse',
+          requiredAmount: i + 1,
+          collectionLogCategory: 'tormented_demons',
+          ignoreAmountMultiplier: true,
+        }),
+      ),
+    ],
+  },
+  'TzHaar Challenges': {
+    image: formatWikiImageUrl('TzKal-Zuk', 'category'),
+    items: [
+      combatAchievementItem({
+        name: '6 Jads',
+        points: calculateXpOrTimeBasedItemPoints(estimatedHoursToComplete6Jads),
+        image: formatWikiImageUrl('TzTok-Jad'),
+        requiredCombatAchievements: [
+          363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
+        ],
       }),
     ],
   },
-  'Phantom Muspah': {
-    image: formatWikiImageUrl('Phantom Muspah (shielded)', 'category'),
+  Visages: {
+    image: formatWikiImageUrl('Draconic visage detail', 'category'),
     items: [
       singleItem({
-        name: 'Ancient sceptre',
-        clogName: 'Ancient icon',
-        collectionLogCategory: 'phantom_muspah',
-        targetDropSources: ['Phantom Muspah'],
+        name: 'Dragonfire shield',
+        clogName: 'Draconic visage',
+        image: formatWikiImageUrl('Dragonfire shield'),
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Black dragon#Wilderness Slayer Cave'],
       }),
-      compoundItem({
-        name: 'Venator bow',
-        requiredItems: [
-          {
-            clogName: 'Venator shard',
-            amount: 5,
-            targetDropSources: ['Phantom Muspah'],
-          },
-        ],
-        collectionLogCategories: ['phantom_muspah'],
+      singleItem({
+        name: 'Dragonfire ward',
+        clogName: 'Skeletal visage',
+        image: formatWikiImageUrl('Dragonfire ward'),
+        collectionLogCategory: 'vorkath',
+      }),
+      singleItem({
+        name: 'Ancient wyvern shield',
+        clogName: 'Wyvern visage',
+        image: formatWikiImageUrl('Ancient wyvern shield'),
+        collectionLogCategory: 'slayer',
+        targetDropSources: ['Spitting Wyvern'],
       }),
     ],
   },
-  'Royal Titans': {
-    image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
+  Vorkath: {
+    image: formatWikiImageUrl('Vorki detail', 'category'),
     items: [
       singleItem({
-        name: 'Deadeye prayer scroll',
-        image: formatWikiImageUrl('Deadeye'),
-        collectionLogCategory: 'royal_titans',
+        name: "Vorkath's head",
+        collectionLogCategory: 'vorkath',
       }),
       singleItem({
-        name: 'Mystic vigour prayer scroll',
-        image: formatWikiImageUrl('Mystic Vigour'),
-        collectionLogCategory: 'royal_titans',
-      }),
-      compoundItem({
-        name: 'Twinflame staff',
-        requiredItems: [
-          { clogName: 'Ice element staff crown' },
-          { clogName: 'Fire element staff crown' },
-        ],
-        collectionLogCategories: ['royal_titans'],
+        name: 'Dragonbone necklace',
+        collectionLogCategory: 'vorkath',
       }),
     ],
   },
@@ -1290,430 +1685,35 @@ export const itemList = {
       }),
     ],
   },
-  'Major Slayer Items': {
-    image: formatWikiImageUrl('Slayer icon (detail)', 'category'),
+  Zulrah: {
+    image: formatWikiImageUrl('Snakeling (tanzanite)', 'category'),
     items: [
       singleItem({
-        name: 'Black mask',
-        collectionLogCategory: 'slayer',
-        clogName: 'Black mask (10)',
-        targetDropSources: ['Cave horror'],
-      }),
-      singleItem({
-        name: 'Leaf-bladed battleaxe',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Kurask'],
-      }),
-      singleItem({
-        name: 'Warped sceptre',
-        clogName: 'Warped sceptre (uncharged)',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Warped Terrorbird'],
-      }),
-      compoundItem({
-        name: 'Devout boots',
-        requiredItems: [
-          {
-            clogName: "Drake's tooth",
-            targetDropSources: ['Drake'],
-          },
-          { clogName: 'Holy sandals' },
-        ],
-        collectionLogCategories: ['slayer', 'medium_treasure_trails'],
-      }),
-      singleItem({
-        name: 'Boots of brimstone',
-        clogName: "Drake's claw",
-        image: formatWikiImageUrl('Boots of brimstone'),
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Drake'],
-      }),
-      singleItem({
-        name: 'Neitiznot faceguard',
-        clogName: 'Basilisk jaw',
-        image: formatWikiImageUrl('Neitiznot faceguard'),
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Basilisk Knight'],
-      }),
-      singleItem({
-        name: 'Abyssal whip',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Abyssal demon#Standard'],
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToObtainAbyssalWhip,
-        ),
-      }),
-      singleItem({
-        name: 'Dark bow',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Dark beast'],
-      }),
-      singleItem({
-        name: 'Mist battlestaff',
-        collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursForImbuedHeart / 3.5,
-        ),
-      }),
-      singleItem({
-        name: 'Dust battlestaff',
-        collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursForImbuedHeart / 3.5,
-        ),
-      }),
-      singleItem({
-        name: 'Eternal gem',
-        collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
-      }),
-      singleItem({
-        name: 'Imbued heart',
-        collectionLogCategory: 'slayer',
-        points: calculateXpOrTimeBasedItemPoints(estimatedHoursForImbuedHeart),
-      }),
-      singleItem({
-        name: 'Aranea boots',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Araxyte#Level 146'],
-      }),
-    ],
-  },
-  Visages: {
-    image: formatWikiImageUrl('Draconic visage detail', 'category'),
-    items: [
-      singleItem({
-        name: 'Dragonfire shield',
-        clogName: 'Draconic visage',
-        image: formatWikiImageUrl('Dragonfire shield'),
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Black dragon#Wilderness Slayer Cave'],
-      }),
-      singleItem({
-        name: 'Dragonfire ward',
-        clogName: 'Skeletal visage',
-        image: formatWikiImageUrl('Dragonfire ward'),
-        collectionLogCategory: 'vorkath',
-      }),
-      singleItem({
-        name: 'Ancient wyvern shield',
-        clogName: 'Wyvern visage',
-        image: formatWikiImageUrl('Ancient wyvern shield'),
-        collectionLogCategory: 'slayer',
-        targetDropSources: ['Spitting Wyvern'],
-      }),
-    ],
-  },
-  'Misc Items': {
-    image: formatWikiImageUrl('Inventory', 'category'),
-    items: [
-      questItem({
-        name: 'Barrows gloves',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireBarrowsGloves,
-        ),
-        requiredQuests: ['Recipe for Disaster'],
-      }),
-      questItem({
-        name: 'Book of the dead',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireBookOfTheDead,
-        ),
-        requiredQuests: ['A Kingdom Divided'],
-      }),
-      singleItem({
-        name: 'Bottomless compost bucket',
-        collectionLogCategory: 'hespori',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToObtainBottomlessCompostBucket,
-        ),
-      }),
-      singleItem({
-        name: "Bryophyta's essence",
-        collectionLogCategory: 'bryophyta',
-      }),
-      singleItem({
-        name: 'Crystal tool seed',
-        collectionLogCategory: 'zalcano',
-      }),
-      singleItem({
-        name: 'Dragon warhammer',
-        collectionLogCategory: 'miscellaneous',
-      }),
-      compoundItem({
-        name: 'Graceful set',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireGracefulSet,
-        ),
-        image: formatWikiImageUrl('Graceful hood'),
-        requiredItems: [
-          { clogName: 'Graceful hood' },
-          { clogName: 'Graceful top' },
-          { clogName: 'Graceful legs' },
-          { clogName: 'Graceful gloves' },
-          { clogName: 'Graceful boots' },
-          { clogName: 'Graceful cape' },
-        ],
-        collectionLogCategories: ['rooftop_agility'],
-      }),
-      singleItem({
-        name: 'Ham joint',
-        collectionLogCategory: 'easy_treasure_trails',
-      }),
-      baseItem({
-        name: 'Music cape',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireMusicCape,
-        ),
-        image: formatWikiImageUrl('Music cape detail'),
-      }),
-      questItem({
-        name: 'Quest cape',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireQuestCape,
-        ),
-        image: formatWikiImageUrl('Quest point cape detail'),
-        requiredQuests: Quest.options,
-      }),
-      singleItem({
-        name: 'Ranger boots',
-        collectionLogCategory: 'medium_treasure_trails',
-      }),
-      singleItem({
-        name: 'Ring of endurance',
-        clogName: 'Ring of endurance (uncharged)',
-        collectionLogCategory: 'hallowed_sepulchre',
-      }),
-      singleItem({
-        name: 'Swift blade',
-        points: calculateXpOrTimeBasedItemPoints(
-          swiftBladeLmsPointsRequired,
-          ehbRates['LMS Points'],
-        ),
-        collectionLogCategory: 'last_man_standing',
-      }),
-      singleItem({
-        name: 'Tome of fire',
-        clogName: 'Tome of fire (empty)',
-        collectionLogCategory: 'wintertodt',
-      }),
-      singleItem({
-        name: 'Tome of water',
-        clogName: 'Tome of water (empty)',
-        collectionLogCategory: 'tempoross',
-      }),
-      singleItem({
-        name: 'Zombie axe',
-        clogName: 'Broken zombie axe',
+        name: 'Toxic blowpipe',
+        clogName: 'Tanzanite fang',
+        image: formatWikiImageUrl('Toxic blowpipe'),
         requiredLevels: {
-          Smithing: 65,
+          Fletching: 73,
         },
-        collectionLogCategory: 'miscellaneous',
-        targetDropSources: ["Armoured zombie (Zemouregal's Fort)"],
-      }),
-    ],
-  },
-  Jars: {
-    image: formatWikiImageUrl('Jar of venom', 'category'),
-    items: [
-      singleItem({
-        name: 'Jar of chemicals (Hydra)',
-        clogName: 'Jar of chemicals',
-        collectionLogCategory: 'alchemical_hydra',
-      }),
-      singleItem({
-        name: 'Jar of darkness (Skotizo)',
-        clogName: 'Jar of darkness',
-        collectionLogCategory: 'skotizo',
-      }),
-      singleItem({
-        name: 'Jar of decay (Vorkath)',
-        clogName: 'Jar of decay',
-        collectionLogCategory: 'vorkath',
-      }),
-      singleItem({
-        name: 'Jar of dirt (Kraken)',
-        clogName: 'Jar of dirt',
-        collectionLogCategory: 'kraken',
-      }),
-      singleItem({
-        name: 'Jar of dreams (Nightmare)',
-        clogName: 'Jar of dreams',
-        collectionLogCategory: 'the_nightmare',
-      }),
-      singleItem({
-        name: 'Jar of eyes (Sarachnis)',
-        clogName: 'Jar of eyes',
-        collectionLogCategory: 'sarachnis',
-      }),
-      singleItem({
-        name: 'Jar of miasma (Sire)',
-        clogName: 'Jar of miasma',
-        collectionLogCategory: 'abyssal_sire',
-      }),
-      singleItem({
-        name: 'Jar of sand (Kalphite Queen)',
-        clogName: 'Jar of sand',
-        collectionLogCategory: 'kalphite_queen',
-      }),
-      singleItem({
-        name: 'Jar of smoke (Thermy)',
-        clogName: 'Jar of smoke',
-        collectionLogCategory: 'thermonuclear_smoke_devil',
-      }),
-      singleItem({
-        name: 'Jar of souls (Cerberus)',
-        clogName: 'Jar of souls',
-        collectionLogCategory: 'cerberus',
-      }),
-      singleItem({
-        name: 'Jar of spirits (Corp)',
-        clogName: 'Jar of spirits',
-        collectionLogCategory: 'corporeal_beast',
-      }),
-      singleItem({
-        name: 'Jar of stone (GGs)',
-        clogName: 'Jar of stone',
-        collectionLogCategory: 'grotesque_guardians',
-      }),
-      singleItem({
-        name: 'Jar of swamp (Zulrah)',
-        clogName: 'Jar of swamp',
         collectionLogCategory: 'zulrah',
       }),
       singleItem({
-        name: 'Jar of venom (Araxxor)',
-        clogName: 'Jar of venom',
-        collectionLogCategory: 'araxxor',
+        name: 'Magic fang',
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Serpentine visage',
+        image: formatWikiImageUrl('Serpentine helm'),
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Tanzanite mutagen',
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Magma mutagen',
+        collectionLogCategory: 'zulrah',
       }),
     ],
-  },
-  Pets: {
-    image: formatWikiImageUrl('Nid', 'category'),
-    items: Object.entries({
-      'Abyssal orphan': {},
-      'Abyssal protector': {},
-      'Baby chinchompa': {
-        points: calculateXpOrTimeBasedItemPoints(
-          petEhcRates['Baby chinchompa'],
-        ),
-        image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
-      },
-      'Baby mole': {},
-      Baron: {},
-      Beaver: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
-      },
-      Bloodhound: {},
-      Bran: {},
-      Butch: {},
-      'Callisto cub': {
-        targetDropSources: ['Artio'],
-      },
-      'Chompy chick': {},
-      'Giant squirrel': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
-      },
-      Hellpuppy: {},
-      Herbi: {},
-      Heron: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
-      },
-      Huberte: {},
-      'Ikkle hydra': {
-        image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
-      },
-      'Jal-nib-rek': {},
-      'Kalphite princess': {},
-      "Lil' creator": {},
-      "Lil'viathan": {},
-      "Lil' zik": {},
-      'Little nightmare': {
-        targetDropSources: ["Phosani's Nightmare"],
-      },
-      Muphin: {
-        image: formatWikiImageUrl('Muphin (shielded) chathead'),
-      },
-      Nexling: {},
-      Nid: {},
-      Noon: {},
-      Olmlet: {},
-      'Pet chaos elemental': {},
-      'Pet dagannoth prime': {},
-      'Pet dagannoth rex': {},
-      'Pet dagannoth supreme': {},
-      'Pet dark core': {},
-      'Pet general graardor': {},
-      'Pet kraken': {},
-      "Pet kree'arra": {},
-      "Pet k'ril tsutsaroth": {
-        image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
-      },
-      'Pet penance queen': {},
-      'Pet smoke devil': {},
-      'Pet snakeling': {},
-      'Pet zilyana': {},
-      Phoenix: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
-      },
-      'Prince black dragon': {},
-      Quetzin: {
-        targetDropSources: ["Hunters' loot sack (expert)"],
-      },
-      'Rift guardian': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
-        image: formatWikiImageUrl('Rift guardian (follower, fire)'),
-      },
-      'Rock golem': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
-      },
-      Rocky: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
-      },
-      "Scorpia's offspring": {},
-      Scurry: {},
-      Skotos: {},
-      Smolcano: {},
-      'Smol heredit': {},
-      Sraracha: {},
-      Tangleroot: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
-      },
-      'Tiny tempor': {},
-      "Tumeken's guardian": {},
-      'Tzrek-jad': {},
-      'Venenatis spiderling': {
-        targetDropSources: ['Spindel'],
-      },
-      "Vet'ion jr.": {
-        targetDropSources: ["Calvar'ion"],
-      },
-      Vorki: {},
-      Wisp: {},
-      Youngllef: {
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-      },
-    } satisfies Partial<
-      Record<
-        CollectionLogItemName,
-        {
-          points?: number;
-          image?: string;
-          targetDropSources?: NonEmptyArray<string>;
-        }
-      >
-    >).map(
-      ([
-        name,
-        { points, image = formatWikiImageUrl(name), targetDropSources },
-      ]) =>
-        singleItem({
-          name,
-          points,
-          image,
-          collectionLogCategory: 'all_pets',
-          targetDropSources,
-        }),
-    ) as NonEmptyArray<Item>,
   },
 } satisfies ItemCategoryMap;
