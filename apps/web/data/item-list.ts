@@ -270,6 +270,31 @@ export const itemList = {
       }),
     ],
   },
+  'Callisto and Artio': {
+    image: formatWikiImageUrl('Callisto cub chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Tyrannical ring',
+        collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
+      }),
+      singleItem({
+        name: 'Claws of callisto',
+        collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
+      }),
+      singleItem({
+        name: 'Voidwaker hilt',
+        collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
+      }),
+      singleItem({
+        name: 'Callisto cub',
+        collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
+      }),
+    ],
+  },
   Cerberus: {
     image: formatWikiImageUrl('Hellpuppy detail', 'category'),
     items: [
@@ -366,6 +391,15 @@ export const itemList = {
       singleItem({
         name: 'Olmlet',
         collectionLogCategory: 'chambers_of_xeric',
+      }),
+    ],
+  },
+  'Chaos Elemental': {
+    image: formatWikiImageUrl('Pet chaos elemental detail', 'category'),
+    items: [
+      singleItem({
+        name: 'Pet chaos elemental',
+        collectionLogCategory: 'chaos_elemental',
       }),
     ],
   },
@@ -1084,6 +1118,64 @@ export const itemList = {
       }),
     ],
   },
+  'Miscellaneous Wilderness Items': {
+    image:
+      'https://oldschool.runescape.wiki/images/Pkskull_%28Steam_Emoticon%29.png',
+    items: [
+      questItem({
+        name: 'Mage Arena 2 cape',
+        points: calculateXpOrTimeBasedItemPoints(
+          estimatedHoursToAcquireMageArena2Cape,
+        ),
+        image: formatWikiImageUrl('Imbued zamorak cape'),
+        requiredQuests: ['Mage Arena II'],
+      }),
+      compoundItem({
+        name: 'Odium ward',
+        requiredItems: [
+          { clogName: 'Odium shard 1' },
+          { clogName: 'Odium shard 2' },
+          { clogName: 'Odium shard 3' },
+        ],
+        collectionLogCategories: [
+          'crazy_archaeologist',
+          'scorpia',
+          'chaos_fanatic',
+        ],
+      }),
+      compoundItem({
+        name: 'Malediction ward',
+        requiredItems: [
+          { clogName: 'Malediction shard 1' },
+          { clogName: 'Malediction shard 2' },
+          { clogName: 'Malediction shard 3' },
+        ],
+        collectionLogCategories: [
+          'crazy_archaeologist',
+          'scorpia',
+          'chaos_fanatic',
+        ],
+      }),
+      singleItem({
+        name: 'Dragon pickaxe',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Artio', 'Spindel', "Calvar'ion"],
+      }),
+      singleItem({
+        name: 'Amulet of eternal glory',
+        collectionLogCategory: 'miscellaneous',
+        points: calculateXpOrTimeBasedItemPoints(
+          1 / eternalGloryDropRate,
+          gloriesChargedPerHour,
+        ),
+      }),
+      singleItem({
+        name: 'Teleport anchoring scroll',
+        collectionLogCategory: 'slayer',
+        targetDropSources: ["Zombie Pirate's Locker"],
+      }),
+    ],
+  },
   Nex: {
     image: formatWikiImageUrl('Nexling detail', 'category'),
     items: [
@@ -1264,6 +1356,50 @@ export const itemList = {
       }),
     ],
   },
+  Revenants: {
+    image: formatWikiImageUrl('Revenant ork', 'category'),
+    items: [
+      singleItem({
+        name: 'Amulet of avarice',
+        collectionLogCategory: 'revenants',
+        targetDropSources: ['Revenant ork#On-task'],
+      }),
+      compoundItem({
+        name: 'Obelisk',
+        image:
+          'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
+        requiredItems: [
+          {
+            clogName: 'Ancient crystal',
+            amount: 4,
+            targetDropSources: ['Revenant ork'],
+          },
+        ],
+        requiredLevels: {
+          Construction: 72,
+        },
+        collectionLogCategories: ['revenants'],
+      }),
+      singleItem({
+        name: "Viggora's chainmace",
+        clogName: "Viggora's chainmace (u)",
+        collectionLogCategory: 'revenants',
+        targetDropSources: ['Revenant ork#On-task'],
+      }),
+      singleItem({
+        name: "Craw's bow",
+        clogName: "Craw's bow (u)",
+        collectionLogCategory: 'revenants',
+        targetDropSources: ['Revenant ork#On-task'],
+      }),
+      singleItem({
+        name: "Thammaron's sceptre",
+        clogName: "Thammaron's sceptre (u)",
+        collectionLogCategory: 'revenants',
+        targetDropSources: ['Revenant ork#On-task'],
+      }),
+    ],
+  },
   'Royal Titans': {
     image: formatWikiImageUrl('Branda the Fire Queen', 'category'),
     items: [
@@ -1304,6 +1440,14 @@ export const itemList = {
       singleItem({
         name: 'Sraracha',
         collectionLogCategory: 'sarachnis',
+      }),
+    ],
+  },
+  Scorpia: {
+    items: [
+      singleItem({
+        name: "Scorpia's offspring",
+        collectionLogCategory: 'scorpia',
       }),
     ],
   },
@@ -1627,6 +1771,56 @@ export const itemList = {
       }),
     ],
   },
+  'Venenatis and Spindel': {
+    image: formatWikiImageUrl('Venenatis spiderling chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Treasonous ring',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
+      }),
+      singleItem({
+        name: 'Fangs of venenatis',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
+      }),
+      singleItem({
+        name: 'Voidwaker gem',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
+      }),
+      singleItem({
+        name: 'Venenatis spiderling',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
+      }),
+    ],
+  },
+  "Vet'ion and Calvar'ion": {
+    image: formatWikiImageUrl("Vet'ion jr. chathead", 'category'),
+    items: [
+      singleItem({
+        name: 'Ring of the gods',
+        collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
+      }),
+      singleItem({
+        name: "Skull of vet'ion",
+        collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
+      }),
+      singleItem({
+        name: 'Voidwaker blade',
+        collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
+      }),
+      singleItem({
+        name: "Vet'ion jr.",
+        collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
+      }),
+    ],
+  },
   Visages: {
     image: formatWikiImageUrl('Draconic visage detail', 'category'),
     items: [
@@ -1673,170 +1867,8 @@ export const itemList = {
       }),
     ],
   },
-  'Wilderness items': {
-    image:
-      'https://oldschool.runescape.wiki/images/Pkskull_%28Steam_Emoticon%29.png',
-    items: [
-      questItem({
-        name: 'Mage Arena 2 cape',
-        points: calculateXpOrTimeBasedItemPoints(
-          estimatedHoursToAcquireMageArena2Cape,
-        ),
-        image: formatWikiImageUrl('Imbued zamorak cape'),
-        requiredQuests: ['Mage Arena II'],
-      }),
-      compoundItem({
-        name: 'Odium ward',
-        requiredItems: [
-          { clogName: 'Odium shard 1' },
-          { clogName: 'Odium shard 2' },
-          { clogName: 'Odium shard 3' },
-        ],
-        collectionLogCategories: [
-          'crazy_archaeologist',
-          'scorpia',
-          'chaos_fanatic',
-        ],
-      }),
-      compoundItem({
-        name: 'Malediction ward',
-        requiredItems: [
-          { clogName: 'Malediction shard 1' },
-          { clogName: 'Malediction shard 2' },
-          { clogName: 'Malediction shard 3' },
-        ],
-        collectionLogCategories: [
-          'crazy_archaeologist',
-          'scorpia',
-          'chaos_fanatic',
-        ],
-      }),
-      singleItem({
-        name: 'Dragon pickaxe',
-        collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Artio', 'Spindel', "Calvar'ion"],
-      }),
-      singleItem({
-        name: 'Ring of the gods',
-        collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Calvar'ion"],
-      }),
-      singleItem({
-        name: 'Treasonous ring',
-        collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Spindel'],
-      }),
-      singleItem({
-        name: 'Tyrannical ring',
-        collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Artio'],
-      }),
-      singleItem({
-        name: 'Amulet of eternal glory',
-        collectionLogCategory: 'miscellaneous',
-        points: calculateXpOrTimeBasedItemPoints(
-          1 / eternalGloryDropRate,
-          gloriesChargedPerHour,
-        ),
-      }),
-      singleItem({
-        name: 'Amulet of avarice',
-        collectionLogCategory: 'revenants',
-        targetDropSources: ['Revenant ork#On-task'],
-      }),
-      compoundItem({
-        name: 'Obelisk',
-        image:
-          'https://oldschool.runescape.wiki/images/Obelisk_%28Construction%29_built.png',
-        requiredItems: [
-          {
-            clogName: 'Ancient crystal',
-            amount: 4,
-            targetDropSources: ['Revenant ork'],
-          },
-        ],
-        requiredLevels: {
-          Construction: 72,
-        },
-        collectionLogCategories: ['revenants'],
-      }),
-      singleItem({
-        name: "Viggora's chainmace",
-        clogName: "Viggora's chainmace (u)",
-        collectionLogCategory: 'revenants',
-        targetDropSources: ['Revenant ork#On-task'],
-      }),
-      singleItem({
-        name: 'Claws of callisto',
-        collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Artio'],
-      }),
-      singleItem({
-        name: "Craw's bow",
-        clogName: "Craw's bow (u)",
-        collectionLogCategory: 'revenants',
-        targetDropSources: ['Revenant ork#On-task'],
-      }),
-      singleItem({
-        name: 'Fangs of venenatis',
-        collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Spindel'],
-      }),
-      singleItem({
-        name: "Thammaron's sceptre",
-        clogName: "Thammaron's sceptre (u)",
-        collectionLogCategory: 'revenants',
-        targetDropSources: ['Revenant ork#On-task'],
-      }),
-      singleItem({
-        name: "Skull of vet'ion",
-        collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Calvar'ion"],
-      }),
-      compoundItem({
-        name: 'Voidwaker',
-        requiredItems: [
-          { clogName: 'Voidwaker hilt', targetDropSources: ['Artio'] },
-          { clogName: 'Voidwaker gem', targetDropSources: ['Spindel'] },
-          { clogName: 'Voidwaker blade', targetDropSources: ["Calvar'ion"] },
-        ],
-        collectionLogCategories: [
-          'vetion_and_calvarion',
-          'callisto_and_artio',
-          'venenatis_and_spindel',
-        ],
-      }),
-      singleItem({
-        name: 'Teleport anchoring scroll',
-        collectionLogCategory: 'slayer',
-        targetDropSources: ["Zombie Pirate's Locker"],
-      }),
-      singleItem({
-        name: 'Callisto cub',
-        collectionLogCategory: 'callisto_and_artio',
-        targetDropSources: ['Artio'],
-      }),
-      singleItem({
-        name: 'Venenatis spiderling',
-        collectionLogCategory: 'venenatis_and_spindel',
-        targetDropSources: ['Spindel'],
-      }),
-      singleItem({
-        name: "Vet'ion jr.",
-        collectionLogCategory: 'vetion_and_calvarion',
-        targetDropSources: ["Calvar'ion"],
-      }),
-      singleItem({
-        name: 'Pet chaos elemental',
-        collectionLogCategory: 'chaos_elemental',
-      }),
-      singleItem({
-        name: "Scorpia's offspring",
-        collectionLogCategory: 'scorpia',
-      }),
-    ],
-  },
   Yama: {
+    image: formatWikiImageUrl('Yami chathead', 'category'),
     items: [
       singleItem({
         name: 'Soulflame horn',
