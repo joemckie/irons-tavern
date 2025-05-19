@@ -978,10 +978,7 @@ export const itemList = {
         name: "Bryophyta's essence",
         collectionLogCategory: 'bryophyta',
       }),
-      singleItem({
-        name: 'Crystal tool seed',
-        collectionLogCategory: 'zalcano',
-      }),
+
       singleItem({
         name: 'Dragon warhammer',
         collectionLogCategory: 'miscellaneous',
@@ -1063,13 +1060,11 @@ export const itemList = {
     image: formatWikiImageUrl('Bloodhound_detail', 'category'),
     items: CollectionLogItemName.extract([
       'Baby mole',
-      'Bloodhound',
       'Chompy chick',
       "Lil' creator",
       'Pet penance queen',
       'Prince black dragon',
       'Scurry',
-      'Smolcano',
     ]).options.map((name) =>
       singleItem({
         name,
@@ -1564,6 +1559,14 @@ export const itemList = {
       ),
     ],
   },
+  'Treasure Trails': {
+    items: [
+      singleItem({
+        name: 'Bloodhound',
+        collectionLogCategory: 'master_treasure_trails',
+      }),
+    ],
+  },
   TzHaar: {
     image: formatWikiImageUrl('TzKal-Zuk', 'category'),
     items: [
@@ -1819,6 +1822,19 @@ export const itemList = {
       singleItem({
         name: 'Yami',
         collectionLogCategory: 'yama',
+      }),
+    ],
+  },
+  Zalcano: {
+    image: formatWikiImageUrl('Smolcano_chathead', 'category'),
+    items: [
+      singleItem({
+        name: 'Smolcano',
+        collectionLogCategory: 'zalcano',
+      }),
+      singleItem({
+        name: 'Crystal tool seed',
+        collectionLogCategory: 'zalcano',
       }),
     ],
   },
