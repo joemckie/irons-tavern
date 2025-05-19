@@ -22,7 +22,7 @@ export const calculateRankThresholds = (
   );
 
   return {
-    Standard: { Air: 0, Pine: 1, ...standardRankPoints },
+    Standard: { Helper: 0, Steel: 1, ...standardRankPoints },
     Legacy: { Legend: 0 },
     Admin: {
       Captain: 0,
