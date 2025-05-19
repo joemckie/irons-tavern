@@ -787,9 +787,16 @@ export const itemList = {
         clogName: 'Jar of eyes',
         collectionLogCategory: 'sarachnis',
       }),
+    ],
+  },
+  'Kalphite Queen': {
+    items: [
       singleItem({
-        name: 'Jar of sand (Kalphite Queen)',
-        clogName: 'Jar of sand',
+        name: 'Kalphite princess',
+        collectionLogCategory: 'kalphite_queen',
+      }),
+      singleItem({
+        name: 'Jar of sand',
         collectionLogCategory: 'kalphite_queen',
       }),
     ],
@@ -1243,7 +1250,6 @@ export const itemList = {
       Heron: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
       },
-      'Kalphite princess': {},
       "Lil' creator": {},
       'Pet penance queen': {},
       Phoenix: {
