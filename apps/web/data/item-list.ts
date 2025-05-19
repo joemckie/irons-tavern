@@ -193,6 +193,11 @@ export const itemList = {
         name: "Hydra's claw",
         collectionLogCategory: 'alchemical_hydra',
       }),
+      singleItem({
+        name: 'Ikkle hydra',
+        image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
+        collectionLogCategory: 'alchemical_hydra',
+      }),
     ],
   },
   Araxxor: {
@@ -238,6 +243,10 @@ export const itemList = {
         ],
         collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
       }),
+      singleItem({
+        name: 'Nid',
+        collectionLogCategory: 'araxxor',
+      }),
     ],
   },
   Cerberus: {
@@ -259,6 +268,10 @@ export const itemList = {
         name: 'Smouldering stone',
         collectionLogCategory: 'cerberus',
         targetDropSources: ['Cerberus'],
+      }),
+      singleItem({
+        name: 'Hellpuppy',
+        collectionLogCategory: 'cerberus',
       }),
     ],
   },
@@ -325,6 +338,10 @@ export const itemList = {
         collectionLogCategory: 'chambers_of_xeric',
         ignoreDropRateModifier: true,
       }),
+      singleItem({
+        name: 'Olmlet',
+        collectionLogCategory: 'chambers_of_xeric',
+      }),
     ],
   },
   'Commander Zilyana': {
@@ -344,6 +361,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Saradomin hilt',
+        collectionLogCategory: 'commander_zilyana',
+      }),
+      singleItem({
+        name: 'Pet zilyana',
         collectionLogCategory: 'commander_zilyana',
       }),
     ],
@@ -385,6 +406,10 @@ export const itemList = {
         ],
         collectionLogCategories: ['corporeal_beast'],
       }),
+      singleItem({
+        name: 'Pet dark core',
+        collectionLogCategory: 'corporeal_beast',
+      }),
     ],
   },
   'Dagannoth Kings': {
@@ -404,6 +429,18 @@ export const itemList = {
       }),
       singleItem({
         name: 'Warrior ring',
+        collectionLogCategory: 'dagannoth_kings',
+      }),
+      singleItem({
+        name: 'Pet dagannoth prime',
+        collectionLogCategory: 'dagannoth_kings',
+      }),
+      singleItem({
+        name: 'Pet dagannoth rex',
+        collectionLogCategory: 'dagannoth_kings',
+      }),
+      singleItem({
+        name: 'Pet dagannoth supreme',
         collectionLogCategory: 'dagannoth_kings',
       }),
     ],
@@ -551,6 +588,18 @@ export const itemList = {
         name: 'Baron',
         collectionLogCategory: 'duke_sucellus',
       }),
+      singleItem({
+        name: 'Butch',
+        collectionLogCategory: 'vardorvis',
+      }),
+      singleItem({
+        name: "Lil'viathan",
+        collectionLogCategory: 'the_leviathan',
+      }),
+      singleItem({
+        name: 'Wisp',
+        collectionLogCategory: 'the_whisperer',
+      }),
     ],
   },
   'Fortis Colosseum': {
@@ -582,6 +631,10 @@ export const itemList = {
         collectionLogCategory: 'fortis_colosseum',
         targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
       }),
+      singleItem({
+        name: 'Smol heredit',
+        collectionLogCategory: 'fortis_colosseum',
+      }),
     ],
   },
   'General Graardor': {
@@ -604,6 +657,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Bandos hilt',
+        collectionLogCategory: 'general_graardor',
+      }),
+      singleItem({
+        name: 'Pet general graardor',
         collectionLogCategory: 'general_graardor',
       }),
     ],
@@ -635,6 +692,10 @@ export const itemList = {
         ],
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
       }),
+      singleItem({
+        name: 'Noon',
+        collectionLogCategory: 'grotesque_guardians',
+      }),
     ],
   },
   'The Gauntlet': {
@@ -665,6 +726,11 @@ export const itemList = {
         targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
         ignoreAmountMultiplier: true,
       }),
+      singleItem({
+        name: 'Youngllef',
+        collectionLogCategory: 'the_gauntlet',
+        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
+      }),
     ],
   },
   'The Hueycoatl': {
@@ -676,6 +742,10 @@ export const itemList = {
       singleItem({
         name: 'Tome of earth',
         clogName: 'Tome of earth (empty)',
+        collectionLogCategory: 'hueycoatl',
+      }),
+      singleItem({
+        name: 'Huberte',
         collectionLogCategory: 'hueycoatl',
       }),
     ],
@@ -765,6 +835,10 @@ export const itemList = {
         name: 'Kraken tentacle',
         collectionLogCategory: 'kraken',
       }),
+      singleItem({
+        name: 'Pet kraken',
+        collectionLogCategory: 'kraken',
+      }),
     ],
   },
   "Kree'arra": {
@@ -789,6 +863,10 @@ export const itemList = {
         name: 'Armadyl hilt',
         collectionLogCategory: 'kree_arra',
       }),
+      singleItem({
+        name: "Pet kree'arra",
+        collectionLogCategory: 'kree_arra',
+      }),
     ],
   },
   "K'ril Tsutsaroth": {
@@ -809,6 +887,11 @@ export const itemList = {
       }),
       singleItem({
         name: 'Zamorak hilt',
+        collectionLogCategory: 'kril_tsutsaroth',
+      }),
+      singleItem({
+        name: "Pet k'ril tsutsaroth",
+        image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
         collectionLogCategory: 'kril_tsutsaroth',
       }),
     ],
@@ -1044,6 +1127,10 @@ export const itemList = {
         name: 'Ancient hilt',
         collectionLogCategory: 'nex',
       }),
+      singleItem({
+        name: 'Nexling',
+        collectionLogCategory: 'nex',
+      }),
     ],
   },
   'The Nightmare': {
@@ -1093,6 +1180,11 @@ export const itemList = {
         name: 'Parasitic egg',
         collectionLogCategory: 'the_nightmare',
         targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
+        name: 'Little nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+        collectionLogCategory: 'the_nightmare',
       }),
     ],
   },
@@ -1164,54 +1256,17 @@ export const itemList = {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
       },
       Bloodhound: {},
-      Bran: {},
-      Butch: {},
-      'Callisto cub': {
-        targetDropSources: ['Artio'],
-      },
       'Chompy chick': {},
       'Giant squirrel': {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
       },
-      Hellpuppy: {},
       Herbi: {},
       Heron: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
       },
-      Huberte: {},
-      'Ikkle hydra': {
-        image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
-      },
-      'Jal-nib-rek': {},
       'Kalphite princess': {},
       "Lil' creator": {},
-      "Lil'viathan": {},
-      "Lil' zik": {},
-      'Little nightmare': {
-        targetDropSources: ["Phosani's Nightmare"],
-      },
-      Muphin: {
-        image: formatWikiImageUrl('Muphin (shielded) chathead'),
-      },
-      Nexling: {},
-      Nid: {},
-      Noon: {},
-      Olmlet: {},
-      'Pet chaos elemental': {},
-      'Pet dagannoth prime': {},
-      'Pet dagannoth rex': {},
-      'Pet dagannoth supreme': {},
-      'Pet dark core': {},
-      'Pet general graardor': {},
-      'Pet kraken': {},
-      "Pet kree'arra": {},
-      "Pet k'ril tsutsaroth": {
-        image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
-      },
       'Pet penance queen': {},
-      'Pet smoke devil': {},
-      'Pet snakeling': {},
-      'Pet zilyana': {},
       Phoenix: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
       },
@@ -1229,32 +1284,14 @@ export const itemList = {
       Rocky: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
       },
-      "Scorpia's offspring": {},
       Scurry: {},
       Skotos: {},
       Smolcano: {},
-      'Smol heredit': {},
       Sraracha: {},
       Tangleroot: {
         points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
       },
       'Tiny tempor': {},
-      "Tumeken's guardian": {},
-      'Tzrek-jad': {},
-      'Venenatis spiderling': {
-        targetDropSources: ['Spindel'],
-      },
-      "Vet'ion jr.": {
-        targetDropSources: ["Calvar'ion"],
-      },
-      Vorki: {},
-      Wisp: {},
-      Yami: {
-        targetDropSources: ['Yama'],
-      },
-      Youngllef: {
-        targetDropSources: ['Reward Chest (The Gauntlet)#(Corrupted)'],
-      },
     } satisfies Partial<
       Record<
         CollectionLogItemName,
@@ -1298,6 +1335,11 @@ export const itemList = {
         ],
         collectionLogCategories: ['phantom_muspah'],
       }),
+      singleItem({
+        name: 'Muphin',
+        image: formatWikiImageUrl('Muphin (shielded) chathead'),
+        collectionLogCategory: 'phantom_muspah',
+      }),
     ],
   },
   'Royal Titans': {
@@ -1320,6 +1362,10 @@ export const itemList = {
           { clogName: 'Fire element staff crown' },
         ],
         collectionLogCategories: ['royal_titans'],
+      }),
+      singleItem({
+        name: 'Bran',
+        collectionLogCategory: 'royal_titans',
       }),
     ],
   },
@@ -1383,6 +1429,10 @@ export const itemList = {
         name: 'Sanguine dust',
         collectionLogCategory: 'theatre_of_blood',
       }),
+      singleItem({
+        name: "Lil' zik",
+        collectionLogCategory: 'theatre_of_blood',
+      }),
     ],
   },
   'Thermonuclear Smoke Devil': {
@@ -1395,6 +1445,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Smoke battlestaff',
+        collectionLogCategory: 'thermonuclear_smoke_devil',
+      }),
+      singleItem({
+        name: 'Pet smoke devil',
         collectionLogCategory: 'thermonuclear_smoke_devil',
       }),
     ],
@@ -1482,6 +1536,10 @@ export const itemList = {
         name: 'Cursed phalanx',
         collectionLogCategory: 'tombs_of_amascut',
       }),
+      singleItem({
+        name: "Tumeken's guardian",
+        collectionLogCategory: 'tombs_of_amascut',
+      }),
     ],
   },
   'Tormented Demons': {
@@ -1503,7 +1561,7 @@ export const itemList = {
       ),
     ],
   },
-  'TzHaar Challenges': {
+  TzHaar: {
     image: formatWikiImageUrl('TzKal-Zuk', 'category'),
     items: [
       combatAchievementItem({
@@ -1513,6 +1571,14 @@ export const itemList = {
         requiredCombatAchievements: [
           363, // https://oldschool.runescape.wiki/w/The_VI_Jad_Challenge
         ],
+      }),
+      singleItem({
+        name: 'Jal-nib-rek',
+        collectionLogCategory: 'the_inferno',
+      }),
+      singleItem({
+        name: 'Tzrek-jad',
+        collectionLogCategory: 'the_fight_caves',
       }),
     ],
   },
@@ -1550,6 +1616,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Dragonbone necklace',
+        collectionLogCategory: 'vorkath',
+      }),
+      singleItem({
+        name: 'Vorki',
         collectionLogCategory: 'vorkath',
       }),
     ],
@@ -1692,6 +1762,29 @@ export const itemList = {
         collectionLogCategory: 'slayer',
         targetDropSources: ["Zombie Pirate's Locker"],
       }),
+      singleItem({
+        name: 'Callisto cub',
+        collectionLogCategory: 'callisto_and_artio',
+        targetDropSources: ['Artio'],
+      }),
+      singleItem({
+        name: 'Venenatis spiderling',
+        collectionLogCategory: 'venenatis_and_spindel',
+        targetDropSources: ['Spindel'],
+      }),
+      singleItem({
+        name: "Vet'ion jr.",
+        collectionLogCategory: 'vetion_and_calvarion',
+        targetDropSources: ["Calvar'ion"],
+      }),
+      singleItem({
+        name: 'Pet chaos elemental',
+        collectionLogCategory: 'chaos_elemental',
+      }),
+      singleItem({
+        name: "Scorpia's offspring",
+        collectionLogCategory: 'scorpia',
+      }),
     ],
   },
   Yama: {
@@ -1715,6 +1808,10 @@ export const itemList = {
         name: 'Oathplate legs',
         collectionLogCategory: 'yama',
         targetDropSources: ['Yama'],
+      }),
+      singleItem({
+        name: 'Yami',
+        collectionLogCategory: 'yama',
       }),
     ],
   },
@@ -1745,6 +1842,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Magma mutagen',
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Pet snakeling',
         collectionLogCategory: 'zulrah',
       }),
     ],
