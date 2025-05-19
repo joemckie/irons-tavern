@@ -18,7 +18,7 @@ export const calculateRankThresholds = (
 
       return acc;
     },
-    {} as Record<Exclude<StandardRank, 'Air' | 'Pine'>, number>,
+    {} as Record<Exclude<StandardRank, 'Helper' | 'Steel'>, number>,
   );
 
   return {
@@ -26,11 +26,11 @@ export const calculateRankThresholds = (
     Legacy: { Legend: 0 },
     Admin: {
       Captain: 0,
-      General: standardRankPoints.Nature,
-      Colonel: standardRankPoints.Yew,
-      Brigadier: standardRankPoints.Elite,
-      Admiral: standardRankPoints.Diseased,
-      Marshal: standardRankPoints.Blisterwood,
+      General: standardRankPoints.Striker,
+      Colonel: standardRankPoints.Legend,
+      Brigadier: standardRankPoints.Sage,
+      Admiral: standardRankPoints.Skulled,
+      Marshal: standardRankPoints.Beast,
     },
     Moderator: { Moderator: 0 },
     'Deputy Owner': { 'Deputy Owner': 0 },
