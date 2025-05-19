@@ -1059,6 +1059,24 @@ export const itemList = {
       }),
     ],
   },
+  'Miscellaneous Pets': {
+    image: formatWikiImageUrl('Bloodhound_detail', 'category'),
+    items: CollectionLogItemName.extract([
+      'Baby mole',
+      'Bloodhound',
+      'Chompy chick',
+      "Lil' creator",
+      'Pet penance queen',
+      'Prince black dragon',
+      'Scurry',
+      'Smolcano',
+    ]).options.map((name) =>
+      singleItem({
+        name,
+        collectionLogCategory: 'all_pets',
+      }),
+    ) as NonEmptyArray<Item>,
+  },
   Nex: {
     image: formatWikiImageUrl('Nexling detail', 'category'),
     items: [
@@ -1212,87 +1230,6 @@ export const itemList = {
       }),
     ],
   },
-  'Miscellaneous Pets': {
-    image: formatWikiImageUrl('Bloodhound_detail', 'category'),
-    items: CollectionLogItemName.extract([
-      'Baby mole',
-      'Bloodhound',
-      'Chompy chick',
-      "Lil' creator",
-      'Pet penance queen',
-      'Prince black dragon',
-      'Scurry',
-      'Smolcano',
-    ]).options.map((name) =>
-      singleItem({
-        name,
-        collectionLogCategory: 'all_pets',
-      }),
-    ) as NonEmptyArray<Item>,
-  },
-  'Skilling Pets': {
-    image: formatWikiImageUrl('Phoenix_detail', 'category'),
-    items: Object.entries({
-      'Abyssal protector': {},
-      'Baby chinchompa': {
-        points: calculateXpOrTimeBasedItemPoints(
-          petEhcRates['Baby chinchompa'],
-        ),
-        image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
-      },
-      Beaver: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
-      },
-      'Giant squirrel': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
-      },
-      Herbi: {},
-      Heron: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
-      },
-      Phoenix: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
-      },
-      Quetzin: {
-        targetDropSources: ["Hunters' loot sack (expert)"],
-      },
-      'Rift guardian': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
-        image: formatWikiImageUrl('Rift guardian (follower, fire)'),
-      },
-      'Rock golem': {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
-      },
-      Rocky: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
-      },
-      Tangleroot: {
-        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
-      },
-      'Tiny tempor': {},
-    } satisfies Partial<
-      Record<
-        CollectionLogItemName,
-        {
-          points?: number;
-          image?: string;
-          targetDropSources?: NonEmptyArray<string>;
-        }
-      >
-    >).map(
-      ([
-        name,
-        { points, image = formatWikiImageUrl(name), targetDropSources },
-      ]) =>
-        singleItem({
-          name,
-          points,
-          image,
-          collectionLogCategory: 'all_pets',
-          targetDropSources,
-        }),
-    ) as NonEmptyArray<Item>,
-  },
   'Phantom Muspah': {
     image: formatWikiImageUrl('Phantom Muspah (shielded)', 'category'),
     items: [
@@ -1362,6 +1299,69 @@ export const itemList = {
         collectionLogCategory: 'sarachnis',
       }),
     ],
+  },
+  'Skilling Pets': {
+    image: formatWikiImageUrl('Phoenix_detail', 'category'),
+    items: Object.entries({
+      'Abyssal protector': {},
+      'Baby chinchompa': {
+        points: calculateXpOrTimeBasedItemPoints(
+          petEhcRates['Baby chinchompa'],
+        ),
+        image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
+      },
+      Beaver: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
+      },
+      'Giant squirrel': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
+      },
+      Herbi: {},
+      Heron: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Heron),
+      },
+      Phoenix: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Phoenix),
+      },
+      Quetzin: {
+        targetDropSources: ["Hunters' loot sack (expert)"],
+      },
+      'Rift guardian': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
+        image: formatWikiImageUrl('Rift guardian (follower, fire)'),
+      },
+      'Rock golem': {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
+      },
+      Rocky: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
+      },
+      Tangleroot: {
+        points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
+      },
+      'Tiny tempor': {},
+    } satisfies Partial<
+      Record<
+        CollectionLogItemName,
+        {
+          points?: number;
+          image?: string;
+          targetDropSources?: NonEmptyArray<string>;
+        }
+      >
+    >).map(
+      ([
+        name,
+        { points, image = formatWikiImageUrl(name), targetDropSources },
+      ]) =>
+        singleItem({
+          name,
+          points,
+          image,
+          collectionLogCategory: 'all_pets',
+          targetDropSources,
+        }),
+    ) as NonEmptyArray<Item>,
   },
   Skotizo: {
     image: formatWikiImageUrl('Skotos_detail', 'category'),
