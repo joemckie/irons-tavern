@@ -160,6 +160,10 @@ export const itemList = {
         collectionLogCategory: 'abyssal_sire',
       }),
       singleItem({
+        name: 'Jar of miasma',
+        collectionLogCategory: 'abyssal_sire',
+      }),
+      singleItem({
         name: 'Abyssal orphan',
         collectionLogCategory: 'abyssal_sire',
       }),
@@ -191,6 +195,10 @@ export const itemList = {
       }),
       singleItem({
         name: "Hydra's claw",
+        collectionLogCategory: 'alchemical_hydra',
+      }),
+      singleItem({
+        name: 'Jar of chemicals',
         collectionLogCategory: 'alchemical_hydra',
       }),
       singleItem({
@@ -244,6 +252,10 @@ export const itemList = {
         collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
       }),
       singleItem({
+        name: 'Jar of venom',
+        collectionLogCategory: 'araxxor',
+      }),
+      singleItem({
         name: 'Nid',
         collectionLogCategory: 'araxxor',
       }),
@@ -268,6 +280,10 @@ export const itemList = {
         name: 'Smouldering stone',
         collectionLogCategory: 'cerberus',
         targetDropSources: ['Cerberus'],
+      }),
+      singleItem({
+        name: 'Jar of souls',
+        collectionLogCategory: 'cerberus',
       }),
       singleItem({
         name: 'Hellpuppy',
@@ -405,6 +421,10 @@ export const itemList = {
           { clogName: 'Holy elixir', ignorePoints: true },
         ],
         collectionLogCategories: ['corporeal_beast'],
+      }),
+      singleItem({
+        name: 'Jar of spirits',
+        collectionLogCategory: 'corporeal_beast',
       }),
       singleItem({
         name: 'Pet dark core',
@@ -693,6 +713,10 @@ export const itemList = {
         collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
       }),
       singleItem({
+        name: 'Jar of stone',
+        collectionLogCategory: 'grotesque_guardians',
+      }),
+      singleItem({
         name: 'Noon',
         collectionLogCategory: 'grotesque_guardians',
       }),
@@ -754,29 +778,9 @@ export const itemList = {
     image: formatWikiImageUrl('Jar of venom', 'category'),
     items: [
       singleItem({
-        name: 'Jar of chemicals (Hydra)',
-        clogName: 'Jar of chemicals',
-        collectionLogCategory: 'alchemical_hydra',
-      }),
-      singleItem({
         name: 'Jar of darkness (Skotizo)',
         clogName: 'Jar of darkness',
         collectionLogCategory: 'skotizo',
-      }),
-      singleItem({
-        name: 'Jar of decay (Vorkath)',
-        clogName: 'Jar of decay',
-        collectionLogCategory: 'vorkath',
-      }),
-      singleItem({
-        name: 'Jar of dirt (Kraken)',
-        clogName: 'Jar of dirt',
-        collectionLogCategory: 'kraken',
-      }),
-      singleItem({
-        name: 'Jar of dreams (Nightmare)',
-        clogName: 'Jar of dreams',
-        collectionLogCategory: 'the_nightmare',
       }),
       singleItem({
         name: 'Jar of eyes (Sarachnis)',
@@ -784,44 +788,9 @@ export const itemList = {
         collectionLogCategory: 'sarachnis',
       }),
       singleItem({
-        name: 'Jar of miasma (Sire)',
-        clogName: 'Jar of miasma',
-        collectionLogCategory: 'abyssal_sire',
-      }),
-      singleItem({
         name: 'Jar of sand (Kalphite Queen)',
         clogName: 'Jar of sand',
         collectionLogCategory: 'kalphite_queen',
-      }),
-      singleItem({
-        name: 'Jar of smoke (Thermy)',
-        clogName: 'Jar of smoke',
-        collectionLogCategory: 'thermonuclear_smoke_devil',
-      }),
-      singleItem({
-        name: 'Jar of souls (Cerberus)',
-        clogName: 'Jar of souls',
-        collectionLogCategory: 'cerberus',
-      }),
-      singleItem({
-        name: 'Jar of spirits (Corp)',
-        clogName: 'Jar of spirits',
-        collectionLogCategory: 'corporeal_beast',
-      }),
-      singleItem({
-        name: 'Jar of stone (GGs)',
-        clogName: 'Jar of stone',
-        collectionLogCategory: 'grotesque_guardians',
-      }),
-      singleItem({
-        name: 'Jar of swamp (Zulrah)',
-        clogName: 'Jar of swamp',
-        collectionLogCategory: 'zulrah',
-      }),
-      singleItem({
-        name: 'Jar of venom (Araxxor)',
-        clogName: 'Jar of venom',
-        collectionLogCategory: 'araxxor',
       }),
     ],
   },
@@ -833,6 +802,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Kraken tentacle',
+        collectionLogCategory: 'kraken',
+      }),
+      singleItem({
+        name: 'Jar of dirt',
         collectionLogCategory: 'kraken',
       }),
       singleItem({
@@ -1182,6 +1155,12 @@ export const itemList = {
         targetDropSources: ["Phosani's Nightmare"],
       }),
       singleItem({
+        name: 'Jar of dreams (Nightmare)',
+        clogName: 'Jar of dreams',
+        collectionLogCategory: 'the_nightmare',
+        targetDropSources: ["Phosani's Nightmare"],
+      }),
+      singleItem({
         name: 'Little nightmare',
         targetDropSources: ["Phosani's Nightmare"],
         collectionLogCategory: 'the_nightmare',
@@ -1448,6 +1427,10 @@ export const itemList = {
         collectionLogCategory: 'thermonuclear_smoke_devil',
       }),
       singleItem({
+        name: 'Jar of smoke',
+        collectionLogCategory: 'thermonuclear_smoke_devil',
+      }),
+      singleItem({
         name: 'Pet smoke devil',
         collectionLogCategory: 'thermonuclear_smoke_devil',
       }),
@@ -1616,6 +1599,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Dragonbone necklace',
+        collectionLogCategory: 'vorkath',
+      }),
+      singleItem({
+        name: 'Jar of decay',
         collectionLogCategory: 'vorkath',
       }),
       singleItem({
@@ -1842,6 +1829,10 @@ export const itemList = {
       }),
       singleItem({
         name: 'Magma mutagen',
+        collectionLogCategory: 'zulrah',
+      }),
+      singleItem({
+        name: 'Jar of swamp',
         collectionLogCategory: 'zulrah',
       }),
       singleItem({
