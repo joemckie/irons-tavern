@@ -1774,6 +1774,16 @@ export const CollectionLogItemName = z.enum([
   'Fire element staff crown',
   'Giantsoul amulet (uncharged)',
   'Desiccated page',
+  'Yami',
+  'Chasm teleport scroll',
+  'Oathplate helm',
+  'Oathplate chest',
+  'Oathplate legs',
+  'Soulflame horn',
+  'Vile of rite transference',
+  'Forgotten lockbox',
+  'Dossier',
+  'Barrel of demonic tallow (full)',
 ]);
 
 export type CollectionLogItemName = z.infer<typeof CollectionLogItemName>;

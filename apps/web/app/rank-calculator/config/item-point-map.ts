@@ -78,12 +78,13 @@ export const dropRateModifiers: Record<string, number> = {
 
 /**
  * Some content is expected to be completed in a group to be the most efficient,
- * meaning the player will not receive loot for every kill.
+ * meaning the player will only receive a fraction of the loot.
  */
 export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
   'Chambers of Xeric Challenge Mode': 3,
   Nex: 4,
   Zalcano: 4,
+  Yama: 2,
 };
 
 /**
@@ -101,6 +102,9 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   'Twisted ancestral colour kit':
     1 / groupSizes['Chambers of Xeric Challenge Mode']!,
   'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
+  'Oathplate chest': 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  'Oathplate helm': 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  'Oathplate legs': 0.625, // Oathplate armour can be created by the player using Oathplate shards
 };
 
 /**

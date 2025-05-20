@@ -98,6 +98,12 @@ export type TempleOSRSPlayerCollectionLog = z.infer<
 >;
 
 export const TempleOSRSCollectionLogCategory = z.enum([
+  'all',
+  'bosses',
+  'raids',
+  'clues',
+  'minigames',
+  'other',
   'abyssal_sire',
   'alchemical_hydra',
   'amoxliatl',
@@ -146,17 +152,21 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'vorkath',
   'the_whisperer',
   'wintertodt',
+  'yama',
   'zalcano',
   'zulrah',
+  'chambers_of_xeric',
+  'theatre_of_blood',
+  'tombs_of_amascut',
   'beginner_treasure_trails',
   'easy_treasure_trails',
   'medium_treasure_trails',
   'hard_treasure_trails',
   'elite_treasure_trails',
   'master_treasure_trails',
-  'hard_treasure_trails_rare',
-  'elite_treasure_trails_rare',
-  'master_treasure_trails_rare',
+  'gilded',
+  'third_age',
+  'mimic',
   'shared_treasure_trail_rewards',
   'barbarian_assault',
   'brimhaven_agility_arena',
@@ -204,9 +214,6 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'tormented_demons',
   'tzhaar',
   'miscellaneous',
-  'chambers_of_xeric',
-  'theatre_of_blood',
-  'tombs_of_amascut',
 ]);
 
 export type TempleOSRSCollectionLogCategory = z.infer<
