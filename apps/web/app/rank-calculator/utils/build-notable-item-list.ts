@@ -43,8 +43,8 @@ export const buildNotableItemList = unstable_cache(
       {} as Record<keyof typeof itemList, ItemCategory>,
     ),
   [
-    `item-list:${itemListChecksum}`,
     `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,
+    `item-list:${itemListChecksum}`,
     `efficiency-data:${efficiencyDataChecksum}`,
     `item-point-map:${itemPointMapChecksum}`,
   ],
