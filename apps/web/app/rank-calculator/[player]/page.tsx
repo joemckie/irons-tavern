@@ -39,7 +39,7 @@ export default async function RankCalculatorPage({
 
   const [playerDetails, dropRates] = await Promise.all([
     fetchPlayerDetails(decodedPlayer, userId),
-    fetchItemDropRates(generateRequiredItemList()),
+    fetchItemDropRates([...generateRequiredItemList()]),
   ]);
 
   const notableItemList = await buildNotableItemList(itemList, dropRates);
