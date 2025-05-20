@@ -9,12 +9,13 @@ import * as Sentry from '@sentry/nextjs';
 import { calculateItemPoints } from './calculate-item-points';
 import { pointsConfig } from '../config/points';
 
+const itemListChecksum = JSum.digest(itemList, 'SHA256', 'hex');
 const efficiencyDataChecksum = JSum.digest(efficiencyData, 'SHA256', 'hex');
 const itemPointMapChecksum = JSum.digest(itemPointMap, 'SHA256', 'hex');
 
 export const buildNotableItemList = unstable_cache(
-  async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
-    Object.entries(notableItemConfig).reduce(
+  async (dropRates: DroppedItemResponse) =>
+    Object.entries(itemList).reduce(
       (acc, [key, category]) => {
         const items = category.items.map((item) => {
           if (item.points) {
@@ -43,6 +44,7 @@ export const buildNotableItemList = unstable_cache(
     ),
   [
     `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,
+    `item-list:${itemListChecksum}`,
     `efficiency-data:${efficiencyDataChecksum}`,
     `item-point-map:${itemPointMapChecksum}`,
   ],
