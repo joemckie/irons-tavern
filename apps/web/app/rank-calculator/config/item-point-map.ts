@@ -102,9 +102,9 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   'Twisted ancestral colour kit':
     1 / groupSizes['Chambers of Xeric Challenge Mode']!,
   'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
-  'Oathplate chest': 0.625,
-  'Oathplate helm': 0.625,
-  'Oathplate legs': 0.625,
+  'Oathplate chest': 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  'Oathplate helm': 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  'Oathplate legs': 0.625, // Oathplate armour can be created by the player using Oathplate shards
 };
 
 /**
