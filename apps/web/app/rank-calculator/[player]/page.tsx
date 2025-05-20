@@ -37,7 +37,12 @@ export default async function RankCalculatorPage({
 
   const { id: userId } = session.user;
 
-  const playerDetails = await fetchPlayerDetails(decodedPlayer, userId);
+  const [playerDetails, dropRates] = await Promise.all([
+    fetchPlayerDetails(decodedPlayer, userId),
+    fetchItemDropRates(generateRequiredItemList()),
+  ]);
+
+  const notableItemList = await buildNotableItemList(itemList, dropRates);
 
   if (!playerDetails.success) {
     return <p>An error occurred</p>;
@@ -59,9 +64,6 @@ export default async function RankCalculatorPage({
   }
 
   const queryClient = new QueryClient();
-
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
-  const notableItemList = await buildNotableItemList(itemList, dropRates);
 
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));

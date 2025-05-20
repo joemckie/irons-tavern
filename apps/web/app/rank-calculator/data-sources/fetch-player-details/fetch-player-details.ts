@@ -137,11 +137,12 @@ export async function fetchPlayerDetails(
         )
       : undefined;
     const { joinDate, rsn, rank: currentRank } = playerRecord;
-    const [wikiSyncData, templePlayerStats, templeCollectionLog] =
+    const [wikiSyncData, templePlayerStats, templeCollectionLog, discordRoles] =
       await Promise.all([
         getWikiSyncData(player),
         fetchTemplePlayerStats(player, true),
         fetchTemplePlayerCollectionLog(player),
+        fetchUserDiscordRoles(userId),
       ]);
 
     const hasThirdPartyData = Boolean(
@@ -277,7 +278,6 @@ export async function fetchPlayerDetails(
 
     const hasMaxCape = totalLevel === maximumTotalLevel;
 
-    const discordRoles = await fetchUserDiscordRoles(userId);
     const {
       collectionLogBonusMultiplier,
       combatBonusMultiplier,
