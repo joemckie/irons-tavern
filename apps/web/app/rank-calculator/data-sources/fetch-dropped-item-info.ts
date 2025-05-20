@@ -21,12 +21,12 @@ export function generateRequiredItemList() {
 }
 
 export const fetchItemDropRates = unstable_cache(
-  async (items: Set<CollectionLogItemName>) => {
+  async (items: CollectionLogItemName[]) => {
     const batches = [];
     const batchSize = 10;
 
-    for (let i = 0; i < items.size; i += batchSize) {
-      const batch = [...items].slice(i, i + batchSize);
+    for (let i = 0; i < items.length; i += batchSize) {
+      const batch = items.slice(i, i + batchSize);
       const query = [
         `[[Dropped item::${[...batch].join('||')}]]`,
         '?Drop JSON',
