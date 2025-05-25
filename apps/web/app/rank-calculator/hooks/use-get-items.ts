@@ -1,5 +1,4 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { itemList } from '@/data/item-list';
 import { useDropRates } from './use-drop-rates';
 import { buildNotableItemList } from '../utils/build-notable-item-list';
 
@@ -9,7 +8,7 @@ export function useGetItems() {
   return useSuspenseQuery({
     queryKey: ['items'],
     async queryFn() {
-      return Object.entries(await buildNotableItemList(itemList, dropRates));
+      return Object.entries(await buildNotableItemList(dropRates));
     },
   });
 }

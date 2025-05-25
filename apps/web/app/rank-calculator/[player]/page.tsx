@@ -42,7 +42,7 @@ export default async function RankCalculatorPage({
     fetchItemDropRates([...generateRequiredItemList()]),
   ]);
 
-  const notableItemList = await buildNotableItemList(itemList, dropRates);
+  const notableItemList = await buildNotableItemList(dropRates);
 
   if (!playerDetails.success) {
     return <p>An error occurred</p>;
