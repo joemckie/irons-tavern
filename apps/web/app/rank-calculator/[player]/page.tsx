@@ -5,7 +5,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { itemList } from '@/data/item-list';
 import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
 import { FormWrapper } from './form-wrapper';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
