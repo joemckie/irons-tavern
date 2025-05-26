@@ -7,6 +7,6 @@ import {
 export function useDropRates() {
   return useSuspenseQuery({
     queryKey: ['drop-rates'],
-    queryFn: async () => fetchItemDropRates(generateRequiredItemList()),
+    queryFn: async () => fetchItemDropRates([...generateRequiredItemList()]),
   });
 }
