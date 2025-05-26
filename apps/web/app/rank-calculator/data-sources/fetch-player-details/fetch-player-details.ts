@@ -175,6 +175,7 @@ export async function fetchPlayerDetails(
     const {
       Overall_level: totalLevel = null,
       Collections: hiscoresCollectionLogCount = null,
+      'TzKal-Zuk': zukKillCount = null,
     } = templePlayerStats ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templePlayerStats);
 
@@ -255,10 +256,15 @@ export async function fetchPlayerDetails(
         ? `${clientConstants.temple.baseUrl}/player/collection-log.php?player=${player}`
         : null);
 
+    const hasInfernalCape = zukKillCount ? zukKillCount > 0 : false;
+    const hasFireCape =
+      wikiSyncData?.combat_achievements.includes(
+        147, // https://oldschool.runescape.wiki/w/Fight_Caves_Veteran
+      ) || false;
+
     const tzhaarCape =
-      (collectionLogItems?.['Infernal cape'] &&
-        TzHaarCape.enum['Infernal cape']) ||
-      (collectionLogItems?.['Fire cape'] && TzHaarCape.enum['Fire cape']) ||
+      (hasInfernalCape && TzHaarCape.enum['Infernal cape']) ||
+      (hasFireCape && TzHaarCape.enum['Fire cape']) ||
       TzHaarCape.enum.None;
 
     const hasBloodTorva = new Set([
@@ -269,7 +275,9 @@ export async function fetchPlayerDetails(
     ]).isSubsetOf(new Set(wikiSyncData?.combat_achievements));
 
     const hasDizanasQuiver =
-      !!collectionLogItems?.['Dizanas quiver (uncharged)'];
+      wikiSyncData?.combat_achievements.includes(
+        538, // https://oldschool.runescape.wiki/w/Sportsmanship
+      ) || false;
 
     const hasAchievementDiaryCape = achievementDiaries
       ? isAchievementDiaryCapeAchieved(achievementDiaries)
