@@ -184,7 +184,7 @@ export const approveSubmissionAction = authActionClient
       const playerRecord = (await redis.hget(
         userOSRSAccountsKey(submitterId),
         playerName.toLowerCase(),
-      )) as Player;
+      ))!;
 
       if (!playerRecord) {
         throw new ActionError('Unable to find player record!');

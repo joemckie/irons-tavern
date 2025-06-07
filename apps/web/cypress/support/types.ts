@@ -9,8 +9,8 @@ export type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
   T
 >;
 
-export type CategoryFixture<T extends CommonPointCalculatorData> = {
+export interface CategoryFixture<T extends CommonPointCalculatorData> {
   earlyGamePlayer: ScalingFixtureMap<T>;
   midGamePlayer: ScalingFixtureMap<T>;
   endGamePlayer: ScalingFixtureMap<T>;
-};
+}

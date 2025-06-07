@@ -17,11 +17,11 @@ type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
   T
 >;
 
-type CategoryFixture<T extends CommonPointCalculatorData> = {
+interface CategoryFixture<T extends CommonPointCalculatorData> {
   earlyGamePlayer: ScalingFixtureMap<T>;
   midGamePlayer: ScalingFixtureMap<T>;
   endGamePlayer: ScalingFixtureMap<T>;
-};
+}
 
 export const generateScaledPlayerTests = <T extends CommonPointCalculatorData>(
   formData: FormDataMap,

@@ -4,7 +4,7 @@ import { pointsConfig } from '../config/points';
 
 export function calculateXpOrTimeBasedItemPoints(
   estimatedXpOrTimeToCompletion: number,
-  ehpRate: number = 1,
+  ehpRate = 1,
 ) {
   // Validate that the provided numbers are greater than 0
   const parsedEstimatedXpToCompletion = z

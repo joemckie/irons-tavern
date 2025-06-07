@@ -31,13 +31,13 @@ async function getLatestMemberList() {
       return {};
     }
 
-    return data.reduce(
+    return data.reduce<Record<string, ClanMember>>(
       (acc, member) => {
         acc[member.rsn.toLowerCase()] = member;
 
         return acc;
       },
-      {} as Record<string, ClanMember>,
+      {},
     );
   } catch (error) {
     Sentry.captureException(error);
@@ -125,7 +125,7 @@ export default async function InactivityCheckerPage() {
                       {lastChecked}
                     </td>
                     <td className="border-b border-slate-700 p-4 text-slate-500 ">
-                      {`${pluralise('day', estimatedDaysInactive, true)}`}
+                      {pluralise('day', estimatedDaysInactive, true)}
                     </td>
                     <td className="border-b border-slate-700 p-4">
                       <span

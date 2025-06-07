@@ -41,10 +41,10 @@ export function Select({
   return (
     <Ariakit.SelectProvider
       setValue={(value) =>
-        startTransition(() => {
+        { startTransition(() => {
           field.onChange(value);
           onValueChange?.(value);
-        })
+        }); }
       }
       value={field.value ?? ''}
     >

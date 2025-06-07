@@ -51,7 +51,7 @@ export function EditableText({
             type="button"
             size="1"
             variant="ghost"
-            onClick={() => setIsEditing(false)}
+            onClick={() => { setIsEditing(false); }}
           >
             <CheckIcon height="14" width="14" />
           </IconButton>
@@ -76,7 +76,7 @@ export function EditableText({
       {!field.disabled && !readOnly && (
         <IconButton
           type="button"
-          onClick={() => setIsEditing(true)}
+          onClick={() => { setIsEditing(true); }}
           size="1"
           variant="ghost"
         >

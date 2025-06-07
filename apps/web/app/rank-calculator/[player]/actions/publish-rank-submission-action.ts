@@ -166,9 +166,9 @@ export const publishRankSubmissionAction = authActionClient
 
       const itemMap = Object.values(itemList)
         .flatMap(({ items }) => items)
-        .reduce(
+        .reduce<Record<string, Item>>(
           (acc, item) => ({ ...acc, [stripEntityName(item.name)]: item }),
-          {} as Record<string, Item>,
+          {},
         );
 
       const submissionDiff = {
@@ -179,13 +179,13 @@ export const publishRankSubmissionAction = authActionClient
                   DiaryLocation,
                   DiaryTier,
                 ][]
-              ).reduce((acc, [diaryLocation, diaryTier]) => {
+              ).reduce<AchievementDiaryMap>((acc, [diaryLocation, diaryTier]) => {
                 if (
-                  // eslint-disable-next-line no-underscore-dangle
+                   
                   DiaryTier._def.values.indexOf(
                     achievementDiaries[diaryLocation] ?? 'None',
                   ) <
-                  // eslint-disable-next-line no-underscore-dangle
+                   
                   DiaryTier._def.values.indexOf(
                     savedData.achievementDiaries[diaryLocation] ?? 'None',
                   )
@@ -194,7 +194,7 @@ export const publishRankSubmissionAction = authActionClient
                 }
 
                 return acc;
-              }, {} as AchievementDiaryMap)
+              }, {})
             : null,
         acquiredItems: [
           ...new Set<string>([
@@ -227,9 +227,9 @@ export const publishRankSubmissionAction = authActionClient
         ],
         combatAchievementTier:
           hasWikiSyncData &&
-          // eslint-disable-next-line no-underscore-dangle
+           
           CombatAchievementTier._def.values.indexOf(combatAchievementTier) <
-            // eslint-disable-next-line no-underscore-dangle
+             
             CombatAchievementTier._def.values.indexOf(
               savedData.combatAchievementTier,
             )

@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     // If the player has a datapoint cool-down (i.e. a number),
     // this means they have been checked very recently and cannot be checked again
     if (shouldCheckPlayer) {
-      // eslint-disable-next-line no-console
+       
       console.log(`Checking ${player} using ${checkMethod} method`);
 
       const urls = {

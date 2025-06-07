@@ -133,7 +133,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                     type="button"
                     color="gray"
                     size="3"
-                    onClick={() => router.push('/rank-calculator')}
+                    onClick={() => { router.push('/rank-calculator'); }}
                     variant="soft"
                   >
                     Back
