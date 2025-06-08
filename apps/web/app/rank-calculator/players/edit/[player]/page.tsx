@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
-import { ClanMemberList } from '@/app/api/update-member-list/route';
+import { ClanMemberList } from '@/app/schemas/inactivity-checker';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { userOSRSAccountsKey } from '@/config/redis';

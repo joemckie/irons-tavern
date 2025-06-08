@@ -1,7 +1,7 @@
 import { list } from '@vercel/blob';
 import { parse } from 'date-fns';
 import * as Sentry from '@sentry/nextjs';
-import { ClanMemberList } from '@/app/api/update-member-list/route';
+import { ClanMemberList } from '@/app/schemas/inactivity-checker';
 
 export async function fetchPlayerMeta(player: string) {
   const blobList = await list({

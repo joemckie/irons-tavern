@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
-import { ClanMemberList } from '@/app/api/update-member-list/route';
+import { ClanMemberList } from '@/app/schemas/inactivity-checker';
 import { AddPlayerForm } from './add-player-form';
 
 async function getLatestMemberList() {

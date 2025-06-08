@@ -6,7 +6,7 @@ import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
-import { ClanMember, ClanMemberList } from '../api/update-member-list/route';
+import { ClanMember, ClanMemberList } from '../schemas/inactivity-checker';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {

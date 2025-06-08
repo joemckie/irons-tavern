@@ -1,22 +1,10 @@
 import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 import { clientConstants } from '@/config/constants.client';
-import { Rank } from '@/config/enums';
 import { GroupUpdateRequest } from '@/app/schemas/temple-api';
 import { serverConstants } from '@/config/constants.server';
 import { z } from 'zod';
-
-export const ClanMember = z.object({
-  rsn: z.string(),
-  rank: Rank,
-  joinedDate: z.string(),
-});
-
-export type ClanMember = z.infer<typeof ClanMember>;
-
-export const ClanMemberList = z.array(ClanMember);
-
-export type ClanMemberList = z.infer<typeof ClanMemberList>;
+import { ClanMember } from '@/app/schemas/inactivity-checker';
 
 const ClanExport = z.object({
   clanName: z.string(),
