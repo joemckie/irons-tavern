@@ -12,14 +12,27 @@
     "jsx": "preserve",
     "incremental": true,
     "downlevelIteration": true,
-    "plugins": [{ "name": "next" }],
-    "paths": { "@/*": ["apps/web/*"] },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["apps/web/*"]
+    },
     "baseUrl": "../..",
-    "target": "ES2017"
+    "target": "ES2017",
+    "noEmit": true
   },
   "files": ["eslint.config.mjs", "postcss.config.mjs"],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.spec.json" }
-  ]
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

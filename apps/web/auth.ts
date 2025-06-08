@@ -23,7 +23,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
-   
+
   interface JWT {
     id: string;
     permissions: string;
@@ -66,7 +66,7 @@ export const config = {
 
       return true;
     },
-     
+
     async jwt({ profile, token, account }) {
       const { guildId } = serverConstants.discord;
 
@@ -106,7 +106,7 @@ export const config = {
       return session;
     },
   },
-   
+
   logger: {
     error: (error) => {
       console.error(error);

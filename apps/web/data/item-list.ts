@@ -1893,7 +1893,7 @@ export const itemList = {
       singleItem({
         name: 'Yami',
         collectionLogCategory: 'yama',
-        targetDropSources: ['Yama']
+        targetDropSources: ['Yama'],
       }),
     ],
   },

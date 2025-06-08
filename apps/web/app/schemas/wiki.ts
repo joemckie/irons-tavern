@@ -189,7 +189,9 @@ export const DroppedItemResponse = z
     }),
   })
   .transform((data) =>
-    Object.values(data.query.results).reduce<Record<string, Record<string, number>>>(
+    Object.values(data.query.results).reduce<
+      Record<string, Record<string, number>>
+    >(
       (
         acc,
         {

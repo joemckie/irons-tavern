@@ -46,7 +46,9 @@ export function DeleteSubmissionButton({
             <Button
               variant="solid"
               color="red"
-              onClick={() => { deletePlayerAccountAction(playerName); }}
+              onClick={() => {
+                deletePlayerAccountAction(playerName);
+              }}
             >
               Remove account
             </Button>

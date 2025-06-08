@@ -3401,7 +3401,6 @@ __metadata:
     object-to-formdata: "npm:^4.5.1"
     pluralize: "npm:^8.0.0"
     postcss: "npm:^8"
-    prettier: "npm:^3.3.3"
     react: "npm:19.0.0-rc-69d4b800-20241021"
     react-datepicker: "npm:^7.5.0"
     react-dom: "npm:19.0.0-rc-69d4b800-20241021"
@@ -8024,6 +8023,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "irons-tavern@workspace:."
   dependencies:
+    prettier: "npm:^3.3.3"
     turbo: "npm:^2.5.3"
     typescript: "npm:^5"
   languageName: unknown

@@ -9,7 +9,6 @@ import { ActionError } from './action-error';
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
-     
     console.error(`Action error: ${error.message}`);
 
     Sentry.captureException(error);
@@ -28,11 +27,9 @@ export const actionClient = createSafeActionClient({
     const result = await next();
 
     if (process.env.NODE_ENV === 'development') {
-       
       console.log(`Input: ${JSON.stringify(clientInput, null, 2)}`);
       console.log(`Result: ${JSON.stringify(result, null, 2)}`);
       console.log(`Metadata: ${JSON.stringify(metadata, null, 2)}`);
-       
     }
 
     return result;
