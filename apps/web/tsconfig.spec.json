@@ -5,7 +5,11 @@
     "composite": true,
     "noEmit": false
   },
-  "files": ["next-env.d.ts", "utility-types.d.ts", "jest.setup.ts"],
-  "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": []
+  "files": [
+    "next-env.d.ts",
+    "utility-types.d.ts",
+    "jest.setup.ts",
+    "jest.config.ts"
+  ],
+  "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
 }

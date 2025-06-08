@@ -1,5 +1,5 @@
 import nextJest from 'next/jest';
-import type { Config } from 'jest';
+import { Config } from 'jest';
 import { merge } from 'lodash';
 import { compilerOptions } from './tsconfig.json';
 
@@ -21,7 +21,7 @@ const config = {
 const buildConfig = async () => {
   const baseConfig = await createJestConfig(config)();
 
-  return merge<unknown, Config, Config>({}, baseConfig, {
+  return merge({}, baseConfig, {
     transformIgnorePatterns: [
       ' /node_modules/(?!(next-auth|@auth/core/(.*)|oauth4webapi))',
     ],
