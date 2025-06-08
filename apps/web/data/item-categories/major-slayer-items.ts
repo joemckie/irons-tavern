@@ -7,7 +7,7 @@ import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url'
 import { ItemCategory } from '@/app/schemas/items';
 import { singleItem, compoundItem } from '../utils/item-builders';
 
-export const majorSlayer: ItemCategory = {
+export const majorSlayerItems: ItemCategory = {
   image: formatWikiImageUrl('Slayer icon (detail)', 'category'),
   items: [
     singleItem({

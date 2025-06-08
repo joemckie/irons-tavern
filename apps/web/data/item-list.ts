@@ -2,58 +2,58 @@ import { ItemCategoryMap } from '@/app/schemas/items';
 import { abyssalSire } from './item-categories/abyssal-sire';
 import { alchemicalHydra } from './item-categories/alchemical-hydra';
 import { araxxor } from './item-categories/araxxor';
-import { barbarianAssault } from './item-categories/barbarianAssault';
-import { callistoAndArtio } from './item-categories/callistoAndArtio';
+import { barbarianAssault } from './item-categories/barbarian-assault';
+import { callistoAndArtio } from './item-categories/callisto-and-artio';
 import { cerberus } from './item-categories/cerberus';
-import { chambersOfXeric } from './item-categories/chambersOfXeric';
-import { chaosElemental } from './item-categories/chaosElemental';
-import { chompyBirdHunting } from './item-categories/chompyBirdHunting';
-import { commanderZilyana } from './item-categories/commanderZilyana';
-import { corporealBeast } from './item-categories/corporealBeast';
-import { dagannothKings } from './item-categories/dagannothKings';
-import { demonicGorillas } from './item-categories/demonicGorillas';
-import { desertTreasure2 } from './item-categories/desertTreasure2';
-import { fortisColosseum } from './item-categories/fortisColosseum';
-import { generalGraardor } from './item-categories/generalGraardor';
-import { grotesqueGuardians } from './item-categories/grotesqueGuardians';
-import { theGauntlet } from './item-categories/theGauntlet';
-import { giantMole } from './item-categories/giantMole';
-import { theHueycoatl } from './item-categories/theHueycoatl';
-import { kalphiteQueen } from './item-categories/kalphiteQueen';
-import { kingBlackDragon } from './item-categories/kingBlackDragon';
+import { chambersOfXeric } from './item-categories/chambers-of-xeric';
+import { chaosElemental } from './item-categories/chaos-elemental';
+import { chompyBirdHunting } from './item-categories/chompy-bird-hunting';
+import { commanderZilyana } from './item-categories/commander-zilyana';
+import { corporealBeast } from './item-categories/corporeal-beast';
+import { dagannothKings } from './item-categories/dagannoth-kings';
+import { demonicGorillas } from './item-categories/demonic-gorillas';
+import { desertTreasure2 } from './item-categories/desert-treasure-2';
+import { fortisColosseum } from './item-categories/fortis-colosseum';
+import { generalGraardor } from './item-categories/general-graardor';
+import { grotesqueGuardians } from './item-categories/grotesque-guardians';
+import { theGauntlet } from './item-categories/the-gauntlet';
+import { giantMole } from './item-categories/giant-mole';
+import { theHueycoatl } from './item-categories/the-hueycoatl';
+import { kalphiteQueen } from './item-categories/kalphite-queen';
+import { kingBlackDragon } from './item-categories/king-black-dragon';
 import { kraken } from './item-categories/kraken';
 import { krearra } from './item-categories/krearra';
-import { krilTsutsaroth } from './item-categories/krilTsutsaroth';
-import { majorSlayer } from './item-categories/majorSlayer';
+import { krilTsutsaroth } from './item-categories/kril-tsutsaroth';
+import { majorSlayerItems } from './item-categories/major-slayer-items';
 import { miscellaneous } from './item-categories/miscellaneous';
-import { miscellaneousWilderness } from './item-categories/miscellaneousWilderness';
+import { miscellaneousWildernessItems } from './item-categories/miscellaneous-wilderness-items';
 import { nex } from './item-categories/nex';
-import { theNightmare } from './item-categories/theNightmare';
-import { perilousMoons } from './item-categories/perilousMoons';
-import { phantomMuspah } from './item-categories/phantomMuspah';
+import { theNightmare } from './item-categories/the-nightmare';
+import { perilousMoons } from './item-categories/perilous-moons';
+import { phantomMuspah } from './item-categories/phantom-muspah';
 import { revenants } from './item-categories/revenants';
-import { royalTitans } from './item-categories/royalTitans';
+import { royalTitans } from './item-categories/royal-titans';
 import { sarachnis } from './item-categories/sarachnis';
 import { scorpia } from './item-categories/scorpia';
 import { scurrius } from './item-categories/scurrius';
-import { skillingPets } from './item-categories/skillingPets';
+import { skillingPets } from './item-categories/skilling-pets';
 import { skotizo } from './item-categories/skotizo';
-import { soulWars } from './item-categories/soulWars';
-import { theatreOfBlood } from './item-categories/theatreOfBlood';
-import { thermonuclearSmokeDevil } from './item-categories/thermonuclearSmokeDevil';
-import { tombsOfAmascut } from './item-categories/tombsOfAmascut';
-import { tormentedDemons } from './item-categories/tormentedDemons';
-import { treasureTrails } from './item-categories/treasureTrails';
-import { tzHaar } from './item-categories/tzHaar';
-import { venenatisAndSpindel } from './item-categories/venenatisAndSpindel';
-import { vetionAndCalvarion } from './item-categories/vetionAndCalvarion';
+import { soulWars } from './item-categories/soul-wars';
+import { theatreOfBlood } from './item-categories/theatre-of-blood';
+import { thermonuclearSmokeDevil } from './item-categories/thermonuclear-smoke-devil';
+import { tombsOfAmascut } from './item-categories/tombs-of-amascut';
+import { tormentedDemons } from './item-categories/tormented-demons';
+import { treasureTrails } from './item-categories/treasure-trails';
+import { tzHaar } from './item-categories/tzhaar';
+import { venenatisAndSpindel } from './item-categories/venenatis-and-spindel';
+import { vetionAndCalvarion } from './item-categories/vetion-and-calvarion';
 import { visages } from './item-categories/visages';
 import { vorkath } from './item-categories/vorkath';
 import { yama } from './item-categories/yama';
 import { zalcano } from './item-categories/zalcano';
 import { zulrah } from './item-categories/zulrah';
 
-export const itemList = {
+export const itemList: ItemCategoryMap = {
   'Abyssal Sire': abyssalSire,
   'Alchemical Hydra': alchemicalHydra,
   Araxxor: araxxor,
@@ -79,9 +79,9 @@ export const itemList = {
   Kraken: kraken,
   "Kree'arra": krearra,
   "K'ril Tsutsaroth": krilTsutsaroth,
-  'Major Slayer Items': majorSlayer,
+  'Major Slayer Items': majorSlayerItems,
   'Miscellaneous Items': miscellaneous,
-  'Miscellaneous Wilderness Items': miscellaneousWilderness,
+  'Miscellaneous Wilderness Items': miscellaneousWildernessItems,
   Nex: nex,
   'The Nightmare': theNightmare,
   'Perilous Moons': perilousMoons,

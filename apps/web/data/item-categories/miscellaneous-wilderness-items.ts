@@ -8,7 +8,7 @@ import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url'
 import { ItemCategory } from '@/app/schemas/items';
 import { questItem, compoundItem, singleItem } from '../utils/item-builders';
 
-export const miscellaneousWilderness: ItemCategory = {
+export const miscellaneousWildernessItems: ItemCategory = {
   image:
     'https://oldschool.runescape.wiki/images/Pkskull_%28Steam_Emoticon%29.png',
   items: [
