@@ -9,7 +9,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from './providers';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
-  await import('../mocks');
+  void import('../mocks');
 }
 
 const inter = Inter({ subsets: ['latin'] });

@@ -45,7 +45,7 @@ export function Select({
 
   return (
     <Ariakit.SelectProvider
-      setValue={(value: string) => {
+      setValue={(value) => {
         startTransition(() => {
           field.onChange(value);
           onValueChange?.(value);

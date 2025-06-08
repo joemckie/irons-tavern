@@ -86,7 +86,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                   Join date
                 </Text>
                 <Box asChild width="100%">
-                  <DatePicker
+                  <DatePicker<AddPlayerSchema['input']>
                     disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required

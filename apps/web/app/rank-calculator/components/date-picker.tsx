@@ -5,12 +5,11 @@ import BaseDatePicker, {
   DatePickerProps as BaseDatePickerProps,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { FieldPathByValue, useController } from 'react-hook-form';
+import { FieldPathByValue, FieldValues, useController } from 'react-hook-form';
 import { Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { Input } from './input';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 function CalendarContainer({ children }: PropsWithChildren) {
   return <Card size="2">{children}</Card>;
@@ -46,24 +45,24 @@ function CalendarHeader({
   );
 }
 
-interface DatePickerProps {
-  name: FieldPathByValue<RankCalculatorSchema, BaseDatePickerProps['value']>;
+interface DatePickerProps<T extends FieldValues> {
+  name: FieldPathByValue<T, BaseDatePickerProps['value']>;
   size?: '1' | '2' | '3';
 }
 
-export function DatePicker({
+export function DatePicker<T extends FieldValues>({
   name,
   size = '2',
   customInput,
   ...props
-}: DatePickerProps &
+}: DatePickerProps<T> &
   Pick<
     BaseDatePickerProps,
     'customInput' | 'isClearable' | 'placeholderText' | 'required' | 'disabled'
   >) {
   const { field, fieldState } = useController<
-    RankCalculatorSchema,
-    FieldPathByValue<RankCalculatorSchema, BaseDatePickerProps['value']>
+    T,
+    FieldPathByValue<T, BaseDatePickerProps['value']>
   >({
     name,
     disabled: props.disabled,

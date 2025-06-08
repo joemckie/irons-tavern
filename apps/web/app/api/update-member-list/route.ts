@@ -3,15 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { clientConstants } from '@/config/constants.client';
 import { GroupUpdateRequest } from '@/app/schemas/temple-api';
 import { serverConstants } from '@/config/constants.server';
-import { z } from 'zod';
-import { ClanMember } from '@/app/schemas/inactivity-checker';
-
-const ClanExport = z.object({
-  clanName: z.string(),
-  clanMemberMaps: z.array(ClanMember),
-});
-
-export type ClanExport = z.infer<typeof ClanExport>;
+import { ClanExport } from '@/app/schemas/inactivity-checker';
 
 export async function POST(request: NextRequest) {
   const updateTemple = request.nextUrl.searchParams.get('updateTemple');

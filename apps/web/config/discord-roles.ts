@@ -5,21 +5,19 @@ import {
 import { StandardRank } from './ranks';
 
 export const rankDiscordRoles = {
-  Helper: '1275198438971146240',
-  Steel: '845833173416804392',
-  Adamant: '846392447629262868',
-  Rune: '846392037099962409',
-  Dragon: '845832454090129428',
-  Striker: '1275199994944688170',
-  Expert: '845832341499019284',
-  Knight: '845832086690463801',
-  Paladin: '845831852543311872',
-  Legend: '1275200753778036868',
-  Natural: '845831429514723360',
-  Sage: '846392933556682773',
-  TzKal: '1275200867133558876',
-  Skulled: '1275200966181916792',
-  Beast: '1374495177904881714',
+  Champion: '',
+  Recruit: '',
+  Pawn: '',
+  Corporal: '',
+  Novice: '',
+  Sergeant: '',
+  Cadet: '',
+  Lieutenant: '',
+  Proselyte: '',
+  Captain: '',
+  General: '',
+  Skulled: '',
+  Beast: '',
 } satisfies Record<StandardRank, string>;
 
 export const tavernDiaryDiscordRoles = {

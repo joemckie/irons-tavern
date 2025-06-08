@@ -14,3 +14,10 @@ export type ClanMember = z.infer<typeof ClanMember>;
 export const ClanMemberList = z.array(ClanMember);
 
 export type ClanMemberList = z.infer<typeof ClanMemberList>;
+
+export const ClanExport = z.object({
+  clanName: z.string(),
+  clanMemberMaps: z.array(ClanMember),
+});
+
+export type ClanExport = z.infer<typeof ClanExport>;
