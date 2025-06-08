@@ -54,6 +54,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",
+    "@jest/types": "^29.5.14",
     "@next/eslint-plugin-next": "^15.3.3",
     "@stylistic/eslint-plugin": "^2.6.4",
     "@testing-library/cypress": "^10.0.2",

@@ -1,5 +1,5 @@
 import nextJest from 'next/jest';
-import { Config } from 'jest';
+import { Config } from '@jest/types';
 import { merge } from 'lodash';
 import { compilerOptions } from './tsconfig.json';
 
@@ -16,7 +16,7 @@ const config = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: { customExportConditions: ['node'] },
   modulePaths: [compilerOptions.baseUrl],
-} satisfies Config;
+} satisfies Config.InitialOptions;
 
 const buildConfig = async () => {
   const baseConfig = await createJestConfig(config)();
