@@ -179,57 +179,60 @@ export const publishRankSubmissionAction = authActionClient
                   DiaryLocation,
                   DiaryTier,
                 ][]
-              ).reduce<AchievementDiaryMap>((acc, [diaryLocation, diaryTier]) => {
-                if (
-                   
-                  DiaryTier._def.values.indexOf(
-                    achievementDiaries[diaryLocation] ?? 'None',
-                  ) <
-                   
-                  DiaryTier._def.values.indexOf(
-                    savedData.achievementDiaries[diaryLocation] ?? 'None',
-                  )
-                ) {
-                  return { ...acc, [diaryLocation]: diaryTier };
-                }
+              ).reduce<AchievementDiaryMap>(
+                (acc, [diaryLocation, diaryTier]) => {
+                  if (
+                    DiaryTier._def.values.indexOf(
+                      achievementDiaries[diaryLocation] ?? 'None',
+                    ) <
+                    DiaryTier._def.values.indexOf(
+                      savedData.achievementDiaries[diaryLocation] ?? 'None',
+                    )
+                  ) {
+                    return { ...acc, [diaryLocation]: diaryTier };
+                  }
 
-                return acc;
-              }, {})
+                  return acc;
+                },
+                {},
+              )
             : null,
         acquiredItems: [
           ...new Set<string>([
             ...(hasWikiSyncData
-              ? Object.values(
-                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
-                    if (
-                      isQuestItem(itemMap[key]) ||
-                      isCombatAchievementItem(itemMap[key])
-                    ) {
-                      return !acquiredItems[key];
-                    }
+              ? z.array(z.string()).parse(
+                  Object.values(
+                    pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                      if (
+                        isQuestItem(itemMap[key]) ||
+                        isCombatAchievementItem(itemMap[key])
+                      ) {
+                        return !acquiredItems[key];
+                      }
 
-                    return false;
-                  }),
+                      return false;
+                    }),
+                  ),
                 )
               : []),
             ...(hasTempleCollectionLog
-              ? Object.values(
-                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
-                    if (isCollectionLogItem(itemMap[key])) {
-                      return !acquiredItems[key];
-                    }
+              ? z.array(z.string()).parse(
+                  Object.values(
+                    pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                      if (isCollectionLogItem(itemMap[key])) {
+                        return !acquiredItems[key];
+                      }
 
-                    return false;
-                  }),
+                      return false;
+                    }),
+                  ),
                 )
               : []),
           ]),
         ],
         combatAchievementTier:
           hasWikiSyncData &&
-           
           CombatAchievementTier._def.values.indexOf(combatAchievementTier) <
-             
             CombatAchievementTier._def.values.indexOf(
               savedData.combatAchievementTier,
             )

@@ -5,11 +5,12 @@ import BaseDatePicker, {
   DatePickerProps as BaseDatePickerProps,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { useController } from 'react-hook-form';
+import { FieldPathByValue, useController } from 'react-hook-form';
 import { Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 import { Input } from './input';
+import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 function CalendarContainer({ children }: PropsWithChildren) {
   return <Card size="2">{children}</Card>;
@@ -46,7 +47,7 @@ function CalendarHeader({
 }
 
 interface DatePickerProps {
-  name: string;
+  name: FieldPathByValue<RankCalculatorSchema, BaseDatePickerProps['value']>;
   size?: '1' | '2' | '3';
 }
 
@@ -60,7 +61,10 @@ export function DatePicker({
     BaseDatePickerProps,
     'customInput' | 'isClearable' | 'placeholderText' | 'required' | 'disabled'
   >) {
-  const { field, fieldState } = useController({
+  const { field, fieldState } = useController<
+    RankCalculatorSchema,
+    FieldPathByValue<RankCalculatorSchema, BaseDatePickerProps['value']>
+  >({
     name,
     disabled: props.disabled,
     rules: {
@@ -72,7 +76,7 @@ export function DatePicker({
     <BaseDatePicker
       {...props}
       {...field}
-      selected={field.value}
+      selected={field.value ? new Date(field.value) : null}
       dateFormat="dd/MM/yyyy"
       maxDate={new Date()}
       customInput={

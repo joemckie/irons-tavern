@@ -4,21 +4,30 @@ import { clientConstants } from '@/config/constants.client';
 import { Rank } from '@/config/enums';
 import { GroupUpdateRequest } from '@/app/schemas/temple-api';
 import { serverConstants } from '@/config/constants.server';
+import { z } from 'zod';
 
-export interface ClanMember {
-  rsn: string;
-  rank: Rank;
-  joinedDate: string;
-}
+export const ClanMember = z.object({
+  rsn: z.string(),
+  rank: Rank,
+  joinedDate: z.string(),
+});
 
-interface ClanExport {
-  clanName: string;
-  clanMemberMaps: ClanMember[];
-}
+export type ClanMember = z.infer<typeof ClanMember>;
+
+export const ClanMemberList = z.array(ClanMember);
+
+export type ClanMemberList = z.infer<typeof ClanMemberList>;
+
+const ClanExport = z.object({
+  clanName: z.string(),
+  clanMemberMaps: z.array(ClanMember),
+});
+
+export type ClanExport = z.infer<typeof ClanExport>;
 
 export async function POST(request: NextRequest) {
   const updateTemple = request.nextUrl.searchParams.get('updateTemple');
-  const body: ClanExport = await request.json();
+  const body = ClanExport.parse(await request.json());
 
   const { members, leaders } = body.clanMemberMaps.reduce(
     (acc, member) => {
@@ -44,7 +53,6 @@ export async function POST(request: NextRequest) {
       : {}),
   } satisfies GroupUpdateRequest;
 
-   
   console.log('Updating member list');
 
   // Sync our Temple page with the new member list

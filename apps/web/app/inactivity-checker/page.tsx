@@ -6,7 +6,7 @@ import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
-import { ClanMember } from '../api/update-member-list/route';
+import { ClanMember, ClanMemberList } from '../api/update-member-list/route';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
@@ -14,7 +14,7 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
 
-  return response.json();
+  return GroupMemberInfoResponse.parse(await response.json());
 }
 
 async function getLatestMemberList() {
@@ -25,20 +25,17 @@ async function getLatestMemberList() {
 
   try {
     const response = await fetch(url);
-    const data: ClanMember[] = await response.json();
+    const { success, data } = ClanMemberList.safeParse(await response.json());
 
-    if (!data) {
+    if (!success) {
       return {};
     }
 
-    return data.reduce<Record<string, ClanMember>>(
-      (acc, member) => {
-        acc[member.rsn.toLowerCase()] = member;
+    return data.reduce<Record<string, ClanMember>>((acc, member) => {
+      acc[member.rsn.toLowerCase()] = member;
 
-        return acc;
-      },
-      {},
-    );
+      return acc;
+    }, {});
   } catch (error) {
     Sentry.captureException(error);
 

@@ -6,13 +6,13 @@ import {
   ThickCheckIcon,
 } from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
-import { FieldPath, useController } from 'react-hook-form';
+import { FieldPathByValue, useController } from 'react-hook-form';
 import { AriaAttributes, startTransition } from 'react';
 import { ValidationTooltip } from './validation-tooltip';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
 interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
-  name: FieldPath<RankCalculatorSchema>;
+  name: FieldPathByValue<RankCalculatorSchema, string | string[]>;
   placeholder?: string;
   options: readonly string[];
   onValueChange?(this: void, value: string): void;
@@ -28,7 +28,10 @@ export function Select({
   const {
     field,
     fieldState: { error },
-  } = useController<RankCalculatorSchema, any>({
+  } = useController<
+    RankCalculatorSchema,
+    FieldPathByValue<RankCalculatorSchema, string | string[]>
+  >({
     name: props.name,
     rules: {
       required,

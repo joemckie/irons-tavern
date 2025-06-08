@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
-import { ClanMember } from '@/app/api/update-member-list/route';
+import { ClanMemberList } from '@/app/api/update-member-list/route';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { userOSRSAccountsKey } from '@/config/redis';
@@ -16,7 +16,7 @@ async function getLatestMemberList() {
 
   try {
     const response = await fetch(url);
-    const data: ClanMember[] = await response.json();
+    const data = ClanMemberList.parse(await response.json());
 
     return data.map(({ rsn }) => rsn);
   } catch (error) {
