@@ -1,5 +1,9 @@
 import JSum from 'jsum';
-import { isCollectionLogItem, Item, ItemCategory } from '@/app/schemas/items';
+import {
+  isCollectionLogItem,
+  Item,
+  ItemCategoryMap,
+} from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { unstable_cache } from 'next/cache';
@@ -15,7 +19,7 @@ const itemPointMapChecksum = JSum.digest(itemPointMap, 'SHA256', 'hex');
 export const buildNotableItemList = unstable_cache(
   // eslint-disable-next-line @typescript-eslint/require-await
   async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
-    Object.entries(notableItemConfig).reduce(
+    Object.entries(notableItemConfig).reduce<ItemCategoryMap>(
       (acc, [key, category]) => {
         const items = category.items.map((item) => {
           if (item.points) {
@@ -36,11 +40,14 @@ export const buildNotableItemList = unstable_cache(
           }
 
           throw new Error(`Could not calculate item points for ${item.name}`);
-        }, [] as Item[]);
+        }, []);
 
-        return { ...acc, [key]: { ...category, items } };
+        return {
+          ...acc,
+          [key]: { ...category, items: items as NonEmptyArray<Item> },
+        };
       },
-      {} as Record<keyof typeof itemList, ItemCategory>,
+      {},
     ),
   [
     `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,
