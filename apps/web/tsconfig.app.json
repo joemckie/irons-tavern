@@ -12,5 +12,11 @@
     ".next/types/**/*.ts",
     "postcss.config.mjs"
   ],
-  "exclude": ["cypress.config.ts", "cypress", "**/*.spec.ts", "**/*.spec.tsx"]
+  "exclude": [
+    "cypress.config.ts",
+    "cypress",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "fixtures"
+  ]
 }
