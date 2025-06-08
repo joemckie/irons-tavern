@@ -89,7 +89,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={void handleSubmitWithAction}>
+      <form onSubmit={handleSubmitWithAction}>
         <Flex
           height="100vh"
           align="center"
