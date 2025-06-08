@@ -10,7 +10,7 @@ export async function validatePlayerExists(playerName: string) {
       `https://secure.runescape.com/m=hiscore_oldschool/index_lite.json?player=${playerName}`,
     );
 
-    return response.status !== StatusCodes.NOT_FOUND;
+    return response.status !== Number(StatusCodes.NOT_FOUND);
   } catch {
     // Bail early if the query is unhealthy, as this doesn't
     // mean the player name is non-existent

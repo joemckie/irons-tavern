@@ -17,7 +17,9 @@ interface PlayerNameInputProps {
 export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
   const { setValue, register, formState } = useFormContext<EditPlayerSchema>();
   const { errors } = useFormState();
-  const playerNameValue = useWatch({ name: 'playerName' });
+  const playerNameValue = useWatch<{ playerName: string }>({
+    name: 'playerName',
+  });
 
   const matches = useMemo(
     () => (playerNameValue ? search(playerNameValue, members) : members),

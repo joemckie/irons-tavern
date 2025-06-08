@@ -89,7 +89,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmitWithAction}>
+      <form onSubmit={void handleSubmitWithAction}>
         <Flex
           height="100vh"
           align="center"
@@ -175,7 +175,9 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                     type="button"
                     color="gray"
                     size="3"
-                    onClick={() => { router.push('/rank-calculator'); }}
+                    onClick={() => {
+                      router.push('/rank-calculator');
+                    }}
                     variant="soft"
                   >
                     Back

@@ -42,7 +42,7 @@ export function DeleteSubmissionDataDialog({
             variant="solid"
             color="red"
             onClick={() => {
-              handleToastUpdates(
+              void handleToastUpdates(
                 deleteSubmissionData({
                   playerName: getValues('playerName'),
                 }),

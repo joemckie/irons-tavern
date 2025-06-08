@@ -192,14 +192,17 @@ export const approveSubmissionAction = authActionClient
 
       const transaction = redis.multi();
 
-      transaction.hset<RankSubmissionStatus | string>(
-        rankSubmissionMetadataKey(submissionId),
-        { status: 'Approved', actionedBy: approverId },
-      );
-
-      transaction.hset<Player>(userOSRSAccountsKey(submitterId), {
-        [playerName.toLowerCase()]: { ...playerRecord, rank },
+      transaction.hset<string>(rankSubmissionMetadataKey(submissionId), {
+        status: 'Approved',
+        actionedBy: approverId,
       });
+
+      transaction.hset<Omit<Player, 'joinDate' | 'rsn' | 'isMobileOnly'>>(
+        userOSRSAccountsKey(submitterId),
+        {
+          [playerName.toLowerCase()]: { ...playerRecord, rank },
+        },
+      );
 
       const result = await transaction.exec();
 

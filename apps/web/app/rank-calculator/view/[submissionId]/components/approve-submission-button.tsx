@@ -90,7 +90,7 @@ export function ApproveSubmissionButton({
           </AlertDialog.Cancel>
           <AlertDialog.Action
             onClick={() => {
-              handleToastUpdates(
+              void handleToastUpdates(
                 approveSubmission({
                   submissionId,
                   rank,

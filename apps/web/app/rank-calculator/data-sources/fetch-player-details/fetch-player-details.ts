@@ -145,7 +145,7 @@ export async function fetchPlayerDetails(
       ]);
 
     const hasThirdPartyData = Boolean(
-      wikiSyncData || templePlayerStats || templeCollectionLog,
+      wikiSyncData ?? templePlayerStats ?? templeCollectionLog,
     );
 
     Sentry.setTags({
@@ -260,7 +260,7 @@ export async function fetchPlayerDetails(
     const hasFireCape =
       wikiSyncData?.combat_achievements.includes(
         147, // https://oldschool.runescape.wiki/w/Fight_Caves_Veteran
-      ) || false;
+      ) ?? false;
 
     const tzhaarCape =
       (hasInfernalCape && TzHaarCape.enum['Infernal cape']) ||
@@ -277,7 +277,7 @@ export async function fetchPlayerDetails(
     const hasDizanasQuiver =
       wikiSyncData?.combat_achievements.includes(
         538, // https://oldschool.runescape.wiki/w/Sportsmanship
-      ) || false;
+      ) ?? false;
 
     const hasAchievementDiaryCape = achievementDiaries
       ? isAchievementDiaryCapeAchieved(achievementDiaries)
@@ -322,14 +322,13 @@ export async function fetchPlayerDetails(
         proofLink,
         currentRank,
         tzhaarCape: mergeTzhaarCapes(tzhaarCape, savedData?.tzhaarCape),
-        hasBloodTorva: hasBloodTorva || savedData?.hasBloodTorva || false,
+        hasBloodTorva: (hasBloodTorva || savedData?.hasBloodTorva) ?? false,
         hasDizanasQuiver:
-          hasDizanasQuiver || savedData?.hasDizanasQuiver || false,
+          (hasDizanasQuiver || savedData?.hasDizanasQuiver) ?? false,
         hasAchievementDiaryCape:
-          hasAchievementDiaryCape ||
-          savedData?.hasAchievementDiaryCape ||
+          (hasAchievementDiaryCape || savedData?.hasAchievementDiaryCape) ??
           false,
-        hasMaxCape: hasMaxCape || savedData?.hasMaxCape || false,
+        hasMaxCape: (hasMaxCape || savedData?.hasMaxCape) ?? false,
         hasTemplePlayerStats: !!templePlayerStats,
         hasTempleCollectionLog: !!templeCollectionLog,
         hasWikiSyncData: !!wikiSyncData,

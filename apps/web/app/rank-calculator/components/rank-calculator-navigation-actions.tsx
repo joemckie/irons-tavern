@@ -82,7 +82,7 @@ export function RankCalculatorNavigationActions({
                   return;
                 }
 
-                handleToastUpdates(
+                void handleToastUpdates(
                   publishRankSubmission({
                     totalPoints,
                     rank,

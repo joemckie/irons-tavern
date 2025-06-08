@@ -61,7 +61,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={handleSubmitWithAction}>
+      <form onSubmit={void handleSubmitWithAction}>
         <Flex
           height="100vh"
           align="center"
@@ -133,7 +133,9 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                     type="button"
                     color="gray"
                     size="3"
-                    onClick={() => { router.push('/rank-calculator'); }}
+                    onClick={() => {
+                      router.push('/rank-calculator');
+                    }}
                     variant="soft"
                   >
                     Back

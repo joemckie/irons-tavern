@@ -13,6 +13,7 @@ const efficiencyDataChecksum = JSum.digest(efficiencyData, 'SHA256', 'hex');
 const itemPointMapChecksum = JSum.digest(itemPointMap, 'SHA256', 'hex');
 
 export const buildNotableItemList = unstable_cache(
+  // eslint-disable-next-line @typescript-eslint/require-await
   async (notableItemConfig: typeof itemList, dropRates: DroppedItemResponse) =>
     Object.entries(notableItemConfig).reduce(
       (acc, [key, category]) => {

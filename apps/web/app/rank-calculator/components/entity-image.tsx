@@ -7,7 +7,9 @@ import { useState } from 'react';
 
 interface EntityImageProps
   extends Pick<AvatarProps, 'size' | 'variant' | 'fallback'>,
-    Pick<ImageProps, 'alt' | 'src' | 'height' | 'width'> {}
+    Pick<ImageProps, 'alt' | 'src' | 'height' | 'width'> {
+  size?: '1' | '2' | '3';
+}
 
 export function EntityImage({
   alt,

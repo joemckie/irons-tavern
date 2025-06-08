@@ -2,6 +2,7 @@ import { Button, Flex, Heading } from '@radix-ui/themes';
 import { signIn } from '@/auth';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export default async function LoginPage() {
   const handleSubmit = async () => {
     'use server';
@@ -10,7 +11,7 @@ export default async function LoginPage() {
   };
 
   return (
-    <form action={handleSubmit}>
+    <form action={void handleSubmit}>
       <Flex
         height="100vh"
         align="center"

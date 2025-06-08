@@ -36,7 +36,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
             src={item.image}
             fallback="?"
           />
-          <ValidationTooltip error={pointsError || error}>
+          <ValidationTooltip error={pointsError ?? error}>
             <Text>{item.name}</Text>
           </ValidationTooltip>
         </Flex>
@@ -44,7 +44,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
       <Table.Cell align="right">
         <Checkbox
           checked={acquired}
-          disabled={!!(error || pointsError)}
+          disabled={!!(error ?? pointsError)}
           name={`acquiredItems.${stripEntityName(item.name)}` as const}
         />
       </Table.Cell>
