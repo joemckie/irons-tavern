@@ -95,7 +95,7 @@ export function FormWrapper({
     <CurrentPlayerProvider rank={currentRank} playerName={formData.playerName}>
       <FormProvider {...form}>
         <RankCalculator
-          submitRankCalculatorAction={void submitRankCalculator}
+          submitRankCalculatorAction={submitRankCalculator}
           navigation={
             <Navigation
               actions={

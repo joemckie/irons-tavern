@@ -10,11 +10,11 @@ export async function register() {
   }
 
   if (process.env.NEXT_RUNTIME === 'nodejs') {
-    void import('./sentry.server.config');
+    await import('./sentry.server.config');
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
-    void import('./sentry.edge.config');
+    await import('./sentry.edge.config');
   }
 }
 

@@ -11,7 +11,7 @@ export default async function LoginPage() {
   };
 
   return (
-    <form action={void handleSubmit}>
+    <form action={handleSubmit}>
       <Flex
         height="100vh"
         align="center"

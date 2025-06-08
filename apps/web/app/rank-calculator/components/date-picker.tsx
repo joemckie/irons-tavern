@@ -5,7 +5,7 @@ import BaseDatePicker, {
   DatePickerProps as BaseDatePickerProps,
   ReactDatePickerCustomHeaderProps,
 } from 'react-datepicker';
-import { FieldPathByValue, FieldValues, useController } from 'react-hook-form';
+import { FieldPath, FieldValues, useController } from 'react-hook-form';
 import { Card, Flex, IconButton, Text } from '@radix-ui/themes';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
@@ -46,7 +46,7 @@ function CalendarHeader({
 }
 
 interface DatePickerProps<T extends FieldValues> {
-  name: FieldPathByValue<T, BaseDatePickerProps['value']>;
+  name: FieldPath<T>;
   size?: '1' | '2' | '3';
 }
 
@@ -60,10 +60,7 @@ export function DatePicker<T extends FieldValues>({
     BaseDatePickerProps,
     'customInput' | 'isClearable' | 'placeholderText' | 'required' | 'disabled'
   >) {
-  const { field, fieldState } = useController<
-    T,
-    FieldPathByValue<T, BaseDatePickerProps['value']>
-  >({
+  const { field, fieldState } = useController<T, typeof name>({
     name,
     disabled: props.disabled,
     rules: {

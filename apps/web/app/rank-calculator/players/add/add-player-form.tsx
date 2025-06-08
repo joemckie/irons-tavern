@@ -61,7 +61,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
 
   return (
     <FormProvider {...form}>
-      <form onSubmit={void handleSubmitWithAction}>
+      <form onSubmit={handleSubmitWithAction}>
         <Flex
           height="100vh"
           align="center"
@@ -86,7 +86,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                   Join date
                 </Text>
                 <Box asChild width="100%">
-                  <DatePicker<AddPlayerSchema['input']>
+                  <DatePicker<AddPlayerSchema>
                     disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required

@@ -3,25 +3,29 @@
 import { startTransition, useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import { FieldPath, useFormContext, useWatch } from 'react-hook-form';
+import {
+  FieldPathByValue,
+  FieldValues,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 import { Input } from './input';
 import { ValidationTooltip } from './validation-tooltip';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 
-interface EditableTextProps extends TextField.RootProps {
-  name: FieldPath<RankCalculatorSchema>;
+interface EditableTextProps<T extends FieldValues> extends TextField.RootProps {
+  name: FieldPathByValue<T, string>;
 }
 
-export function EditableText({
+export function EditableText<T extends FieldValues>({
   name,
   'aria-label': ariaLabel,
   required,
   readOnly,
   ...restProps
-}: EditableTextProps) {
+}: EditableTextProps<T>) {
   const [isEditing, setIsEditing] = useState(false);
   const { register, getFieldState } = useFormContext();
-  const value = useWatch<RankCalculatorSchema>({ name });
+  const value = useWatch<T>({ name });
   const field = register(name, {
     required,
     setValueAs(newValue: unknown) {

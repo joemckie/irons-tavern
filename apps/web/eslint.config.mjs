@@ -16,6 +16,15 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        {
+          checksVoidReturn: {
+            // Prevent async server actions from throwing errors
+            attributes: false,
+          },
+        },
+      ],
     },
   },
   {
