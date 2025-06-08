@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "noEmit": false,
+    "composite": true
+  },
+  "files": ["next-env.d.ts", "utility-types.d.ts"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "postcss.config.mjs"
+  ],
+  "exclude": ["cypress.config.ts", "cypress", "**/*.spec.ts", "**/*.spec.tsx"]
+}

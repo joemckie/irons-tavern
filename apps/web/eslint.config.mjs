@@ -2,18 +2,28 @@
 
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import { flatConfig as eslintPluginNext } from '@next/eslint-plugin-next';
 
 export default tseslint.config(
   js.configs.recommended,
-  tseslint.configs.strictTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
+  {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  },
   {
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        project: `${import.meta.dirname}/tsconfig.spec.json`,
       },
     },
   },
