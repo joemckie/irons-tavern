@@ -24,7 +24,7 @@
     "target": "ES2017",
     "noEmit": true
   },
-  "files": ["eslint.config.mjs", "postcss.config.mjs"],
+  "files": ["postcss.config.mjs"],
   "references": [
     {
       "path": "./tsconfig.app.json"
