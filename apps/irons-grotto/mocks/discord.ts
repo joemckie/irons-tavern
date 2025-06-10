@@ -1,0 +1,58 @@
+export const sendMessageFixture = {
+  type: 0,
+  content: 'Zezima has applied for the Owner rank!',
+  mentions: [],
+  mention_roles: [],
+  attachments: [],
+  embeds: [],
+  timestamp: '2024-10-30T18:33:50.901000+00:00',
+  edited_timestamp: null,
+  flags: 0,
+  components: [],
+  id: '1301252746619654215',
+  channel_id: '1259252264804159624',
+  author: {
+    id: '1301172323742781524',
+    username: 'Irons Tavern Rank Calculator',
+    avatar: null,
+    discriminator: '9641',
+    public_flags: 0,
+    flags: 0,
+    bot: true,
+    banner: null,
+    accent_color: null,
+    global_name: null,
+    avatar_decoration_data: null,
+    banner_color: null,
+    clan: null,
+  },
+  pinned: false,
+  mention_everyone: false,
+  tts: false,
+};
+
+export const userFixture = {
+  id: '80351110224678912',
+  username: 'Nelly',
+  discriminator: '1337',
+  avatar: '8342729096ea3675442027381ff50dfe',
+  verified: true,
+  email: 'nelly@discord.com',
+  flags: 64,
+  banner: '06c16474723fe537c283b8efa61a30c8',
+  accent_color: 16711680,
+  premium_type: 1,
+  public_flags: 64,
+  avatar_decoration_data: {
+    sku_id: '1144058844004233369',
+    asset: 'a_fed43ab12698df65902ba06727e20c0e',
+  },
+};
+
+export const tokenFixture = {
+  access_token: 'access token',
+  token_type: 'Bearer',
+  expires_in: 604800,
+  refresh_token: 'refresh token',
+  scope: 'identify',
+};
