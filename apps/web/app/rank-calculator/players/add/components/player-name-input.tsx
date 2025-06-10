@@ -7,6 +7,7 @@ import { Input } from '@/app/rank-calculator/components/input';
 import { PersonIcon } from '@radix-ui/react-icons';
 import { search } from 'fast-fuzzy';
 import { ErrorMessage } from '@hookform/error-message';
+import { AddPlayerSchema } from '../actions/add-player-schema';
 
 interface PlayerNameInputProps {
   members: string[];
@@ -16,7 +17,9 @@ interface PlayerNameInputProps {
 export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
   const { setValue, register } = useFormContext();
   const { errors } = useFormState();
-  const playerNameValue = useWatch({ name: 'playerName' });
+  const playerNameValue = useWatch<AddPlayerSchema, 'playerName'>({
+    name: 'playerName',
+  });
 
   const matches = useMemo(
     () => (playerNameValue ? search(playerNameValue, members) : members),

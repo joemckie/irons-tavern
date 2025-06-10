@@ -6,7 +6,7 @@ import { RightSidebar } from '../components/right-sidebar';
 import { ItemList } from '../components/item-list';
 
 interface RankCalculatorProps {
-  submitRankCalculatorAction: (e: BaseSyntheticEvent) => void;
+  submitRankCalculatorAction: ((e: BaseSyntheticEvent) => void) | undefined;
   navigation: ReactNode;
 }
 

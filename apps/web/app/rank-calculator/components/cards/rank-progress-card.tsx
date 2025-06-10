@@ -150,7 +150,9 @@ export function RankProgressCard() {
       </Card>
       <Dialog.Root
         open={showRankUpDialog}
-        onOpenChange={() => setShowRankUpDialog(false)}
+        onOpenChange={() => {
+          setShowRankUpDialog(false);
+        }}
       >
         <Dialog.Content maxWidth="450px">
           <Dialog.Title>Rank up</Dialog.Title>
@@ -166,7 +168,7 @@ export function RankProgressCard() {
             </Dialog.Close>
             <Dialog.Close
               onClick={() => {
-                handleToastUpdates(
+                void handleToastUpdates(
                   publishRankSubmission({
                     totalPoints: pointsAwarded,
                     rank,

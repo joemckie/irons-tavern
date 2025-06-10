@@ -41,6 +41,8 @@ export const RankCalculatorSchema = z.object({
   notableItemsBonusMultiplier: z.number().min(0).default(0),
 });
 
+export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;
+
 export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
   (
     { hasMaxCape, totalLevel, achievementDiaries, hasAchievementDiaryCape },
@@ -67,5 +69,3 @@ export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
     }
   },
 );
-
-export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;

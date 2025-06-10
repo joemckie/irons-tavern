@@ -139,7 +139,7 @@ export function SkillingCard() {
             </Text>
           }
           center={
-            <Select
+            <Select<RankCalculatorSchema>
               aria-label={`${location} diary value`}
               name={`achievementDiaries.${location}`}
               placeholder="Choose a tier"

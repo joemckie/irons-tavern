@@ -28,7 +28,8 @@ server.events.on('unhandledException', ({ request, error }) => {
 });
 
 jest.mock('next-auth', () => {
-  const originalModule = jest.requireActual('next-auth');
+  const originalModule =
+    jest.requireActual<typeof import('next-auth')>('next-auth');
 
   return {
     __esModule: true,
@@ -45,12 +46,16 @@ jest.mock('next-auth', () => {
   };
 });
 
-beforeAll(() =>
+beforeAll(() => {
   server.listen({
     onUnhandledRequest: 'error',
-  }),
-);
+  });
+});
 
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+});
 
-afterAll(() => server.close());
+afterAll(() => {
+  server.close();
+});

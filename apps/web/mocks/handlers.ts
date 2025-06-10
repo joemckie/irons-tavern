@@ -2,7 +2,7 @@ import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
-import { ClanMember } from '@/app/api/update-member-list/route';
+import { ClanMember } from '@/app/schemas/inactivity-checker';
 import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
 import * as wikiSync from './wiki-sync';
 import * as templePlayerStats from './temple-player-stats';

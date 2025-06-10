@@ -23,7 +23,7 @@ declare module 'next-auth' {
 
 declare module 'next-auth/jwt' {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
-  // eslint-disable-next-line no-shadow
+
   interface JWT {
     id: string;
     permissions: string;
@@ -66,7 +66,7 @@ export const config = {
 
       return true;
     },
-    /* eslint-disable no-param-reassign */
+
     async jwt({ profile, token, account }) {
       const { guildId } = serverConstants.discord;
 
@@ -106,7 +106,7 @@ export const config = {
       return session;
     },
   },
-  /* eslint-enable no-param-reassign */
+
   logger: {
     error: (error) => {
       console.error(error);

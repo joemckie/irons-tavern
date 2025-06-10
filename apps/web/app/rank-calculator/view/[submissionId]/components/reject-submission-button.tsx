@@ -57,7 +57,7 @@ export function RejectSubmissionButton({
           </AlertDialog.Cancel>
           <AlertDialog.Action
             onClick={() => {
-              handleToastUpdates(
+              void handleToastUpdates(
                 rejectSubmission({
                   submissionId,
                 }),

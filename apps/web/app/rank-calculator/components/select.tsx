@@ -6,27 +6,30 @@ import {
   ThickCheckIcon,
 } from '@radix-ui/themes';
 import * as Ariakit from '@ariakit/react';
-import { useController } from 'react-hook-form';
+import { FieldPath, FieldValues, useController } from 'react-hook-form';
 import { AriaAttributes, startTransition } from 'react';
 import { ValidationTooltip } from './validation-tooltip';
 
-interface SelectProps extends BaseSelect.RootProps, AriaAttributes {
-  name: string;
+interface SelectProps<T extends FieldValues>
+  extends BaseSelect.RootProps,
+    AriaAttributes {
+  name: FieldPath<T>;
   placeholder?: string;
   options: readonly string[];
+  onValueChange?(this: void, value: string): void;
 }
 
-export function Select({
+export function Select<T extends FieldValues>({
   options,
   placeholder,
   required,
   onValueChange,
   ...props
-}: SelectProps) {
+}: SelectProps<T>) {
   const {
     field,
     fieldState: { error },
-  } = useController({
+  } = useController<T, FieldPath<T>>({
     name: props.name,
     rules: {
       required,
@@ -40,12 +43,12 @@ export function Select({
 
   return (
     <Ariakit.SelectProvider
-      setValue={(value) =>
+      setValue={(value) => {
         startTransition(() => {
           field.onChange(value);
           onValueChange?.(value);
-        })
-      }
+        });
+      }}
       value={field.value ?? ''}
     >
       <Ariakit.Select

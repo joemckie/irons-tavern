@@ -86,7 +86,7 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                   Join date
                 </Text>
                 <Box asChild width="100%">
-                  <DatePicker
+                  <DatePicker<AddPlayerSchema>
                     disabled={isFetchPlayerJoinDateExecuting}
                     name="joinDate"
                     required
@@ -133,7 +133,9 @@ export function AddPlayerForm({ members }: AddPlayerFormProps) {
                     type="button"
                     color="gray"
                     size="3"
-                    onClick={() => router.push('/rank-calculator')}
+                    onClick={() => {
+                      router.push('/rank-calculator');
+                    }}
                     variant="soft"
                   >
                     Back

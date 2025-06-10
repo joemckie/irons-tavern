@@ -1,7 +1,7 @@
 import { list } from '@vercel/blob';
 import { parse } from 'date-fns';
 import * as Sentry from '@sentry/nextjs';
-import { ClanMember } from '@/app/api/update-member-list/route';
+import { ClanMemberList } from '@/app/schemas/inactivity-checker';
 
 export async function fetchPlayerMeta(player: string) {
   const blobList = await list({
@@ -13,7 +13,7 @@ export async function fetchPlayerMeta(player: string) {
 
   try {
     const response = await fetch(url);
-    const data: ClanMember[] = await response.json();
+    const data = ClanMemberList.parse(await response.json());
 
     const playerMeta = data?.find(
       ({ rsn }) => rsn.toLowerCase() === player.toLowerCase(),
