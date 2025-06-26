@@ -46,8 +46,8 @@ export const miscellaneous: ItemCategory = {
     singleItem({
       name: "Bryophyta's essence",
       collectionLogCategory: 'bryophyta',
+      targetDropSources: ['Bryophyta#Members']
     }),
-
     singleItem({
       name: 'Dragon warhammer',
       collectionLogCategory: 'miscellaneous',
@@ -68,7 +68,6 @@ export const miscellaneous: ItemCategory = {
       ],
       collectionLogCategories: ['rooftop_agility'],
     }),
-
     baseItem({
       name: 'Music cape',
       points: calculateXpOrTimeBasedItemPoints(
@@ -84,7 +83,6 @@ export const miscellaneous: ItemCategory = {
       image: formatWikiImageUrl('Quest point cape detail'),
       requiredQuests: Quest.options,
     }),
-
     singleItem({
       name: 'Ring of endurance',
       clogName: 'Ring of endurance (uncharged)',
