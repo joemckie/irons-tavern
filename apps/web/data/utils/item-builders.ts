@@ -17,10 +17,18 @@ type SingleItemOptions = Omit<
     RequiredItem,
     'ignoreAmountMultiplier' | 'ignoreDropRateModifier' | 'targetDropSources'
   > & {
-    clogName?: CollectionLogItemName;
     requiredAmount?: number;
     collectionLogCategory: TempleOSRSCollectionLogCategory;
-  };
+  } & (
+    | {
+        name: CollectionLogItemName;
+        clogName?: never;
+      }
+    | {
+        name: string;
+        clogName: CollectionLogItemName;
+      }
+  );
 
 export function singleItem({
   name,
