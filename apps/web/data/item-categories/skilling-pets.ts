@@ -55,7 +55,7 @@ export const skillingPets: ItemCategory = {
   >).map(
     ([name, { points, image = formatWikiImageUrl(name), targetDropSources }]) =>
       singleItem({
-        name,
+        name: name as CollectionLogItemName,
         points,
         image,
         collectionLogCategory: 'all_pets',
