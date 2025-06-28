@@ -22,6 +22,10 @@ export const tombsOfAmascut: ItemCategory = {
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
+      name: 'Jewel of amascut',
+      collectionLogCategory: 'tombs_of_amascut',
+    }),
+    singleItem({
       name: "Osmumten's fang",
       collectionLogCategory: 'tombs_of_amascut',
     }),
