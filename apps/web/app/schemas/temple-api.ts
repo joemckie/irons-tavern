@@ -2,20 +2,11 @@ import { z } from 'zod';
 
 const MemberInfo = z.object({
   player: z.string(),
-  player_name_with_capitalization: z.string(),
-  country: z.string(),
   game_mode: z.number().int(),
-  level_3: z.union([z.literal(1), z.literal(0)]),
-  free_to_play: z.number().int(),
-  gim_mode: z.number().int().nullable(),
-  leagues_iv_points: z.number().int().nullable(),
   on_hiscores: z.union([z.literal(1), z.literal(0)]),
   last_checked: z.string(),
-  last_checked_unix_time: z.number().int(),
   last_changed_xp: z.string(),
   last_changed_xp_unix_time: z.number().int(),
-  last_changed_kc: z.string(),
-  last_changed_kc_unix_time: z.number().int(),
 });
 
 type MemberInfo = z.infer<typeof MemberInfo>;
@@ -31,7 +22,20 @@ export interface PlayerInfoResponse {
 
 export const GroupMemberInfoResponse = z.object({
   data: z.object({
-    memberlist: z.record(z.string(), MemberInfo),
+    memberlist: z.preprocess(
+      (memberList) => {
+        if (
+          typeof memberList === 'object' &&
+          memberList !== null &&
+          '' in memberList
+        ) {
+          delete memberList[''];
+        }
+
+        return memberList;
+      },
+      z.record(z.string(), MemberInfo),
+    ),
   }),
 });
 
