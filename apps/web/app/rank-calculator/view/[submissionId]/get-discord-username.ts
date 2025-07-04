@@ -7,7 +7,7 @@ export async function getDiscordUsername(userId: string | null) {
     return null;
   }
 
-  if (userId === 'System') {
+  if (isNaN(Number(userId))) {
     return 'System';
   }
 
