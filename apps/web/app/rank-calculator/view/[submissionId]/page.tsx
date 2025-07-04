@@ -15,7 +15,6 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { itemList } from '@/data/item-list';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateDiffErrors } from './utils/calculate-diff-errors';
@@ -68,8 +67,8 @@ export default async function ViewSubmissionPage({
 
   const queryClient = new QueryClient();
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
-  const notableItemList = await buildNotableItemList(itemList, dropRates);
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
+  const notableItemList = await buildNotableItemList(dropRates);
 
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));
