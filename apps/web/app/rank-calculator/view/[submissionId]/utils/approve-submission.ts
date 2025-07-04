@@ -152,10 +152,10 @@ export async function approveSubmission({
         content: dedent`
           <@${submitterId}>
 
-          ${
+          Your application has been ${
             isAutomatic
-              ? 'Your application has been automatically approved'
-              : `Your application has been approved by <@${approverId}>`
+              ? 'automatically approved'
+              : `approved by <@${approverId}>`
           } and you have been assigned the following role(s) on Discord:
           
           ${[getRankName(rank), ...newAchievementRoles.filter(Boolean)]
