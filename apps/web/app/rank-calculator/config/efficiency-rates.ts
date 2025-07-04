@@ -92,7 +92,7 @@ export const ehbRates = {
   Herbiboar: 60,
   'Lizardman shaman': 180, // Assuming cannoning in the Lizardman Canyon https://oldschool.runescape.wiki/w/Money_making_guide/Killing_Lizardman_Shamans_(Canyon)
   'LMS Points': 25,
-  'Master Clue': 1, // Probably wrong, needs to be calculated
+  'Master Clue': 1,
   'Medium Clue': 4.6, // Assuming an average of 180 implings caught per hour and 5 minutes spent per clue
   'Revenant ork': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
   'Revenant ork#On-task': 150, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_revenants_(Craw%27s_bow)
@@ -104,6 +104,7 @@ export const ehbRates = {
   Kurask: 280,
   'Warped Terrorbird': 450,
   'Zombie Pirate Key': 21, // https://oldschool.runescape.wiki/w/Money_making_guide/Killing_zombie_pirates
+  'Mithril dragon': 72, // Assuming an average of a 5 minute task consisting of 6 kills
 } satisfies Record<string, number>;
 
 /**
