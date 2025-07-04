@@ -13,7 +13,7 @@ function generateCollectionLogCategoryList() {
     .filter(isCollectionLogItem)
     .reduce(
       (acc, { collectionLogCategories }) => {
-        collectionLogCategories.forEach(acc.add, acc);
+        collectionLogCategories.forEach((category) => acc.add(category), acc);
 
         return acc;
       },

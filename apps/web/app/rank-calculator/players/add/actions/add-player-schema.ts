@@ -7,3 +7,5 @@ export const AddPlayerSchema = z.object({
   joinDate: z.date().max(new Date()),
   isMobileOnly: z.boolean().optional().default(false),
 });
+
+export type AddPlayerSchema = z.infer<typeof AddPlayerSchema>;

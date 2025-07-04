@@ -13,7 +13,7 @@ export async function GET() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
-  const players: GroupMemberInfoResponse = await response.json();
+  const players = GroupMemberInfoResponse.parse(await response.json());
   const playerGameModes = (await redis.hgetall(playerGameModesKey)) ?? {};
 
   // Filter players that have been checked within the last day.

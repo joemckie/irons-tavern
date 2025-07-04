@@ -1,8 +1,8 @@
-export type ApiSuccess<T extends object | void> = {
+export interface ApiSuccess<T extends object | void> {
   error: null;
   success: true;
   data: T extends void ? null : T;
-};
+}
 
 export interface ApiError {
   error: unknown;

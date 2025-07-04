@@ -1,4 +1,4 @@
-import { ClanMember } from '@/app/api/update-member-list/route';
+import { ClanMember } from '@/app/schemas/inactivity-checker';
 
 export const memberListFixture = [
   { rsn: '0147', rank: 'Air', joinedDate: '1-Sep-2024' },

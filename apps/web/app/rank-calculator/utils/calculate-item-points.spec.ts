@@ -19,7 +19,7 @@ type ItemResult = Omit<
 type SetupItem = [itemName: CollectionLogItemName, results: ItemResult[]];
 
 function setup(items: SetupItem[]) {
-  const responseMock = items.reduce(
+  const responseMock = items.reduce<z.input<typeof DroppedItemResponse>>(
     (acc, [itemName, results]) => {
       results.forEach(
         ({ 'Dropped from': dropSource, Rarity: rarity, ...data }) => {
@@ -40,7 +40,7 @@ function setup(items: SetupItem[]) {
 
       return acc;
     },
-    { query: { results: {} } } as z.input<typeof DroppedItemResponse>,
+    { query: { results: {} } },
   );
 
   server.use(

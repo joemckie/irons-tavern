@@ -6,10 +6,11 @@ async function initMocks() {
     });
   } else {
     const { worker } = await import('./browser');
-    worker.start();
+
+    void worker.start();
   }
 }
 
-initMocks();
+void initMocks();
 
 export {};

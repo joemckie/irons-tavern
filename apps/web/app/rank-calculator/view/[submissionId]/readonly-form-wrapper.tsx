@@ -105,7 +105,7 @@ export function ReadonlyFormWrapper({
               shouldRenderBackButton={false}
             />
           }
-          submitRankCalculatorAction={() => {}}
+          submitRankCalculatorAction={undefined}
         />
       </FormProvider>
     </ModerationProvider>

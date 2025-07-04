@@ -189,7 +189,9 @@ export const DroppedItemResponse = z
     }),
   })
   .transform((data) =>
-    Object.values(data.query.results).reduce(
+    Object.values(data.query.results).reduce<
+      Record<string, Record<string, number>>
+    >(
       (
         acc,
         {
@@ -220,7 +222,7 @@ export const DroppedItemResponse = z
 
         return acc;
       },
-      {} as Record<string, Record<string, number>>,
+      {},
     ),
   );
 

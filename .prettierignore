@@ -1,3 +1,6 @@
 # Ignore artifacts:
 build
 coverage
+.next
+mockServiceWorker.js
+.yarn

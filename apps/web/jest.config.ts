@@ -1,5 +1,5 @@
 import nextJest from 'next/jest';
-import type { Config } from 'jest';
+import { Config } from '@jest/types';
 import { merge } from 'lodash';
 import { compilerOptions } from './tsconfig.json';
 
@@ -16,12 +16,12 @@ const config = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: { customExportConditions: ['node'] },
   modulePaths: [compilerOptions.baseUrl],
-} satisfies Config;
+} satisfies Config.InitialOptions;
 
 const buildConfig = async () => {
   const baseConfig = await createJestConfig(config)();
 
-  return merge<unknown, Config, Config>({}, baseConfig, {
+  return merge({}, baseConfig, {
     transformIgnorePatterns: [
       ' /node_modules/(?!(next-auth|@auth/core/(.*)|oauth4webapi))',
     ],

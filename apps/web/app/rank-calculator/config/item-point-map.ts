@@ -27,8 +27,8 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Rewards Chest (Fortis Colosseum)#Wave 11': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 12': 'Sol Heredit',
   'Vorkath#Post-quest': 'Vorkath',
-  'Bryophyta#F2P': 'Bryophyta',
-  'Bryophyta#Members': 'Bryophyta',
+  "Chest (Bryophyta's lair)#Free-to-play": 'Bryophyta',
+  "Chest (Bryophyta's lair)#Members": 'Bryophyta',
   'Branda the Fire Queen': 'The Royal Titans',
   'Eldric the Ice King': 'The Royal Titans',
   'Lunar Chest': 'Lunar Chests',
@@ -147,9 +147,10 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   "Elidinis' ward": 1 / 96.6,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
-  'Jewel of the sun': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
-  'Breach of the scarab': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
-  'Eye of the corruptor': 1 / 20, // The drop rate of any gem increases to 1 / 20 at 270 kc
+  'Jewel of the sun': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Breach of the scarab': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Eye of the corruptor': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Jewel of amascut': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
   get "Osmumten's fang"() {
     return 1 / 41.4;
   },

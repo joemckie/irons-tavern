@@ -120,3 +120,17 @@ export const petEhcRates = {
   Rocky: 25,
   Tangleroot: 82,
 } satisfies Partial<Record<CollectionLogItemName, number>>;
+
+export const estimatedHoursForImbuedHeart = 125;
+export const eternalGloryDropRate = 1 / 25000;
+export const gloriesChargedPerHour = 600;
+export const swiftBladeLmsPointsRequired = 350;
+export const estimatedHoursToObtainAbyssalWhip = 20;
+export const estimatedHoursToObtainBottomlessCompostBucket = 35;
+export const estimatedHoursToAcquireMusicCape = 100;
+export const estimatedHoursToAcquireQuestCape = 100;
+export const estimatedHoursToAcquireMageArena2Cape = 10;
+export const estimatedHoursToAcquireBarrowsGloves = 10;
+export const estimatedHoursToAcquireBookOfTheDead = 10;
+export const estimatedHoursToAcquireGracefulSet = 50;
+export const estimatedHoursToComplete6Jads = 250;

@@ -166,9 +166,9 @@ export const publishRankSubmissionAction = authActionClient
 
       const itemMap = Object.values(itemList)
         .flatMap(({ items }) => items)
-        .reduce(
+        .reduce<Record<string, Item>>(
           (acc, item) => ({ ...acc, [stripEntityName(item.name)]: item }),
-          {} as Record<string, Item>,
+          {},
         );
 
       const submissionDiff = {
@@ -179,57 +179,60 @@ export const publishRankSubmissionAction = authActionClient
                   DiaryLocation,
                   DiaryTier,
                 ][]
-              ).reduce((acc, [diaryLocation, diaryTier]) => {
-                if (
-                  // eslint-disable-next-line no-underscore-dangle
-                  DiaryTier._def.values.indexOf(
-                    achievementDiaries[diaryLocation] ?? 'None',
-                  ) <
-                  // eslint-disable-next-line no-underscore-dangle
-                  DiaryTier._def.values.indexOf(
-                    savedData.achievementDiaries[diaryLocation] ?? 'None',
-                  )
-                ) {
-                  return { ...acc, [diaryLocation]: diaryTier };
-                }
+              ).reduce<AchievementDiaryMap>(
+                (acc, [diaryLocation, diaryTier]) => {
+                  if (
+                    DiaryTier._def.values.indexOf(
+                      achievementDiaries[diaryLocation] ?? 'None',
+                    ) <
+                    DiaryTier._def.values.indexOf(
+                      savedData.achievementDiaries[diaryLocation] ?? 'None',
+                    )
+                  ) {
+                    return { ...acc, [diaryLocation]: diaryTier };
+                  }
 
-                return acc;
-              }, {} as AchievementDiaryMap)
+                  return acc;
+                },
+                {},
+              )
             : null,
         acquiredItems: [
           ...new Set<string>([
             ...(hasWikiSyncData
-              ? Object.values(
-                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
-                    if (
-                      isQuestItem(itemMap[key]) ||
-                      isCombatAchievementItem(itemMap[key])
-                    ) {
-                      return !acquiredItems[key];
-                    }
+              ? z.array(z.string()).parse(
+                  Object.values(
+                    pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                      if (
+                        isQuestItem(itemMap[key]) ||
+                        isCombatAchievementItem(itemMap[key])
+                      ) {
+                        return !acquiredItems[key];
+                      }
 
-                    return false;
-                  }),
+                      return false;
+                    }),
+                  ),
                 )
               : []),
             ...(hasTempleCollectionLog
-              ? Object.values(
-                  pickBy(Object.keys(savedData.acquiredItems), (key) => {
-                    if (isCollectionLogItem(itemMap[key])) {
-                      return !acquiredItems[key];
-                    }
+              ? z.array(z.string()).parse(
+                  Object.values(
+                    pickBy(Object.keys(savedData.acquiredItems), (key) => {
+                      if (isCollectionLogItem(itemMap[key])) {
+                        return !acquiredItems[key];
+                      }
 
-                    return false;
-                  }),
+                      return false;
+                    }),
+                  ),
                 )
               : []),
           ]),
         ],
         combatAchievementTier:
           hasWikiSyncData &&
-          // eslint-disable-next-line no-underscore-dangle
           CombatAchievementTier._def.values.indexOf(combatAchievementTier) <
-            // eslint-disable-next-line no-underscore-dangle
             CombatAchievementTier._def.values.indexOf(
               savedData.combatAchievementTier,
             )

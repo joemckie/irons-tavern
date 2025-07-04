@@ -1,24 +1,13 @@
 import { put } from '@vercel/blob';
 import { NextRequest, NextResponse } from 'next/server';
 import { clientConstants } from '@/config/constants.client';
-import { Rank } from '@/config/enums';
 import { GroupUpdateRequest } from '@/app/schemas/temple-api';
 import { serverConstants } from '@/config/constants.server';
-
-export interface ClanMember {
-  rsn: string;
-  rank: Rank;
-  joinedDate: string;
-}
-
-interface ClanExport {
-  clanName: string;
-  clanMemberMaps: ClanMember[];
-}
+import { ClanExport } from '@/app/schemas/inactivity-checker';
 
 export async function POST(request: NextRequest) {
   const updateTemple = request.nextUrl.searchParams.get('updateTemple');
-  const body: ClanExport = await request.json();
+  const body = ClanExport.parse(await request.json());
 
   const { members, leaders } = body.clanMemberMaps.reduce(
     (acc, member) => {
@@ -44,7 +33,6 @@ export async function POST(request: NextRequest) {
       : {}),
   } satisfies GroupUpdateRequest;
 
-  // eslint-disable-next-line no-console
   console.log('Updating member list');
 
   // Sync our Temple page with the new member list

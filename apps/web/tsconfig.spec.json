@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "composite": true,
+    "noEmit": false
+  },
+  "files": [
+    "next-env.d.ts",
+    "utility-types.d.ts",
+    "jest.setup.ts",
+    "jest.config.ts"
+  ],
+  "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts"]
+}

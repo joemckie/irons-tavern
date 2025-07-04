@@ -3,27 +3,32 @@
 import { startTransition, useState } from 'react';
 import { Flex, IconButton, Text, TextField } from '@radix-ui/themes';
 import { CheckIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import { useFormContext, useWatch } from 'react-hook-form';
+import {
+  FieldPathByValue,
+  FieldValues,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 import { Input } from './input';
 import { ValidationTooltip } from './validation-tooltip';
 
-interface EditableTextProps extends TextField.RootProps {
-  name: string;
+interface EditableTextProps<T extends FieldValues> extends TextField.RootProps {
+  name: FieldPathByValue<T, string>;
 }
 
-export function EditableText({
+export function EditableText<T extends FieldValues>({
   name,
   'aria-label': ariaLabel,
   required,
   readOnly,
   ...restProps
-}: EditableTextProps) {
+}: EditableTextProps<T>) {
   const [isEditing, setIsEditing] = useState(false);
   const { register, getFieldState } = useFormContext();
-  const value = useWatch({ name });
+  const value = useWatch<T>({ name });
   const field = register(name, {
     required,
-    setValueAs(newValue) {
+    setValueAs(newValue: unknown) {
       if (restProps.type === 'number') {
         return !newValue ? 0 : Number(newValue);
       }
@@ -43,7 +48,7 @@ export function EditableText({
         {...restProps}
         onChange={(e) => {
           startTransition(() => {
-            field.onChange(e);
+            void field.onChange(e);
           });
         }}
         rightIcon={
@@ -51,7 +56,9 @@ export function EditableText({
             type="button"
             size="1"
             variant="ghost"
-            onClick={() => setIsEditing(false)}
+            onClick={() => {
+              setIsEditing(false);
+            }}
           >
             <CheckIcon height="14" width="14" />
           </IconButton>
@@ -76,7 +83,9 @@ export function EditableText({
       {!field.disabled && !readOnly && (
         <IconButton
           type="button"
-          onClick={() => setIsEditing(true)}
+          onClick={() => {
+            setIsEditing(true);
+          }}
           size="1"
           variant="ghost"
         >

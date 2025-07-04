@@ -1,22 +1,15 @@
 import { z } from 'zod';
 
-interface MemberInfo {
-  player: string;
-  player_name_with_capitalization: string;
-  country: string;
-  game_mode: number;
-  level_3: 1 | 0;
-  free_to_play: number;
-  gim_mode: number | null;
-  leagues_iv_points: number | null;
-  on_hiscores: 1 | 0;
-  last_checked: string;
-  last_checked_unix_time: number;
-  last_changed_xp: string;
-  last_changed_xp_unix_time: number;
-  last_changed_kc: string;
-  last_changed_kc_unix_time: number;
-}
+const MemberInfo = z.object({
+  player: z.string(),
+  game_mode: z.number().int(),
+  on_hiscores: z.union([z.literal(1), z.literal(0)]),
+  last_checked: z.string(),
+  last_changed_xp: z.string(),
+  last_changed_xp_unix_time: z.number().int(),
+});
+
+type MemberInfo = z.infer<typeof MemberInfo>;
 
 interface PlayerInfo {
   'Game mode': 0 | 1 | 2 | 3;
@@ -27,11 +20,26 @@ export interface PlayerInfoResponse {
   data: PlayerInfo;
 }
 
-export interface GroupMemberInfoResponse {
-  data: {
-    memberlist: Record<string, MemberInfo>;
-  };
-}
+export const GroupMemberInfoResponse = z.object({
+  data: z.object({
+    memberlist: z.preprocess(
+      (memberList) => {
+        if (
+          typeof memberList === 'object' &&
+          memberList !== null &&
+          '' in memberList
+        ) {
+          delete memberList[''];
+        }
+
+        return memberList;
+      },
+      z.record(z.string(), MemberInfo),
+    ),
+  }),
+});
+
+export type GroupMemberInfoResponse = z.infer<typeof GroupMemberInfoResponse>;
 
 export interface GroupUpdateRequest {
   clan: '100';
@@ -67,6 +75,7 @@ export const TempleOSRSPlayerStats = z.object({
     Uim_ehb: z.number().nonnegative(),
     Uim_ehp: z.number().nonnegative(),
     Collections: z.number().nonnegative(),
+    'TzKal-Zuk': z.number().nonnegative(),
   }),
 });
 
