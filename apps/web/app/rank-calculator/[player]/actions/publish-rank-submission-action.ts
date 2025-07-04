@@ -276,6 +276,7 @@ export const publishRankSubmissionAction = authActionClient
         rankStructure === 'Standard' &&
         hasTempleCollectionLog &&
         hasWikiSyncData &&
+        hasTemplePlayerStats &&
         isEmpty(pickBy(submissionDiff, (val) => !isEmpty(val)));
 
       const submissionTransaction = redis.multi();
