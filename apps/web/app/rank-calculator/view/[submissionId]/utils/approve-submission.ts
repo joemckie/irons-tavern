@@ -211,6 +211,7 @@ export async function approveSubmission({
   transaction.hset<string>(rankSubmissionMetadataKey(submissionId), {
     status: 'Approved',
     actionedBy,
+    automaticApproval: isAutomatic ? 'true' : 'false',
   });
 
   transaction.hset<Omit<Player, 'joinDate' | 'rsn' | 'isMobileOnly'>>(
