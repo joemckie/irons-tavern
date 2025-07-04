@@ -52,6 +52,11 @@ export const miscellaneous: ItemCategory = {
       name: 'Dragon warhammer',
       collectionLogCategory: 'miscellaneous',
     }),
+    singleItem({
+      name: 'Dragon full helm',
+      collectionLogCategory: 'miscellaneous',
+      targetDropSources: ['Chewed bones'],
+    }),
     compoundItem({
       name: 'Graceful set',
       points: calculateXpOrTimeBasedItemPoints(

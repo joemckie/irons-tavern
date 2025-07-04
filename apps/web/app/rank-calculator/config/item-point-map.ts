@@ -47,6 +47,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Barbarian Assault/Gambles#High': 'Barbarian Assault',
   'Grand Hallowed Coffin': 'Hallowed Sepulchre',
   "Zombie Pirate's Locker": 'Zombie Pirate Key',
+  'Chewed bones': 'Mithril dragon',
 };
 
 /**
@@ -74,6 +75,7 @@ export const collectionLogItemBossNameMap: Partial<
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Ancient chest': 1 / 7.23,
+  'Chewed bones': 1 / 42.67,
 };
 
 /**
