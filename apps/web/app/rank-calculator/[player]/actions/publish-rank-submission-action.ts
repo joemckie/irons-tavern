@@ -26,7 +26,7 @@ import { ChannelType, Routes } from 'discord-api-types/v10';
 import { Rank } from '@/config/enums';
 import { PlayerName } from '@/app/schemas/player';
 import { ActionError } from '@/app/action-error';
-import { pickBy } from 'lodash';
+import { isEmpty, pickBy } from 'lodash';
 import {
   CombatAchievementTier,
   DiaryLocation,
@@ -47,6 +47,7 @@ import { getRankImageUrl } from '../../utils/get-rank-image-url';
 import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
 import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
 import { stripEntityName } from '../../utils/strip-entity-name';
+import { approveSubmission } from '../../view/[submissionId]/utils/approve-submission';
 
 export const publishRankSubmissionAction = authActionClient
   .metadata({ actionName: 'publish-rank-submission' })
@@ -271,6 +272,13 @@ export const publishRankSubmissionAction = authActionClient
             : null,
       } satisfies RankSubmissionDiff;
 
+      const isAutoApprovalAvailable =
+        rankStructure === 'Standard' &&
+        hasTempleCollectionLog &&
+        hasWikiSyncData &&
+        hasTemplePlayerStats &&
+        isEmpty(pickBy(submissionDiff, (val) => !isEmpty(val)));
+
       const submissionTransaction = redis.multi();
 
       submissionTransaction.copy(
@@ -308,6 +316,20 @@ export const publishRankSubmissionAction = authActionClient
         );
 
         return { success: false };
+      }
+
+      if (isAutoApprovalAvailable) {
+        try {
+          await approveSubmission({
+            rank,
+            submissionId,
+            isAutomatic: true,
+          });
+        } catch (error) {
+          // If auto-approval fails, it can still be manually approved later,
+          // so we just log the error and continue.
+          Sentry.captureException(error);
+        }
       }
 
       return { success: true };

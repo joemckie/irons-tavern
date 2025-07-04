@@ -359,7 +359,7 @@ it.each(testCases)(
     setup(itemSourcesTuple);
 
     const notableItems = generateRequiredItemList();
-    const dropRates = await fetchItemDropRates(notableItems);
+    const dropRates = await fetchItemDropRates([...notableItems]);
     const points = calculateItemPoints(
       dropRates,
       itemSources.map((itemSource) => ({
@@ -399,7 +399,7 @@ it('calculates the correct points when a specific drop source has been selected'
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
     { amount: 1, clogName: item, targetDropSources: ['Unsired'] },
   ]);
@@ -445,7 +445,7 @@ it('calculates the correct points for items consisting of multiple drops', async
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
 
   const points = calculateItemPoints(dropRates, [
     { amount: 1, clogName: 'Bludgeon axon', targetDropSources: ['Unsired'] },
@@ -490,7 +490,7 @@ it('calculates points for items dropped from multiple sources by finding the mea
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
 
   const points = calculateItemPoints(dropRates, [
     { amount: 1, clogName: 'Virtus robe top' },
@@ -515,7 +515,7 @@ it('divides the total points by the amount of rolls per drop', async () => {
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
     { amount: 1, clogName: 'Granite hammer' },
   ]);
@@ -539,7 +539,7 @@ it('does not modify the drop rate if "ignoreDropRateModifier" is true', async ()
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
     { amount: 1, clogName: 'Thread of elidinis', ignoreDropRateModifier: true },
   ]);
@@ -563,7 +563,7 @@ it('does not multiply the points by amount of items if "ignoreAmountMultiplier" 
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
     { amount: 2, clogName: 'Zenyte shard', ignoreAmountMultiplier: true },
   ]);
@@ -587,7 +587,7 @@ it('multiplies the points by amount of items if "amount" is greater than 1 and "
     ],
   ]);
 
-  const dropRates = await fetchItemDropRates(generateRequiredItemList());
+  const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
     { amount: 2, clogName: 'Zenyte shard' },
   ]);

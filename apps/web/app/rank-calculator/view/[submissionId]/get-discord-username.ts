@@ -7,6 +7,10 @@ export async function getDiscordUsername(userId: string | null) {
     return null;
   }
 
+  if (isNaN(Number(userId))) {
+    return 'System';
+  }
+
   const data = (await discordBotClient.get(
     Routes.guildMember(serverConstants.discord.guildId, userId),
   )) as APIGuildMember;
