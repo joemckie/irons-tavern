@@ -46,6 +46,7 @@ export const RankSubmissionMetadata = z.object({
   hasTempleCollectionLog: z.boolean(),
   isTempleCollectionLogOutdated: z.boolean(),
   hasWikiSyncData: z.boolean(),
+  automaticApproval: z.boolean().optional(),
 });
 
 export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;
