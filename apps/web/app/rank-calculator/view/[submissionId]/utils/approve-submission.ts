@@ -47,10 +47,6 @@ export async function approveSubmission({
   approverId,
   isAutomatic = false,
 }: ApproveSubmissionInput) {
-  if (!isAutomatic && !approverId) {
-    throw new ActionError('Approver ID is required for manual approvals');
-  }
-
   const metadata = (await redisRaw.hmget(
     rankSubmissionMetadataKey(submissionId),
     'status',
