@@ -2,7 +2,7 @@ import {
   TavernDiarySection,
   TavernDiaryTier,
 } from '@/app/schemas/tavern-diaries';
-import { StandardRank } from './ranks';
+import { StandardRank, type StaffRank } from './ranks';
 
 export const rankDiscordRoles = {
   Helper: '1275198438971146240',
@@ -21,6 +21,19 @@ export const rankDiscordRoles = {
   Skulled: '1275200966181916792',
   Beast: '1374495177904881714',
 } satisfies Record<StandardRank, string>;
+
+export const staffRankDiscordRoles = new Map([
+  ['845828397505445958', 'Owner'],
+  ['845830173797646376', 'Deputy Owner'],
+  ['698256167004012667', 'Artisan'],
+  ['1370146415984250971', 'Moderator'],
+  ['1370127916247027803', 'Marshal'],
+  ['1370127479167127692', 'Admiral'],
+  ['1370127040778604745', 'Brigadier'],
+  ['1370126581552648483', 'Colonel'],
+  ['1370125488793714768', 'General'],
+  ['1370124823992209448', 'Captain'],
+]) satisfies Map<string, StaffRank>;
 
 export const tavernDiaryDiscordRoles = {
   'Collection Log': new Map<TavernDiaryTier, string>([

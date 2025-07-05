@@ -24,6 +24,13 @@ import {
   generateRequiredItemList,
 } from '../../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../../utils/build-notable-item-list';
+import { userHasManageRolesPermission } from './utils/user-has-manage-roles-permission';
+import { fetchUserDiscordRoles } from '../../data-sources/fetch-user-discord-roles';
+import { StaffRank } from '@/config/ranks';
+import { staffRankDiscordRoles } from '@/config/discord-roles';
+import { calculateTotalPointsAwarded } from '../../utils/calculators/calculate-total-points-awarded';
+import { calculateMaximumAvailablePoints } from '../../utils/calculators/calculate-maximum-available-points';
+import { calculateRank } from '../../utils/calculators/calculate-rank';
 
 export default async function ViewSubmissionPage({
   params,
@@ -69,18 +76,59 @@ export default async function ViewSubmissionPage({
 
   const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const notableItemList = await buildNotableItemList(dropRates);
+  const itemEntries = Object.entries(notableItemList);
+  const totalPointsAwarded = calculateTotalPointsAwarded(
+    submission,
+    itemEntries,
+  );
+  const maximumAvailablePoints = calculateMaximumAvailablePoints(
+    itemEntries,
+    submission.collectionLogTotal,
+  );
+  const { rank: submissionRank } = calculateRank(
+    maximumAvailablePoints,
+    totalPointsAwarded,
+    submission.rankStructure,
+  );
 
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));
+
+  const hasManageRolesPermission = userHasManageRolesPermission(
+    user?.user?.permissions,
+  );
+
+  const userDiscordRoles =
+    hasManageRolesPermission && user?.user?.id
+      ? await fetchUserDiscordRoles(user.user.id)
+      : null;
+
+  const userDiscordRolesMap = userDiscordRoles
+    ? new Map([...userDiscordRoles].map((role) => [role, true]))
+    : null;
+
+  const userRank = userDiscordRolesMap
+    ? staffRankDiscordRoles
+        .entries()
+        .reduce<StaffRank | null>((acc, [roleId, rankName]) => {
+          if (!acc && userDiscordRolesMap.has(roleId)) {
+            return rankName;
+          }
+
+          return acc;
+        }, null)
+    : null;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ReadonlyFormWrapper
         formData={submission}
-        userPermissions={user?.user?.permissions}
         diffErrors={diffErrors}
         submissionMetadata={submissionMetadata}
         actionedByUsername={actionedByUsername}
+        hasManageRolesPermission={hasManageRolesPermission}
+        submissionRank={submissionRank}
+        userRank={userRank}
       />
     </HydrationBoundary>
   );

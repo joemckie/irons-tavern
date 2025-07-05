@@ -9,7 +9,7 @@ import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
 import { rankSubmissionMetadataKey } from '@/config/redis';
 import dedent from 'dedent';
 import { ActionError } from '@/app/action-error';
-import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
+import { userHasManageRolesPermission } from './utils/user-has-manage-roles-permission';
 import { sendDiscordMessage } from '../../utils/send-discord-message';
 import { RejectSubmissionSchema } from './moderate-submission-schema';
 
@@ -18,7 +18,7 @@ export const rejectSubmissionAction = authActionClient
   .schema(RejectSubmissionSchema)
   .action(
     async ({ parsedInput: { submissionId }, ctx: { permissions, userId } }) => {
-      if (!userCanModerateSubmission(permissions)) {
+      if (!userHasManageRolesPermission(permissions)) {
         throw new ActionError(
           'You do not have permission to reject this submission',
         );
