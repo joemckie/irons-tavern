@@ -41,7 +41,13 @@ export function PlayerList({ accounts }: PlayerListProps) {
   );
 
   return (
-    <Flex direction="column" gap="4" width="330px">
+    <Flex
+      direction="column"
+      gap="4"
+      width="330px"
+      flexGrow="1"
+      justify="center"
+    >
       {Object.values(optimisticState).map(
         ({ rsn, joinDate, isNameInvalid }) => (
           <Card key={rsn}>
