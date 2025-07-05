@@ -69,7 +69,7 @@ export function PlayerList({ accounts }: PlayerListProps) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip content="Go to calculator">
-                  <IconButton asChild disabled={isNameInvalid}>
+                  <IconButton asChild disabled={isNameInvalid} variant="soft">
                     <Link
                       href={`/rank-calculator/${rsn.toLowerCase()}`}
                       style={{
@@ -89,7 +89,7 @@ export function PlayerList({ accounts }: PlayerListProps) {
           </Card>
         ),
       )}
-      <Button asChild size="3">
+      <Button asChild size="3" variant="soft">
         <Link href="/rank-calculator/players/add">Add new player</Link>
       </Button>
     </Flex>
