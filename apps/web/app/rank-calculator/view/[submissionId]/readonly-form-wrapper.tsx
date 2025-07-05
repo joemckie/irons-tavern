@@ -40,7 +40,7 @@ export function ReadonlyFormWrapper({
 
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
-    values: formData,
+    defaultValues: formData,
     errors: isModerator ? diffErrors : {},
   });
 
