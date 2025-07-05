@@ -45,8 +45,7 @@ export function PlayerList({ accounts }: PlayerListProps) {
       direction="column"
       gap="4"
       width="330px"
-      flexGrow="1"
-      justify="center"
+      // justify="center"
     >
       {Object.values(optimisticState).map(
         ({ rsn, joinDate, isNameInvalid }) => (

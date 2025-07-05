@@ -8,7 +8,7 @@ export default async function RankCalculatorPlayerList() {
   const accounts = await fetchPlayerAccounts();
 
   return (
-    <Flex align="center" gap="6" direction="column" minHeight="100vh">
+    <Flex align="center" gap="6" direction="column">
       <Flex
         asChild
         width="100%"
