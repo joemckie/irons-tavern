@@ -28,9 +28,6 @@ import { userHasManageRolesPermission } from './utils/user-has-manage-roles-perm
 import { fetchUserDiscordRoles } from '../../data-sources/fetch-user-discord-roles';
 import { StaffRank } from '@/config/ranks';
 import { staffRankDiscordRoles } from '@/config/discord-roles';
-import { calculateTotalPointsAwarded } from '../../utils/calculators/calculate-total-points-awarded';
-import { calculateMaximumAvailablePoints } from '../../utils/calculators/calculate-maximum-available-points';
-import { calculateRank } from '../../utils/calculators/calculate-rank';
 
 export default async function ViewSubmissionPage({
   params,
@@ -76,20 +73,6 @@ export default async function ViewSubmissionPage({
 
   const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const notableItemList = await buildNotableItemList(dropRates);
-  const itemEntries = Object.entries(notableItemList);
-  const totalPointsAwarded = calculateTotalPointsAwarded(
-    submission,
-    itemEntries,
-  );
-  const maximumAvailablePoints = calculateMaximumAvailablePoints(
-    itemEntries,
-    submission.collectionLogTotal,
-  );
-  const { rank: submissionRank } = calculateRank(
-    maximumAvailablePoints,
-    totalPointsAwarded,
-    submission.rankStructure,
-  );
 
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));
@@ -127,7 +110,6 @@ export default async function ViewSubmissionPage({
         submissionMetadata={submissionMetadata}
         actionedByUsername={actionedByUsername}
         hasManageRolesPermission={hasManageRolesPermission}
-        submissionRank={submissionRank}
         userRank={userRank}
       />
     </HydrationBoundary>

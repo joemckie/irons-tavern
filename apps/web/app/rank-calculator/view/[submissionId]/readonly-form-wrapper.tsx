@@ -13,8 +13,7 @@ import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-vali
 import { ViewSubmissionNavigationActions } from './components/view-submission-navigation-actions';
 import { Navigation } from '../../components/navigation';
 import { ModerationProvider } from '../../contexts/moderation-context';
-import { Rank } from '@/config/enums';
-import { userRankOutranksSubmissionRank } from './utils/user-is-above-submitted-rank';
+import { userRankOutranksSubmissionRankStructure } from './utils/user-outranks-submission-rank-structure';
 import type { StaffRank } from '@/config/ranks';
 
 interface FormWrapperProps {
@@ -24,7 +23,6 @@ interface FormWrapperProps {
   actionedByUsername: string | null;
   hasManageRolesPermission: boolean;
   userRank: StaffRank | null;
-  submissionRank: Rank;
 }
 
 export function ReadonlyFormWrapper({
@@ -34,17 +32,15 @@ export function ReadonlyFormWrapper({
   actionedByUsername,
   hasManageRolesPermission,
   userRank,
-  submissionRank,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
     submissionMetadata.status,
   );
 
   const userCanModerateSubmission =
-    (hasManageRolesPermission &&
-      userRank &&
-      userRankOutranksSubmissionRank(userRank, submissionRank)) ??
-    false;
+    hasManageRolesPermission &&
+    userRank !== null &&
+    userRankOutranksSubmissionRankStructure(userRank, formData.rankStructure);
 
   const isModeratorActionsAvailable =
     userCanModerateSubmission && submissionStatus === 'Pending';

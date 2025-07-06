@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Rank } from './enums';
+import type { RankStructure } from '@/app/schemas/rank-calculator';
 
 export const rankNames: Partial<Record<Rank, string>> = {
   General: 'Major',
@@ -41,17 +42,26 @@ export const StaffRank = Rank.extract([
 
 export type StaffRank = z.infer<typeof StaffRank>;
 
-export const staffRankTiers = {
+export const rankStructureTiers = {
   Owner: 4,
   'Deputy Owner': 3,
   Moderator: 2,
-  Marshal: 1,
-  Admiral: 1,
-  Brigadier: 1,
-  Colonel: 1,
-  General: 1,
-  Captain: 1,
-} as const satisfies Record<StaffRank, number>;
+  Admin: 1,
+  Legacy: 0,
+  Standard: 0,
+} as const satisfies Record<RankStructure, number>;
+
+export const staffRankTypes = {
+  Owner: 'Owner',
+  'Deputy Owner': 'Deputy Owner',
+  Moderator: 'Moderator',
+  Marshal: 'Admin',
+  Admiral: 'Admin',
+  Brigadier: 'Admin',
+  Colonel: 'Admin',
+  General: 'Admin',
+  Captain: 'Admin',
+} as const satisfies Record<StaffRank, RankStructure>;
 
 /**
  * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.
