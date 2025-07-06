@@ -25,9 +25,7 @@ import {
 } from '../../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../../utils/build-notable-item-list';
 import { userHasManageRolesPermission } from './utils/user-has-manage-roles-permission';
-import { fetchUserDiscordRoles } from '../../data-sources/fetch-user-discord-roles';
-import { StaffRank } from '@/config/ranks';
-import { staffRankDiscordRoles } from '@/config/discord-roles';
+import { getUserRankFromDiscordRoles } from './utils/get-user-rank-from-discord-roles';
 
 export default async function ViewSubmissionPage({
   params,
@@ -81,25 +79,9 @@ export default async function ViewSubmissionPage({
     user?.user?.permissions,
   );
 
-  const userDiscordRoles =
-    hasManageRolesPermission && user?.user?.id
-      ? await fetchUserDiscordRoles(user.user.id)
-      : null;
-
-  const userDiscordRolesMap = userDiscordRoles
-    ? new Map([...userDiscordRoles].map((role) => [role, true]))
-    : null;
-
-  const userRank = userDiscordRolesMap
-    ? staffRankDiscordRoles
-        .entries()
-        .reduce<StaffRank | null>((acc, [roleId, rankName]) => {
-          if (!acc && userDiscordRolesMap.has(roleId)) {
-            return rankName;
-          }
-
-          return acc;
-        }, null)
+  // Only fetch user rank for staff - regular members do not need this data as they can't moderate submissions
+  const userRank = hasManageRolesPermission
+    ? await getUserRankFromDiscordRoles(user?.user?.id)
     : null;
 
   return (
