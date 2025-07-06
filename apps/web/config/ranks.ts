@@ -30,7 +30,6 @@ export type StandardRank = z.infer<typeof StandardRank>;
 export const StaffRank = Rank.extract([
   'Owner',
   'Deputy Owner',
-  'Artisan',
   'Moderator',
   'Marshal',
   'Admiral',
@@ -41,6 +40,18 @@ export const StaffRank = Rank.extract([
 ]);
 
 export type StaffRank = z.infer<typeof StaffRank>;
+
+export const staffRankTiers = {
+  Owner: 4,
+  'Deputy Owner': 3,
+  Moderator: 2,
+  Marshal: 1,
+  Admiral: 1,
+  Brigadier: 1,
+  Colonel: 1,
+  General: 1,
+  Captain: 1,
+} as const satisfies Record<StaffRank, number>;
 
 /**
  * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.

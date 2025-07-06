@@ -56,7 +56,7 @@ export function useModeration() {
   const context = useContext(ModerationContext);
 
   if (!context) {
-    throw new Error('useModeration must be used inside ModerationContext');
+    throw new Error('useModeration must be used inside ModerationProvider');
   }
 
   return context;

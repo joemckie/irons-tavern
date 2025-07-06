@@ -1,22 +1,19 @@
 import type { Rank } from '@/config/enums';
-import { StaffRank } from '@/config/ranks';
+import { StaffRank, staffRankTiers } from '@/config/ranks';
 
 export function userRankOutranksSubmissionRank(
   userRank: StaffRank,
   submittedRank: Rank,
 ) {
   try {
-    const userRankPosition = StaffRank.options.indexOf(
-      StaffRank.parse(userRank),
-    );
+    const userRankPosition = staffRankTiers[userRank];
 
     try {
-      const submittedRankPosition = StaffRank.options.indexOf(
-        StaffRank.parse(submittedRank),
-      );
+      const submittedRankPosition =
+        staffRankTiers[StaffRank.parse(submittedRank)];
 
-      // Submitted rank should be below the user's rank to be considered outranked
-      return submittedRankPosition < userRankPosition;
+      // Enforce hierarchy: user rank must be equal to or higher than submitted rank
+      return submittedRankPosition <= userRankPosition;
     } catch {
       // Logged in user is staff, and the submitted rank is not a staff rank
       return true;

@@ -25,7 +25,6 @@ export const rankDiscordRoles = {
 export const staffRankDiscordRoles = new Map([
   ['845828397505445958', 'Owner'],
   ['845830173797646376', 'Deputy Owner'],
-  ['698256167004012667', 'Artisan'],
   ['1370146415984250971', 'Moderator'],
   ['1370127916247027803', 'Marshal'],
   ['1370127479167127692', 'Admiral'],
