@@ -35,6 +35,10 @@ export async function userCanModerateSubmission(
     throw new Error('Unable to find submission metadata');
   }
 
+  if (submissionMetadata.submittedBy === userId) {
+    return false; // User cannot moderate their own submission
+  }
+
   const [userRank, submitterPlayer] = await Promise.all([
     getUserRankFromDiscordRoles(userId),
     redis.hget<Player>(

@@ -136,7 +136,7 @@ export async function approveSubmission({
   ] as RankStructure[];
 
   if (autoModeratableRankStructures.includes(rankStructure)) {
-    const [, , newAchievementRoles] = await Promise.all([
+    const [, , newAchievementRoles = []] = await Promise.all([
       discordBotClient.put(
         Routes.channelMessageOwnReaction(
           serverConstants.discord.channelId,
