@@ -2,11 +2,7 @@ import { fetchUserDiscordRoles } from '@/app/rank-calculator/data-sources/fetch-
 import { staffRankDiscordRoles } from '@/config/discord-roles';
 import type { StaffRank } from '@/config/ranks';
 
-export async function getUserRankFromDiscordRoles(userId: string | undefined) {
-  if (!userId) {
-    return null;
-  }
-
+export async function getUserRankFromDiscordRoles(userId: string) {
   const userDiscordRoles = await fetchUserDiscordRoles(userId);
 
   if (!userDiscordRoles) {

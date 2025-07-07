@@ -24,8 +24,7 @@ import {
   generateRequiredItemList,
 } from '../../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../../utils/build-notable-item-list';
-import { userHasManageRolesPermission } from './utils/user-has-manage-roles-permission';
-import { getUserRankFromDiscordRoles } from './utils/get-user-rank-from-discord-roles';
+import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 
 export default async function ViewSubmissionPage({
   params,
@@ -75,14 +74,13 @@ export default async function ViewSubmissionPage({
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));
 
-  const hasManageRolesPermission = userHasManageRolesPermission(
+  const canModerateSubmission = await userCanModerateSubmission(
     user?.user?.permissions,
+    user?.user?.id,
+    submissionId,
+    submission.rankStructure,
+    submission.playerName,
   );
-
-  // Only fetch user rank for staff - regular members do not need this data as they can't moderate submissions
-  const userRank = hasManageRolesPermission
-    ? await getUserRankFromDiscordRoles(user?.user?.id)
-    : null;
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
@@ -91,8 +89,7 @@ export default async function ViewSubmissionPage({
         diffErrors={diffErrors}
         submissionMetadata={submissionMetadata}
         actionedByUsername={actionedByUsername}
-        hasManageRolesPermission={hasManageRolesPermission}
-        userRank={userRank}
+        userCanModerateSubmission={canModerateSubmission}
       />
     </HydrationBoundary>
   );
