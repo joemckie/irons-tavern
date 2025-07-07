@@ -1,4 +1,5 @@
 import 'core-js/actual/map';
+import 'core-js/actual/iterator/reduce';
 
 import { fetchUserDiscordRoles } from '@/app/rank-calculator/data-sources/fetch-user-discord-roles';
 import { staffRankDiscordRoles } from '@/config/discord-roles';
