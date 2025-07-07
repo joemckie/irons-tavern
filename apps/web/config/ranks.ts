@@ -42,6 +42,14 @@ export const StaffRank = Rank.extract([
 
 export type StaffRank = z.infer<typeof StaffRank>;
 
+export const AdminRank = StaffRank.exclude([
+  'Deputy Owner',
+  'Moderator',
+  'Owner',
+]);
+
+export type AdminRank = z.infer<typeof AdminRank>;
+
 export const rankStructureTiers = {
   Owner: 4,
   'Deputy Owner': 3,
