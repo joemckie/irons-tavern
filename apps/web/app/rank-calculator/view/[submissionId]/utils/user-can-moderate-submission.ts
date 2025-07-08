@@ -67,5 +67,5 @@ export async function userCanModerateSubmission(
   const userRankTier = rankStructureTiers[staffRankTypes[userRank]];
   const submittedRankTier = rankStructureTiers[submittedRankStructure];
 
-  return submittedRankTier < userRankTier;
+  return submittedRankTier <= userRankTier;
 }
