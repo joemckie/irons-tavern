@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
   const templeUpdateData = {
     'clan-checkbox': 'on',
-    clan: '100',
+    clan: '3',
     id: serverConstants.temple.groupId,
     key: serverConstants.temple.groupKey,
     name: serverConstants.temple.groupName,
