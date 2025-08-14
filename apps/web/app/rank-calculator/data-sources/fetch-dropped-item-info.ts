@@ -54,9 +54,27 @@ export const fetchItemDropRates = unstable_cache(
       );
 
       const droppedItemResponses = await Promise.all(
-        batchResponses.map(async (res) =>
-          DroppedItemResponse.parse(await res.json()),
-        ),
+        batchResponses.map(async (res) => {
+          const { success, data, error } = DroppedItemResponse.safeParse(
+            await res.json(),
+          );
+
+          if (!success) {
+            Sentry.addBreadcrumb({
+              category: 'drop-rates.parse',
+              type: 'error',
+              data: {
+                url: res.url,
+                error,
+              },
+              message: `Failed to parse drop rates for ${res.url}`,
+            });
+
+            return {};
+          }
+
+          return data;
+        }),
       );
 
       return droppedItemResponses.reduce(
