@@ -28,6 +28,12 @@ export const desertTreasure2: ItemCategory = {
     singleItem({
       name: 'Chromium ingot',
       collectionLogCategory: 'vardorvis',
+      targetDropSources: [
+        'Vardorvis',
+        'The Whisperer',
+        'Duke Sucellus',
+        'The Leviathan',
+      ],
     }),
     singleItem({
       name: 'Virtus mask',
