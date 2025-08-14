@@ -55,7 +55,7 @@ export const fetchItemDropRates = unstable_cache(
 
       const droppedItemResponses = await Promise.all(
         batchResponses.map(async (res) => {
-          const { success, data } = DroppedItemResponse.safeParse(
+          const { success, data, error } = DroppedItemResponse.safeParse(
             await res.json(),
           );
 
@@ -65,6 +65,7 @@ export const fetchItemDropRates = unstable_cache(
               type: 'error',
               data: {
                 url: res.url,
+                error,
               },
               message: `Failed to parse drop rates for ${res.url}`,
             });
