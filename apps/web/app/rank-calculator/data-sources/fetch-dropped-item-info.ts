@@ -54,9 +54,10 @@ export const fetchItemDropRates = unstable_cache(
       );
 
       const droppedItemResponses = await Promise.all(
-        batchResponses.map(async (res) =>
-          DroppedItemResponse.parse(await res.json()),
-        ),
+        batchResponses.map(async (res) => {
+          console.log(res);
+          return DroppedItemResponse.parse(await res.json());
+        }),
       );
 
       return droppedItemResponses.reduce(
