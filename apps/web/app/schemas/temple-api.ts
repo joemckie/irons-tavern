@@ -42,7 +42,7 @@ export const GroupMemberInfoResponse = z.object({
 export type GroupMemberInfoResponse = z.infer<typeof GroupMemberInfoResponse>;
 
 export interface GroupUpdateRequest {
-  clan: '100';
+  clan: '3';
   'clan-checkbox': 'on';
   'private-group-checkbox'?: 'on';
   name: string;
