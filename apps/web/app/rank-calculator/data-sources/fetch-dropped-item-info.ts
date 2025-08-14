@@ -55,7 +55,10 @@ export const fetchItemDropRates = unstable_cache(
 
       const droppedItemResponses = await Promise.all(
         batchResponses.map(async (res) => {
-          console.log(res);
+          Sentry.addBreadcrumb({
+            message: `Parsing drop rates for items: ${res.url}`,
+          });
+
           return DroppedItemResponse.parse(await res.json());
         }),
       );
