@@ -9,44 +9,39 @@ interface ModerationProps
     | 'hasTempleCollectionLog'
     | 'isTempleCollectionLogOutdated'
   > {
-  isModerator: boolean;
   actionedByUsername: string | null;
+  userCanModerateSubmission: boolean;
 }
 
-export const ModerationContext = createContext<ModerationProps>({
-  actionedByUsername: '',
-  hasTemplePlayerStats: false,
-  hasTempleCollectionLog: false,
-  hasWikiSyncData: false,
-  isModerator: false,
-  isTempleCollectionLogOutdated: false,
-});
+export const ModerationContext = createContext<ModerationProps | undefined>(
+  undefined,
+);
 
 export function ModerationProvider({
   children,
-  isModerator,
   hasTemplePlayerStats,
   hasTempleCollectionLog,
   hasWikiSyncData,
   actionedByUsername,
   isTempleCollectionLogOutdated,
+  userCanModerateSubmission,
 }: PropsWithChildren<ModerationProps>) {
   const value = useMemo<ModerationProps>(
     () => ({
-      isModerator,
       hasTemplePlayerStats,
       hasTempleCollectionLog,
       hasWikiSyncData,
       actionedByUsername,
       isTempleCollectionLogOutdated,
+      userCanModerateSubmission,
     }),
     [
-      isModerator,
       hasTempleCollectionLog,
       hasTemplePlayerStats,
       hasWikiSyncData,
       actionedByUsername,
       isTempleCollectionLogOutdated,
+      userCanModerateSubmission,
     ],
   );
 
@@ -61,7 +56,7 @@ export function useModeration() {
   const context = useContext(ModerationContext);
 
   if (!context) {
-    throw new Error('useModeration must be used inside ModerationContext');
+    throw new Error('useModeration must be used inside ModerationProvider');
   }
 
   return context;

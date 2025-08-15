@@ -29,12 +29,12 @@ export function ModerationCard() {
     hasTemplePlayerStats,
     hasTempleCollectionLog,
     hasWikiSyncData,
-    isModerator,
     actionedByUsername,
     isTempleCollectionLogOutdated,
+    userCanModerateSubmission,
   } = useModeration();
 
-  if (!isModerator) {
+  if (!userCanModerateSubmission) {
     return null;
   }
 
