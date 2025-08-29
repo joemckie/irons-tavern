@@ -88,7 +88,6 @@ export const publishRankSubmissionAction = authActionClient
           combatAchievementTier,
           collectionLogCount,
           totalLevel,
-          rankStructure,
           joinDate,
           hasTemplePlayerStats,
           hasTempleCollectionLog,
@@ -112,7 +111,7 @@ export const publishRankSubmissionAction = authActionClient
               thumbnail: { url: getRankImageUrl(rank, true) },
               fields: [
                 { name: 'Rank', value: getRankName(rank), inline: true },
-                { name: 'Rank structure', value: rankStructure, inline: true },
+                { name: 'Rank structure', value: savedData.rankStructure, inline: true },
                 {
                   name: 'Total points',
                   value: formatNumber(totalPoints),
@@ -273,7 +272,7 @@ export const publishRankSubmissionAction = authActionClient
       } satisfies RankSubmissionDiff;
 
       const isAutoApprovalAvailable =
-        rankStructure === 'Standard' &&
+        savedData.rankStructure === 'Standard' &&
         hasTempleCollectionLog &&
         hasWikiSyncData &&
         hasTemplePlayerStats &&
