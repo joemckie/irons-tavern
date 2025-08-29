@@ -180,7 +180,11 @@ export async function approveSubmission({
         content: dedent`
           <@${submitterId}>
 
-          Your application has been approved by <@${approverId}>.
+          Your application has been ${
+            isAutomatic
+              ? 'automatically approved'
+              : `approved by <@${approverId}>`
+          }.
 
           Please reach out to a mod or key to update your ranks!
         `,
