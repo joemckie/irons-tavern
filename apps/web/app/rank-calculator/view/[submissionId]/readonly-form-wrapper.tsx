@@ -11,37 +11,35 @@ import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { RankCalculator } from '../../[player]/rank-calculator';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { ViewSubmissionNavigationActions } from './components/view-submission-navigation-actions';
-import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 import { Navigation } from '../../components/navigation';
 import { ModerationProvider } from '../../contexts/moderation-context';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
-  userPermissions: string | undefined;
   diffErrors: FieldErrors;
   submissionMetadata: RankSubmissionMetadata;
   actionedByUsername: string | null;
+  userCanModerateSubmission: boolean;
 }
 
 export function ReadonlyFormWrapper({
   formData,
-  userPermissions,
   diffErrors,
   submissionMetadata,
   actionedByUsername,
+  userCanModerateSubmission,
 }: FormWrapperProps) {
   const [submissionStatus, setSubmissionStatus] = useState(
     submissionMetadata.status,
   );
 
-  const isModerator = userCanModerateSubmission(userPermissions);
   const isModeratorActionsAvailable =
-    isModerator && submissionStatus === 'Pending';
+    userCanModerateSubmission && submissionStatus === 'Pending';
 
   const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
     disabled: true,
     defaultValues: formData,
-    errors: isModerator ? diffErrors : {},
+    errors: userCanModerateSubmission ? diffErrors : {},
   });
 
   function renderNavigationActions() {
@@ -87,17 +85,17 @@ export function ReadonlyFormWrapper({
   }
 
   return (
-    <ModerationProvider
-      isModerator={isModerator}
-      hasTemplePlayerStats={submissionMetadata.hasTemplePlayerStats}
-      hasTempleCollectionLog={submissionMetadata.hasTempleCollectionLog}
-      hasWikiSyncData={submissionMetadata.hasWikiSyncData}
-      actionedByUsername={actionedByUsername}
-      isTempleCollectionLogOutdated={
-        submissionMetadata.isTempleCollectionLogOutdated
-      }
-    >
-      <FormProvider {...methods}>
+    <FormProvider {...methods}>
+      <ModerationProvider
+        hasTemplePlayerStats={submissionMetadata.hasTemplePlayerStats}
+        hasTempleCollectionLog={submissionMetadata.hasTempleCollectionLog}
+        hasWikiSyncData={submissionMetadata.hasWikiSyncData}
+        actionedByUsername={actionedByUsername}
+        isTempleCollectionLogOutdated={
+          submissionMetadata.isTempleCollectionLogOutdated
+        }
+        userCanModerateSubmission={userCanModerateSubmission}
+      >
         <RankCalculator
           navigation={
             <Navigation
@@ -107,7 +105,7 @@ export function ReadonlyFormWrapper({
           }
           submitRankCalculatorAction={undefined}
         />
-      </FormProvider>
-    </ModerationProvider>
+      </ModerationProvider>
+    </FormProvider>
   );
 }
