@@ -233,4 +233,16 @@ export const altRarityItems: Partial<
   "Drake's tooth": {
     Drake: true,
   },
+  'Avernic treads': {
+    'Doom of Mokhaiotl': true,
+  },
+  'Mokhaiotl cloth': {
+    'Doom of Mokhaiotl': true,
+  },
+  'Eye of ayak (uncharged)': {
+    'Doom of Mokhaiotl': true,
+  },
+  Dom: {
+    'Doom of Mokhaiotl': true,
+  },
 };

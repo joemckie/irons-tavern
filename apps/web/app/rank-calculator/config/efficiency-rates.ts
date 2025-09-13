@@ -30,6 +30,7 @@ export const ehbRates = {
   'Dagannoth Rex': 100,
   'Dagannoth Supreme': 100,
   'Deranged Archaeologist': 95,
+  'Doom of Mokhaiotl': 18,
   'Duke Sucellus': 37,
   'General Graardor': 31,
   'Giant Mole': 97,
