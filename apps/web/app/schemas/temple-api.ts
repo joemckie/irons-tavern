@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { collectionLogItemIdMap } from './osrs';
 
 const MemberInfo = z.object({
   player: z.string(),
@@ -87,6 +88,32 @@ export interface PlayerStatsError {
     Message: string;
   };
 }
+
+export const TempleOSRSGroupMemberInfo = z.object({
+  data: z.object({
+    memberlist: z.record(
+      z.string(),
+      z.object({
+        skills: z.object({
+          Overall_level: z.number().nonnegative(),
+          Ehp: z.number().nonnegative(),
+          Ehp_im: z.number().nonnegative().optional(),
+          Uim_ehp: z.number().nonnegative().optional(),
+        }),
+        bosses: z.object({
+          'TzKal-Zuk': z.number().nonnegative(),
+          Ehb: z.number().nonnegative(),
+          Ehb_im: z.number().nonnegative(),
+          Ehb_uim: z.number().nonnegative(),
+        }),
+      }),
+    ),
+  }),
+});
+
+export type TempleOSRSGroupMemberInfo = z.infer<
+  typeof TempleOSRSGroupMemberInfo
+>;
 
 const TempleOSRSCollectionLogItem = z.object({
   count: z.number().nonnegative(),
@@ -236,3 +263,49 @@ export const TempleOSRSConstants = z.object({
 });
 
 export type TempleOSRSConstants = z.infer<typeof TempleOSRSConstants>;
+
+export interface TransformedGroupCollectionLogItem {
+  id: string;
+  count: number;
+  name: string;
+}
+
+function isValidItemId(id: number): id is keyof typeof collectionLogItemIdMap {
+  return id in collectionLogItemIdMap;
+}
+
+export const TempleOSRSGroupCollectionLog = z.object({
+  data: z.object({
+    members_with_items_synced: z.number().positive(),
+    members: z.array(
+      z.object({
+        player: z.string().nonempty(),
+        player_name_with_capitalization: z.string(),
+        total_collections_finished: z.number().positive(),
+        items: z
+          .record(z.coerce.number().positive(), z.number().positive())
+          .transform((items) =>
+            Object.entries(items).reduce<
+              Record<string, TransformedGroupCollectionLogItem>
+            >((acc, [id, count]) => {
+              const itemId = Number(id);
+
+              if (isValidItemId(itemId)) {
+                acc[id] = {
+                  id,
+                  count,
+                  name: collectionLogItemIdMap[itemId],
+                };
+              }
+
+              return acc;
+            }, {}),
+          ),
+      }),
+    ),
+  }),
+});
+
+export type TempleOSRSGroupCollectionLog = z.infer<
+  typeof TempleOSRSGroupCollectionLog
+>;

@@ -1,5 +1,5 @@
 import { clientConstants } from '@/config/constants.client';
-import { WikiSyncResponse } from '@/app/schemas/wiki';
+import { WikiSyncError, WikiSyncResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 
 export async function getWikiSyncData(player: string) {
@@ -14,9 +14,17 @@ export async function getWikiSyncData(player: string) {
       },
     );
 
-    return WikiSyncResponse.parse(await wikiSyncResponse.json());
-  } catch {
-    Sentry.captureMessage('WikiSync data not found', 'info');
+    const data: unknown = await wikiSyncResponse.json();
+
+    if (WikiSyncError.safeParse(data).success) {
+      Sentry.captureMessage('WikiSync data not found', 'info');
+
+      return null;
+    }
+
+    return WikiSyncResponse.parse(data);
+  } catch (error) {
+    Sentry.captureException(error);
 
     return null;
   }
