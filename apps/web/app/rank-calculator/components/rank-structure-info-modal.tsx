@@ -49,8 +49,9 @@ export function RankStructureInfoModal() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {Object.entries(rankThresholds[rankStructure]).map(
-                ([rank, points]) => (
+              {Object.entries(rankThresholds[rankStructure])
+                .reverse()
+                .map(([rank, points]) => (
                   <Table.Row key={rank}>
                     <Table.Cell>
                       <Image
@@ -66,8 +67,7 @@ export function RankStructureInfoModal() {
                       {formatNumber(points)}
                     </Table.Cell>
                   </Table.Row>
-                ),
-              )}
+                ))}
             </Table.Body>
           </Table.Root>
         </Inset>
