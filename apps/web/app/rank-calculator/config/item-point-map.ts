@@ -194,6 +194,10 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Blue moon tassets': 1 / (25 / 3),
   'Blue moon helm': 1 / (25 / 3),
   'Echo crystal': 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
+  Dom: 1 / 559,
+  'Eye of ayak (uncharged)': 1 / 739,
+  'Mokhaiotl cloth': 1 / 716,
+  'Avernic treads': 1 / 770,
 };
 
 /**
