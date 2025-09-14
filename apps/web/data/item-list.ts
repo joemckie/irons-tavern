@@ -13,6 +13,7 @@ import { corporealBeast } from './item-categories/corporeal-beast';
 import { dagannothKings } from './item-categories/dagannoth-kings';
 import { demonicGorillas } from './item-categories/demonic-gorillas';
 import { desertTreasure2 } from './item-categories/desert-treasure-2';
+import { doomOfMokhaiotl } from './item-categories/doom-of-mokhaiotl';
 import { fortisColosseum } from './item-categories/fortis-colosseum';
 import { generalGraardor } from './item-categories/general-graardor';
 import { grotesqueGuardians } from './item-categories/grotesque-guardians';
@@ -68,6 +69,7 @@ export const itemList: ItemCategoryMap = {
   'Dagannoth Kings': dagannothKings,
   'Demonic Gorillas': demonicGorillas,
   'Desert Treasure 2': desertTreasure2,
+  'Doom of Mokhaiotl': doomOfMokhaiotl,
   'Fortis Colosseum': fortisColosseum,
   'General Graardor': generalGraardor,
   'Grotesque Guardians': grotesqueGuardians,

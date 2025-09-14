@@ -194,6 +194,10 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Blue moon tassets': 1 / (25 / 3),
   'Blue moon helm': 1 / (25 / 3),
   'Echo crystal': 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
+  Dom: 1 / 559, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  'Eye of ayak (uncharged)': 1 / 739, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  'Mokhaiotl cloth': 1 / 716, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  'Avernic treads': 1 / 770, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
 };
 
 /**
@@ -232,5 +236,17 @@ export const altRarityItems: Partial<
   },
   "Drake's tooth": {
     Drake: true,
+  },
+  'Avernic treads': {
+    'Doom of Mokhaiotl': true,
+  },
+  'Mokhaiotl cloth': {
+    'Doom of Mokhaiotl': true,
+  },
+  'Eye of ayak (uncharged)': {
+    'Doom of Mokhaiotl': true,
+  },
+  Dom: {
+    'Doom of Mokhaiotl': true,
   },
 };

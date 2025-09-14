@@ -106,6 +106,11 @@ export type TempleOSRSPlayerCollectionLog = z.infer<
   typeof TempleOSRSPlayerCollectionLog
 >;
 
+/**
+ * Categories available from the TempleOSRS API.
+ *
+ * https://templeosrs.com/api/collection-log/category_parameters.php
+ */
 export const TempleOSRSCollectionLogCategory = z.enum([
   'all',
   'bosses',
@@ -127,6 +132,8 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'corporeal_beast',
   'crazy_archaeologist',
   'dagannoth_kings',
+  'deranged_archaeologist',
+  'doom_of_mokhaiotl',
   'duke_sucellus',
   'the_fight_caves',
   'fortis_colosseum',
@@ -177,6 +184,7 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'third_age',
   'mimic',
   'shared_treasure_trail_rewards',
+  'scroll_cases',
   'barbarian_assault',
   'brimhaven_agility_arena',
   'castle_wars',
@@ -196,6 +204,7 @@ export const TempleOSRSCollectionLogCategory = z.enum([
   'temple_trekking',
   'tithe_farm',
   'trouble_brewing',
+  'vale_totems',
   'volcanic_mine',
   'aerial_fishing',
   'all_pets',
