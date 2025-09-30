@@ -4,31 +4,45 @@ import { CombatAchievementListResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 import { unstable_cache } from 'next/cache';
 
+const fetchCombatAchievements = async (
+  offset = 0,
+): Promise<CombatAchievementListResponse['bucket']> => {
+  const { queryLimit } = clientConstants.wiki;
+
+  const query = `bucket("combat_achievement").select("id", "name", "tier").limit(${queryLimit}).offset(${offset}).run()`;
+  const params = new URLSearchParams({
+    action: 'bucket',
+    format: 'json',
+    query,
+  });
+
+  const allCombatAchievementsResponse = await fetch(
+    `${clientConstants.wiki.baseUrl}/api.php?${params}`,
+    {
+      headers: {
+        'User-Agent': clientConstants.wiki.userAgent,
+      },
+    },
+  );
+
+  const { bucket } = CombatAchievementListResponse.parse(
+    await allCombatAchievementsResponse.json(),
+  );
+
+  // Check for the next page if the current bucket is full
+  if (bucket.length === queryLimit) {
+    return [...bucket, ...(await fetchCombatAchievements(offset + queryLimit))];
+  }
+
+  return bucket;
+};
+
 export const getCaIdMap = unstable_cache(
   async () => {
-    const query = `bucket("combat_achievement").select("id", "name", "tier").run()`;
-
-    const params = new URLSearchParams({
-      action: 'bucket',
-      format: 'json',
-      query,
-    });
-
     try {
-      const allCombatAchievementsResponse = await fetch(
-        `${clientConstants.wiki.baseUrl}/api.php?${params}`,
-        {
-          headers: {
-            'User-Agent': clientConstants.wiki.userAgent,
-          },
-        },
-      );
+      const allCombatAchievements = await fetchCombatAchievements();
 
-      const data = CombatAchievementListResponse.parse(
-        await allCombatAchievementsResponse.json(),
-      );
-
-      return data.bucket.reduce<Record<string, number>>(
+      return allCombatAchievements.reduce<Record<string, number>>(
         (acc, { id, tier }) => ({
           ...acc,
           [id]: combatAchievementTierPoints[tier],
@@ -37,8 +51,6 @@ export const getCaIdMap = unstable_cache(
       );
     } catch (error) {
       Sentry.captureException(error);
-
-      return null;
     }
   },
   [],
