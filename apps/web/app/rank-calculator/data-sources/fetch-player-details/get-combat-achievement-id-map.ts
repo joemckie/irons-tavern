@@ -1,63 +1,56 @@
 import { clientConstants } from '@/config/constants.client';
 import { combatAchievementTierPoints } from '@/app/schemas/osrs';
-import {
-  CombatAchievementJson,
-  CombatAchievementListResponse,
-} from '@/app/schemas/wiki';
+import { CombatAchievementListResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
 import { unstable_cache } from 'next/cache';
 
+const fetchCombatAchievements = async (
+  offset = 0,
+): Promise<CombatAchievementListResponse['bucket']> => {
+  const { queryLimit } = clientConstants.wiki;
+
+  const query = `bucket("combat_achievement").select("id", "name", "tier").limit(${queryLimit}).offset(${offset}).run()`;
+  const params = new URLSearchParams({
+    action: 'bucket',
+    format: 'json',
+    query,
+  });
+
+  const allCombatAchievementsResponse = await fetch(
+    `${clientConstants.wiki.baseUrl}/api.php?${params}`,
+    {
+      headers: {
+        'User-Agent': clientConstants.wiki.userAgent,
+      },
+    },
+  );
+
+  const { bucket } = CombatAchievementListResponse.parse(
+    await allCombatAchievementsResponse.json(),
+  );
+
+  // Check for the next page if the current bucket is full
+  if (bucket.length === queryLimit) {
+    return [...bucket, ...(await fetchCombatAchievements(offset + queryLimit))];
+  }
+
+  return bucket;
+};
+
 export const getCaIdMap = unstable_cache(
   async () => {
-    const query = [
-      '[[Category:Easy Combat Achievements tasks||Medium Combat Achievements tasks||Hard Combat Achievements tasks||Elite Combat Achievements tasks||Master Combat Achievements tasks||Grandmaster Combat Achievements tasks]]',
-      '?Combat Achievement JSON',
-      'limit=1000',
-    ].join('|');
-
-    const params = new URLSearchParams({
-      action: 'ask',
-      format: 'json',
-      query,
-      api_version: '2',
-      formatversion: '2',
-    });
-
     try {
-      const allCombatAchievementsResponse = await fetch(
-        `${clientConstants.wiki.baseUrl}/api.php?${params}`,
-        {
-          headers: {
-            'User-Agent': clientConstants.wiki.userAgent,
-          },
-        },
-      );
+      const allCombatAchievements = await fetchCombatAchievements();
 
-      const data = CombatAchievementListResponse.parse(
-        await allCombatAchievementsResponse.json(),
-      );
-
-      return Object.values(data.query.results).reduce<Record<string, number>>(
-        (acc, val) => {
-          const [combatAchievementJson] =
-            val.printouts['Combat Achievement JSON'];
-
-          if (!combatAchievementJson) {
-            return acc;
-          }
-
-          const { id, tier } = CombatAchievementJson.parse(
-            JSON.parse(combatAchievementJson),
-          );
-
-          return { ...acc, [id]: combatAchievementTierPoints[tier] };
-        },
+      return allCombatAchievements.reduce<Record<string, number>>(
+        (acc, { id, tier }) => ({
+          ...acc,
+          [id]: combatAchievementTierPoints[tier],
+        }),
         {},
       );
     } catch (error) {
       Sentry.captureException(error);
-
-      return null;
     }
   },
   [],

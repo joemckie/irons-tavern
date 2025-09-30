@@ -113,25 +113,13 @@ export function isWikiSyncError(
 }
 
 export const CombatAchievementListResponse = z.object({
-  query: z.object({
-    printrequests: z.unknown(),
-    results: z.record(
-      z.string(),
-      z.object({
-        printouts: z.object({
-          'Combat Achievement JSON': z.array(z.string()),
-        }),
-        fulltext: z.string(),
-        fullurl: z.string(),
-        namespace: z.number(),
-        exists: z.string(),
-        displaytitle: z.string(),
-      }),
-    ),
-    serializer: z.string(),
-    version: z.number(),
-    meta: z.unknown(),
-  }),
+  bucket: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      tier: CombatAchievementTier.exclude(['None']),
+    }),
+  ),
 });
 
 export type CombatAchievementListResponse = z.infer<
@@ -214,17 +202,6 @@ export const DroppedItemResponse = z
   );
 
 export type DroppedItemResponse = z.infer<typeof DroppedItemResponse>;
-
-export const CombatAchievementJson = z.object({
-  monster: z.string(),
-  type: z.string(),
-  name: z.string(),
-  tier: CombatAchievementTier.exclude(['None']),
-  id: z.string(),
-  task: z.string(),
-});
-
-export type CombatAchievementJson = z.infer<typeof CombatAchievementJson>;
 
 export const CombatAchievementTierThresholdResponse = z.object({
   expandtemplates: z.object({
