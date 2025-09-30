@@ -171,34 +171,21 @@ export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
 
 export const DroppedItemResponse = z
   .object({
-    query: z.object({
-      results: z.record(
-        z.string(),
-        z.object({
-          printouts: z.object({
-            'Drop JSON': z.array(
-              z
-                .string()
-                .transform((jsonString) =>
-                  DroppedItemJSON.parse(JSON.parse(jsonString)),
-                ),
-            ),
-          }),
-        }),
-      ),
-    }),
+    bucket: z.array(
+      z.object({
+        drop_json: z
+          .string()
+          .transform((jsonString) =>
+            DroppedItemJSON.parse(JSON.parse(jsonString)),
+          ),
+      }),
+    ),
   })
-  .transform((data) =>
-    Object.values(data.query.results).reduce<
-      Record<string, Record<string, number>>
-    >(
+  .transform(({ bucket }) =>
+    bucket.reduce<Record<string, Record<string, number>>>(
       (
         acc,
-        {
-          printouts: {
-            'Drop JSON': [{ altRarity, itemName, dropSource, rarity, rolls }],
-          },
-        },
+        { drop_json: { altRarity, itemName, dropSource, rarity, rolls } },
       ) => {
         acc[itemName] = acc[itemName] ?? {};
 
