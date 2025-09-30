@@ -23,7 +23,7 @@ export function generateRequiredItemList() {
 export const fetchItemDropRates = unstable_cache(
   async (items: CollectionLogItemName[]) => {
     const batches = [];
-    const batchSize = 10;
+    const batchSize = 80;
 
     for (let i = 0; i < items.length; i += batchSize) {
       const batch = items.slice(i, i + batchSize);
@@ -83,6 +83,8 @@ export const fetchItemDropRates = unstable_cache(
       );
     } catch (error) {
       Sentry.captureException(error);
+
+      console.error(error);
 
       throw new Error('Could not fetch drop rates!');
     }
