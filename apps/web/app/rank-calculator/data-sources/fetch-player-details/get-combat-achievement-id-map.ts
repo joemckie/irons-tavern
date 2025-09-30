@@ -26,6 +26,11 @@ export const getCaIdMap = unstable_cache(
     try {
       const allCombatAchievementsResponse = await fetch(
         `${clientConstants.wiki.baseUrl}/api.php?${params}`,
+        {
+          headers: {
+            'User-Agent': clientConstants.wiki.userAgent,
+          },
+        },
       );
 
       const data = CombatAchievementListResponse.parse(

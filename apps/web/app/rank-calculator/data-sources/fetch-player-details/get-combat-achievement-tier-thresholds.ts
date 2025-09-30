@@ -29,6 +29,11 @@ export const getCombatAchievementTierThresholds = unstable_cache(
     try {
       const response = await fetch(
         `${clientConstants.wiki.baseUrl}/api.php?${tierPointThresholdParams}`,
+        {
+          headers: {
+            'User-Agent': clientConstants.wiki.userAgent,
+          },
+        },
       );
 
       const data = CombatAchievementTierThresholdResponse.parse(

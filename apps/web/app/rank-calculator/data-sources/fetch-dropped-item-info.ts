@@ -23,15 +23,12 @@ export function generateRequiredItemList() {
 export const fetchItemDropRates = unstable_cache(
   async (items: CollectionLogItemName[]) => {
     const batches = [];
-    const batchSize = 10;
+    const batchSize = 80;
 
     for (let i = 0; i < items.length; i += batchSize) {
       const batch = items.slice(i, i + batchSize);
-      const query = [
-        `[[Dropped item::${[...batch].join('||')}]]`,
-        '?Drop JSON',
-        'limit=1000',
-      ].join('|');
+      const queryConditions = batch.map((item) => `{"item_name","${item}"}`);
+      const query = `bucket("dropsline").select("drop_json").where(bucket.Or(${queryConditions.join(',')})).run()`;
 
       batches.push(query);
     }
@@ -40,15 +37,16 @@ export const fetchItemDropRates = unstable_cache(
       const batchResponses = await Promise.all(
         batches.map((query) => {
           const params = new URLSearchParams({
-            action: 'ask',
+            action: 'bucket',
             format: 'json',
             query,
-            api_version: '2',
-            formatversion: '2',
           });
 
           return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
             cache: 'force-cache',
+            headers: {
+              'User-Agent': clientConstants.wiki.userAgent,
+            },
           });
         }),
       );
@@ -69,6 +67,8 @@ export const fetchItemDropRates = unstable_cache(
               },
               message: `Failed to parse drop rates for ${res.url}`,
             });
+
+            Sentry.captureException(error);
 
             return {};
           }
