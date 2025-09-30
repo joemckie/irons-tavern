@@ -47,7 +47,7 @@ function calculatePointsForSingleDropSource(
       dedent`
         ${chalk.underline.yellow(bossName)}: No EHB rate found whilst calculating "${chalk.underline.red(itemName)}". Returning 0 points.
 
-        ${encodeURI(`${clientConstants.wiki.baseUrl}/api.php?action=ask&query=[[Dropped item::${itemName}]]|?Drop JSON|limit=1000&format=json`)}
+        ${encodeURI(`${clientConstants.wiki.baseUrl}/api.php?action=bucket&query=bucket("dropsline").select("drop_json").where("item_name","${itemName}").run()&format=json`)}
       `,
     );
 
