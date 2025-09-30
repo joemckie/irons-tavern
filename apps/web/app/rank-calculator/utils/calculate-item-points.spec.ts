@@ -23,24 +23,20 @@ function setup(items: SetupItem[]) {
     (acc, [itemName, results]) => {
       results.forEach(
         ({ 'Dropped from': dropSource, Rarity: rarity, ...data }) => {
-          acc.query.results[`${dropSource}#DROP 1 ${itemName} 1 ${rarity}`] = {
-            printouts: {
-              'Drop JSON': [
-                JSON.stringify({
-                  ...data,
-                  Rarity: rarity,
-                  'Dropped from': dropSource,
-                  'Dropped item': itemName,
-                } satisfies z.input<typeof DroppedItemJSON>),
-              ],
-            },
-          };
+          acc.bucket.push({
+            drop_json: JSON.stringify({
+              ...data,
+              Rarity: rarity,
+              'Dropped from': dropSource,
+              'Dropped item': itemName,
+            } satisfies z.input<typeof DroppedItemJSON>),
+          });
         },
       );
 
       return acc;
     },
-    { query: { results: {} } },
+    { bucket: [] },
   );
 
   server.use(
