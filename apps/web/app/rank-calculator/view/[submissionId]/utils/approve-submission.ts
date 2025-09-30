@@ -130,22 +130,30 @@ export async function approveSubmission({
     applicableAchievementDiscordRoles,
   ).some(Boolean);
 
-  if (rankStructure === 'Standard') {
-    await discordBotClient.put(
-      Routes.channelMessageOwnReaction(
-        serverConstants.discord.channelId,
-        messageId,
-        encodeURIComponent('☑️'),
-      ),
-    );
-    await assignRankDiscordRole(rank, submitterId);
+  const autoModeratableRankStructures = [
+    'Standard',
+    'Admin',
+  ] as RankStructure[];
 
-    const newAchievementRoles = requiresAchievementRoles
-      ? await assignAchievementDiscordRoles(
-          submitterId,
-          applicableAchievementDiscordRoles,
-        )
-      : [];
+  if (autoModeratableRankStructures.includes(rankStructure)) {
+    const [, , newAchievementRoles = []] = await Promise.all([
+      discordBotClient.put(
+        Routes.channelMessageOwnReaction(
+          serverConstants.discord.channelId,
+          messageId,
+          encodeURIComponent('☑️'),
+        ),
+      ),
+      assignRankDiscordRole(rank, submitterId),
+      ...(requiresAchievementRoles
+        ? [
+            assignAchievementDiscordRoles(
+              submitterId,
+              applicableAchievementDiscordRoles,
+            ),
+          ]
+        : []),
+    ]);
 
     await sendDiscordMessage(
       {

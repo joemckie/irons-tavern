@@ -5,9 +5,11 @@ import { CollectionLogCard } from './cards/collection-log-card';
 import { NotableItemsCard } from './cards/notable-items-card';
 import { usePageHeight } from '../hooks/use-page-height';
 import { ModerationCard } from './cards/moderation-card';
+import { useParams } from 'next/navigation';
 
 export function Sidebar() {
   const mainHeightCss = usePageHeight();
+  const { submissionId } = useParams<{ submissionId?: string }>();
 
   return (
     <Box asChild gridArea="sidebar" height={{ md: mainHeightCss }}>
@@ -21,7 +23,7 @@ export function Sidebar() {
           pb={{ initial: '0', md: '3' }}
         >
           <aside>
-            <ModerationCard />
+            {submissionId && <ModerationCard />}
             <RankProgressCard />
             <CombatCard />
             <CollectionLogCard />
