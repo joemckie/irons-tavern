@@ -11,7 +11,7 @@ export function calculateTotalLevelPoints(totalLevel: number, scaling: number) {
     return 0;
   }
 
-  const steps = maximumTotalLevel / maximumSkillLevel; // Remove +1 when Sailing is released
+  const steps = maximumTotalLevel / maximumSkillLevel;
 
   const nextLevel99Milestone = Math.ceil(totalLevel / maximumSkillLevel);
 
