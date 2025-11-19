@@ -20,7 +20,6 @@ export const achievementDiaryTierPoints = {
 
 export const pointsConfig = {
   notableItemsPointsPerHour: 3,
-  sailingOffset: 4000,
   maxCapePoints: 7000,
   achievementDiaryCapePoints: 1000,
   maximumTotalLevelPoints: 50000,
