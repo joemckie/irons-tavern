@@ -16,7 +16,7 @@ export const editPlayerAction = authActionClient
   .metadata({ actionName: 'edit-player' })
   .schema(EditPlayerSchema)
   .bindArgsSchemas<
-    [previousPlayerName: z.ZodString, currentRank: Zod.ZodOptional<typeof Rank>]
+    [previousPlayerName: z.ZodString, currentRank: z.ZodOptional<typeof Rank>]
   >([PlayerName, Rank.optional()])
   .action(
     async ({

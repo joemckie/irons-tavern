@@ -15,7 +15,7 @@ import { isAchievementDiaryCapeAchieved } from '../utils/is-achievement-diary-ca
 
 export const RankCalculatorSchema = z.object({
   acquiredItems: z
-    .record(z.boolean().optional())
+    .record(z.string(), z.boolean().optional())
     .transform((data) => pickBy(data, (val) => val)),
   achievementDiaries: z.record(DiaryLocation, DiaryTier),
   joinDate: z.coerce.date(),

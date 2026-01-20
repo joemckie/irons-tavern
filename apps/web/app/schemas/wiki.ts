@@ -1,4 +1,4 @@
-import { z, ZodNumber } from 'zod';
+import { z } from 'zod';
 import {
   altRarityItems,
   rarityOverrides,
@@ -33,10 +33,10 @@ export const LevelMap = z.object(
   Object.fromEntries(
     Skill.options.map((skill) => [
       skill,
-      z.number().min(1).max(maximumSkillLevel),
+      z.int().min(1).max(maximumSkillLevel),
     ]),
   ) as {
-    [Key in keyof typeof Skill.enum]: ZodNumber;
+    [Key in keyof typeof Skill.enum]: z.ZodInt;
   },
 );
 
@@ -90,11 +90,11 @@ export const WikiSyncResponse = z.object({
         ),
     ),
   levels: LevelMap.extend({
-    Overall: z.number().optional(),
+    Overall: z.int().optional(),
   }),
   music_tracks: z.record(z.string(), z.boolean()),
   quests: z.record(z.string(), QuestStatus),
-  combat_achievements: z.array(z.number().nonnegative()),
+  combat_achievements: z.array(z.int().nonnegative()),
 });
 
 export type WikiSyncResponse = z.infer<typeof WikiSyncResponse>;

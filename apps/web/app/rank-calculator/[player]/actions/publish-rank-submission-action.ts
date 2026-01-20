@@ -52,7 +52,7 @@ import { approveSubmission } from '../../view/[submissionId]/utils/approve-submi
 export const publishRankSubmissionAction = authActionClient
   .metadata({ actionName: 'publish-rank-submission' })
   .bindArgsSchemas<
-    [currentRank: Zod.ZodOptional<typeof Rank>, playerName: typeof PlayerName]
+    [currentRank: z.ZodOptional<typeof Rank>, playerName: typeof PlayerName]
   >([Rank.optional(), PlayerName])
   .schema(z.object({ rank: Rank, totalPoints: z.number().nonnegative() }))
   .action(
@@ -111,7 +111,11 @@ export const publishRankSubmissionAction = authActionClient
               thumbnail: { url: getRankImageUrl(rank, true) },
               fields: [
                 { name: 'Rank', value: getRankName(rank), inline: true },
-                { name: 'Rank structure', value: savedData.rankStructure, inline: true },
+                {
+                  name: 'Rank structure',
+                  value: savedData.rankStructure,
+                  inline: true,
+                },
                 {
                   name: 'Total points',
                   value: formatNumber(totalPoints),
@@ -182,10 +186,10 @@ export const publishRankSubmissionAction = authActionClient
               ).reduce<AchievementDiaryMap>(
                 (acc, [diaryLocation, diaryTier]) => {
                   if (
-                    DiaryTier._def.values.indexOf(
+                    DiaryTier.options.indexOf(
                       achievementDiaries[diaryLocation] ?? 'None',
                     ) <
-                    DiaryTier._def.values.indexOf(
+                    DiaryTier.options.indexOf(
                       savedData.achievementDiaries[diaryLocation] ?? 'None',
                     )
                   ) {
@@ -194,7 +198,7 @@ export const publishRankSubmissionAction = authActionClient
 
                   return acc;
                 },
-                {},
+                {} as AchievementDiaryMap,
               )
             : null,
         acquiredItems: [
@@ -232,8 +236,8 @@ export const publishRankSubmissionAction = authActionClient
         ],
         combatAchievementTier:
           hasWikiSyncData &&
-          CombatAchievementTier._def.values.indexOf(combatAchievementTier) <
-            CombatAchievementTier._def.values.indexOf(
+          CombatAchievementTier.options.indexOf(combatAchievementTier) <
+            CombatAchievementTier.options.indexOf(
               savedData.combatAchievementTier,
             )
             ? combatAchievementTier

@@ -2,11 +2,11 @@ import { z } from 'zod';
 
 const MemberInfo = z.object({
   player: z.string(),
-  game_mode: z.number().int(),
+  game_mode: z.int(),
   on_hiscores: z.union([z.literal(1), z.literal(0)]),
   last_checked: z.string(),
   last_changed_xp: z.string(),
-  last_changed_xp_unix_time: z.number().int(),
+  last_changed_xp_unix_time: z.int(),
 });
 
 type MemberInfo = z.infer<typeof MemberInfo>;
