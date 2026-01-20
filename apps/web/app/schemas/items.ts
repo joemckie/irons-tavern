@@ -5,14 +5,14 @@ import { TempleOSRSCollectionLogCategory } from './temple-api';
 export const BaseItem = z.object({
   image: z.string(),
   name: z.string(),
-  points: z.int(),
+  points: z.number(),
 });
 
 export type BaseItem = z.infer<typeof BaseItem>;
 
 export const RequiredItem = z.object({
   clogName: CollectionLogItemName,
-  amount: z.int().positive(),
+  amount: z.number().positive(),
   targetDropSources: z.array(z.string()).nonempty().optional(),
   ignoreDropRateModifier: z.literal(true).optional(),
   ignoreAmountMultiplier: z.literal(true).optional(),
@@ -22,7 +22,7 @@ export const RequiredItem = z.object({
 export type RequiredItem = z.infer<typeof RequiredItem>;
 
 export const CollectionLogItem = BaseItem.extend({
-  requiredLevels: z.partialRecord(Skill, z.int()).optional(),
+  requiredLevels: z.partialRecord(Skill, z.number()).optional(),
   requiredItems: z.tuple([RequiredItem], RequiredItem),
   collectionLogCategories: z.array(TempleOSRSCollectionLogCategory).nonempty(),
   hasPointsError: z.boolean(),
@@ -31,7 +31,7 @@ export const CollectionLogItem = BaseItem.extend({
 export type CollectionLogItem = z.infer<typeof CollectionLogItem>;
 
 export const CombatAchievementItem = BaseItem.extend({
-  requiredCombatAchievements: z.array(z.int()).nonempty(),
+  requiredCombatAchievements: z.array(z.number()).nonempty(),
 });
 
 export type CombatAchievementItem = z.infer<typeof CombatAchievementItem>;
