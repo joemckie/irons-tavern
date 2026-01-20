@@ -35,7 +35,11 @@ export const actionClient = createSafeActionClient({
     return result;
   })
   .use(async ({ next, metadata }) =>
-    Sentry.withServerActionInstrumentation(metadata.actionName, next),
+    Sentry.withServerActionInstrumentation(
+      metadata.actionName,
+      { recordResponse: true },
+      next,
+    ),
   );
 
 export const authActionClient = actionClient.use(async ({ next }) => {
