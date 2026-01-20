@@ -27,7 +27,7 @@ export function RankCalculatorNavigationActions({
   isActionActive,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
-  const { isValid, isDirty, isSubmitting } =
+  const { isValid, isDirty, isSubmitting, ...formState } =
     useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
@@ -40,6 +40,8 @@ export function RankCalculatorNavigationActions({
   const { executeAsync: publishRankSubmission } = useAction(
     publishRankSubmissionAction.bind(null, currentRank, playerName),
   );
+
+  console.log({ isDirty, isValid, isSubmitting, isActionActive, formState });
 
   return (
     <Flex gap="1">

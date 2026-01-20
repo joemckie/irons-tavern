@@ -51,6 +51,8 @@ export function FormWrapper({
     },
   );
 
+  console.log({ form, isExecuting, isTransitioning, values: form.getValues() });
+
   const submitRankCalculator = form.handleSubmit(async (data) =>
     handleToastUpdates(saveDraftRankSubmission(data), {
       pending: 'Saving draft...',
