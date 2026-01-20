@@ -93,7 +93,7 @@ export function calculateItemPoints(
               amount,
               z
                 .number({
-                  required_error: `Could not find item drop rate for ${clogName}:${dropSource}`,
+                  error: `Could not find item drop rate for ${clogName}:${dropSource}`,
                 })
                 .parse(dropRateInfo[clogName][dropSource]),
               { ignoreDropRateModifier, ignoreAmountMultiplier },

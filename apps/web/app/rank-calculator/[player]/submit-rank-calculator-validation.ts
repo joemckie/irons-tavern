@@ -43,7 +43,10 @@ export const RankCalculatorSchema = z.object({
 
 export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;
 
-export const RankCalculatorValidator = RankCalculatorSchema.superRefine(
+export const RankCalculatorValidator = RankCalculatorSchema.omit({
+  rank: true,
+  points: true,
+}).superRefine(
   (
     { hasMaxCape, totalLevel, achievementDiaries, hasAchievementDiaryCape },
     ctx,

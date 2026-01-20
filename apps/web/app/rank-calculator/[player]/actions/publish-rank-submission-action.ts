@@ -54,7 +54,7 @@ export const publishRankSubmissionAction = authActionClient
   .bindArgsSchemas<
     [currentRank: z.ZodOptional<typeof Rank>, playerName: typeof PlayerName]
   >([Rank.optional(), PlayerName])
-  .schema(z.object({ rank: Rank, totalPoints: z.number().nonnegative() }))
+  .inputSchema(z.object({ rank: Rank, totalPoints: z.number().nonnegative() }))
   .action(
     async ({
       ctx: { userId },
