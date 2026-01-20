@@ -1,6 +1,7 @@
 import {
   DEFAULT_SERVER_ERROR_MESSAGE,
   SafeActionResult,
+  type ValidationErrors,
 } from 'next-safe-action';
 import { toast, ToastPromiseParams, UpdateOptions } from 'react-toastify';
 import { Schema } from 'zod';
@@ -8,14 +9,10 @@ import { Schema } from 'zod';
 export async function handleToastUpdates<
   ServerError extends string,
   S extends Schema,
-  BAS extends readonly Schema[],
-  CVE,
-  CBAVE,
+  CVE extends ValidationErrors<S>,
   Data,
 >(
-  actionFn: Promise<
-    SafeActionResult<ServerError, S, BAS, CVE, CBAVE, Data> | undefined
-  >,
+  actionFn: Promise<SafeActionResult<ServerError, S, CVE, Data> | undefined>,
   params: {
     success: ToastPromiseParams<Data>['success'];
     pending?: string;
@@ -43,7 +40,7 @@ export async function handleToastUpdates<
       });
     }
 
-    if (result?.validationErrors || result?.bindArgsValidationErrors) {
+    if (result?.validationErrors) {
       toast.update(toastId, {
         render: 'Validation error',
         type: 'error',
