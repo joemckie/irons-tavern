@@ -809,6 +809,7 @@ export const earlyGamePlayerFixture = {
     Strength: 85,
     Prayer: 70,
     Farming: 78,
+    Sailing: 1,
   },
   music_tracks: {
     '7th Realm': true,
@@ -2384,6 +2385,7 @@ export const midGamePlayerFixture = {
     Thieving: 99,
     Woodcutting: 87,
     Overall: 1,
+    Sailing: 1,
   },
   music_tracks: {
     '7th Realm': true,
@@ -3970,6 +3972,7 @@ export const endGamePlayerFixture = {
     Strength: 99,
     Prayer: 99,
     Farming: 99,
+    Sailing: 99,
   },
   music_tracks: {
     '7th Realm': true,
