@@ -51,15 +51,19 @@ export function FormWrapper({
     },
   );
 
-  console.log({ form, isExecuting, isTransitioning, values: form.getValues() });
+  const { formState, reset, getValues } = form;
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset(getValues());
+    }
+  }, [formState, reset, getValues]);
 
   const submitRankCalculator = form.handleSubmit(async (data) =>
     handleToastUpdates(saveDraftRankSubmission(data), {
       pending: 'Saving draft...',
       success: {
         render() {
-          form.reset(data, { keepIsSubmitSuccessful: true });
-
           return 'Draft saved!';
         },
       },
