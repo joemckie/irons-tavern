@@ -43,12 +43,12 @@ import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calcul
 export async function GET(request: NextRequest) {
   try {
     const player = z
-      .string({ required_error: 'Player is required' })
+      .string({ error: 'Player is required' })
       .transform((encodedPlayer) => decodeURIComponent(encodedPlayer))
       .parse(request.nextUrl.searchParams.get('player'));
 
     const discordId = z
-      .string({ required_error: 'Discord ID is required' })
+      .string({ error: 'Discord ID is required' })
       .parse(request.nextUrl.searchParams.get('discord_id'));
 
     const playerDetails = await fetchPlayerDetails(player, discordId);

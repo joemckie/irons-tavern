@@ -1,4 +1,4 @@
-import { z, ZodNumber } from 'zod';
+import { z } from 'zod';
 import {
   altRarityItems,
   rarityOverrides,
@@ -36,7 +36,7 @@ export const LevelMap = z.object(
       z.number().min(1).max(maximumSkillLevel),
     ]),
   ) as {
-    [Key in keyof typeof Skill.enum]: ZodNumber;
+    [Key in keyof typeof Skill.enum]: z.ZodInt;
   },
 );
 

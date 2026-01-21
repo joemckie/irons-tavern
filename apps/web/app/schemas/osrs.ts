@@ -24,6 +24,7 @@ export const Skill = z.enum([
   'Farming',
   'Construction',
   'Hunter',
+  'Sailing',
 ]);
 
 export type Skill = z.infer<typeof Skill>;

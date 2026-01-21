@@ -13,7 +13,7 @@ const ClientConfigSchema = z.object({
   wiki: z.object({
     baseUrl: z.literal('https://oldschool.runescape.wiki'),
     userAgent: z.literal('Irons-Tavern-Rank-Calculator (Discord @joemckie)'),
-    queryLimit: z.number().int().min(1).max(5000),
+    queryLimit: z.number().min(1).max(5000),
   }),
   wikiSync: z.object({
     baseUrl: z.literal('https://sync.runescape.wiki'),

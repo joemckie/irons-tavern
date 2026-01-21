@@ -3,10 +3,15 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
-import * as Spotlight from '@spotlightjs/spotlight';
 
 Sentry.init({
   dsn: 'https://77f5ba1f2b4e815c44752e252807996a@o4508227878191104.ingest.de.sentry.io/4508227880026192',
+
+  // Adds request headers and IP for users
+  sendDefaultPii: true,
+
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
 
   // Add optional integrations for additional features
   integrations: [
@@ -29,8 +34,9 @@ Sentry.init({
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
+
+  spotlight: process.env.NODE_ENV === 'development',
 });
 
-if (process.env.NODE_ENV === 'development') {
-  void Spotlight.init();
-}
+// This export will instrument router navigations
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

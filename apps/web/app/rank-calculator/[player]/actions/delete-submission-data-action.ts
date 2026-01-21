@@ -11,7 +11,7 @@ import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetc
 
 export const deleteSubmissionDataAction = authActionClient
   .metadata({ actionName: 'delete-submission-data' })
-  .schema(z.object({ playerName: PlayerName }))
+  .inputSchema(z.object({ playerName: PlayerName }))
   .action(async ({ parsedInput: { playerName }, ctx: { userId } }) => {
     const result = await redis.del(
       userDraftRankSubmissionKey(userId, playerName),

@@ -5,13 +5,10 @@
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { server } from '@/mocks/server';
-import * as formData from '@/mocks/misc/form-data';
 import { http, HttpResponse } from 'msw';
 import { Routes } from 'discord-api-types/v10';
-import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { mockUUID } from '@/test-utils/mock-uuid';
 import * as auth from '@/auth';
-import { serialize } from 'object-to-formdata';
 import * as discordFixtures from '@/mocks/discord';
 import { publishRankSubmissionAction } from './actions/publish-rank-submission-action';
 
@@ -29,14 +26,10 @@ beforeEach(() => {
 });
 
 it('saves the submission to the database', async () => {
-  const result = await publishRankSubmissionAction(
-    'Air',
-    serialize({
-      ...formData.midGamePlayer,
-      points: '100000',
-      rank: getRankName('Owner'),
-    }),
-  );
+  const result = await publishRankSubmissionAction('Air', 'Zezima', {
+    rank: 'Owner',
+    totalPoints: 100000,
+  });
 
   expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeUndefined();
@@ -51,14 +44,10 @@ it('returns an error if the save was not successful', async () => {
     ),
   );
 
-  const result = await publishRankSubmissionAction(
-    'Air',
-    serialize({
-      ...formData.midGamePlayer,
-      points: 100000,
-      rank: getRankName('Owner'),
-    }),
-  );
+  const result = await publishRankSubmissionAction('Air', 'Zezima', {
+    totalPoints: 100000,
+    rank: 'Owner',
+  });
 
   expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeDefined();
@@ -74,14 +63,10 @@ xit('returns an error if a network error occurs whilst saving the submission', a
     ),
   );
 
-  const result = await publishRankSubmissionAction(
-    'Air',
-    serialize({
-      ...formData.midGamePlayer,
-      points: 100000,
-      rank: getRankName('Owner'),
-    }),
-  );
+  const result = await publishRankSubmissionAction('Air', 'Zezima', {
+    totalPoints: 100000,
+    rank: 'Owner',
+  });
 
   expect(result?.data).toMatchObject({
     error: 'Something went wrong',
@@ -99,14 +84,10 @@ it('returns an error if a network error occurs whilst sending the discord messag
     ),
   );
 
-  const result = await publishRankSubmissionAction(
-    'Air',
-    serialize({
-      ...formData.midGamePlayer,
-      points: 100000,
-      rank: getRankName('Owner'),
-    }),
-  );
+  const result = await publishRankSubmissionAction('Air', 'Zezima', {
+    totalPoints: 100000,
+    rank: 'Owner',
+  });
 
   expect(result?.validationErrors).toBeUndefined();
   expect(result?.serverError).toBeDefined();
