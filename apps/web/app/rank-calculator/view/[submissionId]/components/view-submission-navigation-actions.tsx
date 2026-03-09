@@ -14,6 +14,7 @@ export function ViewSubmissionNavigationActions({
   return (
     <>
       <RejectSubmissionButton
+        playerName={playerName}
         onRejectSuccess={() => {
           onStatusChange('Rejected');
         }}
