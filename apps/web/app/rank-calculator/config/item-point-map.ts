@@ -13,7 +13,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Monumental chest': 'Theatre of Blood Hard Mode',
   'Monumental chest#Normal Mode': 'Theatre of Blood',
   'Monumental chest#Hard Mode': 'Theatre of Blood Hard Mode',
-  'Reward Chest (The Gauntlet)#(Corrupted)': 'The Corrupted Gauntlet',
+  'Reward Chest (The Gauntlet)#Corrupted': 'The Corrupted Gauntlet',
   'Rewards Chest (Fortis Colosseum)#Wave 1': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 2': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 3': 'Sol Heredit',
