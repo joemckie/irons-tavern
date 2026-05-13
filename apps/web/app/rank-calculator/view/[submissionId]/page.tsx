@@ -24,6 +24,7 @@ import {
   generateRequiredItemList,
 } from '../../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../../utils/build-notable-item-list';
+import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
 
 export default async function ViewSubmissionPage({
   params,
@@ -73,14 +74,22 @@ export default async function ViewSubmissionPage({
   queryClient.setQueryData(['drop-rates'], dropRates);
   queryClient.setQueryData(['items'], Object.entries(notableItemList));
 
+  const canModerateSubmission = await userCanModerateSubmission(
+    user?.user?.permissions,
+    user?.user?.id,
+    submissionId,
+    submission.rankStructure,
+    submission.playerName,
+  );
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ReadonlyFormWrapper
         formData={submission}
-        userPermissions={user?.user?.permissions}
         diffErrors={diffErrors}
         submissionMetadata={submissionMetadata}
         actionedByUsername={actionedByUsername}
+        userCanModerateSubmission={canModerateSubmission}
       />
     </HydrationBoundary>
   );
