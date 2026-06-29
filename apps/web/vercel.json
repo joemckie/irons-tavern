@@ -3,6 +3,9 @@
     {
       "path": "/api/check-all-players",
       "schedule": "0 0 * * 1"
-    }
+    },
+    {
+      "path": "/api/check-player?player=ztrezzysiron&check_method=datapoint",
+      "schedule": "0 0 * * *"
   ]
 }
