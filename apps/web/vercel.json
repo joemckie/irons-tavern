@@ -7,5 +7,6 @@
     {
       "path": "/api/check-player?player=ztrezzysiron&check_method=datapoint",
       "schedule": "0 0 * * *"
+    }
   ]
 }
