@@ -73,7 +73,7 @@ export function isHolidayTrack(track: unknown): track is HolidayTrack {
 export const WikiSyncResponse = z.object({
   username: z.string(),
   timestamp: z.string(),
-  league_tasks: z.array(z.unknown()),
+  league_tasks: z.array(z.unknown()).nullable(),
   achievement_diaries: z
     .record(z.string(), z.record(z.string(), DiaryTierData))
     .refine(
