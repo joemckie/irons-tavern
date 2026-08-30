@@ -747,7 +747,7 @@ export const CollectionLogItemName = z.enum([
   'Saradomin banner',
   'Zamorak banner',
   'Leaf-bladed sword',
-  'Trident of the seas (full)',
+  'Trident of the Seas (full)',
   'Uncharged trident',
   'Dragon pickaxe',
   'Odium shard 1',
