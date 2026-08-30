@@ -25,7 +25,7 @@ export const krearra: ItemCategory = {
       collectionLogCategory: 'kree_arra',
     }),
     singleItem({
-      name: "Pet kree'arra",
+      name: "Pet Kree'arra",
       collectionLogCategory: 'kree_arra',
     }),
   ],
