@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const theNightmare: ItemCategory = {
-  image: formatWikiImageUrl('Little nightmare chathead', 'category'),
+  image: formatWikiImageUrl('Little Nightmare chathead', 'category'),
   items: [
     singleItem({
       name: 'Nightmare staff',
