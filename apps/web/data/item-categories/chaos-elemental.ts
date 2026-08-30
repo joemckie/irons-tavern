@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const chaosElemental: ItemCategory = {
-  image: formatWikiImageUrl('Pet chaos elemental detail', 'category'),
+  image: formatWikiImageUrl('Pet Chaos Elemental detail', 'category'),
   items: [
     singleItem({
       name: 'Pet Chaos Elemental',
