@@ -16,11 +16,11 @@ export const tzHaar: ItemCategory = {
       ],
     }),
     singleItem({
-      name: 'Jal-nib-rek',
+      name: 'Jal-Nib-Rek',
       collectionLogCategory: 'the_inferno',
     }),
     singleItem({
-      name: 'Tzrek-jad',
+      name: 'TzRek-Jad',
       collectionLogCategory: 'the_fight_caves',
     }),
   ],
