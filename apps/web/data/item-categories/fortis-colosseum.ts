@@ -32,7 +32,7 @@ export const fortisColosseum: ItemCategory = {
       targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
     }),
     singleItem({
-      name: 'Smol heredit',
+      name: 'Smol Heredit',
       collectionLogCategory: 'fortis_colosseum',
     }),
   ],
