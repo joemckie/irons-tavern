@@ -30,7 +30,7 @@ export const miscellaneous: ItemCategory = {
       requiredQuests: ['Recipe for Disaster'],
     }),
     questItem({
-      name: 'Book of the dead',
+      name: 'Book of the Dead',
       points: calculateXpOrTimeBasedItemPoints(
         estimatedHoursToAcquireBookOfTheDead,
       ),
