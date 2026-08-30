@@ -6,7 +6,7 @@ export const chaosElemental: ItemCategory = {
   image: formatWikiImageUrl('Pet chaos elemental detail', 'category'),
   items: [
     singleItem({
-      name: 'Pet chaos elemental',
+      name: 'Pet Chaos Elemental',
       collectionLogCategory: 'chaos_elemental',
     }),
   ],
