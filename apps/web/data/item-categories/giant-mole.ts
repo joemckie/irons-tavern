@@ -4,7 +4,7 @@ import { singleItem } from '../utils/item-builders';
 export const giantMole: ItemCategory = {
   items: [
     singleItem({
-      name: 'Baby mole',
+      name: 'Baby Mole',
       collectionLogCategory: 'giant_mole',
     }),
   ],
