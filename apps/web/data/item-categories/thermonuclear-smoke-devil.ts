@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const thermonuclearSmokeDevil: ItemCategory = {
-  image: formatWikiImageUrl('Pet smoke devil chathead', 'category'),
+  image: formatWikiImageUrl('Pet Smoke Devil chathead', 'category'),
   items: [
     singleItem({
       name: 'Occult necklace',
