@@ -25,7 +25,7 @@ export const generalGraardor: ItemCategory = {
       collectionLogCategory: 'general_graardor',
     }),
     singleItem({
-      name: 'Pet general graardor',
+      name: 'Pet General Graardor',
       collectionLogCategory: 'general_graardor',
     }),
   ],
