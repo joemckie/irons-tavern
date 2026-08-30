@@ -16,7 +16,7 @@ export const kraken: ItemCategory = {
       collectionLogCategory: 'kraken',
     }),
     singleItem({
-      name: 'Pet kraken',
+      name: 'Pet Kraken',
       collectionLogCategory: 'kraken',
     }),
   ],
