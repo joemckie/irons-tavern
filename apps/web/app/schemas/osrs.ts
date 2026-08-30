@@ -1803,7 +1803,7 @@ export const CollectionLogItemName = z.enum([
   'Mimic scroll case',
   'Dom',
   'Avernic treads',
-  'Eye of ayak (uncharged)',
+  'Eye of Ayak (uncharged)',
   'Mokhaiotl cloth',
   'Mokhaiotl waystone',
   'Demon tear',
