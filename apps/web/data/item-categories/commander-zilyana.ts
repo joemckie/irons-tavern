@@ -21,7 +21,7 @@ export const commanderZilyana: ItemCategory = {
       collectionLogCategory: 'commander_zilyana',
     }),
     singleItem({
-      name: 'Pet zilyana',
+      name: 'Pet Zilyana',
       collectionLogCategory: 'commander_zilyana',
     }),
   ],
