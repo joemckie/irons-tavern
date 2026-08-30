@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const fortisColosseum: ItemCategory = {
-  image: formatWikiImageUrl('Smol heredit detail', 'category'),
+  image: formatWikiImageUrl('Smol Heredit detail', 'category'),
   items: [
     singleItem({
       name: 'Sunfire fanatic helm',
