@@ -1786,7 +1786,7 @@ export const CollectionLogItemName = z.enum([
   'Forgotten lockbox',
   'Dossier',
   'Barrel of demonic tallow (full)',
-  'Jewel of amascut',
+  'Jewel of Amascut',
   'Steel ring',
   'Minor beginner scroll case',
   'Major beginner scroll case',
