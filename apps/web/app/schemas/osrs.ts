@@ -720,7 +720,7 @@ export const CollectionLogItemName = z.enum([
   'Void seal(8)',
   'Armadyl crossbow',
   'Steam battlestaff',
-  'Staff of the dead',
+  'Staff of the Dead',
   'Armadyl hilt',
   'Bandos hilt',
   'Saradomin hilt',
