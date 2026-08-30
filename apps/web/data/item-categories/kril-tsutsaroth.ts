@@ -23,7 +23,7 @@ export const krilTsutsaroth: ItemCategory = {
       collectionLogCategory: 'kril_tsutsaroth',
     }),
     singleItem({
-      name: "Pet k'ril tsutsaroth",
+      name: "Pet K'ril Tsutsaroth",
       image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
       collectionLogCategory: 'kril_tsutsaroth',
     }),
