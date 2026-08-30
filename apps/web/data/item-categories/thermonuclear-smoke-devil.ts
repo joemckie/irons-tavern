@@ -15,7 +15,7 @@ export const thermonuclearSmokeDevil: ItemCategory = {
       collectionLogCategory: 'thermonuclear_smoke_devil',
     }),
     singleItem({
-      name: 'Jar of smoke',
+      name: 'Jar of Smoke',
       collectionLogCategory: 'thermonuclear_smoke_devil',
     }),
     singleItem({
