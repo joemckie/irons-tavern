@@ -8,7 +8,7 @@ export const kalphiteQueen: ItemCategory = {
       collectionLogCategory: 'kalphite_queen',
     }),
     singleItem({
-      name: 'Jar of sand',
+      name: 'Jar of Sand',
       collectionLogCategory: 'kalphite_queen',
     }),
   ],
