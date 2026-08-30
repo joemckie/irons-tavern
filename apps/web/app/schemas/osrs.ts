@@ -1704,7 +1704,7 @@ export const CollectionLogItemName = z.enum([
   "Scurrius' spine",
   'Scurry',
   'Broken zombie axe',
-  'Tonalztics of ralos (uncharged)',
+  'Tonalztics of Ralos (uncharged)',
   'Sunfire splinters',
   'Sunfire fanatic helm',
   'Sunfire fanatic cuirass',
