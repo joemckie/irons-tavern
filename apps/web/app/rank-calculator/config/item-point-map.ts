@@ -60,7 +60,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
 export const collectionLogItemBossNameMap: Partial<
   Record<CollectionLogItemName, keyof typeof ehbRates>
 > = {
-  "Lil' zik": 'Theatre of Blood',
+  "Lil' Zik": 'Theatre of Blood',
 };
 
 /**
