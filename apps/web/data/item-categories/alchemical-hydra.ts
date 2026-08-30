@@ -35,7 +35,7 @@ export const alchemicalHydra: ItemCategory = {
       collectionLogCategory: 'alchemical_hydra',
     }),
     singleItem({
-      name: 'Ikkle hydra',
+      name: 'Ikkle Hydra',
       image: formatWikiImageUrl('Ikkle Hydra (serpentine) chathead'),
       collectionLogCategory: 'alchemical_hydra',
     }),
