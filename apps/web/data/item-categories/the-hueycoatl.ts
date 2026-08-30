@@ -8,8 +8,8 @@ export const theHueycoatl: ItemCategory = {
       collectionLogCategory: 'hueycoatl',
     }),
     singleItem({
-      name: 'Tome of earth',
-      clogName: 'Tome of earth (empty)',
+      name: 'Tome of Earth',
+      clogName: 'Tome of Earth (empty)',
       collectionLogCategory: 'hueycoatl',
     }),
     singleItem({
