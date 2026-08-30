@@ -1329,7 +1329,7 @@ export const CollectionLogItemName = z.enum([
   "Craw's bow (u)",
   "Thammaron's sceptre (u)",
   'Amulet of avarice',
-  'Ikkle hydra',
+  'Ikkle Hydra',
   'Dragon knife',
   'Fish sack',
   'Golden tench',
