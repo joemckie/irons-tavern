@@ -15,7 +15,7 @@ export const krilTsutsaroth: ItemCategory = {
       targetDropSources: ["K'ril Tsutsaroth"],
     }),
     singleItem({
-      name: 'Staff of the dead',
+      name: 'Staff of the Dead',
       collectionLogCategory: 'kril_tsutsaroth',
     }),
     singleItem({
