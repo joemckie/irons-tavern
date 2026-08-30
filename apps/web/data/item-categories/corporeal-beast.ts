@@ -43,7 +43,7 @@ export const corporealBeast: ItemCategory = {
       collectionLogCategory: 'corporeal_beast',
     }),
     singleItem({
-      name: 'Pet dark core',
+      name: 'Pet Dark Core',
       collectionLogCategory: 'corporeal_beast',
     }),
   ],
