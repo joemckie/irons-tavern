@@ -1006,7 +1006,7 @@ export const CollectionLogItemName = z.enum([
   "Scorpia's offspring",
   'Tanzanite mutagen',
   'Magma mutagen',
-  'TzRek-jad',
+  'TzRek-Jad',
   'Herb sack',
   'Eternal crystal',
   'Pegasian crystal',
