@@ -11,7 +11,7 @@ export const venenatisAndSpindel: ItemCategory = {
       targetDropSources: ['Spindel'],
     }),
     singleItem({
-      name: 'Fangs of venenatis',
+      name: 'Fangs of Venenatis',
       collectionLogCategory: 'venenatis_and_spindel',
       targetDropSources: ['Spindel'],
     }),
