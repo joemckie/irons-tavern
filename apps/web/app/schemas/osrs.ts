@@ -1682,7 +1682,7 @@ export const CollectionLogItemName = z.enum([
   'Venator vestige',
   'Ultor vestige',
   "Executioner's axe head",
-  'Eye of the duke',
+  'Eye of the Duke',
   "Siren's staff",
   "Leviathan's lure",
   'Strangled tablet',
