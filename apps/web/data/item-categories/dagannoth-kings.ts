@@ -22,15 +22,15 @@ export const dagannothKings: ItemCategory = {
       collectionLogCategory: 'dagannoth_kings',
     }),
     singleItem({
-      name: 'Pet dagannoth prime',
+      name: 'Pet Dagannoth Prime',
       collectionLogCategory: 'dagannoth_kings',
     }),
     singleItem({
-      name: 'Pet dagannoth rex',
+      name: 'Pet Dagannoth Rex',
       collectionLogCategory: 'dagannoth_kings',
     }),
     singleItem({
-      name: 'Pet dagannoth supreme',
+      name: 'Pet Dagannoth Supreme',
       collectionLogCategory: 'dagannoth_kings',
     }),
   ],
