@@ -1473,7 +1473,7 @@ export const CollectionLogItemName = z.enum([
   "Inquisitor's hauberk",
   "Inquisitor's plateskirt",
   'Nightmare staff',
-  'Little nightmare',
+  'Little Nightmare',
   'Jar of Dreams',
   'Harmonised orb',
   'Volatile orb',
