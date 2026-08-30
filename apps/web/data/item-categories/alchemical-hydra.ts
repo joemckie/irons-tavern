@@ -31,7 +31,7 @@ export const alchemicalHydra: ItemCategory = {
       collectionLogCategory: 'alchemical_hydra',
     }),
     singleItem({
-      name: 'Jar of chemicals',
+      name: 'Jar of Chemicals',
       collectionLogCategory: 'alchemical_hydra',
     }),
     singleItem({
