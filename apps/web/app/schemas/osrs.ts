@@ -1206,7 +1206,7 @@ export const CollectionLogItemName = z.enum([
   'Elder chaos robe',
   'Stale baguette',
   'Elder chaos hood',
-  'Giant squirrel',
+  'Giant Squirrel',
   'Tangleroot',
   'Rocky',
   'Rift guardian',
