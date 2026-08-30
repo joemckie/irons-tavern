@@ -139,7 +139,7 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Justiciar legguards': 1 / 259,
   'Scythe of Vitur (uncharged)': 1 / 519,
   'Jal-Nib-Rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
-  'TzRek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
+  'TzRek-Jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
   'Smol Heredit': 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
   "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
