@@ -968,7 +968,7 @@ export const CollectionLogItemName = z.enum([
   'Pet General Graardor',
   'Pet Zilyana',
   "Pet K'ril Tsutsaroth",
-  'Prince black dragon',
+  'Prince Black Dragon',
   'Pet Kraken',
   'Pet Penance Queen',
   'Blue dark bow paint',
