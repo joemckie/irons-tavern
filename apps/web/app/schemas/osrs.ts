@@ -980,7 +980,7 @@ export const CollectionLogItemName = z.enum([
   'Steam staff upgrade kit',
   'Dragon pickaxe upgrade kit',
   'Ward upgrade kit',
-  'Pet Dark Core',
+  'Pet dark core',
   'Elysian sigil',
   'Spectral sigil',
   'Arcane sigil',
