@@ -6,7 +6,7 @@ export const soulWars: ItemCategory = {
   image: formatWikiImageUrl("Lil' Creator chathead", 'category'),
   items: [
     singleItem({
-      name: "Lil' creator",
+      name: "Lil' Creator",
       collectionLogCategory: 'soul_wars',
     }),
   ],
