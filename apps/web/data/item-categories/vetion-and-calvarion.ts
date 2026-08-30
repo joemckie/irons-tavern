@@ -11,7 +11,7 @@ export const vetionAndCalvarion: ItemCategory = {
       targetDropSources: ["Calvar'ion"],
     }),
     singleItem({
-      name: "Skull of vet'ion",
+      name: "Skull of Vet'ion",
       collectionLogCategory: 'vetion_and_calvarion',
       targetDropSources: ["Calvar'ion"],
     }),
@@ -21,7 +21,7 @@ export const vetionAndCalvarion: ItemCategory = {
       targetDropSources: ["Calvar'ion"],
     }),
     singleItem({
-      name: "Vet'ion jr.",
+      name: "Vet'ion Jr.",
       collectionLogCategory: 'vetion_and_calvarion',
       targetDropSources: ["Calvar'ion"],
     }),
