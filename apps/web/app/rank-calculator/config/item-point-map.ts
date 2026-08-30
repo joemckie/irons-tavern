@@ -100,7 +100,7 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's eye": 1 / 3,
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
-  "Lil' creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
+  "Lil' Creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
   'Twisted ancestral colour kit':
     1 / groupSizes['Chambers of Xeric Challenge Mode']!,
   'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
@@ -137,10 +137,10 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Justiciar chestguard': 1 / 259,
   'Justiciar faceguard': 1 / 259,
   'Justiciar legguards': 1 / 259,
-  'Scythe of vitur (uncharged)': 1 / 519,
-  'Jal-nib-rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
-  'Tzrek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
-  'Smol heredit': 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
+  'Scythe of Vitur (uncharged)': 1 / 519,
+  'Jal-Nib-Rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
+  'TzRek-jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
+  'Smol Heredit': 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
   "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
   'Masori mask': 1 / 144.9,
@@ -149,10 +149,10 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   "Elidinis' ward": 1 / 96.6,
   Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
-  'Jewel of the sun': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Breach of the scarab': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Eye of the corruptor': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Jewel of amascut': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Jewel of the Sun': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Breach of the Scarab': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Eye of the Corruptor': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Jewel of Amascut': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
   get "Osmumten's fang"() {
     return 1 / 41.4;
   },
@@ -165,16 +165,16 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   get 'Cursed phalanx'() {
     return this["Osmumten's fang"]! / 2.25;
   },
-  get 'Remnant of akkha'() {
+  get 'Remnant of Akkha'() {
     return this["Osmumten's fang"]! / 2.2;
   },
-  get 'Remnant of ba-ba'() {
+  get 'Remnant of Ba-Ba'() {
     return this["Osmumten's fang"]! / 1.9;
   },
-  get 'Remnant of kephri'() {
+  get 'Remnant of Kephri'() {
     return this["Osmumten's fang"]! / 2.1;
   },
-  get 'Remnant of zebak'() {
+  get 'Remnant of Zebak'() {
     return this["Osmumten's fang"]! / 1.9;
   },
   get 'Ancient remnant'() {
@@ -195,7 +195,7 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Blue moon helm': 1 / (25 / 3),
   'Echo crystal': 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
   Dom: 1 / 559, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
-  'Eye of ayak (uncharged)': 1 / 739, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  'Eye of Ayak (uncharged)': 1 / 739, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
   'Mokhaiotl cloth': 1 / 716, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
   'Avernic treads': 1 / 770, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
 };
@@ -228,7 +228,7 @@ export const altRarityItems: Partial<
   'Basilisk jaw': {
     'Basilisk Knight': true,
   },
-  'Thread of elidinis': {
+  'Thread of Elidinis': {
     'Chest (Tombs of Amascut)': true,
   },
   "Drake's claw": {
@@ -243,7 +243,7 @@ export const altRarityItems: Partial<
   'Mokhaiotl cloth': {
     'Doom of Mokhaiotl': true,
   },
-  'Eye of ayak (uncharged)': {
+  'Eye of Ayak (uncharged)': {
     'Doom of Mokhaiotl': true,
   },
   Dom: {
