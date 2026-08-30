@@ -1519,7 +1519,7 @@ export const CollectionLogItemName = z.enum([
   'Decorative full helm',
   'Ectoplasmator',
   'Soul cape',
-  "Lil' creator",
+  "Lil' Creator",
   "Zealot's robe top",
   "Zealot's robe bottom",
   "Zealot's helm",
