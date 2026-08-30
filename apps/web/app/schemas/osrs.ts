@@ -1652,7 +1652,7 @@ export const CollectionLogItemName = z.enum([
   'Frozen cache',
   'Ancient icon',
   'Charged ice',
-  'Claws of callisto',
+  'Claws of Callisto',
   'Fangs of venenatis',
   "Skull of vet'ion",
   'Voidwaker hilt',
