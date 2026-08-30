@@ -32,7 +32,7 @@ export const zulrah: ItemCategory = {
       collectionLogCategory: 'zulrah',
     }),
     singleItem({
-      name: 'Jar of swamp',
+      name: 'Jar of Swamp',
       collectionLogCategory: 'zulrah',
     }),
     singleItem({
