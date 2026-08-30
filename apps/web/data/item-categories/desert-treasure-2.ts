@@ -101,7 +101,7 @@ export const desertTreasure2: ItemCategory = {
         { clogName: "Leviathan's lure" },
         { clogName: "Siren's staff" },
         { clogName: "Executioner's axe head" },
-        { clogName: 'Eye of the duke' },
+        { clogName: 'Eye of the Duke' },
       ],
       requiredLevels: {
         Magic: 75,
