@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const vetionAndCalvarion: ItemCategory = {
-  image: formatWikiImageUrl("Vet'ion jr. chathead", 'category'),
+  image: formatWikiImageUrl("Vet'ion Jr. chathead", 'category'),
   items: [
     singleItem({
       name: 'Ring of the gods',
