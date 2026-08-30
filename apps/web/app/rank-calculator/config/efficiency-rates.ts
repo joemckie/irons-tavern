@@ -114,7 +114,7 @@ export const ehbRates = {
 export const petEhcRates = {
   'Baby chinchompa': 91.5,
   Beaver: 111.3,
-  'Giant squirrel': 132.8,
+  'Giant Squirrel': 132.8,
   Heron: 84.3,
   Phoenix: 85.4,
   'Rift guardian': 67.9,
