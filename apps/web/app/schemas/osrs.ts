@@ -1711,7 +1711,7 @@ export const CollectionLogItemName = z.enum([
   'Sunfire fanatic chausses',
   'Echo crystal',
   "Dizana's quiver (uncharged)",
-  'Smol heredit',
+  'Smol Heredit',
   'Quetzin',
   'Blue moon spear',
   'Atlatl dart',
