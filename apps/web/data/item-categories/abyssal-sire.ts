@@ -20,7 +20,7 @@ export const abyssalSire: ItemCategory = {
       collectionLogCategory: 'abyssal_sire',
     }),
     singleItem({
-      name: 'Jar of miasma',
+      name: 'Jar of Miasma',
       collectionLogCategory: 'abyssal_sire',
     }),
     singleItem({
