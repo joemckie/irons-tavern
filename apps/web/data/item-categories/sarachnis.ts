@@ -8,7 +8,7 @@ export const sarachnis: ItemCategory = {
       collectionLogCategory: 'sarachnis',
     }),
     singleItem({
-      name: 'Jar of eyes',
+      name: 'Jar of Eyes',
       collectionLogCategory: 'sarachnis',
     }),
     singleItem({
