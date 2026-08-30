@@ -26,8 +26,8 @@ export const fortisColosseum: ItemCategory = {
       targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
     }),
     singleItem({
-      name: 'Tonalztics of ralos',
-      clogName: 'Tonalztics of ralos (uncharged)',
+      name: 'Tonalztics of Ralos',
+      clogName: 'Tonalztics of Ralos (uncharged)',
       collectionLogCategory: 'fortis_colosseum',
       targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
     }),
