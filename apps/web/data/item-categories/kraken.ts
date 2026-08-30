@@ -12,7 +12,7 @@ export const kraken: ItemCategory = {
       collectionLogCategory: 'kraken',
     }),
     singleItem({
-      name: 'Jar of dirt',
+      name: 'Jar of Dirt',
       collectionLogCategory: 'kraken',
     }),
     singleItem({
