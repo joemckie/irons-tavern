@@ -40,7 +40,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Cave kraken': 'Kraken',
   'Crazy archaeologist': 'Crazy Archaeologist',
   'Reward Cart': 'Wintertodt',
-  'Spoils of war': 'Soul Wars Zeal',
+  'Spoils of War': 'Soul Wars Zeal',
   "Hunters' loot sack (expert)": 'Expert Hunter Contracts',
   'Reward pool': 'Tempoross',
   'Rewards Guardian': 'Guardians of the Rift',
