@@ -39,9 +39,9 @@ export const majorSlayerItems: ItemCategory = {
       collectionLogCategories: ['slayer', 'medium_treasure_trails'],
     }),
     singleItem({
-      name: 'Boots of brimstone',
+      name: 'Boots of Brimstone',
       clogName: "Drake's claw",
-      image: formatWikiImageUrl('Boots of brimstone'),
+      image: formatWikiImageUrl('Boots of Brimstone'),
       collectionLogCategory: 'slayer',
       targetDropSources: ['Drake'],
     }),

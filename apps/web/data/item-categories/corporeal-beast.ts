@@ -39,7 +39,7 @@ export const corporealBeast: ItemCategory = {
       collectionLogCategories: ['corporeal_beast'],
     }),
     singleItem({
-      name: 'Jar of spirits',
+      name: 'Jar of Spirits',
       collectionLogCategory: 'corporeal_beast',
     }),
     singleItem({

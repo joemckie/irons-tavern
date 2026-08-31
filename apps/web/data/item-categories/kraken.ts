@@ -4,7 +4,7 @@ import { singleItem } from '../utils/item-builders';
 export const kraken: ItemCategory = {
   items: [
     singleItem({
-      name: 'Trident of the seas (full)',
+      name: 'Trident of the Seas (full)',
       collectionLogCategory: 'kraken',
     }),
     singleItem({
@@ -12,11 +12,11 @@ export const kraken: ItemCategory = {
       collectionLogCategory: 'kraken',
     }),
     singleItem({
-      name: 'Jar of dirt',
+      name: 'Jar of Dirt',
       collectionLogCategory: 'kraken',
     }),
     singleItem({
-      name: 'Pet kraken',
+      name: 'Pet Kraken',
       collectionLogCategory: 'kraken',
     }),
   ],

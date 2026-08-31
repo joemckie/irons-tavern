@@ -45,7 +45,7 @@ export const araxxor: ItemCategory = {
       collectionLogCategories: ['araxxor', 'slayer', 'gloughs_experiments'],
     }),
     singleItem({
-      name: 'Jar of venom',
+      name: 'Jar of Venom',
       collectionLogCategory: 'araxxor',
     }),
     singleItem({

@@ -4,7 +4,7 @@ import { singleItem } from '../utils/item-builders';
 export const kingBlackDragon: ItemCategory = {
   items: [
     singleItem({
-      name: 'Prince black dragon',
+      name: 'Prince Black Dragon',
       collectionLogCategory: 'king_black_dragon',
     }),
   ],

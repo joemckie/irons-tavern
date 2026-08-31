@@ -30,7 +30,7 @@ export const miscellaneous: ItemCategory = {
       requiredQuests: ['Recipe for Disaster'],
     }),
     questItem({
-      name: 'Book of the dead',
+      name: 'Book of the Dead',
       points: calculateXpOrTimeBasedItemPoints(
         estimatedHoursToAcquireBookOfTheDead,
       ),
@@ -102,13 +102,13 @@ export const miscellaneous: ItemCategory = {
       collectionLogCategory: 'last_man_standing',
     }),
     singleItem({
-      name: 'Tome of fire',
-      clogName: 'Tome of fire (empty)',
+      name: 'Tome of Fire',
+      clogName: 'Tome of Fire (empty)',
       collectionLogCategory: 'wintertodt',
     }),
     singleItem({
-      name: 'Tome of water',
-      clogName: 'Tome of water (empty)',
+      name: 'Tome of Water',
+      clogName: 'Tome of Water (empty)',
       collectionLogCategory: 'tempoross',
     }),
     singleItem({

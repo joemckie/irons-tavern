@@ -15,7 +15,7 @@ export const krilTsutsaroth: ItemCategory = {
       targetDropSources: ["K'ril Tsutsaroth"],
     }),
     singleItem({
-      name: 'Staff of the dead',
+      name: 'Staff of the Dead',
       collectionLogCategory: 'kril_tsutsaroth',
     }),
     singleItem({
@@ -23,7 +23,7 @@ export const krilTsutsaroth: ItemCategory = {
       collectionLogCategory: 'kril_tsutsaroth',
     }),
     singleItem({
-      name: "Pet k'ril tsutsaroth",
+      name: "Pet K'ril Tsutsaroth",
       image: formatWikiImageUrl("K'ril Tsutsaroth Jr. chathead"),
       collectionLogCategory: 'kril_tsutsaroth',
     }),

@@ -6,7 +6,7 @@ export const skotizo: ItemCategory = {
   image: formatWikiImageUrl('Skotos_detail', 'category'),
   items: [
     singleItem({
-      name: 'Jar of darkness',
+      name: 'Jar of Darkness',
       collectionLogCategory: 'skotizo',
     }),
     singleItem({

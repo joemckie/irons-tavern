@@ -11,7 +11,7 @@ export const callistoAndArtio: ItemCategory = {
       targetDropSources: ['Artio'],
     }),
     singleItem({
-      name: 'Claws of callisto',
+      name: 'Claws of Callisto',
       collectionLogCategory: 'callisto_and_artio',
       targetDropSources: ['Artio'],
     }),

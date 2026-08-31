@@ -37,8 +37,8 @@ export const theatreOfBlood: ItemCategory = {
       targetDropSources: ['Monumental chest#Normal Mode'],
     }),
     singleItem({
-      name: 'Scythe of vitur',
-      clogName: 'Scythe of vitur (uncharged)',
+      name: 'Scythe of Vitur',
+      clogName: 'Scythe of Vitur (uncharged)',
       collectionLogCategory: 'theatre_of_blood',
       targetDropSources: ['Monumental chest#Normal Mode'],
     }),
@@ -55,7 +55,7 @@ export const theatreOfBlood: ItemCategory = {
       collectionLogCategory: 'theatre_of_blood',
     }),
     singleItem({
-      name: "Lil' zik",
+      name: "Lil' Zik",
       collectionLogCategory: 'theatre_of_blood',
     }),
   ],

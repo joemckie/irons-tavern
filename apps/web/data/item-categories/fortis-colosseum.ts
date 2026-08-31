@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const fortisColosseum: ItemCategory = {
-  image: formatWikiImageUrl('Smol heredit detail', 'category'),
+  image: formatWikiImageUrl('Smol Heredit detail', 'category'),
   items: [
     singleItem({
       name: 'Sunfire fanatic helm',
@@ -26,13 +26,13 @@ export const fortisColosseum: ItemCategory = {
       targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
     }),
     singleItem({
-      name: 'Tonalztics of ralos',
-      clogName: 'Tonalztics of ralos (uncharged)',
+      name: 'Tonalztics of Ralos',
+      clogName: 'Tonalztics of Ralos (uncharged)',
       collectionLogCategory: 'fortis_colosseum',
       targetDropSources: ['Rewards Chest (Fortis Colosseum)#Wave 12'],
     }),
     singleItem({
-      name: 'Smol heredit',
+      name: 'Smol Heredit',
       collectionLogCategory: 'fortis_colosseum',
     }),
   ],

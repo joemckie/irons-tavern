@@ -6,7 +6,7 @@ export const barbarianAssault: ItemCategory = {
   image: formatWikiImageUrl('Penance Runner (wave_4)', 'category'),
   items: [
     singleItem({
-      name: 'Pet penance queen',
+      name: 'Pet Penance Queen',
       collectionLogCategory: 'barbarian_assault',
     }),
   ],

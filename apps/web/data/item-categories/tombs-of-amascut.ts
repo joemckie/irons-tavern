@@ -6,23 +6,23 @@ export const tombsOfAmascut: ItemCategory = {
   image: formatWikiImageUrl('Tombs of Amascut - Expert Mode icon', 'category'),
   items: [
     singleItem({
-      name: 'Thread of elidinis',
+      name: 'Thread of Elidinis',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Eye of the corruptor',
+      name: 'Eye of the Corruptor',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Jewel of the sun',
+      name: 'Jewel of the Sun',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Breach of the scarab',
+      name: 'Breach of the Scarab',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Jewel of amascut',
+      name: 'Jewel of Amascut',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
@@ -63,19 +63,19 @@ export const tombsOfAmascut: ItemCategory = {
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Remnant of akkha',
+      name: 'Remnant of Akkha',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Remnant of ba-ba',
+      name: 'Remnant of Ba-Ba',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Remnant of kephri',
+      name: 'Remnant of Kephri',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({
-      name: 'Remnant of zebak',
+      name: 'Remnant of Zebak',
       collectionLogCategory: 'tombs_of_amascut',
     }),
     singleItem({

@@ -30,7 +30,7 @@ export const grotesqueGuardians: ItemCategory = {
       collectionLogCategories: ['grotesque_guardians', 'general_graardor'],
     }),
     singleItem({
-      name: 'Jar of stone',
+      name: 'Jar of Stone',
       collectionLogCategory: 'grotesque_guardians',
     }),
     singleItem({

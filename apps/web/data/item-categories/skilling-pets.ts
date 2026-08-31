@@ -16,8 +16,8 @@ export const skillingPets: ItemCategory = {
     Beaver: {
       points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
     },
-    'Giant squirrel': {
-      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant squirrel']),
+    'Giant Squirrel': {
+      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant Squirrel']),
     },
     Herbi: {},
     Heron: {

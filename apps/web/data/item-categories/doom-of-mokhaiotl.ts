@@ -10,8 +10,8 @@ export const doomOfMokhaiotl: ItemCategory = {
       collectionLogCategory: 'doom_of_mokhaiotl',
     }),
     singleItem({
-      name: 'Eye of ayak',
-      clogName: 'Eye of ayak (uncharged)',
+      name: 'Eye of Ayak',
+      clogName: 'Eye of Ayak (uncharged)',
       collectionLogCategory: 'doom_of_mokhaiotl',
     }),
     singleItem({

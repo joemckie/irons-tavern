@@ -14,7 +14,7 @@ export const vorkath: ItemCategory = {
       collectionLogCategory: 'vorkath',
     }),
     singleItem({
-      name: 'Jar of decay',
+      name: 'Jar of Decay',
       collectionLogCategory: 'vorkath',
     }),
     singleItem({

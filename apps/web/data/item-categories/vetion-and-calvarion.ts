@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const vetionAndCalvarion: ItemCategory = {
-  image: formatWikiImageUrl("Vet'ion jr. chathead", 'category'),
+  image: formatWikiImageUrl("Vet'ion Jr. chathead", 'category'),
   items: [
     singleItem({
       name: 'Ring of the gods',
@@ -11,7 +11,7 @@ export const vetionAndCalvarion: ItemCategory = {
       targetDropSources: ["Calvar'ion"],
     }),
     singleItem({
-      name: "Skull of vet'ion",
+      name: "Skull of Vet'ion",
       collectionLogCategory: 'vetion_and_calvarion',
       targetDropSources: ["Calvar'ion"],
     }),
@@ -21,7 +21,7 @@ export const vetionAndCalvarion: ItemCategory = {
       targetDropSources: ["Calvar'ion"],
     }),
     singleItem({
-      name: "Vet'ion jr.",
+      name: "Vet'ion Jr.",
       collectionLogCategory: 'vetion_and_calvarion',
       targetDropSources: ["Calvar'ion"],
     }),

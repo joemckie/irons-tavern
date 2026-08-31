@@ -23,7 +23,7 @@ export const cerberus: ItemCategory = {
       targetDropSources: ['Cerberus'],
     }),
     singleItem({
-      name: 'Jar of souls',
+      name: 'Jar of Souls',
       collectionLogCategory: 'cerberus',
     }),
     singleItem({

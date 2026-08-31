@@ -3,7 +3,7 @@ import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
 
 export const generalGraardor: ItemCategory = {
-  image: formatWikiImageUrl('Pet general graardor detail', 'category'),
+  image: formatWikiImageUrl('Pet General Graardor detail', 'category'),
   items: [
     singleItem({
       name: 'Bandos chestplate',
@@ -25,7 +25,7 @@ export const generalGraardor: ItemCategory = {
       collectionLogCategory: 'general_graardor',
     }),
     singleItem({
-      name: 'Pet general graardor',
+      name: 'Pet General Graardor',
       collectionLogCategory: 'general_graardor',
     }),
   ],
