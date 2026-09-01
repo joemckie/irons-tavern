@@ -4,14 +4,19 @@ import { useAction } from 'next-safe-action/hooks';
 import { useParams } from 'next/navigation';
 import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
 import { rejectSubmissionAction } from '../reject-submission-action';
+import { useFormContext } from 'react-hook-form';
+import type { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 
 interface RejectSubmissionButtonProps {
+  playerName: string;
   onRejectSuccess: () => void;
 }
 
 export function RejectSubmissionButton({
+  playerName,
   onRejectSuccess,
 }: RejectSubmissionButtonProps) {
+  const { getValues } = useFormContext<RankCalculatorSchema>();
   const { submissionId } = useParams<{ submissionId: string }>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogTransitioning, startTransition] = useTransition();
@@ -60,6 +65,8 @@ export function RejectSubmissionButton({
               void handleToastUpdates(
                 rejectSubmission({
                   submissionId,
+                  submissionRankStructure: getValues('rankStructure'),
+                  submissionPlayerName: playerName,
                 }),
                 {
                   success: {

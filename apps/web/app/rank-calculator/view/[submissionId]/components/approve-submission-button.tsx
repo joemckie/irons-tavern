@@ -25,7 +25,8 @@ export function ApproveSubmissionButton({
   const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
     name: 'rankStructure',
   });
-  const isStandardRankStructure = rankStructure === 'Standard';
+  const isAutoModeratableRankStructure =
+    rankStructure === 'Standard' || rankStructure === 'Admin';
   const { errors } = useFormState();
 
   const {
@@ -63,13 +64,13 @@ export function ApproveSubmissionButton({
               <br />
             </>
           )}
-          {isStandardRankStructure && (
+          {isAutoModeratableRankStructure && (
             <Text as="p">
               This application will be approved and {playerName} will
               automatically be assigned the {getRankName(rank)} rank on Discord.
             </Text>
           )}
-          {!isStandardRankStructure && (
+          {!isAutoModeratableRankStructure && (
             <Text as="p">
               This application will be approved. Discord ranks must be manually
               assigned for non-standard rank structures.
@@ -94,6 +95,8 @@ export function ApproveSubmissionButton({
                 approveSubmission({
                   submissionId,
                   rank,
+                  submissionRankStructure: rankStructure,
+                  submissionPlayerName: playerName,
                 }),
                 {
                   success: {

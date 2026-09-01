@@ -9,19 +9,7 @@ import {
 } from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchPlayerDetails } from '@/app/rank-calculator/data-sources/fetch-player-details/fetch-player-details';
-import { calculateAchievementDiaryPoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-points';
-import { calculateCollectionLogPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-points';
-import { calculateCollectionLogSlotPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-slot-points';
-import { calculateCombatAchievementPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-achievement-points';
-import { calculateCombatPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-points';
-import { calculateEhbPoints } from '@/app/rank-calculator/utils/calculators/calculate-ehb-points';
-import { calculateEhpPoints } from '@/app/rank-calculator/utils/calculators/calculate-ehp-points';
-import { calculateNotableItemsPoints } from '@/app/rank-calculator/utils/calculators/calculate-notable-items-points';
 import { calculateRank } from '@/app/rank-calculator/utils/calculators/calculate-rank';
-import { calculateScaling } from '@/app/rank-calculator/utils/calculators/calculate-scaling';
-import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
-import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-level-points';
-import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import { clientConstants } from '@/config/constants.client';
@@ -34,11 +22,7 @@ import {
   generateRequiredItemList,
 } from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
-import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points';
-import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
-import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
-import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
-import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+import { calculateTotalPointsAwarded } from '@/app/rank-calculator/utils/calculators/calculate-total-points-awarded';
 
 export async function GET(request: NextRequest) {
   try {
@@ -58,28 +42,11 @@ export async function GET(request: NextRequest) {
     }
 
     const {
-      joinDate,
       collectionLogTotal,
-      collectionLogCount,
-      acquiredItems,
-      achievementDiaries,
-      ehp,
-      ehb,
-      totalLevel,
-      combatAchievementTier,
       currentRank,
       hasThirdPartyData,
       playerName,
       rankStructure,
-      tzhaarCape,
-      hasBloodTorva,
-      hasDizanasQuiver,
-      hasAchievementDiaryCape,
-      hasMaxCape,
-      collectionLogBonusMultiplier,
-      combatBonusMultiplier,
-      notableItemsBonusMultiplier,
-      skillingBonusMultiplier,
     } = playerDetails.data;
 
     if (!hasThirdPartyData) {
@@ -88,68 +55,9 @@ export async function GET(request: NextRequest) {
 
     const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
     const items = Object.entries(await buildNotableItemList(dropRates));
-    const scaling = calculateScaling(joinDate);
-    const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
-      collectionLogCount,
-      scaling,
-    );
-    const { pointsAwarded: totalCollectionLogPoints } =
-      calculateCollectionLogPoints(
-        collectionLogSlotPoints,
-        collectionLogTotal,
-        collectionLogBonusMultiplier,
-        scaling,
-      );
-    const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(
-        items,
-        acquiredItems,
-        notableItemsBonusMultiplier,
-        scaling,
-      );
-    const { pointsAwarded: achievementDiariesPoints } =
-      calculateAchievementDiaryPoints(achievementDiaries, scaling);
-    const ehpPoints = calculateEhpPoints(ehp, scaling);
-    const totalLevelPoints = calculateTotalLevelPoints(totalLevel, scaling);
-    const achievementDiaryCapePoints = calculateAchievementDiaryCapePoints(
-      hasAchievementDiaryCape,
-      scaling,
-    );
-    const maxCapePoints = calculateMaxCapePoints(hasMaxCape, scaling);
-    const { pointsAwarded: totalSkillingPoints } = calculateSkillingPoints(
-      achievementDiariesPoints,
-      ehpPoints,
-      totalLevelPoints,
-      achievementDiaryCapePoints,
-      maxCapePoints,
-      skillingBonusMultiplier,
-      scaling,
-    );
-    const ehbPoints = calculateEhbPoints(ehb, scaling);
-    const combatAchievementTierPoints = calculateCombatAchievementPoints(
-      combatAchievementTier,
-      scaling,
-    );
-    const tzhaarCapePoints = calculateTzhaarCapePoints(tzhaarCape, scaling);
-    const bloodTorvaPoints = calculateBloodTorvaPoints(hasBloodTorva, scaling);
-    const dizanasQuiverPoints = calculateDizanasQuiverPoints(
-      hasDizanasQuiver,
-      scaling,
-    );
-    const { pointsAwarded: totalCombatPoints } = calculateCombatPoints(
-      ehbPoints,
-      combatAchievementTierPoints,
-      tzhaarCapePoints,
-      bloodTorvaPoints,
-      dizanasQuiverPoints,
-      combatBonusMultiplier,
-      scaling,
-    );
-    const totalPointsAwarded = calculateTotalPoints(
-      totalCollectionLogPoints,
-      totalNotableItemsPoints,
-      totalSkillingPoints,
-      totalCombatPoints,
+    const totalPointsAwarded = calculateTotalPointsAwarded(
+      playerDetails.data,
+      items,
     );
     const maximumAvailablePoints = calculateMaximumAvailablePoints(
       items,
