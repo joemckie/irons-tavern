@@ -258,7 +258,7 @@ export async function fetchPlayerDetails(
         ...acc,
         [normaliseEntityName(val)]: true,
       }),
-      { ...(hasMusicCape && { 'music cape': true }) },
+      { ...(hasMusicCape && { [normaliseEntityName('Music cape')]: true }) },
     );
 
     const proofLink =
