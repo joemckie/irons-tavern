@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
 import { CollectionLogItem, isCollectionLogItem } from '@/app/schemas/items';
-import { unstable_cache } from 'next/cache';
+import { cacheLife } from 'next/cache';
 
 export function generateRequiredItemList() {
   return Object.values(itemList)
@@ -20,75 +20,70 @@ export function generateRequiredItemList() {
     }, new Set<CollectionLogItemName>());
 }
 
-export const fetchItemDropRates = unstable_cache(
-  async (items: CollectionLogItemName[]) => {
-    const batches = [];
-    const batchSize = 80;
+export const fetchItemDropRates = async (items: CollectionLogItemName[]) => {
+  'use cache';
 
-    for (let i = 0; i < items.length; i += batchSize) {
-      const batch = items.slice(i, i + batchSize);
-      const queryConditions = batch.map((item) => `{"item_name","${item}"}`);
-      const query = `bucket("dropsline").select("drop_json").where(bucket.Or(${queryConditions.join(',')})).run()`;
+  cacheLife('weeks');
 
-      batches.push(query);
-    }
+  const batches = [];
+  const batchSize = 80;
 
-    try {
-      const batchResponses = await Promise.all(
-        batches.map((query) => {
-          const params = new URLSearchParams({
-            action: 'bucket',
-            format: 'json',
-            query,
-          });
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const queryConditions = batch.map((item) => `{"item_name","${item}"}`);
+    const query = `bucket("dropsline").select("drop_json").where(bucket.Or(${queryConditions.join(',')})).run()`;
 
-          return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
-            cache: 'force-cache',
-            headers: {
-              'User-Agent': clientConstants.wiki.userAgent,
+    batches.push(query);
+  }
+
+  try {
+    const batchResponses = await Promise.all(
+      batches.map((query) => {
+        const params = new URLSearchParams({
+          action: 'bucket',
+          format: 'json',
+          query,
+        });
+
+        return fetch(`${clientConstants.wiki.baseUrl}/api.php?${params}`, {
+          cache: 'force-cache',
+          headers: {
+            'User-Agent': clientConstants.wiki.userAgent,
+          },
+        });
+      }),
+    );
+
+    const droppedItemResponses = await Promise.all(
+      batchResponses.map(async (res) => {
+        const { success, data, error } = DroppedItemResponse.safeParse(
+          await res.json(),
+        );
+
+        if (!success) {
+          Sentry.addBreadcrumb({
+            category: 'drop-rates.parse',
+            type: 'error',
+            data: {
+              url: res.url,
+              error,
             },
+            message: `Failed to parse drop rates for ${res.url}`,
           });
-        }),
-      );
 
-      const droppedItemResponses = await Promise.all(
-        batchResponses.map(async (res) => {
-          const { success, data, error } = DroppedItemResponse.safeParse(
-            await res.json(),
-          );
+          Sentry.captureException(error);
 
-          if (!success) {
-            Sentry.addBreadcrumb({
-              category: 'drop-rates.parse',
-              type: 'error',
-              data: {
-                url: res.url,
-                error,
-              },
-              message: `Failed to parse drop rates for ${res.url}`,
-            });
+          return {};
+        }
 
-            Sentry.captureException(error);
+        return data;
+      }),
+    );
 
-            return {};
-          }
+    return droppedItemResponses.reduce((acc, val) => ({ ...acc, ...val }), {});
+  } catch (error) {
+    Sentry.captureException(error);
 
-          return data;
-        }),
-      );
-
-      return droppedItemResponses.reduce(
-        (acc, val) => ({ ...acc, ...val }),
-        {},
-      );
-    } catch (error) {
-      Sentry.captureException(error);
-
-      throw new Error('Could not fetch drop rates!', { cause: error });
-    }
-  },
-  [],
-  {
-    revalidate: 60 * 60 * 24 * 7, // 7 days
-  },
-);
+    throw new Error('Could not fetch drop rates!', { cause: error });
+  }
+};
