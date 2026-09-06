@@ -46,7 +46,7 @@ import { getRankName } from '../../utils/get-rank-name';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
 import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
 import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
-import { stripEntityName } from '../../utils/strip-entity-name';
+import { normaliseEntityName } from '../../utils/normalise-entity-name';
 import { approveSubmission } from '../../view/[submissionId]/utils/approve-submission';
 
 export const publishRankSubmissionAction = authActionClient
@@ -171,7 +171,10 @@ export const publishRankSubmissionAction = authActionClient
       const itemMap = Object.values(itemList)
         .flatMap(({ items }) => items)
         .reduce<Record<string, Item>>(
-          (acc, item) => ({ ...acc, [stripEntityName(item.name)]: item }),
+          (acc, item) => ({
+            ...acc,
+            [normaliseEntityName(item.name)]: item,
+          }),
           {},
         );
 

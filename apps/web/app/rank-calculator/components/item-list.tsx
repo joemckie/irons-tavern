@@ -4,7 +4,7 @@ import { useGetItems } from '../hooks/use-get-items';
 import { usePageHeight } from '../hooks/use-page-height';
 import { Category } from './category';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { stripEntityName } from '../utils/strip-entity-name';
+import { normaliseEntityName } from '../utils/normalise-entity-name';
 
 export function ItemList() {
   const { data: categories } = useGetItems();
@@ -17,7 +17,7 @@ export function ItemList() {
         {categories.map(([title, category]) => {
           const fieldErrors = category.items.map(
             ({ name }) =>
-              getFieldState(`acquiredItems.${stripEntityName(name)}`).error,
+              getFieldState(`acquiredItems.${normaliseEntityName(name)}`).error,
           );
 
           return (

@@ -5,7 +5,7 @@ import {
   userDraftRankSubmissionKey,
   userOSRSAccountsKey,
 } from '@/config/redis';
-import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
+import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import { ApiResponse } from '@/types/api';
 import * as Sentry from '@sentry/nextjs';
 import { Rank } from '@/config/enums';
@@ -51,6 +51,12 @@ export async function fetchPlayerDetails(
   userId: string,
   mergeSavedData = true,
 ): Promise<ApiResponse<PlayerDetailsResponse>> {
+  const allCurrentNotableItemNames = new Set(
+    Object.values(itemList)
+      .flatMap(({ items }) => items)
+      .map(({ name }) => normaliseEntityName(name)),
+  );
+
   const emptyResponse = {
     achievementDiaries: {
       'Kourend & Kebos': 'None',
@@ -66,7 +72,9 @@ export async function fetchPlayerDetails(
       Varrock: 'None',
       Wilderness: 'None',
     },
-    acquiredItems: {},
+    acquiredItems: Object.fromEntries(
+      allCurrentNotableItemNames.values().map((name) => [name, false]),
+    ),
     get joinDate() {
       return new Date();
     },
@@ -208,7 +216,10 @@ export async function fetchPlayerDetails(
 
     const collectionLogItems =
       templeCollectionLog?.items.reduce(
-        (acc, { name, count }) => ({ ...acc, [stripEntityName(name)]: count }),
+        (acc, { name, count }) => ({
+          ...acc,
+          [normaliseEntityName(name)]: count,
+        }),
         CollectionLogAcquiredItemMap.parse({}),
       ) ?? null;
 
@@ -223,7 +234,7 @@ export async function fetchPlayerDetails(
                 combatAchievements,
               }),
             )
-            .map(({ name }) => stripEntityName(name))
+            .map(({ name }) => normaliseEntityName(name))
         : [];
 
     const previouslyAcquiredItems = savedData
@@ -231,12 +242,6 @@ export async function fetchPlayerDetails(
           (key) => savedData.acquiredItems[key],
         )
       : [];
-
-    const allCurrentNotableItemNames = new Set(
-      Object.values(itemList)
-        .flatMap(({ items }) => items)
-        .map(({ name }) => stripEntityName(name)),
-    );
 
     const hasMusicCape = musicTracks
       ? Object.entries(musicTracks)
@@ -249,8 +254,11 @@ export async function fetchPlayerDetails(
         allCurrentNotableItemNames,
       ),
     ].reduce<Record<string, boolean>>(
-      (acc, val) => ({ ...acc, [stripEntityName(val)]: true }),
-      { ...(hasMusicCape && { 'Music cape': true }) },
+      (acc, val) => ({
+        ...acc,
+        [normaliseEntityName(val)]: true,
+      }),
+      { ...(hasMusicCape && { 'music cape': true }) },
     );
 
     const proofLink =
@@ -303,7 +311,12 @@ export async function fetchPlayerDetails(
             achievementDiaries,
             savedData?.achievementDiaries ?? null,
           ) ?? emptyResponse.achievementDiaries,
-        acquiredItems: acquiredItemsMap,
+        acquiredItems: {
+          // Extend the empty response (which sets all items to false) with the actual acquired items from the player,
+          // to prevent the form from being marked as dirty due to the database not persisting missing items.
+          ...emptyResponse.acquiredItems,
+          ...acquiredItemsMap,
+        },
         combatAchievementTier:
           mergeCombatAchievementTier(
             combatAchievementTier,

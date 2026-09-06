@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js-light';
 import { ItemCategory } from '@/app/schemas/items';
-import { stripEntityName } from '../strip-entity-name';
+import { normaliseEntityName } from '../normalise-entity-name';
 import { calculateMaximumNotableItemsPoints } from './calculate-maximum-notable-items-points';
 import { calculateBonusPoints } from './calculate-bonus-points';
 
@@ -23,7 +23,7 @@ export function calculateNotableItemsPoints(
         (categoryAcc, val) => ({
           categoryItemPointMap: {
             ...categoryAcc.categoryItemPointMap,
-            [stripEntityName(val.name)]: val.points,
+            [normaliseEntityName(val.name)]: val.points,
           },
         }),
         {

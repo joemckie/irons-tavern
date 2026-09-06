@@ -1,4 +1,4 @@
-import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
+import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
@@ -22,7 +22,7 @@ export function isItemAcquired(
   if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
       ({ amount, clogName }) =>
-        acquiredItems[stripEntityName(clogName)] >= amount,
+        acquiredItems[normaliseEntityName(clogName)] >= amount,
     );
   }
 

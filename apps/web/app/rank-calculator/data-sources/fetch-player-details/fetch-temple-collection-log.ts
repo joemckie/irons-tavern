@@ -19,12 +19,11 @@ function generateCollectionLogCategoryList() {
       },
       new Set<TempleOSRSCollectionLogCategory>([
         /*
-         * the_inferno, fortis_colosseum, and the_fight_caves are added manually as they are not included
-         * in the item list, and are required to determine the TzHaar capes and Dizana's quiver completion
+         * the_inferno and the_fight_caves are added manually as they are not included
+         * in the item list, and are required to determine the TzHaar capes completion
          */
         'the_inferno',
         'the_fight_caves',
-        'fortis_colosseum',
       ]),
     );
 }

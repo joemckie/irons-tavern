@@ -24,14 +24,8 @@ export const actionClient = createSafeActionClient({
     return z.object({ actionName: z.string() });
   },
 })
-  .use(async ({ next, clientInput, metadata }) => {
+  .use(async ({ next }) => {
     const result = await next();
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Input: ${JSON.stringify(clientInput, null, 2)}`);
-      console.log(`Result: ${JSON.stringify(result, null, 2)}`);
-      console.log(`Metadata: ${JSON.stringify(metadata, null, 2)}`);
-    }
 
     return result;
   })
