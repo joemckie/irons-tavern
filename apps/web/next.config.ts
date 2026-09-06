@@ -23,6 +23,9 @@ export default withSentryConfig<NextConfig>(
         },
       ],
     },
+    typescript: {
+      tsconfigPath: 'tsconfig.app.json',
+    },
   },
   {
     // For all available options, see:

@@ -1,7 +1,7 @@
 import nextJest from 'next/jest';
 import { Config } from '@jest/types';
 import { merge } from 'lodash';
-import { compilerOptions } from './tsconfig.json';
+// import { compilerOptions } from './tsconfig.json';
 
 const createJestConfig = nextJest({ dir: './' });
 
@@ -15,7 +15,7 @@ const config = {
   setupFiles: ['<rootDir>/jest.polyfills.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironmentOptions: { customExportConditions: ['node'] },
-  modulePaths: [compilerOptions.baseUrl],
+  // modulePaths: [compilerOptions.baseUrl],
 } satisfies Config.InitialOptions;
 
 const buildConfig = async () => {
