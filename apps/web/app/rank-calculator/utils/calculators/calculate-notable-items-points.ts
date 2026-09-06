@@ -14,7 +14,10 @@ export function calculateNotableItemsPoints(
     notableItems,
     scaling,
   );
-  const { totalItems, itemPoints } = notableItems.reduce(
+  const { totalItems, itemPoints } = notableItems.reduce<{
+    totalItems: number;
+    itemPoints: Record<string, number>;
+  }>(
     (acc, [, { items }]) => {
       const { categoryItemPointMap } = items.reduce(
         (categoryAcc, val) => ({
@@ -38,7 +41,7 @@ export function calculateNotableItemsPoints(
     },
     {
       totalItems: 0,
-      itemPoints: {} as Record<string, number>,
+      itemPoints: {},
     },
   );
   const filteredItemFields = itemFields

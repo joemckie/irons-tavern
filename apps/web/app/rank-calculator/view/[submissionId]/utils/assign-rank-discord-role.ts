@@ -18,13 +18,13 @@ export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
   );
 
   // Remove all existing rank roles
-  await Promise.all([
+  await Promise.all(
     appliedRankRoles.map(([, roleId]) =>
       discordBotClient.delete(
         Routes.guildMemberRole(guildId, submitterId, roleId),
       ),
     ),
-  ]);
+  );
 
   const approvedRole = rankDiscordRoles[rank as keyof typeof rankDiscordRoles];
 

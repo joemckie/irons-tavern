@@ -51,9 +51,10 @@ export function SkillingCard() {
             <Image
               alt="Skills icon"
               src="/icons/skills.png"
-              height={18}
-              width={18}
+              height={22}
+              width={24}
               unoptimized
+              style={{ width: '18px', height: 'auto' }}
             />
             <Text role="heading" weight="medium" size="2">
               Skilling

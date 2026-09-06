@@ -24,9 +24,10 @@ export function NotableItemsCard() {
             <Image
               alt="Inventory icon"
               src="/icons/inventory.png"
-              height={18}
-              width={18}
+              height={27}
+              width={25}
               unoptimized
+              style={{ width: '18px', height: 'auto' }}
             />
             <Text role="heading" weight="medium" size="2">
               Notable items

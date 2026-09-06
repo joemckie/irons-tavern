@@ -6,8 +6,9 @@ import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-
 import { NotableItemsCard } from './notable-items-card';
 import { formatPercentage } from '../../utils/format-percentage';
 import { formatNumber } from '../../utils/format-number';
+import type { NotableItemsPointCalculatorData } from '../../hooks/point-calculator/notable-items/use-notable-items-point-calculator';
 
-generateScaledPlayerTests(
+generateScaledPlayerTests<NotableItemsPointCalculatorData>(
   formDataMocks,
   notableItemsExpectedValues,
   (formData, expected) => {

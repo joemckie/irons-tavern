@@ -1,7 +1,7 @@
 import { petEhcRates } from '@/app/rank-calculator/config/efficiency-rates';
 import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { Item, ItemCategory } from '@/app/schemas/items';
+import { ItemCategory } from '@/app/schemas/items';
 import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { singleItem } from '../utils/item-builders';
 
@@ -61,5 +61,5 @@ export const skillingPets: ItemCategory = {
         collectionLogCategory: 'all_pets',
         targetDropSources,
       }),
-  ) as NonEmptyArray<Item>,
+  ),
 };

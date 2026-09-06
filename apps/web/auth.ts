@@ -116,7 +116,8 @@ export const config = {
   },
   providers: [
     Discord<DiscordProfile>({
-      authorization: `https://discord.com/api/${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}`,
+      authorization:
+        `https://discord.com/api${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}` as const,
     }),
   ],
 } satisfies NextAuthConfig;

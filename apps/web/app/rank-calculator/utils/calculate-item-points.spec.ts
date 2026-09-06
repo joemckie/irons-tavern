@@ -83,10 +83,10 @@ const testCases = [
   },
   {
     expectedPoints: 127,
-    itemName: 'Jar of miasma',
+    itemName: 'Jar of Miasma',
     itemSources: [
       {
-        item: 'Jar of miasma',
+        item: 'Jar of Miasma',
         results: [
           {
             'Dropped from': 'Unsired',
@@ -252,10 +252,10 @@ const testCases = [
   },
   {
     expectedPoints: 345,
-    itemName: 'Jar of chemicals',
+    itemName: 'Jar of Chemicals',
     itemSources: [
       {
-        item: 'Jar of chemicals',
+        item: 'Jar of Chemicals',
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -269,10 +269,10 @@ const testCases = [
   },
   {
     expectedPoints: 518,
-    itemName: 'Ikkle hydra',
+    itemName: 'Ikkle Hydra',
     itemSources: [
       {
-        item: 'Ikkle hydra',
+        item: 'Ikkle Hydra',
         results: [
           {
             'Dropped from': 'Alchemical Hydra',
@@ -322,7 +322,7 @@ const testCases = [
         ],
       },
       {
-        item: 'Eye of the duke',
+        item: 'Eye of the Duke',
         results: [
           {
             'Dropped from': 'Duke Sucellus',
@@ -523,7 +523,7 @@ it('divides the total points by the amount of rolls per drop', async () => {
 it('does not modify the drop rate if "ignoreDropRateModifier" is true', async () => {
   setup([
     [
-      'Thread of elidinis',
+      'Thread of Elidinis',
       [
         {
           'Dropped from': 'Chest (Tombs of Amascut)',
@@ -537,7 +537,7 @@ it('does not modify the drop rate if "ignoreDropRateModifier" is true', async ()
 
   const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
   const points = calculateItemPoints(dropRates, [
-    { amount: 1, clogName: 'Thread of elidinis', ignoreDropRateModifier: true },
+    { amount: 1, clogName: 'Thread of Elidinis', ignoreDropRateModifier: true },
   ]);
   const expectedPoints = 25;
 

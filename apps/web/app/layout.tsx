@@ -43,7 +43,7 @@ export default function RootLayout({
             theme="dark"
             pauseOnHover
             pauseOnFocusLoss
-            bodyClassName="rt-Text rt-r-size-2"
+            className="rt-Text rt-r-size-2"
             autoClose={8000}
             position="top-center"
           />

@@ -1,7 +1,9 @@
 import { NotableItemsPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/notable-items/use-notable-items-point-calculator';
-import { CategoryFixture } from '@/cypress/support/types';
+import { CategoryFixture } from '@/types/testing';
 
-export const notableItemsExpectedValues = {
+export const notableItemsExpectedValues: CategoryFixture<
+  Omit<NotableItemsPointCalculatorData, 'totalItems'>
+> = {
   earlyGamePlayer: {
     fullScaling: {
       pointsAwarded: 520,
@@ -113,6 +115,4 @@ export const notableItemsExpectedValues = {
       percentageCollected: 0.7254,
     },
   },
-} satisfies CategoryFixture<
-  Omit<NotableItemsPointCalculatorData, 'totalItems'>
->;
+};

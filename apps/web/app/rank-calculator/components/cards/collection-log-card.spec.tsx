@@ -6,8 +6,9 @@ import { generateScaledPlayerTests } from '@/test-utils/generated-scaled-player-
 import { CollectionLogCard } from './collection-log-card';
 import { formatPercentage } from '../../utils/format-percentage';
 import { formatNumber } from '../../utils/format-number';
+import type { CollectionLogPointCalculatorData } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
 
-generateScaledPlayerTests(
+generateScaledPlayerTests<CollectionLogPointCalculatorData>(
   formDataMocks,
   collectionLogExpectedValues,
   (formData, expected) => {

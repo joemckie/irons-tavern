@@ -1,9 +1,5 @@
 import JSum from 'jsum';
-import {
-  isCollectionLogItem,
-  Item,
-  ItemCategoryMap,
-} from '@/app/schemas/items';
+import { isCollectionLogItem, ItemCategoryMap } from '@/app/schemas/items';
 import { DroppedItemResponse } from '@/app/schemas/wiki';
 import { itemList } from '@/data/item-list';
 import { unstable_cache } from 'next/cache';
@@ -44,7 +40,7 @@ export const buildNotableItemList = unstable_cache(
 
       return {
         ...acc,
-        [key]: { ...category, items: items as NonEmptyArray<Item> },
+        [key]: { ...category, items: items },
       };
     }, {}),
   [

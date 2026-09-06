@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "prettier": "^3.3.3",
-    "turbo": "^2.5.3",
+    "@tailwindcss/postcss": "^4.3.3",
+    "prettier": "^3.9.6",
+    "turbo": "^2.10.12",
     "typescript": "^7.0.2"
   },
   "scripts": {

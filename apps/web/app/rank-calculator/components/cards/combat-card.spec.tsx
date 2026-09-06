@@ -6,8 +6,9 @@ import { combatExpectedValues } from '@/fixtures/rank-calculator/combat-expected
 import { CombatCard } from './combat-card';
 import { formatPercentage } from '../../utils/format-percentage';
 import { formatNumber } from '../../utils/format-number';
+import type { CombatPointCalculatorData } from '../../hooks/point-calculator/combat/use-combat-point-calculator';
 
-generateScaledPlayerTests(
+generateScaledPlayerTests<CombatPointCalculatorData>(
   formDataMocks,
   combatExpectedValues,
   (formData, expected) => {

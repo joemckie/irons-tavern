@@ -33,9 +33,10 @@ export function CollectionLogCard() {
             <Image
               alt="Collection log icon"
               src="/icons/collection-log.png"
-              height={17}
-              width={18}
+              height={27}
+              width={29}
               unoptimized
+              style={{ width: '18px', height: 'auto' }}
             />
             <Text role="heading" weight="medium" size="2">
               Collection Log
