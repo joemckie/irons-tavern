@@ -7,6 +7,11 @@ import { userOSRSAccountsKey } from '@/config/redis';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { EditPlayerForm } from './edit-player-form';
+import { connection } from 'next/server';
+
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
 
 async function getLatestMemberList() {
   const blobList = await list();
@@ -28,9 +33,9 @@ async function getLatestMemberList() {
 
 export default async function RankCalculatorEditPlayerPage({
   params,
-}: {
-  params: Promise<{ player: string }>;
-}) {
+}: PageProps<'/rank-calculator/players/edit/[player]'>) {
+  await connection();
+
   const session = await auth();
 
   if (!session?.user?.id) {

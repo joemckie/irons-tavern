@@ -3,6 +3,7 @@ import { NextConfig } from 'next';
 
 export default withSentryConfig<NextConfig>(
   {
+    cacheComponents: true,
     experimental: {
       webpackMemoryOptimizations: true,
     },

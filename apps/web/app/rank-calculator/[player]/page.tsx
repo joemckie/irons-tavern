@@ -13,20 +13,19 @@ import {
   generateRequiredItemList,
 } from '../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../utils/build-notable-item-list';
+import { connection } from 'next/server';
 
-interface Params {
-  player: string;
-}
+export const instant = false;
 
 export default async function RankCalculatorPage({
   params,
-}: {
-  params: Promise<Params>;
-}) {
+}: PageProps<'/rank-calculator/[player]'>) {
   const { player } = await params;
   const decodedPlayer = decodeURIComponent(player);
 
   Sentry.setTag('rsn', decodedPlayer);
+
+  await connection();
 
   const session = await auth();
 

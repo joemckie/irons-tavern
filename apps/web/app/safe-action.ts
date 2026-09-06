@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { auth } from '@/auth';
 import { ActionError } from './action-error';
+import { connection } from 'next/server';
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
@@ -43,6 +44,8 @@ export const actionClient = createSafeActionClient({
   );
 
 export const authActionClient = actionClient.use(async ({ next }) => {
+  await connection();
+
   const session = await auth();
 
   if (!session?.user?.id) {

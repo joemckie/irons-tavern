@@ -59,6 +59,7 @@ export function RankCalculatorNavigationActions({
           variant="soft"
           type="submit"
           style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+          suppressHydrationWarning
         >
           Save
         </Button>

@@ -11,16 +11,14 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "downlevelIteration": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["apps/web/*"]
+      "@/*": ["./*"]
     },
-    "baseUrl": "../..",
     "target": "ES2017",
     "noEmit": true
   },
