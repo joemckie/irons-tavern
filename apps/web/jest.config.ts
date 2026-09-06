@@ -1,4 +1,4 @@
-import nextJest from 'next/jest';
+import nextJest from 'next/jest.js';
 import { Config } from '@jest/types';
 import { merge } from 'lodash';
 // import { compilerOptions } from './tsconfig.json';

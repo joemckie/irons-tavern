@@ -10174,6 +10174,7 @@ __metadata:
   dependencies:
     "@tailwindcss/postcss": "npm:^4.3.3"
     prettier: "npm:^3.9.6"
+    ts-node: "npm:^10.9.2"
     turbo: "npm:^2.10.12"
     typescript: "npm:^7.0.2"
   languageName: unknown
