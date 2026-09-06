@@ -8,8 +8,9 @@ import { RankProgressCard } from './rank-progress-card';
 import { getRankName } from '../../utils/get-rank-name';
 import { formatNumber } from '../../utils/format-number';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
+import type { RankCalculatorData } from '../../hooks/point-calculator/use-rank-calculator';
 
-generateScaledPlayerTests(
+generateScaledPlayerTests<RankCalculatorData>(
   formDataMocks,
   rankExpectedValues,
   (formData, expected) => {
@@ -64,7 +65,7 @@ generateScaledPlayerTests(
 
     it('renders the next rank', () => {
       expect(screen.getByLabelText(/^next rank$/i).textContent).toBe(
-        getRankName(expected.nextRank),
+        getRankName(expected.nextRank!),
       );
     });
 
@@ -72,7 +73,7 @@ generateScaledPlayerTests(
       const matcher = new RegExp(`^${expected.nextRank} icon$`);
       const { props: imageProps } = getImageProps({
         alt: '',
-        src: getRankImageUrl(expected.nextRank),
+        src: getRankImageUrl(expected.nextRank!),
         width: 22,
         height: 22,
       });

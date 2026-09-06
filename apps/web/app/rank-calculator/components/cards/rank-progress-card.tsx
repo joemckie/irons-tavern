@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -32,7 +31,6 @@ export function RankProgressCard() {
     nextRank,
     rank,
   } = useRankCalculator();
-  const { register, setValue, getValues } = useFormContext();
   const { playerName, rank: currentRank } = useCurrentPlayer();
   const [showRankUpDialog, setShowRankUpDialog] = useState(
     currentRank && currentRank !== rank,
@@ -43,32 +41,8 @@ export function RankProgressCard() {
     publishRankSubmissionAction.bind(null, currentRank, playerName),
   );
 
-  useEffect(() => {
-    if (rank !== getValues('rank')) {
-      setValue('rank', rank, {
-        shouldDirty: true,
-      });
-    }
-  }, [rank, setValue, getValues]);
-
-  useEffect(() => {
-    setValue('points', pointsAwarded, {
-      shouldDirty: true,
-    });
-  }, [pointsAwarded, setValue]);
-
   return (
     <>
-      <input
-        {...register('rank', { value: rank })}
-        defaultValue={rank}
-        type="hidden"
-      />
-      <input
-        {...register('points', { value: pointsAwarded })}
-        defaultValue={pointsAwarded}
-        type="hidden"
-      />
       <Card>
         <Flex direction="column" gap="3">
           <DataCard.Row

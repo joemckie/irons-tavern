@@ -2,6 +2,10 @@ import { Button, Flex, Heading } from '@radix-ui/themes';
 import { signIn } from '@/auth';
 import { DiscordLogoIcon } from '@radix-ui/react-icons';
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function LoginPage() {
   const handleSubmit = async () => {

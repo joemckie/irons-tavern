@@ -9,6 +9,10 @@ import * as Sentry from '@sentry/nextjs';
 import { ClanMember, ClanMemberList } from '../schemas/inactivity-checker';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
 async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
@@ -42,8 +46,6 @@ async function getLatestMemberList() {
     return {};
   }
 }
-
-export const dynamic = 'force-dynamic';
 
 export default async function InactivityCheckerPage() {
   const groupMemberInfo = await getGroupMemberInfo();

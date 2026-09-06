@@ -24,12 +24,15 @@ import {
   generateRequiredItemList,
 } from '../../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../../utils/build-notable-item-list';
+import { connection } from 'next/server';
+
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
 
 export default async function ViewSubmissionPage({
   params,
-}: {
-  params: Promise<{ submissionId: string }>;
-}) {
+}: PageProps<'/rank-calculator/view/[submissionId]'>) {
   const { submissionId } = await params;
   const [submission, submissionMetadata, submissionDiff] = await Promise.all([
     redis.json.get<Omit<RankCalculatorSchema, 'rank' | 'points'>>(
@@ -56,6 +59,8 @@ export default async function ViewSubmissionPage({
   if (!submissionDiff) {
     throw new Error('Unable to find submission diff');
   }
+
+  await connection();
 
   const user = await auth();
 

@@ -1,5 +1,5 @@
 import 'next-auth/jwt';
-import NextAuth, { NextAuthConfig } from 'next-auth';
+import NextAuth, { NextAuthConfig, NextAuthResult } from 'next-auth';
 import Discord, { DiscordProfile } from 'next-auth/providers/discord';
 import * as Sentry from '@sentry/nextjs';
 import {
@@ -14,7 +14,7 @@ import { serverConstants } from './config/constants.server';
 
 declare module 'next-auth' {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface Profile extends DiscordProfile {}
+  interface Profile extends Omit<DiscordProfile, 'id'> {}
 
   interface User {
     permissions: string;
@@ -116,9 +116,13 @@ export const config = {
   },
   providers: [
     Discord<DiscordProfile>({
-      authorization: `https://discord.com/api/${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}`,
+      authorization:
+        `https://discord.com/api${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}` as const,
     }),
   ],
 } satisfies NextAuthConfig;
 
-export const { handlers, signIn, signOut, auth } = NextAuth(config);
+const nextAuth: NextAuthResult = NextAuth(config);
+
+export const { handlers, signIn, signOut } = nextAuth;
+export const auth: NextAuthResult['auth'] = nextAuth.auth;

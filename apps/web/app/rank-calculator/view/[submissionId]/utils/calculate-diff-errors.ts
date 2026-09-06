@@ -1,5 +1,5 @@
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
-import { stripEntityName } from '@/app/rank-calculator/utils/strip-entity-name';
+import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import { DiaryLocation } from '@/app/schemas/osrs';
 import { RankSubmissionDiff } from '@/app/schemas/rank-calculator';
 import { FieldErrors } from 'react-hook-form';
@@ -26,7 +26,7 @@ export function calculateDiffErrors(diff: RankSubmissionDiff) {
   if (diff.acquiredItems) {
     diff.acquiredItems.forEach((item) => {
       // @ts-expect-error Individual items are not typed
-      errors[`acquiredItems.${stripEntityName(item)}`] = {
+      errors[`acquiredItems.${normaliseEntityName(item)}`] = {
         type: 'value',
         message: 'Item does not match API response',
       };

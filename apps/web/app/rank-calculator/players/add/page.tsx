@@ -2,8 +2,15 @@ import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
 import { ClanMemberList } from '@/app/schemas/inactivity-checker';
 import { AddPlayerForm } from './add-player-form';
+import { connection } from 'next/server';
+
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
 
 async function getLatestMemberList() {
+  await connection();
+
   const blobList = await list();
   const [{ url }] = blobList.blobs.sort(
     (a, b) => +b.uploadedAt - +a.uploadedAt,

@@ -1,8 +1,9 @@
-import { withSentryConfig } from '@sentry/nextjs';
+import { withSentryConfig } from '@sentry/nextjs/config';
 import { NextConfig } from 'next';
 
 export default withSentryConfig<NextConfig>(
   {
+    cacheComponents: true,
     experimental: {
       webpackMemoryOptimizations: true,
     },
@@ -21,6 +22,9 @@ export default withSentryConfig<NextConfig>(
           pathname: '/images/**',
         },
       ],
+    },
+    typescript: {
+      tsconfigPath: 'tsconfig.app.json',
     },
   },
   {

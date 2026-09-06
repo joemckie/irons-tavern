@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
 import { auth } from '@/auth';
 import { ActionError } from './action-error';
+import { connection } from 'next/server';
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
@@ -23,14 +24,8 @@ export const actionClient = createSafeActionClient({
     return z.object({ actionName: z.string() });
   },
 })
-  .use(async ({ next, clientInput, metadata }) => {
+  .use(async ({ next }) => {
     const result = await next();
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`Input: ${JSON.stringify(clientInput, null, 2)}`);
-      console.log(`Result: ${JSON.stringify(result, null, 2)}`);
-      console.log(`Metadata: ${JSON.stringify(metadata, null, 2)}`);
-    }
 
     return result;
   })
@@ -43,6 +38,8 @@ export const actionClient = createSafeActionClient({
   );
 
 export const authActionClient = actionClient.use(async ({ next }) => {
+  await connection();
+
   const session = await auth();
 
   if (!session?.user?.id) {

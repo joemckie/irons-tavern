@@ -3,7 +3,7 @@ import { FieldError } from 'react-hook-form';
 import { Flex, Table, Text } from '@radix-ui/themes';
 import { isCollectionLogItem, Item } from '@/app/schemas/items';
 import { Checkbox } from './checkbox';
-import { stripEntityName } from '../utils/strip-entity-name';
+import { normaliseEntityName } from '../utils/normalise-entity-name';
 import { EntityImage } from './entity-image';
 import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
 import { ValidationTooltip } from './validation-tooltip';
@@ -45,7 +45,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
         <Checkbox
           checked={acquired}
           disabled={!!(error ?? pointsError)}
-          name={`acquiredItems.${stripEntityName(item.name)}` as const}
+          name={`acquiredItems.${normaliseEntityName(item.name)}` as const}
         />
       </Table.Cell>
       <Table.Cell

@@ -8,6 +8,10 @@ import { ToastContainer } from 'react-toastify';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Providers from './providers';
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
   await import('../mocks');
 }
@@ -39,7 +43,7 @@ export default function RootLayout({
             theme="dark"
             pauseOnHover
             pauseOnFocusLoss
-            bodyClassName="rt-Text rt-r-size-2"
+            className="rt-Text rt-r-size-2"
             autoClose={8000}
             position="top-center"
           />

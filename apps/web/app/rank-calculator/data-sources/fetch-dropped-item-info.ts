@@ -84,7 +84,7 @@ export const fetchItemDropRates = unstable_cache(
     } catch (error) {
       Sentry.captureException(error);
 
-      throw new Error('Could not fetch drop rates!');
+      throw new Error('Could not fetch drop rates!', { cause: error });
     }
   },
   [],

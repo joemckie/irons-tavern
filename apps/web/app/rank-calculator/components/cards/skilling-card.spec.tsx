@@ -7,8 +7,9 @@ import { DiaryLocation } from '@/app/schemas/osrs';
 import { SkillingCard } from './skilling-card';
 import { formatPercentage } from '../../utils/format-percentage';
 import { formatNumber } from '../../utils/format-number';
+import type { SkillingPointCalculatorData } from '../../hooks/point-calculator/skilling/use-skilling-point-calculator';
 
-generateScaledPlayerTests(
+generateScaledPlayerTests<SkillingPointCalculatorData>(
   formDataMocks,
   skillingExpectedValues,
   (formData, expected) => {

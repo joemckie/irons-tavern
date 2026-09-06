@@ -4,7 +4,7 @@ import { FieldError, useWatch } from 'react-hook-form';
 import { Item } from '@/app/schemas/items';
 import { formatWikiImageUrl } from '../utils/format-wiki-url';
 import { MemoisedItem } from './item';
-import { stripEntityName } from '../utils/strip-entity-name';
+import { normaliseEntityName } from '../utils/normalise-entity-name';
 import { EntityImage } from './entity-image';
 import { parseInitials } from '../utils/parse-initials';
 import { formatPercentage } from '../utils/format-percentage';
@@ -26,7 +26,7 @@ export const Category = memo(
   }: CategoryProps) => {
     const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
       name: items.map(
-        ({ name }) => `acquiredItems.${stripEntityName(name)}` as const,
+        ({ name }) => `acquiredItems.${normaliseEntityName(name)}` as const,
       ),
     });
     const completedCount = fields.filter(Boolean).length;

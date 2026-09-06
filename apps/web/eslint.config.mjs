@@ -34,7 +34,6 @@ export default tseslint.config(
         projectService: {
           allowDefaultProject: ['eslint.config.mjs', 'postcss.config.mjs'],
         },
-        project: `${import.meta.dirname}/tsconfig.spec.json`,
       },
     },
   },
