@@ -17,7 +17,7 @@ export const miscellaneousWildernessItems: ItemCategory = {
       points: calculateXpOrTimeBasedItemPoints(
         estimatedHoursToAcquireMageArena2Cape,
       ),
-      image: formatWikiImageUrl('Imbued zamorak cape'),
+      image: formatWikiImageUrl('Imbued Zamorak cape'),
       requiredQuests: ['Mage Arena II'],
     }),
     compoundItem({
