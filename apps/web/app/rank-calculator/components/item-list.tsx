@@ -1,13 +1,13 @@
 import { Box, Flex, ScrollArea } from '@radix-ui/themes';
 import { useFormContext } from 'react-hook-form';
-import { useGetItems } from '../hooks/use-get-items';
 import { usePageHeight } from '../hooks/use-page-height';
 import { Category } from './category';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { normaliseEntityName } from '../utils/normalise-entity-name';
+import { useItemList } from '../contexts/item-list-context';
 
 export function ItemList() {
-  const { data: categories } = useGetItems();
+  const categories = useItemList();
   const mainHeightCss = usePageHeight();
   const { getFieldState } = useFormContext<RankCalculatorSchema>();
 

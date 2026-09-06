@@ -2,7 +2,7 @@ import { clientConstants } from '@/config/constants.client';
 import { combatAchievementTierPoints } from '@/app/schemas/osrs';
 import { CombatAchievementListResponse } from '@/app/schemas/wiki';
 import * as Sentry from '@sentry/nextjs';
-import { unstable_cache } from 'next/cache';
+import { cacheLife } from 'next/cache';
 
 const fetchCombatAchievements = async (
   offset = 0,
@@ -37,24 +37,22 @@ const fetchCombatAchievements = async (
   return bucket;
 };
 
-export const getCaIdMap = unstable_cache(
-  async () => {
-    try {
-      const allCombatAchievements = await fetchCombatAchievements();
+export const getCaIdMap = async () => {
+  'use cache: remote';
 
-      return allCombatAchievements.reduce<Record<string, number>>(
-        (acc, { id, tier }) => ({
-          ...acc,
-          [id]: combatAchievementTierPoints[tier],
-        }),
-        {},
-      );
-    } catch (error) {
-      Sentry.captureException(error);
-    }
-  },
-  [],
-  {
-    revalidate: 60 * 60 * 24 * 7, // 7 days
-  },
-);
+  cacheLife('weeks');
+
+  try {
+    const allCombatAchievements = await fetchCombatAchievements();
+
+    return allCombatAchievements.reduce<Record<string, number>>(
+      (acc, { id, tier }) => ({
+        ...acc,
+        [id]: combatAchievementTierPoints[tier],
+      }),
+      {},
+    );
+  } catch (error) {
+    Sentry.captureException(error);
+  }
+};

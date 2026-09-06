@@ -16,6 +16,8 @@ import { Navigation } from '../components/navigation';
 import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
 import { handleToastUpdates } from '../utils/handle-toast-updates';
 import { CurrentPlayerProvider } from '../contexts/current-player-context';
+import { ItemListProvider } from '../contexts/item-list-context';
+import type { ItemCategory } from '@/app/schemas/items';
 
 interface FormWrapperProps {
   formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
@@ -25,12 +27,14 @@ interface FormWrapperProps {
     templeCollectionLogOutdated: boolean;
     wikiSyncNotFound: boolean;
   };
+  itemList: [string, ItemCategory][];
 }
 
 export function FormWrapper({
   formData,
   currentRank,
   warnings,
+  itemList,
 }: FormWrapperProps) {
   const {
     form,
@@ -98,22 +102,27 @@ export function FormWrapper({
   ]);
 
   return (
-    <CurrentPlayerProvider rank={currentRank} playerName={formData.playerName}>
-      <FormProvider {...form}>
-        <RankCalculator
-          submitRankCalculatorAction={submitRankCalculator}
-          navigation={
-            <Navigation
-              actions={
-                <RankCalculatorNavigationActions
-                  isActionActive={isExecuting || isTransitioning}
-                />
-              }
-              shouldRenderBackButton
-            />
-          }
-        />
-      </FormProvider>
-    </CurrentPlayerProvider>
+    <ItemListProvider itemList={itemList}>
+      <CurrentPlayerProvider
+        rank={currentRank}
+        playerName={formData.playerName}
+      >
+        <FormProvider {...form}>
+          <RankCalculator
+            submitRankCalculatorAction={submitRankCalculator}
+            navigation={
+              <Navigation
+                actions={
+                  <RankCalculatorNavigationActions
+                    isActionActive={isExecuting || isTransitioning}
+                  />
+                }
+                shouldRenderBackButton
+              />
+            }
+          />
+        </FormProvider>
+      </CurrentPlayerProvider>
+    </ItemListProvider>
   );
 }
