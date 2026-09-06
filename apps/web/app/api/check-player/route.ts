@@ -7,8 +7,6 @@ import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
-export const dynamic = 'force-dynamic';
-
 async function getPlayerInfo(player: string) {
   const playerInfoRequest = await fetch(
     `${clientConstants.temple.baseUrl}/api/player_info.php?player=${player}`,

@@ -7,8 +7,6 @@ import { redis } from '@/redis';
 import { playerGameModesKey } from '@/config/redis';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
