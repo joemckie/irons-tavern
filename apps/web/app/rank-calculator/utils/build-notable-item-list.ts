@@ -16,7 +16,7 @@ const itemPointMapChecksum = JSum.digest(itemPointMap, 'SHA256', 'hex');
 export const buildNotableItemList =
   // eslint-disable-next-line @typescript-eslint/require-await
   async (dropRates: DroppedItemResponse) => {
-    'use cache';
+    'use cache: remote';
 
     cacheTag(
       `points-per-hour:${pointsConfig.notableItemsPointsPerHour}`,

@@ -38,7 +38,7 @@ const fetchCombatAchievements = async (
 };
 
 export const getCaIdMap = async () => {
-  'use cache';
+  'use cache: remote';
 
   cacheLife('weeks');
 

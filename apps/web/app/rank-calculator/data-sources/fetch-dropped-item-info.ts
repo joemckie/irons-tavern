@@ -21,7 +21,7 @@ export function generateRequiredItemList() {
 }
 
 export const fetchItemDropRates = async (items: CollectionLogItemName[]) => {
-  'use cache';
+  'use cache: remote';
 
   cacheLife('weeks');
 

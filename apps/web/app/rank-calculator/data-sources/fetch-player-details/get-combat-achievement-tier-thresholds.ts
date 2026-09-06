@@ -8,7 +8,7 @@ export const getCombatAchievementTierThresholds = async (): Promise<Record<
   Exclude<CombatAchievementTier, 'None'>,
   number
 > | null> => {
-  'use cache';
+  'use cache: remote';
 
   cacheLife('weeks');
 
