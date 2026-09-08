@@ -1,3 +1,5 @@
+'use server';
+
 import 'core-js/actual/set/intersection';
 import 'core-js/actual/set/is-subset-of';
 import { itemList } from '@/data/item-list';
@@ -8,7 +10,6 @@ import {
 import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import { ApiResponse } from '@/types/api';
 import * as Sentry from '@sentry/nextjs';
-import { Rank } from '@/config/enums';
 import { redis } from '@/redis';
 import { Player } from '@/app/schemas/player';
 import { clientConstants } from '@/config/constants.client';
@@ -34,23 +35,15 @@ import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
 import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
 import { fetchUserDiscordRoles } from '../fetch-user-discord-roles';
 import { calculateTavernDiaryTierMultipliers } from '../../utils/calculators/calculate-tavern-diary-tier-multipliers';
-
-export interface PlayerDetailsResponse
-  extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
-  currentRank?: Rank;
-  hasTemplePlayerStats: boolean;
-  hasTempleCollectionLog: boolean;
-  hasWikiSyncData: boolean;
-  hasThirdPartyData: boolean;
-  isTempleCollectionLogOutdated: boolean;
-  isMobileOnly: boolean;
-}
+import type { PlayerDetailsResponse } from '@/app/schemas/player-details';
 
 export async function fetchPlayerDetails(
   player: string,
   userId: string,
   mergeSavedData = true,
 ): Promise<ApiResponse<PlayerDetailsResponse>> {
+  'use cache: private';
+
   const allCurrentNotableItemNames = new Set(
     Object.values(itemList)
       .flatMap(({ items }) => items)

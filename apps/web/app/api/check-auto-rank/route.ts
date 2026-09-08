@@ -1,12 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
-import dedent from 'dedent';
-import {
-  APIDMChannel,
-  ButtonStyle,
-  ComponentType,
-  Routes,
-} from 'discord-api-types/v10';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchPlayerDetails } from '@/app/rank-calculator/data-sources/fetch-player-details/fetch-player-details';
 import { calculateAchievementDiaryPoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-points';
@@ -22,11 +16,11 @@ import { calculateScaling } from '@/app/rank-calculator/utils/calculators/calcul
 import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
 import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-level-points';
 import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
-import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { clientConstants } from '@/config/constants.client';
-import { rankUpMessagesKey } from '@/config/redis';
-import { discordBotClient } from '@/discord';
+
+import {
+  rankSubmissionMetadataKey,
+  userRankSubmissionsKey,
+} from '@/config/redis';
 import { redis } from '@/redis';
 import { calculateMaximumAvailablePoints } from '@/app/rank-calculator/utils/calculators/calculate-maximum-available-points';
 import {
@@ -39,6 +33,10 @@ import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/
 import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
 import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
 import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+import { StandardRank, AdminRank } from '@/config/ranks';
+import type { Rank } from '@/config/enums';
+import type { RankSubmissionMetadata } from '@/app/schemas/rank-calculator';
+import { submitRankApplication } from '@/app/rank-calculator/[player]/actions/_utilities/submit-rank-application';
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,7 +49,7 @@ export async function GET(request: NextRequest) {
       .string({ error: 'Discord ID is required' })
       .parse(request.nextUrl.searchParams.get('discord_id'));
 
-    const playerDetails = await fetchPlayerDetails(player, discordId);
+    const playerDetails = await fetchPlayerDetails(player, discordId, false);
 
     if (!playerDetails.success) {
       throw new Error('Failed to fetch player details');
@@ -82,8 +80,31 @@ export async function GET(request: NextRequest) {
       skillingBonusMultiplier,
     } = playerDetails.data;
 
+    if (!currentRank) {
+      // Cannot automate ranking without knowing the existing rank
+      return NextResponse.json({ success: true, message: 'No current rank' });
+    }
+
     if (!hasThirdPartyData) {
-      return NextResponse.json({ success: true });
+      // Cannot automate ranking without third-party data
+      return NextResponse.json({
+        success: true,
+        message: 'No third-party data',
+      });
+    }
+
+    const parsedStandardRank = StandardRank.safeParse(currentRank);
+    const parsedAdminRank = AdminRank.safeParse(currentRank);
+
+    const isStandardRank = parsedStandardRank.success;
+    const isAdminRank = parsedAdminRank.success;
+
+    // Skip high-level staff ranks
+    if (!isStandardRank && !isAdminRank) {
+      return NextResponse.json({
+        success: true,
+        message: 'High-level staff rank',
+      });
     }
 
     const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
@@ -161,49 +182,81 @@ export async function GET(request: NextRequest) {
       rankStructure,
     );
 
-    if (rank !== currentRank) {
-      const hashKey = `${discordId}:${player.toLowerCase()}`;
-      const previousMessageRank = await redis.hget(rankUpMessagesKey, hashKey);
-
-      // Send a message if the user has not been notified of this rank in the past
-      if (previousMessageRank !== rank) {
-        const { id: dmChannelId } = (await discordBotClient.post(
-          Routes.userChannels(),
-          { body: { recipient_id: discordId } },
-        )) as APIDMChannel;
-
-        await sendDiscordMessage(
-          {
-            content: dedent`
-              Congratulations, you are eligible for the ${getRankName(rank)} rank on ${playerName}!
-              
-              Click the button below to go to the rank calculator and apply.
-            `,
-            components: [
-              {
-                components: [
-                  {
-                    label: 'Apply for rank',
-                    url: `${clientConstants.publicUrl}/rank-calculator/${encodeURIComponent(player)}`,
-                    style: ButtonStyle.Link,
-                    type: ComponentType.Button,
-                  },
-                ],
-                type: ComponentType.ActionRow,
-              },
-            ],
-          },
-          dmChannelId,
+    function checkRankedUp(newRank: Rank, oldRank: Rank) {
+      if (isAdminRank) {
+        return (
+          AdminRank.options.indexOf(newRank as AdminRank) >
+          AdminRank.options.indexOf(oldRank as AdminRank)
         );
-
-        await redis.hset(rankUpMessagesKey, { [hashKey]: rank });
       }
+
+      if (isStandardRank) {
+        return (
+          StandardRank.options.indexOf(newRank as StandardRank) >
+          StandardRank.options.indexOf(oldRank as StandardRank)
+        );
+      }
+
+      throw new Error('Unknown rank type, expected a standard or admin rank');
     }
+
+    const hasRankedUp = checkRankedUp(rank, currentRank);
+
+    if (!hasRankedUp) {
+      return NextResponse.json({ success: true, message: 'Did not rank up' });
+    }
+
+    let i = 0;
+
+    while (true) {
+      const idBatch = await redis.lrange<string>(
+        userRankSubmissionsKey(discordId, playerName),
+        i,
+        i + 100,
+      );
+
+      if (idBatch.length === 0) {
+        break;
+      }
+
+      for (const submissionId of idBatch) {
+        const submissionStatus = await redis.hget<
+          RankSubmissionMetadata['status']
+        >(rankSubmissionMetadataKey(submissionId), 'status');
+
+        if (!submissionStatus) {
+          continue;
+        }
+
+        if (submissionStatus === 'Pending') {
+          // If the player has a pending rank submission, don't apply for another
+          return NextResponse.json({
+            success: true,
+            message: 'Pending rank submission exists',
+          });
+        }
+      }
+
+      i += 100;
+    }
+
+    await submitRankApplication(
+      discordId,
+      {
+        ...playerDetails.data,
+        rank,
+        points: totalPointsAwarded,
+      },
+      playerDetails.data,
+      playerName,
+      rank,
+      totalPointsAwarded,
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {
     Sentry.captureException(error);
 
-    return NextResponse.json({ success: false });
+    return NextResponse.json({ success: false, message: String(error) });
   }
 }
