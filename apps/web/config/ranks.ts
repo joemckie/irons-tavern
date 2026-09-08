@@ -27,6 +27,17 @@ export const StandardRank = Rank.extract([
 
 export type StandardRank = z.infer<typeof StandardRank>;
 
+export const AdminRank = Rank.extract([
+  'Captain',
+  'General',
+  'Colonel',
+  'Brigadier',
+  'Admiral',
+  'Marshal',
+]);
+
+export type AdminRank = z.infer<typeof AdminRank>;
+
 /**
  * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.
  */

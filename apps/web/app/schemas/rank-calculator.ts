@@ -5,6 +5,8 @@ import {
   DiaryTier,
   TzHaarCape,
 } from './osrs';
+import { RankCalculatorSchema } from '../rank-calculator/[player]/submit-rank-calculator-validation';
+import { Rank } from '@/config/enums';
 
 export const RankStructure = z.enum([
   'Standard',
@@ -65,3 +67,18 @@ export const RankSubmissionDiff = z.object({
 });
 
 export type RankSubmissionDiff = z.infer<typeof RankSubmissionDiff>;
+
+export const PlayerDetailsResponse = RankCalculatorSchema.omit({
+  rank: true,
+  points: true,
+}).extend({
+  currentRank: Rank.optional(),
+  hasTemplePlayerStats: z.boolean(),
+  hasTempleCollectionLog: z.boolean(),
+  hasWikiSyncData: z.boolean(),
+  hasThirdPartyData: z.boolean(),
+  isTempleCollectionLogOutdated: z.boolean(),
+  isMobileOnly: z.boolean(),
+});
+
+export type PlayerDetailsResponse = z.infer<typeof PlayerDetailsResponse>;
