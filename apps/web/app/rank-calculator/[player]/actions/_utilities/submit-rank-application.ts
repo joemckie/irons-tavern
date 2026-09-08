@@ -15,10 +15,10 @@ import {
 } from '@/app/schemas/osrs';
 import type {
   AchievementDiaryMap,
-  PlayerDetailsResponse,
   RankSubmissionDiff,
   RankSubmissionMetadata,
 } from '@/app/schemas/rank-calculator';
+import type { PlayerDetailsResponse } from '@/app/schemas/player-details';
 import { serverConstants } from '@/config/constants.server';
 import {
   rankSubmissionDiffKey,

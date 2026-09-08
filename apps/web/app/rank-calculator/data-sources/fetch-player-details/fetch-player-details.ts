@@ -35,7 +35,7 @@ import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
 import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
 import { fetchUserDiscordRoles } from '../fetch-user-discord-roles';
 import { calculateTavernDiaryTierMultipliers } from '../../utils/calculators/calculate-tavern-diary-tier-multipliers';
-import type { PlayerDetailsResponse } from '@/app/schemas/rank-calculator';
+import type { PlayerDetailsResponse } from '@/app/schemas/player-details';
 
 export async function fetchPlayerDetails(
   player: string,
