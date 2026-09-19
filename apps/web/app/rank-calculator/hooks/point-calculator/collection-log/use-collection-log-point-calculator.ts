@@ -9,8 +9,7 @@ import { useCollectionLogSlotPoints } from './use-collection-log-slot-points';
 import { useCalculatorScaling } from '../use-calculator-scaling';
 
 export interface CollectionLogPointCalculatorData
-  extends CommonPointCalculatorData,
-    BonusPointCalculatorData {
+  extends CommonPointCalculatorData, BonusPointCalculatorData {
   collectionLogSlotPoints: number;
 }
 

@@ -4,13 +4,8 @@ import { useCalculatorScaling } from '../use-calculator-scaling';
 export function useMaxSkillingPoints() {
   const scaling = useCalculatorScaling();
 
-  const {
-    maximumTotalLevelPoints,
-    maximumAchievementDiaryPoints,
-  } = pointsConfig;
+  const { maximumTotalLevelPoints, maximumAchievementDiaryPoints } =
+    pointsConfig;
 
-  return (
-    (maximumAchievementDiaryPoints + maximumTotalLevelPoints) *
-    scaling
-  );
+  return (maximumAchievementDiaryPoints + maximumTotalLevelPoints) * scaling;
 }

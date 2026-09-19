@@ -5,8 +5,7 @@ import { calculateNotableItemsPoints } from '@/app/rank-calculator/utils/calcula
 import { useCalculatorScaling } from '../use-calculator-scaling';
 import { useItemList } from '@/app/rank-calculator/contexts/item-list-context';
 
-export interface NotableItemsPointCalculatorData
-  extends CommonPointCalculatorData {
+export interface NotableItemsPointCalculatorData extends CommonPointCalculatorData {
   percentageCollected: number;
   itemsCollected: number;
   totalItems: number;

@@ -11,8 +11,7 @@ import { AriaAttributes, startTransition } from 'react';
 import { ValidationTooltip } from './validation-tooltip';
 
 interface SelectProps<T extends FieldValues>
-  extends BaseSelect.RootProps,
-    AriaAttributes {
+  extends BaseSelect.RootProps, AriaAttributes {
   name: FieldPath<T>;
   placeholder?: string;
   options: readonly string[];
