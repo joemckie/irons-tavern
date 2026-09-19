@@ -10,15 +10,15 @@ export const perilousMoons: ItemCategory = {
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Eclipse moon helm',
+      name: 'Eclipse Moon helm',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Eclipse moon chestplate',
+      name: 'Eclipse Moon chestplate',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Eclipse moon tassets',
+      name: 'Eclipse Moon tassets',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
@@ -26,31 +26,31 @@ export const perilousMoons: ItemCategory = {
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blood moon helm',
+      name: 'Blood Moon helm',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blood moon chestplate',
+      name: 'Blood Moon chestplate',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blood moon tassets',
+      name: 'Blood Moon tassets',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blue moon spear',
+      name: 'Blue Moon spear',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blue moon helm',
+      name: 'Blue Moon helm',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blue moon chestplate',
+      name: 'Blue Moon chestplate',
       collectionLogCategory: 'moons_of_peril',
     }),
     singleItem({
-      name: 'Blue moon tassets',
+      name: 'Blue Moon tassets',
       collectionLogCategory: 'moons_of_peril',
     }),
   ],

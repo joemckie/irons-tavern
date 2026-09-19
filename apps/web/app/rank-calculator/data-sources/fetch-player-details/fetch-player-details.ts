@@ -35,8 +35,10 @@ import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary
 import { fetchUserDiscordRoles } from '../fetch-user-discord-roles';
 import { calculateTavernDiaryTierMultipliers } from '../../utils/calculators/calculate-tavern-diary-tier-multipliers';
 
-export interface PlayerDetailsResponse
-  extends Omit<RankCalculatorSchema, 'rank' | 'points'> {
+export interface PlayerDetailsResponse extends Omit<
+  RankCalculatorSchema,
+  'rank' | 'points'
+> {
   currentRank?: Rank;
   hasTemplePlayerStats: boolean;
   hasTempleCollectionLog: boolean;

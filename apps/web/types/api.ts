@@ -10,5 +10,4 @@ export interface ApiError {
 }
 
 export type ApiResponse<T extends object | void = void> =
-  | ApiSuccess<T>
-  | ApiError;
+  ApiSuccess<T> | ApiError;

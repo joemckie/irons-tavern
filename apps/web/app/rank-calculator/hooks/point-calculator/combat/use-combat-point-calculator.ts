@@ -13,8 +13,7 @@ import { useBloodTorvaPoints } from './use-blood-torva-points';
 import { useDizanasQuiverPoints } from './use-dizanas-quiver-points';
 
 export interface CombatPointCalculatorData
-  extends CommonPointCalculatorData,
-    BonusPointCalculatorData {
+  extends CommonPointCalculatorData, BonusPointCalculatorData {
   combatAchievementTierPoints: number;
   ehbPoints: number;
   tzhaarCapePoints: number;
