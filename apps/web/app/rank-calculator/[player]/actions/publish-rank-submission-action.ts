@@ -87,6 +87,7 @@ export const publishRankSubmissionAction = authActionClient
           achievementDiaries,
           combatAchievementTier,
           collectionLogCount,
+          collectionLogTotal,
           totalLevel,
           joinDate,
           hasTemplePlayerStats,
@@ -100,6 +101,12 @@ export const publishRankSubmissionAction = authActionClient
           hasMaxCape,
         },
       } = playerDetails;
+
+      if (savedData.collectionLogTotal < collectionLogTotal) {
+        throw new ActionError(
+          'The in-game collection log has been updated since your last save. Please refresh the page and try again.',
+        );
+      }
 
       const { channelId } = serverConstants.discord;
       const submissionId = randomUUID();
