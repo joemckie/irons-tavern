@@ -66,7 +66,6 @@ export const config = {
 
       return true;
     },
-
     async jwt({ profile, token, account }) {
       const { guildId } = serverConstants.discord;
 
@@ -106,7 +105,6 @@ export const config = {
       return session;
     },
   },
-
   logger: {
     error: (error) => {
       console.error(error);
@@ -118,6 +116,7 @@ export const config = {
     Discord<DiscordProfile>({
       authorization:
         `https://discord.com/api${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}` as const,
+      issuer: 'https://discord.com',
     }),
   ],
 } satisfies NextAuthConfig;
