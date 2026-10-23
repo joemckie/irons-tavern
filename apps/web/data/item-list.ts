@@ -54,6 +54,7 @@ import { yama } from './item-categories/yama';
 import { zalcano } from './item-categories/zalcano';
 import { zulrah } from './item-categories/zulrah';
 import { maggotKing } from './item-categories/maggot-king';
+import { theFracturedArchive } from './item-categories/the-fractured-archive';
 
 export const itemList: ItemCategoryMap = {
   'Abyssal Sire': abyssalSire,
@@ -72,6 +73,7 @@ export const itemList: ItemCategoryMap = {
   'Desert Treasure 2': desertTreasure2,
   'Doom of Mokhaiotl': doomOfMokhaiotl,
   'Fortis Colosseum': fortisColosseum,
+  'The Fractured Archive': theFracturedArchive,
   'General Graardor': generalGraardor,
   'Grotesque Guardians': grotesqueGuardians,
   'The Gauntlet': theGauntlet,
