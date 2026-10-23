@@ -55,6 +55,7 @@ import { zalcano } from './item-categories/zalcano';
 import { zulrah } from './item-categories/zulrah';
 import { maggotKing } from './item-categories/maggot-king';
 import { madAngel } from './item-categories/mad-angel';
+import { shellbaneGryphon } from './item-categories/shellbane-gryphon';
 
 export const itemList: ItemCategoryMap = {
   'Abyssal Sire': abyssalSire,
@@ -97,6 +98,7 @@ export const itemList: ItemCategoryMap = {
   Sarachnis: sarachnis,
   Scorpia: scorpia,
   Scurrius: scurrius,
+  'Shellbane Gryphon': shellbaneGryphon,
   'Skilling Pets': skillingPets,
   Skotizo: skotizo,
   'Soul Wars': soulWars,
