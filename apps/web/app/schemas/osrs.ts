@@ -1832,7 +1832,7 @@ export const CollectionLogItemName = z.enum([
   "Alchemist's signet",
   'Broken antler',
   'Helmet of the moon',
-  'Gull (pet)',
+  'Gull',
   'Jar of Feathers',
   "Belle's folly (tarnished)",
   'Gryphon feather',

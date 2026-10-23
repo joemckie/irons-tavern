@@ -65,6 +65,19 @@ export const collectionLogItemBossNameMap: Partial<
 };
 
 /**
+ * Some items have different names on the wiki compared to the collection log.
+ *
+ * e.g. 'Gull' in the collection log is 'Gull (pet)' on the wiki.
+ *
+ * This allows for some slight variance in the naming between the collection log and the wiki.
+ */
+export const collectionLogItemWikiOverrideMap: Partial<
+  Record<CollectionLogItemName, string>
+> = {
+  Gull: 'Gull (pet)',
+};
+
+/**
  * Some unique drops don't come directly from the original source, e.g.:
  *
  * - Abyssal Sire drops Unsired at 1/100, which in turn drops loot at its own rate (e.g. 5/128 for Abyssal Orphan).

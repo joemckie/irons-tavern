@@ -1,6 +1,6 @@
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { ItemCategory } from '@/app/schemas/items';
-import {  singleItem } from '../utils/item-builders';
+import { singleItem } from '../utils/item-builders';
 
 export const madAngel: ItemCategory = {
   image: formatWikiImageUrl('Aggy chathead', 'category'),

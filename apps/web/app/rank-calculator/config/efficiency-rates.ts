@@ -54,7 +54,7 @@ export const ehbRates = {
   Sarachnis: 67,
   Scurrius: 60,
   Scorpia: 80,
-  'Shellbane Gryphon': 95,
+  'Shellbane gryphon': 95,
   'Sol Heredit': 2.8,
   Spindel: 50,
   'Soul Wars Zeal': 375,
