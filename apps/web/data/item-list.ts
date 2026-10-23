@@ -56,10 +56,12 @@ import { zulrah } from './item-categories/zulrah';
 import { maggotKing } from './item-categories/maggot-king';
 import { madAngel } from './item-categories/mad-angel';
 import { shellbaneGryphon } from './item-categories/shellbane-gryphon';
+import { amoxliatl } from './item-categories/amoxliatl';
 
 export const itemList: ItemCategoryMap = {
   'Abyssal Sire': abyssalSire,
   'Alchemical Hydra': alchemicalHydra,
+  Amoxliatl: amoxliatl,
   Araxxor: araxxor,
   'Barbarian Assault': barbarianAssault,
   'Callisto and Artio': callistoAndArtio,
