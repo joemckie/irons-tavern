@@ -304,6 +304,8 @@ export const maximumTotalLevel = skillsCount * maximumSkillLevel;
  * A complete list of collection log item names, as found on OSRSWiki.
  *
  * https://oldschool.runescape.wiki/?title=Module:Collection_log/data.json&action=raw&ctype=application%2Fjson
+ *
+ * Run the script at apps/web/scripts/copy-latest-clog-list.ts to copy the latest list of collection log item names.
  */
 export const CollectionLogItemName = z.enum([
   'Dragon spear',
@@ -1817,7 +1819,7 @@ export const CollectionLogItemName = z.enum([
   'Mimic scroll case',
   'Dom',
   'Avernic treads',
-  'Eye of Ayak (uncharged)',
+  'Eye of Ayak (uncharged)', // Wiki says this is "Eye of Ayak", but the clog is actually (uncharged)
   'Mokhaiotl cloth',
   'Mokhaiotl waystone',
   'Demon tear',
@@ -1931,6 +1933,23 @@ export const CollectionLogItemName = z.enum([
   'Water sapphire',
   'Earth emerald',
   'Fire ruby',
+  'Orion',
+  'Living record (tier 1)',
+  'Living record (tier 2)',
+  'Living record (tier 3)',
+  'Living record (tier 4)',
+  'Living record (tier 5)',
+  'Ascension shards',
+  'Fragment of living earth',
+  'Fragment of deep water',
+  'Fragment of whispering wind',
+  'Fragment of burning fire',
+  'Horn of Bran',
+  'Ascension crossbows',
+  'Obligator (uncharged)',
+  'Rondache',
+  "Archivist's folio (inert)",
+  "Zorya's tome (uncharged)",
 ]);
 
 export type CollectionLogItemName = z.infer<typeof CollectionLogItemName>;

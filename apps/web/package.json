@@ -10,7 +10,9 @@
     "test": "jest",
     "check-types": "tsc --noEmit --project tsconfig.app.json && tsc --noEmit --project tsconfig.spec.json",
     "e2e": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress open --e2e\"",
-    "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\""
+    "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\"",
+    "copy-latest-clog-list": "node scripts/copy-latest-clog-list.ts",
+    "copy-latest-temple-categories": "node scripts/copy-latest-temple-categories.ts"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.39",
@@ -73,6 +75,7 @@
     "@typescript-eslint/eslint-plugin": "^8.69.0",
     "@typescript-eslint/parser": "^8.69.0",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "clipboardy": "^5.3.2",
     "eslint": "^10.10.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "^16.3.4",
