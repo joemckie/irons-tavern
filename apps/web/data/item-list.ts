@@ -54,6 +54,7 @@ import { yama } from './item-categories/yama';
 import { zalcano } from './item-categories/zalcano';
 import { zulrah } from './item-categories/zulrah';
 import { maggotKing } from './item-categories/maggot-king';
+import { madAngel } from './item-categories/mad-angel';
 
 export const itemList: ItemCategoryMap = {
   'Abyssal Sire': abyssalSire,
@@ -82,6 +83,7 @@ export const itemList: ItemCategoryMap = {
   Kraken: kraken,
   "Kree'arra": krearra,
   "K'ril Tsutsaroth": krilTsutsaroth,
+  'The Mad Angel': madAngel,
   'Maggot King': maggotKing,
   'Major Slayer Items': majorSlayerItems,
   'Miscellaneous Items': miscellaneous,
