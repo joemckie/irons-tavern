@@ -9,6 +9,7 @@ import { ehbRates } from './efficiency-rates';
 export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
   'Ancient chest': 'Chambers of Xeric Challenge Mode',
+  'Ancient chest#Challenge Mode': 'Chambers of Xeric Challenge Mode',
   'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
   'Monumental chest': 'Theatre of Blood Hard Mode',
   'Monumental chest#Normal Mode': 'Theatre of Blood',
@@ -75,6 +76,7 @@ export const collectionLogItemBossNameMap: Partial<
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Ancient chest': 1 / 7.23,
+  'Ancient chest#Challenge Mode': 1 / 7.23,
   'Chewed bones': 1 / 42.67,
 };
 

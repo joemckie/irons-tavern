@@ -9,51 +9,63 @@ export const chambersOfXeric: ItemCategory = {
       name: 'Dexterous prayer scroll',
       image: formatWikiImageUrl('Rigour'),
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Arcane prayer scroll',
       image: formatWikiImageUrl('Augury'),
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Twisted buckler',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Dragon hunter crossbow',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: "Dinh's bulwark",
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Ancestral hat',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Ancestral robe top',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Ancestral robe bottom',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Dragon claws',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Elder maul',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Kodai insignia',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Twisted bow',
       collectionLogCategory: 'chambers_of_xeric',
+      targetDropSources: ['Ancient chest#Challenge Mode']
     }),
     singleItem({
       name: 'Twisted ancestral colour kit',
