@@ -28,6 +28,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   'Rewards Chest (Fortis Colosseum)#Wave 11': 'Sol Heredit',
   'Rewards Chest (Fortis Colosseum)#Wave 12': 'Sol Heredit',
   'Vorkath#Post-quest': 'Vorkath',
+  'Amoxliatl#Post-quest': 'Amoxliatl',
   "Chest (Bryophyta's lair)#Free-to-play": 'Bryophyta',
   "Chest (Bryophyta's lair)#Members": 'Bryophyta',
   'Branda the Fire Queen': 'The Royal Titans',
@@ -62,6 +63,19 @@ export const collectionLogItemBossNameMap: Partial<
   Record<CollectionLogItemName, keyof typeof ehbRates>
 > = {
   "Lil' Zik": 'Theatre of Blood',
+};
+
+/**
+ * Some items have different names on the wiki compared to the collection log.
+ *
+ * e.g. 'Gull' in the collection log is 'Gull (pet)' on the wiki.
+ *
+ * This allows for some slight variance in the naming between the collection log and the wiki.
+ */
+export const collectionLogItemWikiOverrideMap: Partial<
+  Record<CollectionLogItemName, string>
+> = {
+  Gull: 'Gull (pet)',
 };
 
 /**

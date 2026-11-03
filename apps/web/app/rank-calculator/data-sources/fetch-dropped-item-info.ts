@@ -5,6 +5,7 @@ import { CollectionLogItemName } from '@/app/schemas/osrs';
 import { itemList } from '@/data/item-list';
 import { CollectionLogItem, isCollectionLogItem } from '@/app/schemas/items';
 import { cacheLife } from 'next/cache';
+import { collectionLogItemWikiOverrideMap } from '../config/item-point-map';
 
 export function generateRequiredItemList() {
   return Object.values(itemList)
@@ -30,7 +31,10 @@ export const fetchItemDropRates = async (items: CollectionLogItemName[]) => {
 
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
-    const queryConditions = batch.map((item) => `{"item_name","${item}"}`);
+    const queryConditions = batch.map(
+      (item) =>
+        `{"item_name","${collectionLogItemWikiOverrideMap[item] ?? item}"}`,
+    );
     const query = `bucket("dropsline").select("drop_json").where(bucket.Or(${queryConditions.join(',')})).run()`;
 
     batches.push(query);
@@ -80,7 +84,24 @@ export const fetchItemDropRates = async (items: CollectionLogItemName[]) => {
       }),
     );
 
-    return droppedItemResponses.reduce((acc, val) => ({ ...acc, ...val }), {});
+    const mergedResponses = droppedItemResponses.reduce(
+      (acc, val) => ({ ...acc, ...val }),
+      {},
+    );
+
+    for (const [clogName, wikiPage] of Object.entries(
+      collectionLogItemWikiOverrideMap,
+    )) {
+      if (mergedResponses[wikiPage]) {
+        // Normalise the Wiki drop rate data back to the clog name
+        Object.assign(mergedResponses, {
+          [clogName]: mergedResponses[wikiPage],
+          [wikiPage]: undefined,
+        });
+      }
+    }
+
+    return mergedResponses;
   } catch (error) {
     Sentry.captureException(error);
 
