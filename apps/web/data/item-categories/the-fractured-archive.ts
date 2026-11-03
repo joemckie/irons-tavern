@@ -9,43 +9,53 @@ export const theFracturedArchive: ItemCategory = {
       name: 'Obligator',
       clogName: 'Obligator (uncharged)',
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Unique'],
     }),
     singleItem({
       name: 'Ascension crossbows',
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Unique'],
     }),
     singleItem({
       name: "Zorya's Tome",
       clogName: "Zorya's tome (uncharged)",
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Unique'],
     }),
     singleItem({
-      name: "Rondache",
+      name: 'Rondache',
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Unique'],
     }),
     singleItem({
-      name: "Horn of Bran",
+      name: 'Horn of Bran',
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Unique'],
     }),
     singleItem({
       name: 'Fragment of whispering wind',
-      collectionLogCategory: 'the_fractured_archive'
+      collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Standard'],
     }),
     singleItem({
       name: 'Fragment of deep water',
-      collectionLogCategory: 'the_fractured_archive'
+      collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Standard'],
     }),
     singleItem({
       name: 'Fragment of living earth',
-      collectionLogCategory: 'the_fractured_archive'
+      collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Standard'],
     }),
     singleItem({
       name: 'Fragment of burning fire',
-      collectionLogCategory: 'the_fractured_archive'
+      collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Standard'],
     }),
     singleItem({
       name: 'Orion',
       collectionLogCategory: 'the_fractured_archive',
+      targetDropSources: ['Chest (The Fractured Archive)#Standard'],
     }),
   ],
 };

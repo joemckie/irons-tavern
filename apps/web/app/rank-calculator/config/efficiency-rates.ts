@@ -59,6 +59,7 @@ export const ehbRates = {
   Spindel: 50,
   'Soul Wars Zeal': 375,
   'The Corrupted Gauntlet': 7.2,
+  'The Fractured Archive': 4,
   'The Gauntlet': 10,
   'The Leviathan': 27,
   'The Nightmare': 11,
