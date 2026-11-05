@@ -27,6 +27,10 @@ export const StandardRank = Rank.extract([
 
 export type StandardRank = z.infer<typeof StandardRank>;
 
+export const standardRankIndices = Object.fromEntries(
+  StandardRank.options.map((rank, index) => [rank, index + 1]),
+) as Record<StandardRank, number>;
+
 /**
  * The rank proportions are used to calculate the rank thresholds as a percentage of the total points.
  */
