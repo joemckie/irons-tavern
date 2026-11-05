@@ -8,7 +8,7 @@ export const amoxliatl: ItemCategory = {
     singleItem({
       name: 'Glacial temotli',
       collectionLogCategory: 'amoxliatl',
-      targetDropSources: ["Amoxliatl#Post-quest"],
+      targetDropSources: ['Amoxliatl#Post-quest'],
     }),
     singleItem({
       name: 'Moxi',

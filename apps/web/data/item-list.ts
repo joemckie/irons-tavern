@@ -54,6 +54,7 @@ import { yama } from './item-categories/yama';
 import { zalcano } from './item-categories/zalcano';
 import { zulrah } from './item-categories/zulrah';
 import { maggotKing } from './item-categories/maggot-king';
+import { theFracturedArchive } from './item-categories/the-fractured-archive';
 import { madAngel } from './item-categories/mad-angel';
 import { shellbaneGryphon } from './item-categories/shellbane-gryphon';
 import { amoxliatl } from './item-categories/amoxliatl';
@@ -76,6 +77,7 @@ export const itemList: ItemCategoryMap = {
   'Desert Treasure 2': desertTreasure2,
   'Doom of Mokhaiotl': doomOfMokhaiotl,
   'Fortis Colosseum': fortisColosseum,
+  'The Fractured Archive': theFracturedArchive,
   'General Graardor': generalGraardor,
   'Grotesque Guardians': grotesqueGuardians,
   'The Gauntlet': theGauntlet,

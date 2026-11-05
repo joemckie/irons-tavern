@@ -10,6 +10,8 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
   Unsired: 'Abyssal Sire',
   'Ancient chest': 'Chambers of Xeric Challenge Mode',
   'Ancient chest#Challenge Mode': 'Chambers of Xeric Challenge Mode',
+  'Chest (The Fractured Archive)#Standard': 'The Fractured Archive',
+  'Chest (The Fractured Archive)#Unique': 'The Fractured Archive',
   'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
   'Monumental chest': 'Theatre of Blood Hard Mode',
   'Monumental chest#Normal Mode': 'Theatre of Blood',
@@ -91,6 +93,7 @@ export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
   'Ancient chest': 1 / 7.23,
   'Ancient chest#Challenge Mode': 1 / 7.23,
+  'Chest (The Fractured Archive)#Unique': 1 / 14,
   'Chewed bones': 1 / 42.67,
 };
 
@@ -99,6 +102,7 @@ export const dropRateModifiers: Record<string, number> = {
  * meaning the player will only receive a fraction of the loot.
  */
 export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
+  'The Fractured Archive': 2,
   'Chambers of Xeric Challenge Mode': 3,
   Nex: 4,
   Zalcano: 4,
@@ -123,6 +127,11 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   'Oathplate chest': 0.625, // Oathplate armour can be created by the player using Oathplate shards
   'Oathplate helm': 0.625, // Oathplate armour can be created by the player using Oathplate shards
   'Oathplate legs': 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  Orion: 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
+  'Fragment of burning fire': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
+  'Fragment of deep water': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
+  'Fragment of living earth': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
+  'Fragment of whispering wind': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
 };
 
 /**
@@ -163,14 +172,20 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
   'Masori body': 1 / 144.9,
   'Masori chaps': 1 / 144.9,
   "Elidinis' ward": 1 / 96.6,
-  Lightbearer: 1 / 41.4,
   "Tumeken's guardian": 1 / 338.1,
   'Jewel of the Sun': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
   'Breach of the Scarab': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
   'Eye of the Corruptor': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
   'Jewel of Amascut': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  'Fragment of burning fire': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  'Fragment of deep water': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  'Fragment of living earth': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  'Fragment of whispering wind': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
   get "Osmumten's fang"() {
     return 1 / 41.4;
+  },
+  get Lightbearer() {
+    return this["Osmumten's fang"];
   },
   get 'Masori crafting kit'() {
     return this["Osmumten's fang"];
