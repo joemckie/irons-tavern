@@ -1,25 +1,42 @@
 import { RankStructure } from '@/app/schemas/rank-calculator';
 import { Rank } from '@/config/enums';
-import { rankProportions, StandardRank } from '@/config/ranks';
+import { rankFactors, StandardRank } from '@/config/ranks';
+import { calculateMaximumNotableItemsPoints } from './calculators/calculate-maximum-notable-items-points';
+import { calculateEffectiveCombatPoints } from './calculate-effective-combat-points';
+import { calculateEffectiveSkillingPoints } from './calculate-effective-skilling-points';
+import { calculateEffectiveCollectionLogPoints } from './calculate-effective-collection-log-points';
+import type { ItemCategory } from '@/app/schemas/items';
+import type { z } from 'zod';
 
 export const calculateRankThresholds = (
-  totalPoints: number,
+  totalCollectionLogSlots: number,
+  notableItems: [string, ItemCategory][],
 ): Record<RankStructure, Partial<Record<Rank, number>>> => {
-  const rankProportionsKeys = Object.entries(rankProportions) as [
-    keyof typeof rankProportions,
-    number,
-  ][];
+  const DerivedRank = StandardRank.exclude(['Helper', 'Steel']);
+  const standardRankPoints = {} as Record<z.infer<typeof DerivedRank>, number>;
 
-  const standardRankPoints = rankProportionsKeys.reduce(
-    (acc, [rank, proportion]) => {
-      const rankPoints = Math.ceil((totalPoints * proportion) / 1000) * 1000;
+  for (const rank of DerivedRank.options) {
+    const effectiveCombatPoints = calculateEffectiveCombatPoints(rank);
+    const effectiveSkillingPoints = calculateEffectiveSkillingPoints(rank);
+    const effectiveCollectionLogPoints = calculateEffectiveCollectionLogPoints(
+      totalCollectionLogSlots,
+      rank,
+    );
+    const effectiveNotableItemsPoints = calculateMaximumNotableItemsPoints(
+      notableItems,
+      1,
+    );
 
-      acc[rank] = rankPoints;
+    const totalEffectivePoints =
+      effectiveCombatPoints +
+      effectiveSkillingPoints +
+      effectiveCollectionLogPoints +
+      effectiveNotableItemsPoints;
+    const rankPoints =
+      Math.ceil((totalEffectivePoints * rankFactors[rank]) / 1000) * 1000;
 
-      return acc;
-    },
-    {} as Record<Exclude<StandardRank, 'Helper' | 'Steel'>, number>,
-  );
+    standardRankPoints[rank] = rankPoints;
+  }
 
   return {
     Standard: { Helper: 0, Steel: 1, ...standardRankPoints },
