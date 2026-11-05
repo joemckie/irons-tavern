@@ -13,10 +13,7 @@ export const calculateRankThresholds = (
   notableItems: [string, ItemCategory][],
 ): Record<RankStructure, Partial<Record<Rank, number>>> => {
   const DerivedRank = StandardRank.exclude(['Helper', 'Steel']);
-  const standardRankPoints: Record<
-    z.infer<typeof DerivedRank>,
-    number
-  > = {} as Record<z.infer<typeof DerivedRank>, number>;
+  const standardRankPoints = {} as Record<z.infer<typeof DerivedRank>, number>;
 
   for (const rank of DerivedRank.options) {
     const effectiveCombatPoints = calculateEffectiveCombatPoints(rank);
