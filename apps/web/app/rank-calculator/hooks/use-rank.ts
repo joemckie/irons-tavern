@@ -1,13 +1,24 @@
 import { useWatch } from 'react-hook-form';
 import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
 import { calculateRank } from '../utils/calculators/calculate-rank';
-import { useMaximumAvailablePoints } from './point-calculator/use-maximum-available-points';
+import { useItemList } from '../contexts/item-list-context';
 
 export function useRank(pointsAwarded: number) {
   const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
     name: 'rankStructure',
   });
-  const maximumAvailablePoints = useMaximumAvailablePoints();
+  const totalCollectionLogSlots = useWatch<
+    RankCalculatorSchema,
+    'collectionLogTotal'
+  >({
+    name: 'collectionLogTotal',
+  });
+  const notableItems = useItemList();
 
-  return calculateRank(maximumAvailablePoints, pointsAwarded, rankStructure);
+  return calculateRank(
+    pointsAwarded,
+    rankStructure,
+    totalCollectionLogSlots,
+    notableItems,
+  );
 }

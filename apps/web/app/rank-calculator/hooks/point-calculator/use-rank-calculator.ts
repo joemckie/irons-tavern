@@ -9,13 +9,20 @@ import { useRank } from '../use-rank';
 import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { RankData } from '../../utils/calculators/calculate-rank';
 import { calculateTotalPoints } from '../../utils/calculators/calculate-total-points';
-import { useMaximumAvailablePoints } from './use-maximum-available-points';
+import { useItemList } from '../../contexts/item-list-context';
 
 export type RankCalculatorData = CommonPointCalculatorData & RankData;
 
 export function useRankCalculator() {
   const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
     name: 'rankStructure',
+  });
+
+  const totalCollectionLogSlots = useWatch<
+    RankCalculatorSchema,
+    'collectionLogTotal'
+  >({
+    name: 'collectionLogTotal',
   });
 
   const { pointsAwarded: totalCollectionLogPoints } =
@@ -37,9 +44,12 @@ export function useRankCalculator() {
 
   const { rank, nextRank } = useRank(pointsAwarded);
 
-  const maximumAvailablePoints = useMaximumAvailablePoints();
+  const notableItems = useItemList();
 
-  const rankThresholds = calculateRankThresholds(maximumAvailablePoints);
+  const rankThresholds = calculateRankThresholds(
+    totalCollectionLogSlots,
+    notableItems,
+  );
 
   const currentRankThreshold = rankThresholds[rankStructure][rank]!;
 

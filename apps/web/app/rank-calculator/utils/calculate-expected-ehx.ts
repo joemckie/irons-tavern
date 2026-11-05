@@ -1,7 +1,8 @@
 import { standardRankIndices, type StandardRank } from '@/config/ranks';
 
-export function calculateExpectedEHP(rank: StandardRank) {
-  const maxEHP = 2000;
+/** EHB and EHP calculations are the same for now, so we use a generic EHX calculation */
+export function calculateExpectedEHX(rank: StandardRank) {
+  const maxEHX = 2000;
   const [startRank, endRank] = [
     standardRankIndices.Adamant,
     standardRankIndices.Beast,
@@ -15,5 +16,5 @@ export function calculateExpectedEHP(rank: StandardRank) {
   const input = rankIndex - startRank + 1;
   const range = endRank - startRank + 1;
 
-  return (maxEHP / range ** 2) * input ** 2;
+  return (maxEHX / range ** 2) * input ** 2;
 }
