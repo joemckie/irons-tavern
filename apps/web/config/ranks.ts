@@ -31,37 +31,21 @@ export const standardRankIndices = Object.fromEntries(
   StandardRank.options.map((rank, index) => [rank, index + 1]),
 ) as Record<StandardRank, number>;
 
-export const rankProportions = {
-  Adamant: 0.01932929399,
-  Rune: 0.03866245462,
-  Dragon: 0.07346214374,
-  Striker: 0.11599509711,
-  Expert: 0.16626131473,
-  Knight: 0.22812742873,
-  Paladin: 0.305462,
-  Legend: 0.38665934584,
-  Natural: 0.47559188471,
-  Sage: 0.5993241127,
-  TzKal: 0.77332255832,
-  Skulled: 0.96665416456,
-  Beast: 1.198651,
-} as const satisfies Record<Exclude<StandardRank, 'Helper' | 'Steel'>, number>;
-
 /**
  * The rank factors are used to calculate the rank thresholds as a percentage of the total points.
  */
 export const rankFactors = {
   Adamant: 0.01,
-  Rune: 0.03,
-  Dragon: 0.0625,
-  Striker: 0.105,
-  Expert: 0.16,
-  Knight: 0.22,
-  Paladin: 0.29,
-  Legend: 0.365,
-  Natural: 0.445,
-  Sage: 0.525,
-  TzKal: 0.63,
-  Skulled: 0.75,
-  Beast: 0.9,
+  Rune: 0.04,
+  Dragon: 0.0775,
+  Striker: 0.1275,
+  Expert: 0.1875,
+  Knight: 0.2575,
+  Paladin: 0.333,
+  Legend: 0.41,
+  Natural: 0.49,
+  Sage: 0.57,
+  TzKal: 0.6675,
+  Skulled: 0.7775,
+  Beast: 0.9125,
 } as const satisfies Record<Exclude<StandardRank, 'Helper' | 'Steel'>, number>;
