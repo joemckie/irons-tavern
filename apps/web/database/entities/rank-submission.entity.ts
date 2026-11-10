@@ -75,7 +75,7 @@ export class RankSubmissionDiff {
   hasMaxCape?: boolean;
 }
 
-@Entity()
+@Entity({ tableName: 'rank_submission' })
 export class RankSubmission {
   @PrimaryKey({ type: 'uuid' })
   id = randomUUID();

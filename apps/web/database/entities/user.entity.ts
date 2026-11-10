@@ -7,7 +7,7 @@ import {
 import { OSRSAccount } from './osrs-account';
 import { Collection, PrimaryKeyProp } from '@mikro-orm/core';
 
-@Entity()
+@Entity({ tableName: 'user' })
 export class User {
   [PrimaryKeyProp]?: 'discordId';
 

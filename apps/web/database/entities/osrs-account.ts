@@ -10,7 +10,7 @@ import { User } from './user.entity';
 import { Collection } from '@mikro-orm/core';
 import { RankSubmission } from './rank-submission.entity';
 
-@Entity()
+@Entity({ tableName: 'osrs_account' })
 export class OSRSAccount {
   @PrimaryKey({ type: 'uuid' })
   id = randomUUID();

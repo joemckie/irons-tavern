@@ -2172,6 +2172,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/migrations@npm:^7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/migrations@npm:7.2.8"
+  dependencies:
+    "@mikro-orm/sql": "npm:7.2.8"
+  peerDependencies:
+    "@mikro-orm/core": 7.2.8
+  checksum: 10c0/e1f206b543a3ebdd5bd32dc88ea9ea96221de8e5179f784c730e469571255f3ccf49cd67663c6c5a570e8b5a2d35435cd22ed16e16d8bdd51448ce790eab3464
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/postgresql@npm:^7.2.8":
   version: 7.2.8
   resolution: "@mikro-orm/postgresql@npm:7.2.8"
@@ -4464,6 +4475,7 @@ __metadata:
     "@jest/types": "npm:^30.5.1"
     "@mikro-orm/core": "npm:^7.2.8"
     "@mikro-orm/decorators": "npm:^7.2.8"
+    "@mikro-orm/migrations": "npm:^7.2.8"
     "@mikro-orm/postgresql": "npm:^7.2.8"
     "@mikro-orm/reflection": "npm:^7.2.8"
     "@next-safe-action/adapter-react-hook-form": "npm:^2.1.0"

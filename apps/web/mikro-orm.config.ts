@@ -1,6 +1,5 @@
 import 'server-only';
 
-import { MikroORM } from '@mikro-orm/core';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { User } from './database/entities/user.entity';
 import {
@@ -9,8 +8,12 @@ import {
   RankSubmissionMetadata,
 } from './database/entities/rank-submission.entity';
 import { OSRSAccount } from './database/entities/osrs-account';
+import { defineConfig } from '@mikro-orm/postgresql';
+import { Migrator } from '@mikro-orm/migrations';
 
-export const orm = await MikroORM.init({
+export default defineConfig({
+  dbName: 'irons_tavern',
+  debug: process.env.NODE_ENV !== 'production',
   entities: [
     User,
     OSRSAccount,
@@ -19,4 +22,8 @@ export const orm = await MikroORM.init({
     RankSubmissionDiff,
   ],
   metadataProvider: TsMorphMetadataProvider,
+  extensions: [Migrator],
+  migrations: {
+    migrationsList: [],
+  },
 });
