@@ -1,6 +1,7 @@
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
+import { calculateRaidsCapePoints } from '../utils/calculate-raids-cape-points';
 
 export const theatreOfBlood: ItemCategory = {
   image: formatWikiImageUrl('Verzik Vitur (final form)', 'category'),
@@ -57,6 +58,31 @@ export const theatreOfBlood: ItemCategory = {
     singleItem({
       name: "Lil' Zik",
       collectionLogCategory: 'theatre_of_blood',
+    }),
+    singleItem({
+      name: "Sinhaza shroud tier 1",
+      collectionLogCategory: 'theatre_of_blood',
+      points: calculateRaidsCapePoints(1500, 2000, 100),
+    }),
+    singleItem({
+      name: "Sinhaza shroud tier 2",
+      collectionLogCategory: 'theatre_of_blood',
+      points: calculateRaidsCapePoints(1500, 2000, 400),
+    }),
+    singleItem({
+      name: "Sinhaza shroud tier 3",
+      collectionLogCategory: 'theatre_of_blood',
+      points: calculateRaidsCapePoints(1500, 2000, 500),
+    }),
+    singleItem({
+      name: "Sinhaza shroud tier 4",
+      collectionLogCategory: 'theatre_of_blood',
+      points: calculateRaidsCapePoints(1500, 2000, 500),
+    }),
+    singleItem({
+      name: "Sinhaza shroud tier 5",
+      collectionLogCategory: 'theatre_of_blood',
+      points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
   ],
 };

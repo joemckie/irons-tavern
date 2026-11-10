@@ -1,6 +1,9 @@
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
+import { calculateRaidsCapePoints } from '../utils/calculate-raids-cape-points';
+
+const totalCapesPoints = 2000;
 
 export const chambersOfXeric: ItemCategory = {
   image: formatWikiImageUrl('Olmlet chathead', 'category'),
@@ -80,6 +83,31 @@ export const chambersOfXeric: ItemCategory = {
     singleItem({
       name: 'Olmlet',
       collectionLogCategory: 'chambers_of_xeric',
+    }),
+    singleItem({
+      name: "Xeric's guard",
+      collectionLogCategory: 'chambers_of_xeric',
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 100)
+    }),
+    singleItem({
+      name: "Xeric's warrior",
+      collectionLogCategory: 'chambers_of_xeric',
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 400)
+    }),
+    singleItem({
+      name: "Xeric's sentinel",
+      collectionLogCategory: 'chambers_of_xeric',
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
+    }),
+    singleItem({
+      name: "Xeric's general",
+      collectionLogCategory: 'chambers_of_xeric',
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
+    }),
+    singleItem({
+      name: "Xeric's champion",
+      collectionLogCategory: 'chambers_of_xeric',
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
     }),
   ],
 };

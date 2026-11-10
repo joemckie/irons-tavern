@@ -1,6 +1,7 @@
 import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
 import { ItemCategory } from '@/app/schemas/items';
 import { singleItem } from '../utils/item-builders';
+import { calculateRaidsCapePoints } from '../utils/calculate-raids-cape-points';
 
 export const theFracturedArchive: ItemCategory = {
   image: formatWikiImageUrl('Orion chathead', 'category'),
@@ -56,6 +57,31 @@ export const theFracturedArchive: ItemCategory = {
       name: 'Orion',
       collectionLogCategory: 'the_fractured_archive',
       targetDropSources: ['Chest (The Fractured Archive)#Standard'],
+    }),
+    singleItem({
+      name: 'Living record (tier 1)',
+      collectionLogCategory: 'the_fractured_archive',
+      points: calculateRaidsCapePoints(1500, 2000, 100)
+    }),
+    singleItem({
+      name: 'Living record (tier 2)',
+      collectionLogCategory: 'the_fractured_archive',
+      points: calculateRaidsCapePoints(1500, 2000, 400)
+    }),
+    singleItem({
+      name: 'Living record (tier 3)',
+      collectionLogCategory: 'the_fractured_archive',
+      points: calculateRaidsCapePoints(1500, 2000, 500)
+    }),
+    singleItem({
+      name: 'Living record (tier 4)',
+      collectionLogCategory: 'the_fractured_archive',
+      points: calculateRaidsCapePoints(1500, 2000, 500)
+    }),
+    singleItem({
+      name: 'Living record (tier 5)',
+      collectionLogCategory: 'the_fractured_archive',
+      points: calculateRaidsCapePoints(1500, 2000, 500)
     }),
   ],
 };
