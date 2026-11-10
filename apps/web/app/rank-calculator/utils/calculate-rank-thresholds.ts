@@ -26,14 +26,15 @@ export const calculateRankThresholds = (
       notableItems,
       1,
     );
+    const factor = rankFactors[rank];
 
     const totalEffectivePoints =
-      effectiveCombatPoints +
       effectiveSkillingPoints +
+      effectiveCombatPoints +
       effectiveCollectionLogPoints +
-      effectiveNotableItemsPoints;
+      (factor * effectiveNotableItemsPoints);
     const rankPoints =
-      Math.ceil((totalEffectivePoints * rankFactors[rank]) / 1000) * 1000;
+      Math.ceil((totalEffectivePoints * factor) / 1000) * 1000;
 
     standardRankPoints[rank] = rankPoints;
   }
