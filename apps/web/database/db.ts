@@ -21,6 +21,13 @@ export async function initORM(options?: Partial<Options>): Promise<Services> {
   const orm = await MikroORM.init({
     ...config,
     ...options,
+    migrations: {
+      ...config.migrations,
+      // The snapshot is only needed by the CLI when creating migrations.
+      // Writing it at runtime pollutes the repo and fails on read-only filesystems.
+      snapshot: false,
+      ...options?.migrations,
+    },
   });
 
   // Run pending migrations on startup

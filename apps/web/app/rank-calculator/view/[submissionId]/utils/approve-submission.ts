@@ -1,34 +1,23 @@
-'use server';
+import 'server-only';
 
 import { ActionError } from '@/app/action-error';
-import type { CombatAchievementTier } from '@/app/schemas/osrs';
-import type {
-  RankStructure,
-  RankSubmissionDiff,
-  RankSubmissionStatus,
-} from '@/app/schemas/rank-calculator';
 import { serverConstants } from '@/config/constants.server';
 import type { achievementDiscordRoles } from '@/config/discord-roles';
-import {
-  rankSubmissionDiffKey,
-  rankSubmissionKey,
-  rankSubmissionMetadataKey,
-  userOSRSAccountsKey,
-} from '@/config/redis';
 import { discordBotClient } from '@/discord';
-import { redis, redisRaw } from '@/redis';
+import { initORM } from '@/database/db';
+import { RankSubmission } from '@/database/entities/rank-submission.entity';
 import { Routes } from 'discord-api-types/v10';
 import { assignRankDiscordRole } from './assign-rank-discord-role';
 import { assignAchievementDiscordRoles } from './assign-achievement-discord-roles';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import dedent from 'dedent';
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import type { Player } from '@/app/schemas/player';
 import type { Rank } from '@/config/enums';
 import * as Sentry from '@sentry/node';
+import type { UUID } from 'node:crypto';
 
 type ApproveSubmissionInput = {
-  submissionId: string;
+  submissionId: UUID;
   rank: Rank;
 } & (
   | {
@@ -47,69 +36,46 @@ export async function approveSubmission({
   approverId,
   isAutomatic = false,
 }: ApproveSubmissionInput) {
-  const metadata = (await redisRaw.hmget(
-    rankSubmissionMetadataKey(submissionId),
-    'status',
-    'discordMessageId',
-    'submittedBy',
-    'hasWikiSyncData',
-  )) as unknown as [RankSubmissionStatus, string, string, string];
+  const { em } = await initORM();
+  const submission = await em.findOne(
+    RankSubmission,
+    { id: submissionId },
+    {
+      populate: ['osrsAccount'],
+    },
+  );
 
-  if (!metadata) {
-    throw new ActionError('Unable to find submission metadata');
+  if (!submission) {
+    throw new ActionError('Unable to find submission');
   }
 
-  const [submissionStatus, messageId, submitterId, hasWikiSyncData] = metadata;
+  const {
+    status: submissionStatus,
+    discordMessageId: messageId,
+    submittedBy: submitterId,
+    hasWikiSyncData,
+  } = submission.metadata;
 
   if (submissionStatus !== 'Pending') {
     throw new ActionError('Submission does not need to be moderated!');
   }
 
-  const submissionData = await redis.json.get<{
-    '$.playerName': [string];
-    '$.rankStructure': [RankStructure];
-    '$.combatAchievementTier': [CombatAchievementTier];
-    '$.hasBloodTorva': [boolean];
-  }>(
-    rankSubmissionKey(submissionId),
-    '$.rankStructure',
-    '$.playerName',
-    '$.combatAchievementTier',
-    '$.hasBloodTorva',
-  );
-
-  if (!submissionData) {
-    throw new ActionError('Unable to find submission data for application');
-  }
-
   const {
-    '$.playerName': [playerName],
-    '$.rankStructure': [rankStructure],
-    '$.combatAchievementTier': [combatAchievementTier],
-    '$.hasBloodTorva': [isBloodTorvaChecked],
-  } = submissionData;
-
-  const submissionDiff = await redis.hmget<
-    Pick<RankSubmissionDiff, 'combatAchievementTier' | 'hasBloodTorva'>
-  >(
-    rankSubmissionDiffKey(submissionId),
-    'combatAchievementTier',
-    'hasBloodTorva',
-  );
-
-  if (!submissionDiff) {
-    throw new ActionError('Unable to find submission diff for application');
-  }
-
-  const {
-    combatAchievementTier: combatAchievementTierDiscrepancy,
-    hasBloodTorva: hasBloodTorvaDiscrepancy,
-  } = submissionDiff;
+    data: {
+      rankStructure,
+      combatAchievementTier,
+      hasBloodTorva: isBloodTorvaChecked,
+    },
+    diff: {
+      combatAchievementTier: combatAchievementTierDiscrepancy,
+      hasBloodTorva: hasBloodTorvaDiscrepancy,
+    },
+  } = submission;
 
   // If the player has WikiSync data available and has the Grandmaster CA tier,
   // they can be assigned the Grandmaster role.
   const isVerifiedGrandmaster =
-    hasWikiSyncData === 'true' &&
+    hasWikiSyncData &&
     combatAchievementTier === 'Grandmaster' &&
     !combatAchievementTierDiscrepancy;
 
@@ -117,9 +83,7 @@ export async function approveSubmission({
   // they can be assigned the Blood Torva role.
   // This item is based on multiple combat achievements that are available via WikiSync.
   const hasVerifiedAncientBloodOrnamentKit =
-    hasWikiSyncData === 'true' &&
-    isBloodTorvaChecked &&
-    !hasBloodTorvaDiscrepancy;
+    hasWikiSyncData && isBloodTorvaChecked && !hasBloodTorvaDiscrepancy;
 
   const applicableAchievementDiscordRoles = {
     'Blood Torva': hasVerifiedAncientBloodOrnamentKit,
@@ -189,16 +153,11 @@ export async function approveSubmission({
     );
   }
 
-  const playerRecord = (await redis.hget(
-    userOSRSAccountsKey(submitterId),
-    playerName.toLowerCase(),
-  ))!;
+  const playerRecord = submission.osrsAccount;
 
   if (!playerRecord) {
     throw new ActionError('Unable to find player record!');
   }
-
-  const transaction = redis.multi();
 
   const actionedBy = isAutomatic ? 'System' : approverId;
 
@@ -208,22 +167,19 @@ export async function approveSubmission({
     throw new ActionError('Something went wrong while approving submission');
   }
 
-  transaction.hset<string>(rankSubmissionMetadataKey(submissionId), {
+  em.assign(submission.metadata, {
     status: 'Approved',
     actionedBy,
-    automaticApproval: isAutomatic ? 'true' : 'false',
+    automaticApproval: isAutomatic,
   });
 
-  transaction.hset<Omit<Player, 'joinDate' | 'rsn' | 'isMobileOnly'>>(
-    userOSRSAccountsKey(submitterId),
-    {
-      [playerName.toLowerCase()]: { ...playerRecord, rank },
-    },
-  );
+  em.assign(playerRecord, { rank });
 
-  const result = await transaction.exec();
+  try {
+    await em.flush();
+  } catch (error) {
+    Sentry.captureException(error);
 
-  if (!result) {
     throw new ActionError('Unable to persist approval to database');
   }
 

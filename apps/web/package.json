@@ -33,7 +33,6 @@
     "@sentry/nextjs": "^10.73.0",
     "@spotlightjs/spotlight": "^4.11.8",
     "@tanstack/react-query": "^5.102.8",
-    "@upstash/redis": "^1.38.4",
     "@vercel/blob": "^2.8.0",
     "@vercel/speed-insights": "^2.0.0",
     "chalk": "^6.0.0",

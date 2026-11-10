@@ -4699,7 +4699,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.69.0"
     "@typescript-eslint/parser": "npm:^8.69.0"
     "@typescript/native": "npm:typescript@^7.0.2"
-    "@upstash/redis": "npm:^1.38.4"
     "@vercel/blob": "npm:^2.8.0"
     "@vercel/speed-insights": "npm:^2.0.0"
     chalk: "npm:^6.0.0"
@@ -6838,15 +6837,6 @@ __metadata:
   version: 1.7.2
   resolution: "@unrs/resolver-binding-win32-x64-msvc@npm:1.7.2"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@upstash/redis@npm:^1.38.4":
-  version: 1.38.4
-  resolution: "@upstash/redis@npm:1.38.4"
-  dependencies:
-    uncrypto: "npm:^0.1.3"
-  checksum: 10c0/5de40d3450c6bf86dd7f59ce82edeba5e21f21271c90d9f949c78fb4a931592edd10171ea8356399a85d3fe4e43ec254437eb3a735767aa400c80bd7a40f93f3
   languageName: node
   linkType: hard
 
@@ -14879,13 +14869,6 @@ __metadata:
     has-symbols: "npm:^1.1.0"
     which-boxed-primitive: "npm:^1.1.1"
   checksum: 10c0/7dbd35ab02b0e05fe07136c72cb9355091242455473ec15057c11430129bab38b7b3624019b8778d02a881c13de44d63cd02d122ee782fb519e1de7775b5b982
-  languageName: node
-  linkType: hard
-
-"uncrypto@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "uncrypto@npm:0.1.3"
-  checksum: 10c0/74a29afefd76d5b77bedc983559ceb33f5bbc8dada84ff33755d1e3355da55a4e03a10e7ce717918c436b4dfafde1782e799ebaf2aadd775612b49f7b5b2998e
   languageName: node
   linkType: hard
 

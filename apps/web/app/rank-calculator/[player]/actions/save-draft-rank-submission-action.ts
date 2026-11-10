@@ -1,19 +1,27 @@
 'use server';
 
-import { userDraftRankSubmissionKey } from '@/config/redis';
-import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
+import { ActionError } from '@/app/action-error';
+import { initORM } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
+import { DraftRankSubmission } from '@/database/entities/draft-rank-submission.entity';
 import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
 
 export const saveDraftRankSubmissionAction = authActionClient
   .metadata({ actionName: 'save-draft-rank-submission' })
   .inputSchema(RankCalculatorSchema.omit({ rank: true, points: true }))
   .action(async ({ parsedInput: data, ctx: { userId } }) => {
-    const result = await redis.json.set(
-      userDraftRankSubmissionKey(userId, data.playerName),
-      '$',
-      data,
-    );
+    const { em } = await initORM();
+    const account = await em.findOne(OSRSAccount, {
+      user: userId,
+      name: data.playerName,
+    });
 
-    return { success: !!result };
+    if (!account) {
+      throw new ActionError('Unable to find player record');
+    }
+
+    await em.upsert(DraftRankSubmission, { osrsAccount: account, data });
+
+    return { success: true };
   });

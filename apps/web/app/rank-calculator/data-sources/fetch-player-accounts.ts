@@ -15,8 +15,12 @@ export async function fetchPlayerAccounts() {
 
     const { em } = await initORM();
 
-    return em.find(OSRSAccount, {
-      user: { discordId: session.user.id },
-    });
+    const accounts = await em.find(
+      OSRSAccount,
+      { user: session.user.id },
+      { orderBy: { name: 'asc' } },
+    );
+
+    return accounts.map((account) => account.toPlayer());
   });
 }

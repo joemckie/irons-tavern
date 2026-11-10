@@ -9,6 +9,7 @@ import {
 } from '../data-sources/fetch-dropped-item-info';
 import { buildNotableItemList } from '../utils/build-notable-item-list';
 import { connection } from 'next/server';
+import { withRequestContext } from '@/database/db';
 
 export const instant = false;
 
@@ -31,7 +32,7 @@ export default async function RankCalculatorPage({
   const { id: userId } = session.user;
 
   const [playerDetails, dropRates] = await Promise.all([
-    fetchPlayerDetails(decodedPlayer, userId),
+    withRequestContext(() => fetchPlayerDetails(decodedPlayer, userId)),
     fetchItemDropRates([...generateRequiredItemList()]),
   ]);
 

@@ -1,5 +1,4 @@
 import { clientConstants } from '@/config/constants.client';
-import { serverConstants } from '@/config/constants.server';
 import { delay, http, HttpResponse, passthrough } from 'msw';
 import { WikiSyncResponse } from '@/app/schemas/wiki';
 import { ClanMember } from '@/app/schemas/inactivity-checker';
@@ -9,6 +8,7 @@ import * as templePlayerStats from './temple-player-stats';
 import { memberListFixture } from './misc/member-list';
 import { combatAchievementListFixture } from './wiki-data/combat-achievement-list';
 import { combatAchievementTierFixture } from './wiki-data/combat-achievement-tiers';
+import { serverConstants } from '@/config/constants.server';
 
 const templePlayerStatsHandler = http.get(
   'https://templeosrs.com/api/player_stats.php',
@@ -96,7 +96,7 @@ const passthroughHandlers = [
   'https://discord.com/api/users/@me',
   'https://discord.com/api/oauth2/token',
   'https://discord.com/api/v10/channels/*/messages',
-  `${serverConstants.redisUrl}/*`,
+  `${serverConstants.postgresUrl}/*`,
   'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json',
   'https://*.sentry.io/*',
   'https://telemetry.nextjs.org/*',

@@ -3,6 +3,87 @@
   "namespaces": ["public"],
   "tables": [
     {
+      "name": "draft_rank_submission",
+      "schema": "public",
+      "columns": {
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "osrs_account_id": {
+          "name": "osrs_account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "indexes": [
+        {
+          "columnNames": ["osrs_account_id"],
+          "composite": false,
+          "constraint": true,
+          "keyName": "draft_rank_submission_pkey",
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "triggers": [],
+      "foreignKeys": {
+        "draft_rank_submission_osrs_account_id_foreign": {
+          "columnNames": ["osrs_account_id"],
+          "constraintName": "draft_rank_submission_osrs_account_id_foreign",
+          "localTableName": "public.draft_rank_submission",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.osrs_account",
+          "updateRule": "cascade",
+          "deleteRule": "cascade"
+        }
+      },
+      "comment": null
+    },
+    {
       "name": "osrs_account",
       "schema": "public",
       "columns": {
@@ -23,13 +104,98 @@
           "enumItems": [],
           "mappedType": "uuid"
         },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
+        "is_mobile_only": {
+          "name": "is_mobile_only",
+          "type": "boolean",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "false",
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "is_name_invalid": {
+          "name": "is_name_invalid",
+          "type": "boolean",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "false",
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "join_date": {
+          "name": "join_date",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "last_notified_rank": {
+          "name": "last_notified_rank",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "citext",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "unknown"
+        },
+        "rank": {
+          "name": "rank",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "unique": false,
           "length": 255,
           "precision": null,
@@ -47,7 +213,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "unique": false,
+          "unique": true,
           "length": 255,
           "precision": null,
           "scale": null,
@@ -66,6 +232,14 @@
           "keyName": "osrs_account_pkey",
           "primary": true,
           "unique": true
+        },
+        {
+          "columnNames": ["user_discord_id", "name"],
+          "composite": true,
+          "constraint": true,
+          "keyName": "osrs_account_user_discord_id_name_unique",
+          "primary": false,
+          "unique": true
         }
       ],
       "checks": [],
@@ -82,9 +256,80 @@
       "comment": null
     },
     {
+      "name": "player_game_mode",
+      "schema": "public",
+      "columns": {
+        "game_mode": {
+          "name": "game_mode",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "player_name": {
+          "name": "player_name",
+          "type": "citext",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "unknown"
+        }
+      },
+      "indexes": [
+        {
+          "columnNames": ["player_name"],
+          "composite": false,
+          "constraint": true,
+          "keyName": "player_game_mode_pkey",
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "triggers": [],
+      "foreignKeys": {},
+      "comment": null
+    },
+    {
       "name": "rank_submission",
       "schema": "public",
       "columns": {
+        "data": {
+          "name": "data",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "collation": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
         "diff": {
           "name": "diff",
           "type": "jsonb",
@@ -142,7 +387,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "unique": false,
           "length": null,
           "precision": null,
@@ -172,7 +417,8 @@
           "constraintName": "rank_submission_osrs_account_id_foreign",
           "localTableName": "public.rank_submission",
           "referencedColumnNames": ["id"],
-          "referencedTableName": "public.osrs_account"
+          "referencedTableName": "public.osrs_account",
+          "deleteRule": "set null"
         }
       },
       "comment": null

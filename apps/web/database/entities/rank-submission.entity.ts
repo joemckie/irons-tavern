@@ -1,16 +1,24 @@
 import type { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import type { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
 import { defineEntity, p } from '@mikro-orm/core';
 import { randomUUID } from 'node:crypto';
 import { OSRSAccount } from './osrs-account';
 
+/**
+ * The rank calculator form data, as saved by the user
+ */
+export type RankSubmissionData = Omit<RankCalculatorSchema, 'rank' | 'points'>;
+
 const RankSubmissionMetadataSchema = defineEntity({
   name: 'RankSubmissionMetadata',
   embeddable: true,
   properties: {
+    status: p.enum(() => RankSubmissionStatus.enum),
     discordMessageId: p.string(),
     submittedBy: p.string(),
-    submittedAt: p.date(),
+    submittedAt: p.datetime(),
     actionedBy: p.string().nullable(),
     hasTemplePlayerStats: p.boolean(),
     hasTempleCollectionLog: p.boolean(),
@@ -29,8 +37,8 @@ const RankSubmissionDiffSchema = defineEntity({
   name: 'RankSubmissionDiff',
   embeddable: true,
   properties: {
-    achievementDiaries: p.json(),
-    acquiredItems: p.json().nullable(),
+    achievementDiaries: p.json<AchievementDiaryMap>().nullable(),
+    acquiredItems: p.json<string[]>().nullable(),
     combatAchievementTier: p.enum(() => CombatAchievementTier.enum).nullable(),
     totalLevel: p.integer().nullable(),
     collectionLogCount: p.integer().nullable(),
@@ -42,9 +50,7 @@ const RankSubmissionDiffSchema = defineEntity({
   },
 });
 
-export class RankSubmissionDiff extends RankSubmissionDiffSchema.class {
-  achievementDiaries!: AchievementDiaryMap;
-}
+export class RankSubmissionDiff extends RankSubmissionDiffSchema.class {}
 
 RankSubmissionDiffSchema.setClass(RankSubmissionDiff);
 
@@ -53,14 +59,17 @@ const RankSubmissionSchema = defineEntity({
   tableName: 'rank_submission',
   properties: {
     id: p.uuid().primary(),
+    data: p.json<RankSubmissionData>(),
     metadata: p.embedded(RankSubmissionMetadata).object(true),
     diff: p.embedded(RankSubmissionDiff).object(true),
-    osrsAccount: () => p.manyToOne(OSRSAccount),
+    // Submissions are kept for posterity when the account is deleted
+    osrsAccount: () =>
+      p.manyToOne(OSRSAccount).nullable().deleteRule('set null'),
   },
 });
 
 export class RankSubmission extends RankSubmissionSchema.class {
-  id = randomUUID();
+  id: string = randomUUID();
 }
 
 RankSubmissionSchema.setClass(RankSubmission);

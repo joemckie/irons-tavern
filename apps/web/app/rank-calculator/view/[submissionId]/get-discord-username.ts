@@ -2,7 +2,7 @@ import { serverConstants } from '@/config/constants.server';
 import { discordBotClient } from '@/discord';
 import { APIGuildMember, Routes } from 'discord-api-types/v10';
 
-export async function getDiscordUsername(userId: string | null) {
+export async function getDiscordUsername(userId: string | null | undefined) {
   if (!userId) {
     return null;
   }
