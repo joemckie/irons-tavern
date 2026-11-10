@@ -2,19 +2,14 @@
 
 import { z } from 'zod';
 import { formatNumber } from '@/app/rank-calculator/utils/format-number';
-import {
-  rankSubmissionDiffKey,
-  rankSubmissionKey,
-  rankSubmissionMetadataKey,
-  userDraftRankSubmissionKey,
-  userRankSubmissionsKey,
-} from '@/config/redis';
 import { randomUUID } from 'crypto';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { format } from 'date-fns';
-import { redis } from '@/redis';
+import { initORM } from '@/database/db';
+import { DraftRankSubmission } from '@/database/entities/draft-rank-submission.entity';
+import { RankSubmission } from '@/database/entities/rank-submission.entity';
 import { authActionClient } from '@/app/safe-action';
 import {
   AchievementDiaryMap,
@@ -45,7 +40,6 @@ import { formatPercentage } from '../../utils/format-percentage';
 import { getRankName } from '../../utils/get-rank-name';
 import { getRankImageUrl } from '../../utils/get-rank-image-url';
 import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
-import { RankCalculatorSchema } from '../submit-rank-calculator-validation';
 import { normaliseEntityName } from '../../utils/normalise-entity-name';
 import { approveSubmission } from '../../view/[submissionId]/utils/approve-submission';
 
@@ -65,13 +59,16 @@ export const publishRankSubmissionAction = authActionClient
         throw new ActionError('You already have this rank!');
       }
 
-      const savedData = await redis.json.get<RankCalculatorSchema>(
-        userDraftRankSubmissionKey(userId, playerName),
-      );
+      const { em } = await initORM();
+      const draft = await em.findOne(DraftRankSubmission, {
+        osrsAccount: { user: userId, name: playerName },
+      });
 
-      if (!savedData) {
+      if (!draft) {
         throw new ActionError('No saved data!');
       }
+
+      const { data: savedData, osrsAccount } = draft;
 
       const playerDetails = await fetchPlayerDetails(playerName, userId, false);
 
@@ -292,38 +289,30 @@ export const publishRankSubmissionAction = authActionClient
         hasTemplePlayerStats &&
         isEmpty(pickBy(submissionDiff, (val) => !isEmpty(val)));
 
-      const submissionTransaction = redis.multi();
+      em.create(RankSubmission, {
+        id: submissionId,
+        osrsAccount,
+        data: savedData,
+        metadata: {
+          discordMessageId,
+          status: 'Pending',
+          submittedBy: userId,
+          submittedAt: new Date(),
+          actionedBy: null,
+          hasTemplePlayerStats,
+          hasTempleCollectionLog,
+          hasWikiSyncData,
+          isTempleCollectionLogOutdated,
+          automaticApproval: null,
+        } satisfies RankSubmissionMetadata,
+        diff: submissionDiff,
+      });
 
-      submissionTransaction.copy(
-        userDraftRankSubmissionKey(userId, playerName),
-        rankSubmissionKey(submissionId),
-      );
+      try {
+        await em.flush();
+      } catch (error) {
+        Sentry.captureException(error);
 
-      submissionTransaction.lpush(
-        userRankSubmissionsKey(userId, playerName),
-        rankSubmissionKey(submissionId),
-      );
-
-      submissionTransaction.hset(rankSubmissionMetadataKey(submissionId), {
-        discordMessageId,
-        status: 'Pending',
-        submittedBy: userId,
-        submittedAt: new Date(),
-        actionedBy: null,
-        hasTemplePlayerStats,
-        hasTempleCollectionLog,
-        hasWikiSyncData,
-        isTempleCollectionLogOutdated,
-      } satisfies RankSubmissionMetadata);
-
-      submissionTransaction.hset(
-        rankSubmissionDiffKey(submissionId),
-        submissionDiff,
-      );
-
-      const submissionResult = await submissionTransaction.exec();
-
-      if (!submissionResult) {
         await discordBotClient.delete(
           Routes.channelMessage(channelId, discordMessageId),
         );

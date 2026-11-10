@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { auth } from '@/auth';
 import { ActionError } from './action-error';
 import { connection } from 'next/server';
+import { withRequestContext } from '@/database/db';
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
@@ -24,11 +25,8 @@ export const actionClient = createSafeActionClient({
     return z.object({ actionName: z.string() });
   },
 })
-  .use(async ({ next }) => {
-    const result = await next();
-
-    return result;
-  })
+  // Give every action its own forked entity manager
+  .use(async ({ next }) => withRequestContext(() => next()))
   .use(async ({ next, metadata }) =>
     Sentry.withServerActionInstrumentation(
       metadata.actionName,
@@ -47,6 +45,10 @@ export const authActionClient = actionClient.use(async ({ next }) => {
   }
 
   return next({
-    ctx: { userId: session.user.id, permissions: session.user.permissions },
+    ctx: {
+      userId: session.user.id,
+      userName: session.user.name ?? session.user.id,
+      permissions: session.user.permissions,
+    },
   });
 });

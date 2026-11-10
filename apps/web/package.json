@@ -12,7 +12,9 @@
     "e2e": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress open --e2e\"",
     "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\"",
     "copy-latest-clog-list": "node scripts/copy-latest-clog-list.ts",
-    "copy-latest-temple-categories": "node scripts/copy-latest-temple-categories.ts"
+    "copy-latest-temple-categories": "node scripts/copy-latest-temple-categories.ts",
+    "migration:create": "node --env-file=.env.local ../../node_modules/.bin/mikro-orm migration:create",
+    "migrate-redis-to-postgres": "tsx --env-file=.env.local scripts/migrate-redis-to-postgres.ts"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.39",
@@ -20,6 +22,11 @@
     "@discordjs/rest": "^2.6.3",
     "@hookform/error-message": "^2.0.1",
     "@hookform/resolvers": "^5.9.1",
+    "@mikro-orm/core": "^7.2.8",
+    "@mikro-orm/decorators": "^7.2.8",
+    "@mikro-orm/migrations": "^7.2.8",
+    "@mikro-orm/postgresql": "^7.2.8",
+    "@mikro-orm/reflection": "^7.2.8",
     "@next-safe-action/adapter-react-hook-form": "^2.1.0",
     "@radix-ui/react-avatar": "^1.2.6",
     "@radix-ui/react-icons": "^1.3.2",
@@ -27,7 +34,6 @@
     "@sentry/nextjs": "^10.73.0",
     "@spotlightjs/spotlight": "^4.11.8",
     "@tanstack/react-query": "^5.102.8",
-    "@upstash/redis": "^1.38.4",
     "@vercel/blob": "^2.8.0",
     "@vercel/speed-insights": "^2.0.0",
     "chalk": "^6.0.0",
@@ -57,6 +63,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@jest/types": "^30.5.1",
+    "@mikro-orm/cli": "^7.2.8",
     "@next/eslint-plugin-next": "^16.3.4",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@testing-library/cypress": "^10.1.3",
@@ -94,6 +101,7 @@
     "start-server-and-test": "^3.0.12",
     "tailwindcss": "^4.3.3",
     "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
     "turbo": "^2.10.12",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.69.0"

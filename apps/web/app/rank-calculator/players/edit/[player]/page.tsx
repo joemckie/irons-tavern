@@ -1,9 +1,8 @@
 import * as Sentry from '@sentry/nextjs';
 import { list } from '@vercel/blob';
 import { ClanMemberList } from '@/app/schemas/inactivity-checker';
-import { redis } from '@/redis';
-import { Player } from '@/app/schemas/player';
-import { userOSRSAccountsKey } from '@/config/redis';
+import { initORM, withRequestContext } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { EditPlayerForm } from './edit-player-form';
@@ -43,16 +42,23 @@ export default async function RankCalculatorEditPlayerPage({
   }
 
   const { player } = await params;
-  const playerRecord = await redis.hget<Player>(
-    userOSRSAccountsKey(session.user.id),
-    decodeURIComponent(player).toLowerCase(),
-  );
+  const userId = session.user.id;
+  const account = await withRequestContext(async () => {
+    const { em } = await initORM();
 
-  if (!playerRecord) {
+    return em.findOne(OSRSAccount, {
+      user: userId,
+      name: decodeURIComponent(player),
+    });
+  });
+
+  if (!account) {
     redirect('/rank-calculator');
   }
 
   const memberList = await getLatestMemberList();
 
-  return <EditPlayerForm members={memberList} playerRecord={playerRecord} />;
+  return (
+    <EditPlayerForm members={memberList} playerRecord={account.toPlayer()} />
+  );
 }

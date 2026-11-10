@@ -1,21 +1,26 @@
 import { auth } from '@/auth';
-import { userOSRSAccountsKey } from '@/config/redis';
-import { redis } from '@/redis';
-import { Player } from '@/app/schemas/player';
 import { connection } from 'next/server';
+import { initORM, withRequestContext } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
 
 export async function fetchPlayerAccounts() {
   await connection();
 
-  const session = await auth();
+  return withRequestContext(async () => {
+    const session = await auth();
 
-  if (!session?.user?.id) {
-    return {};
-  }
+    if (!session?.user?.id) {
+      return [];
+    }
 
-  const accounts = await redis.hgetall<Record<string, Player>>(
-    userOSRSAccountsKey(session.user.id),
-  );
+    const { em } = await initORM();
 
-  return accounts ?? {};
+    const accounts = await em.find(
+      OSRSAccount,
+      { user: session.user.id },
+      { orderBy: { name: 'asc' } },
+    );
+
+    return accounts.map((account) => account.toPlayer());
+  });
 }

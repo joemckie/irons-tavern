@@ -19,7 +19,7 @@ import { deletePlayerAccountAction } from './actions/delete-player-account-actio
 import { DeleteSubmissionButton } from './components/delete-submission-button';
 
 interface PlayerListProps {
-  accounts: Record<string, Player>;
+  accounts: Player[];
 }
 
 export function PlayerList({ accounts }: PlayerListProps) {
@@ -27,10 +27,10 @@ export function PlayerList({ accounts }: PlayerListProps) {
     deletePlayerAccountAction,
     {
       currentState: accounts,
-      updateFn(state, id) {
-        const { [id]: _removedAccount, ...newAccounts } = state;
-
-        return newAccounts;
+      updateFn(state, playerName) {
+        return state.filter(
+          ({ rsn }) => rsn.toLowerCase() !== playerName.toLowerCase(),
+        );
       },
       onError({ error: { serverError } }) {
         if (serverError) {
@@ -42,53 +42,51 @@ export function PlayerList({ accounts }: PlayerListProps) {
 
   return (
     <Flex direction="column" gap="4" width="330px">
-      {Object.values(optimisticState).map(
-        ({ rsn, joinDate, isNameInvalid }) => (
-          <Card key={rsn}>
-            <Flex align="center" justify="between">
-              <Box>
-                <Text as="p" weight="bold">
-                  {rsn}
-                </Text>
-                <Text as="p" size="2" color="gray">
-                  Joined {format(joinDate, 'dd MMM yyyy')}
-                </Text>
-              </Box>
-              <Flex gap="2">
-                <DeleteSubmissionButton
-                  deletePlayerAccountAction={execute}
-                  playerName={rsn}
-                />
-                <Tooltip content="Edit">
-                  <IconButton asChild variant="soft" color="gray">
-                    <Link
-                      href={`/rank-calculator/players/edit/${rsn.toLowerCase()}`}
-                    >
-                      <Pencil1Icon />
-                    </Link>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip content="Go to calculator">
-                  <IconButton asChild disabled={isNameInvalid} variant="soft">
-                    <Link
-                      href={`/rank-calculator/${rsn.toLowerCase()}`}
-                      style={{
-                        ...(isNameInvalid
-                          ? {
-                              pointerEvents: 'none',
-                            }
-                          : {}),
-                      }}
-                    >
-                      <ChevronRightIcon />
-                    </Link>
-                  </IconButton>
-                </Tooltip>
-              </Flex>
+      {optimisticState.map(({ rsn, joinDate, isNameInvalid }) => (
+        <Card key={rsn}>
+          <Flex align="center" justify="between">
+            <Box>
+              <Text as="p" weight="bold">
+                {rsn}
+              </Text>
+              <Text as="p" size="2" color="gray">
+                Joined {format(joinDate, 'dd MMM yyyy')}
+              </Text>
+            </Box>
+            <Flex gap="2">
+              <DeleteSubmissionButton
+                deletePlayerAccountAction={execute}
+                playerName={rsn}
+              />
+              <Tooltip content="Edit">
+                <IconButton asChild variant="soft" color="gray">
+                  <Link
+                    href={`/rank-calculator/players/edit/${rsn.toLowerCase()}`}
+                  >
+                    <Pencil1Icon />
+                  </Link>
+                </IconButton>
+              </Tooltip>
+              <Tooltip content="Go to calculator">
+                <IconButton asChild disabled={isNameInvalid} variant="soft">
+                  <Link
+                    href={`/rank-calculator/${rsn.toLowerCase()}`}
+                    style={{
+                      ...(isNameInvalid
+                        ? {
+                            pointerEvents: 'none',
+                          }
+                        : {}),
+                    }}
+                  >
+                    <ChevronRightIcon />
+                  </Link>
+                </IconButton>
+              </Tooltip>
             </Flex>
-          </Card>
-        ),
-      )}
+          </Flex>
+        </Card>
+      ))}
       <Button asChild size="3" variant="soft">
         <Link href="/rank-calculator/players/add">Add new player</Link>
       </Button>

@@ -25,9 +25,9 @@ import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/ca
 import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
 import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
 import { clientConstants } from '@/config/constants.client';
-import { rankUpMessagesKey } from '@/config/redis';
 import { discordBotClient } from '@/discord';
-import { redis } from '@/redis';
+import { initORM, withRequestContext } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
 import {
   fetchItemDropRates,
   generateRequiredItemList,
@@ -40,6 +40,10 @@ import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculato
 import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
 
 export async function GET(request: NextRequest) {
+  return withRequestContext(() => checkAutoRank(request));
+}
+
+async function checkAutoRank(request: NextRequest) {
   try {
     const player = z
       .string({ error: 'Player is required' })
@@ -159,11 +163,14 @@ export async function GET(request: NextRequest) {
     );
 
     if (rank !== currentRank) {
-      const hashKey = `${discordId}:${player.toLowerCase()}`;
-      const previousMessageRank = await redis.hget(rankUpMessagesKey, hashKey);
+      const { em } = await initORM();
+      const account = await em.findOneOrFail(OSRSAccount, {
+        user: discordId,
+        name: player,
+      });
 
       // Send a message if the user has not been notified of this rank in the past
-      if (previousMessageRank !== rank) {
+      if (account.lastNotifiedRank !== rank) {
         const { id: dmChannelId } = (await discordBotClient.post(
           Routes.userChannels(),
           { body: { recipient_id: discordId } },
@@ -193,7 +200,9 @@ export async function GET(request: NextRequest) {
           dmChannelId,
         );
 
-        await redis.hset(rankUpMessagesKey, { [hashKey]: rank });
+        account.lastNotifiedRank = rank;
+
+        await em.flush();
       }
     }
 
