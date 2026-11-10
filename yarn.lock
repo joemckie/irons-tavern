@@ -2147,6 +2147,70 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/core@npm:^7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/core@npm:7.2.8"
+  peerDependencies:
+    dataloader: 2.2.3
+  peerDependenciesMeta:
+    dataloader:
+      optional: true
+  checksum: 10c0/2e79cb3c578ae2d8a1a4bf16a748a2678e9ad0af3a081914f79000bec84e1355ca48b32f8c6409dd14dbd73895203b75d0bb586451a438fbfd1969598cd8e47b
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/decorators@npm:^7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/decorators@npm:7.2.8"
+  peerDependencies:
+    "@mikro-orm/core": 7.2.8
+    reflect-metadata: ^0.1.0 || ^0.2.0
+  peerDependenciesMeta:
+    reflect-metadata:
+      optional: true
+  checksum: 10c0/2fd7f2331c3f1dd59cafb985e8551a57a3f830e20b5b504f0285918d36845f9ae83f5e9b82bf8111dca05e0c61197dbba3da981f62fad7cbc374bcf2eddf20fa
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/postgresql@npm:^7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/postgresql@npm:7.2.8"
+  dependencies:
+    "@mikro-orm/sql": "npm:7.2.8"
+    kysely: "npm:0.29.8"
+    pg: "npm:8.23.1"
+    pg-cursor: "npm:2.22.1"
+    postgres-array: "npm:3.0.4"
+    postgres-date: "npm:2.1.0"
+    postgres-interval: "npm:4.1.0"
+  peerDependencies:
+    "@mikro-orm/core": 7.2.8
+  checksum: 10c0/44ddff098757ae8307a1b173a71100430d0abf58cbb073c2354aed2a0907daffc1264927c69198fe7ca6724cd58288e63572f0cfe3778eca4a399c84f3afa38e
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/reflection@npm:^7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/reflection@npm:7.2.8"
+  dependencies:
+    ts-morph: "npm:28.0.0"
+  peerDependencies:
+    "@mikro-orm/core": 7.2.8
+  checksum: 10c0/2664b9e5bfa2d80e7574d8c8ac71e66458d689c69b4c1f6e42f9876486089ef021562a44bacbe3e7231831a51a0740f24c28beb0b46e2a9d58a372f444a8dc44
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/sql@npm:7.2.8":
+  version: 7.2.8
+  resolution: "@mikro-orm/sql@npm:7.2.8"
+  dependencies:
+    kysely: "npm:0.29.8"
+  peerDependencies:
+    "@mikro-orm/core": 7.2.8
+  checksum: 10c0/de8da5ca1ccacc233a4e45abe06d86693bcbb92ae8d60d98bd8441d94d42abea907323a8a01190293a2827b0a404ed1639f8bde499f2acbdb0a8b93f56169194
+  languageName: node
+  linkType: hard
+
 "@modelcontextprotocol/sdk@npm:^1.26.0":
   version: 1.30.0
   resolution: "@modelcontextprotocol/sdk@npm:1.30.0"
@@ -4398,6 +4462,10 @@ __metadata:
     "@hookform/error-message": "npm:^2.0.1"
     "@hookform/resolvers": "npm:^5.9.1"
     "@jest/types": "npm:^30.5.1"
+    "@mikro-orm/core": "npm:^7.2.8"
+    "@mikro-orm/decorators": "npm:^7.2.8"
+    "@mikro-orm/postgresql": "npm:^7.2.8"
+    "@mikro-orm/reflection": "npm:^7.2.8"
     "@next-safe-action/adapter-react-hook-form": "npm:^2.1.0"
     "@next/eslint-plugin-next": "npm:^16.3.4"
     "@radix-ui/react-avatar": "npm:^1.2.6"
@@ -5505,6 +5573,17 @@ __metadata:
     "@types/react-dom":
       optional: true
   checksum: 10c0/87d65cca71a39c93fffa23746a751a7037a4b4e939ea6b234af5188e4bdec96a7568b05000db109b5b76c686899e93a329a594d7e690674e30b35594c87c9e1d
+  languageName: node
+  linkType: hard
+
+"@ts-morph/common@npm:~0.29.0":
+  version: 0.29.0
+  resolution: "@ts-morph/common@npm:0.29.0"
+  dependencies:
+    minimatch: "npm:^10.0.1"
+    path-browserify: "npm:^1.0.1"
+    tinyglobby: "npm:^0.2.14"
+  checksum: 10c0/97ab8ca66558b817e5475a8893ee1476ab760a3ac71fa9868413d95ddbaaf909eda81716e3a8d14291cbf449e624af66de81bcddd3ec2e36525728b4edf5e8ee
   languageName: node
   linkType: hard
 
@@ -7487,6 +7566,13 @@ __metadata:
   version: 4.6.0
   resolution: "co@npm:4.6.0"
   checksum: 10c0/c0e85ea0ca8bf0a50cbdca82efc5af0301240ca88ebe3644a6ffb8ffe911f34d40f8fbcf8f1d52c5ddd66706abd4d3bfcd64259f1e8e2371d4f47573b0dc8c28
+  languageName: node
+  linkType: hard
+
+"code-block-writer@npm:^13.0.3":
+  version: 13.0.3
+  resolution: "code-block-writer@npm:13.0.3"
+  checksum: 10c0/87db97b37583f71cfd7eced8bf3f0a0a0ca53af912751a734372b36c08cd27f3e8a4878ec05591c0cd9ae11bea8add1423e132d660edd86aab952656dd41fd66
   languageName: node
   linkType: hard
 
@@ -10911,6 +10997,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kysely@npm:0.29.8":
+  version: 0.29.8
+  resolution: "kysely@npm:0.29.8"
+  checksum: 10c0/d0f55f2463ef6e90aa42782ce352970182b09f49f1d47e8a952f443ab24f96b4be1b411a68f82dbe63f0c2233a8f313e819a87bc7bd92086a2a822bcd9ca630f
+  languageName: node
+  linkType: hard
+
 "language-subtag-registry@npm:^0.3.20":
   version: 0.3.23
   resolution: "language-subtag-registry@npm:0.3.23"
@@ -11351,7 +11444,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.2.2, minimatch@npm:^10.2.4, minimatch@npm:^10.2.5":
+"minimatch@npm:^10.0.1, minimatch@npm:^10.2.2, minimatch@npm:^10.2.4, minimatch@npm:^10.2.5":
   version: 10.2.6
   resolution: "minimatch@npm:10.2.6"
   dependencies:
@@ -12052,6 +12145,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-browserify@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "path-browserify@npm:1.0.1"
+  checksum: 10c0/8b8c3fd5c66bd340272180590ae4ff139769e9ab79522e2eb82e3d571a89b8117c04147f65ad066dccfb42fcad902e5b7d794b3d35e0fd840491a8ddbedf8c66
+  languageName: node
+  linkType: hard
+
 "path-exists@npm:^4.0.0":
   version: 4.0.0
   resolution: "path-exists@npm:4.0.0"
@@ -12114,6 +12214,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-cloudflare@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "pg-cloudflare@npm:1.4.1"
+  checksum: 10c0/32e62c987073472e81c0dc218f850b1212b4e2c1f35d50433d87d054fe268f549ebaf8fc6c1227ab24c12b318f3e3a2a191ffbdfb2daa30b39aa6802ab8fe2f6
+  languageName: node
+  linkType: hard
+
+"pg-connection-string@npm:^2.14.1":
+  version: 2.14.1
+  resolution: "pg-connection-string@npm:2.14.1"
+  checksum: 10c0/7321eed97579b4972a714909e7a444beb2186780fe7fd86ea719ff7c8f1fad07d7e5f85722c4992245b23683ed7d2fe2bdda8f7469fed4c016bb5c3379c575ca
+  languageName: node
+  linkType: hard
+
+"pg-cursor@npm:2.22.1":
+  version: 2.22.1
+  resolution: "pg-cursor@npm:2.22.1"
+  peerDependencies:
+    pg: ^8
+  checksum: 10c0/fb98152b01b43a5de79fb515adca26137b75ca4c96007ce7195e969c180c9922d72b1c97d9349f7213bcc1ca64d945cc15fa242c5e04eedd8c5933e31cd10e78
+  languageName: node
+  linkType: hard
+
 "pg-int8@npm:1.0.1":
   version: 1.0.1
   resolution: "pg-int8@npm:1.0.1"
@@ -12128,6 +12251,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pg-pool@npm:^3.14.0":
+  version: 3.14.0
+  resolution: "pg-pool@npm:3.14.0"
+  peerDependencies:
+    pg: ">=8.0"
+  checksum: 10c0/3dd706e67e3b317e29409d9eb3bd44e960eabd86db2a9711a9391bbd43881f8ce7a5f7054a341509558ee05e9bf0a3cc7aef037039da0790ce1e16762ade3ba6
+  languageName: node
+  linkType: hard
+
 "pg-protocol@npm:*":
   version: 1.9.5
   resolution: "pg-protocol@npm:1.9.5"
@@ -12135,7 +12267,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-types@npm:^2.2.0":
+"pg-protocol@npm:^1.16.1":
+  version: 1.16.1
+  resolution: "pg-protocol@npm:1.16.1"
+  checksum: 10c0/84e8bf05c3548c8ffcad29247c075f8f1cf477600c92a7eb0ab27c6c4cbdbe1280433582bfba91f629b1f68bcaf4ae26436a898f430e884d7887543931e8ade6
+  languageName: node
+  linkType: hard
+
+"pg-types@npm:2.2.0, pg-types@npm:^2.2.0":
   version: 2.2.0
   resolution: "pg-types@npm:2.2.0"
   dependencies:
@@ -12160,6 +12299,37 @@ __metadata:
     postgres-interval: "npm:^3.0.0"
     postgres-range: "npm:^1.1.1"
   checksum: 10c0/780fccda2f3fa2a34e85a72e8e7dadb7d88fbe71ce88f126cb3313f333ad836d02488ec4ff3d94d0c1e5846f735d6e6c6281f8059e6b8919d2180429acaec3e2
+  languageName: node
+  linkType: hard
+
+"pg@npm:8.23.1":
+  version: 8.23.1
+  resolution: "pg@npm:8.23.1"
+  dependencies:
+    pg-cloudflare: "npm:^1.4.1"
+    pg-connection-string: "npm:^2.14.1"
+    pg-pool: "npm:^3.14.0"
+    pg-protocol: "npm:^1.16.1"
+    pg-types: "npm:2.2.0"
+    pgpass: "npm:1.0.5"
+  peerDependencies:
+    pg-native: ">=3.0.1"
+  dependenciesMeta:
+    pg-cloudflare:
+      optional: true
+  peerDependenciesMeta:
+    pg-native:
+      optional: true
+  checksum: 10c0/084ce2bcd025705105d4d9a4c4438b178117acbaae5c766e3d3c9fb812cc55d826a212189e19937b8e3b0a8914a3c3e4ba78ad62af73890f37406a676c1f9e0c
+  languageName: node
+  linkType: hard
+
+"pgpass@npm:1.0.5":
+  version: 1.0.5
+  resolution: "pgpass@npm:1.0.5"
+  dependencies:
+    split2: "npm:^4.1.0"
+  checksum: 10c0/5ea6c9b2de04c33abb08d33a2dded303c4a3c7162a9264519cbe85c0a9857d712463140ba42fad0c7cd4b21f644dd870b45bb2e02fcbe505b4de0744fd802c1d
   languageName: node
   linkType: hard
 
@@ -12250,17 +12420,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postgres-array@npm:3.0.4, postgres-array@npm:~3.0.1":
+  version: 3.0.4
+  resolution: "postgres-array@npm:3.0.4"
+  checksum: 10c0/47f3e648da512bacdd6a5ed55cf770605ec271330789faeece0fd13805a49f376d6e5c9e0e353377be11a9545e727dceaa2473566c505432bf06366ccd04c6b2
+  languageName: node
+  linkType: hard
+
 "postgres-array@npm:~2.0.0":
   version: 2.0.0
   resolution: "postgres-array@npm:2.0.0"
   checksum: 10c0/cbd56207e4141d7fbf08c86f2aebf21fa7064943d3f808ec85f442ff94b48d891e7a144cc02665fb2de5dbcb9b8e3183a2ac749959e794b4a4cfd379d7a21d08
-  languageName: node
-  linkType: hard
-
-"postgres-array@npm:~3.0.1":
-  version: 3.0.4
-  resolution: "postgres-array@npm:3.0.4"
-  checksum: 10c0/47f3e648da512bacdd6a5ed55cf770605ec271330789faeece0fd13805a49f376d6e5c9e0e353377be11a9545e727dceaa2473566c505432bf06366ccd04c6b2
   languageName: node
   linkType: hard
 
@@ -12280,6 +12450,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postgres-date@npm:2.1.0, postgres-date@npm:~2.1.0":
+  version: 2.1.0
+  resolution: "postgres-date@npm:2.1.0"
+  checksum: 10c0/00a7472c10788f6b0d08d24108bf1eb80858de1bd6317740198a564918ea4a69b80c98148167b92ae688abd606483020d0de0dd3a36f3ea9a3e26bbeef3464f4
+  languageName: node
+  linkType: hard
+
 "postgres-date@npm:~1.0.4":
   version: 1.0.7
   resolution: "postgres-date@npm:1.0.7"
@@ -12287,10 +12464,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postgres-date@npm:~2.1.0":
-  version: 2.1.0
-  resolution: "postgres-date@npm:2.1.0"
-  checksum: 10c0/00a7472c10788f6b0d08d24108bf1eb80858de1bd6317740198a564918ea4a69b80c98148167b92ae688abd606483020d0de0dd3a36f3ea9a3e26bbeef3464f4
+"postgres-interval@npm:4.1.0":
+  version: 4.1.0
+  resolution: "postgres-interval@npm:4.1.0"
+  checksum: 10c0/19742fc352846567559b39cc90253722a746f315860e29cd7c080ea0f6c1855452eef80b01404eaeb7680f33ab107cbc918c935cf972fc1830d5c0d0166e2a4f
   languageName: node
   linkType: hard
 
@@ -13423,6 +13600,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"split2@npm:^4.1.0":
+  version: 4.2.0
+  resolution: "split2@npm:4.2.0"
+  checksum: 10c0/b292beb8ce9215f8c642bb68be6249c5a4c7f332fc8ecadae7be5cbdf1ea95addc95f0459ef2e7ad9d45fd1064698a097e4eb211c83e772b49bc0ee423e91534
+  languageName: node
+  linkType: hard
+
 "split@npm:0.2.x":
   version: 0.2.10
   resolution: "split@npm:0.2.10"
@@ -13862,7 +14046,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.15":
+"tinyglobby@npm:^0.2.14, tinyglobby@npm:^0.2.15":
   version: 0.2.17
   resolution: "tinyglobby@npm:0.2.17"
   dependencies:
@@ -13973,6 +14157,16 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/767849383c114e7f1971fa976b20e73ac28fd0c70d8d65c0004790bf4d8f89888c7e4cf6d5949f9c1beae9bc3c64835bef77bbe27fddf45a3c7b60cebcf85c8c
+  languageName: node
+  linkType: hard
+
+"ts-morph@npm:28.0.0":
+  version: 28.0.0
+  resolution: "ts-morph@npm:28.0.0"
+  dependencies:
+    "@ts-morph/common": "npm:~0.29.0"
+    code-block-writer: "npm:^13.0.3"
+  checksum: 10c0/969570a5e983b4193735fff43878ce7b78787b4860bf3d23f330c86d7de707286969e5a82d486dce333eea27bf9d373a46f9de58a80c0bf86d2a462620563a55
   languageName: node
   linkType: hard
 

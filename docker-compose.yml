@@ -2,16 +2,8 @@ services:
   spotlight:
     image: ghcr.io/getsentry/spotlight:latest
     ports:
-      - '8969:8969/tcp'
-  redis:
-    image: redis/redis-stack
+      - '8970:8969/tcp'
+  postgres:
+    image: postgres:latest
     ports:
-      - '6379:6379'
-  serverless-redis-http:
-    ports:
-      - '8079:80'
-    image: hiett/serverless-redis-http:latest
-    environment:
-      SRH_MODE: env
-      SRH_TOKEN: example_token
-      SRH_CONNECTION_STRING: 'redis://redis:6379' # Using `redis` hostname since they're in the same Docker network.
+      - '5433:5432'
