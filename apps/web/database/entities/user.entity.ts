@@ -1,22 +1,18 @@
-import {
-  Entity,
-  OneToMany,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/decorators/es';
 import { OSRSAccount } from './osrs-account';
-import { Collection, PrimaryKeyProp } from '@mikro-orm/core';
+import { defineEntity, p } from '@mikro-orm/core';
 
-@Entity({ tableName: 'user' })
-export class User {
-  [PrimaryKeyProp]?: 'discordId';
+const UserSchema = defineEntity({
+  name: 'User',
+  tableName: 'user',
+  properties: {
+    discordId: p.string().primary(),
+    name: p.string(),
+    osrsAccounts: () => p.oneToMany(OSRSAccount).mappedBy('user'),
+  },
+});
 
-  @PrimaryKey()
+export class User extends UserSchema.class {
   discordId!: string;
-
-  @Property()
-  name!: string;
-
-  @OneToMany(() => OSRSAccount, 'user')
-  osrsAccounts = new Collection<OSRSAccount>(this);
 }
+
+UserSchema.setClass(User);

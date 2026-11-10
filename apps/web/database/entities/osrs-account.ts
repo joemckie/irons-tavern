@@ -1,26 +1,21 @@
-import {
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/decorators/es';
 import { randomUUID } from 'node:crypto';
-import { User } from './user.entity';
-import { Collection } from '@mikro-orm/core';
+import { defineEntity, p } from '@mikro-orm/core';
 import { RankSubmission } from './rank-submission.entity';
+import { User } from './user.entity';
 
-@Entity({ tableName: 'osrs_account' })
-export class OSRSAccount {
-  @PrimaryKey({ type: 'uuid' })
+const OSRSAccountSchema = defineEntity({
+  name: 'OSRSAccount',
+  tableName: 'osrs_account',
+  properties: {
+    id: p.uuid().primary(),
+    name: p.string(),
+    user: () => p.manyToOne(User),
+    rankSubmissions: () => p.oneToMany(RankSubmission).mappedBy('osrsAccount'),
+  },
+});
+
+export class OSRSAccount extends OSRSAccountSchema.class {
   id = randomUUID();
-
-  @Property()
-  name!: string;
-
-  @ManyToOne()
-  user!: User;
-
-  @OneToMany(() => RankSubmission, 'osrsAccount')
-  rankSubmissions = new Collection<RankSubmission>(this);
 }
+
+OSRSAccountSchema.setClass(OSRSAccount);

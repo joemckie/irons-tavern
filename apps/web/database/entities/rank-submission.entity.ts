@@ -1,91 +1,66 @@
-import {
-  Embeddable,
-  Embedded,
-  Entity,
-  Enum,
-  ManyToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/decorators/es';
-import type { OSRSAccount } from './osrs-account';
-import { randomUUID } from 'node:crypto';
 import type { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
 import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
+import { defineEntity, p } from '@mikro-orm/core';
+import { randomUUID } from 'node:crypto';
+import { OSRSAccount } from './osrs-account';
 
-@Embeddable()
-export class RankSubmissionMetadata {
-  @Property()
-  discordMessageId!: string;
+const RankSubmissionMetadataSchema = defineEntity({
+  name: 'RankSubmissionMetadata',
+  embeddable: true,
+  properties: {
+    discordMessageId: p.string(),
+    submittedBy: p.string(),
+    submittedAt: p.date(),
+    actionedBy: p.string().nullable(),
+    hasTemplePlayerStats: p.boolean(),
+    hasTempleCollectionLog: p.boolean(),
+    isTempleCollectionLogOutdated: p.boolean(),
+    hasWikiSyncData: p.boolean(),
+    automaticApproval: p.boolean().nullable(),
+  },
+});
 
-  @Property()
-  submittedBy!: string;
+export class RankSubmissionMetadata
+  extends RankSubmissionMetadataSchema.class {}
 
-  @Property()
-  submittedAt!: Date;
+RankSubmissionMetadataSchema.setClass(RankSubmissionMetadata);
 
-  @Property()
-  actionedBy?: string;
+const RankSubmissionDiffSchema = defineEntity({
+  name: 'RankSubmissionDiff',
+  embeddable: true,
+  properties: {
+    achievementDiaries: p.json(),
+    acquiredItems: p.json().nullable(),
+    combatAchievementTier: p.enum(() => CombatAchievementTier.enum).nullable(),
+    totalLevel: p.integer().nullable(),
+    collectionLogCount: p.integer().nullable(),
+    tzhaarCape: p.enum(() => TzHaarCape.enum).nullable(),
+    hasBloodTorva: p.boolean().nullable(),
+    hasDizanasQuiver: p.boolean().nullable(),
+    hasAchievementDiaryCape: p.boolean().nullable(),
+    hasMaxCape: p.boolean().nullable(),
+  },
+});
 
-  @Property()
-  hasTemplePlayerStats!: boolean;
-
-  @Property()
-  hasTempleCollectionLog!: boolean;
-
-  @Property()
-  isTempleCollectionLogOutdated!: boolean;
-
-  @Property()
-  hasWikiSyncData!: boolean;
-
-  @Property()
-  automaticApproval?: boolean;
-}
-
-@Embeddable()
-export class RankSubmissionDiff {
-  @Property()
+export class RankSubmissionDiff extends RankSubmissionDiffSchema.class {
   achievementDiaries!: AchievementDiaryMap;
-
-  @Property()
-  acquiredItems?: string[];
-
-  @Enum(() => CombatAchievementTier.enum)
-  combatAchievementTier?: CombatAchievementTier;
-
-  @Property()
-  totalLevel?: number;
-
-  @Property()
-  collectionLogCount?: number;
-
-  @Enum(() => TzHaarCape.enum)
-  tzhaarCape?: TzHaarCape;
-
-  @Property()
-  hasBloodTorva?: boolean;
-
-  @Property()
-  hasDizanasQuiver?: boolean;
-
-  @Property()
-  hasAchievementDiaryCape?: boolean;
-
-  @Property()
-  hasMaxCape?: boolean;
 }
 
-@Entity({ tableName: 'rank_submission' })
-export class RankSubmission {
-  @PrimaryKey({ type: 'uuid' })
+RankSubmissionDiffSchema.setClass(RankSubmissionDiff);
+
+const RankSubmissionSchema = defineEntity({
+  name: 'RankSubmission',
+  tableName: 'rank_submission',
+  properties: {
+    id: p.uuid().primary(),
+    metadata: p.embedded(RankSubmissionMetadata).object(true),
+    diff: p.embedded(RankSubmissionDiff).object(true),
+    osrsAccount: () => p.manyToOne(OSRSAccount),
+  },
+});
+
+export class RankSubmission extends RankSubmissionSchema.class {
   id = randomUUID();
-
-  @Embedded({ object: true })
-  metadata!: RankSubmissionMetadata;
-
-  @Embedded({ object: true })
-  diff!: RankSubmissionDiff;
-
-  @ManyToOne()
-  osrsAccount!: OSRSAccount;
 }
+
+RankSubmissionSchema.setClass(RankSubmission);

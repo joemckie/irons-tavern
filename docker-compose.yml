@@ -5,5 +5,9 @@ services:
       - '8970:8969/tcp'
   postgres:
     image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: irons_tavern
     ports:
       - '5433:5432'

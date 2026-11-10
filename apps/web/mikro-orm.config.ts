@@ -1,6 +1,3 @@
-import 'server-only';
-
-import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 import { User } from './database/entities/user.entity';
 import {
   RankSubmission,
@@ -10,20 +7,21 @@ import {
 import { OSRSAccount } from './database/entities/osrs-account';
 import { defineConfig } from '@mikro-orm/postgresql';
 import { Migrator } from '@mikro-orm/migrations';
+import { Migration20261110135542_initial } from './database/migrations/Migration20261110135542_initial';
 
 export default defineConfig({
-  dbName: 'irons_tavern',
+  clientUrl: process.env.POSTGRES_URL,
   debug: process.env.NODE_ENV !== 'production',
   entities: [
-    User,
     OSRSAccount,
+    User,
     RankSubmission,
     RankSubmissionMetadata,
     RankSubmissionDiff,
   ],
-  metadataProvider: TsMorphMetadataProvider,
   extensions: [Migrator],
   migrations: {
-    migrationsList: [],
+    path: './database/migrations',
+    migrationsList: [Migration20261110135542_initial],
   },
 });
