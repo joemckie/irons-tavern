@@ -303,6 +303,7 @@ export const publishRankSubmissionAction = authActionClient
           hasTempleCollectionLog,
           hasWikiSyncData,
           isTempleCollectionLogOutdated,
+          automaticApproval: null,
         } satisfies RankSubmissionMetadata,
         diff: submissionDiff,
       });
