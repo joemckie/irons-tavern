@@ -13,7 +13,8 @@
     "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\"",
     "copy-latest-clog-list": "node scripts/copy-latest-clog-list.ts",
     "copy-latest-temple-categories": "node scripts/copy-latest-temple-categories.ts",
-    "migration:create": "node --env-file=.env.local ../../node_modules/.bin/mikro-orm migration:create"
+    "migration:create": "node --env-file=.env.local ../../node_modules/.bin/mikro-orm migration:create",
+    "migrate-redis-to-postgres": "tsx --env-file=.env.local scripts/migrate-redis-to-postgres.ts"
   },
   "dependencies": {
     "@ariakit/react": "^0.4.39",
