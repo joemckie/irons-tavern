@@ -12,7 +12,7 @@
         "SENTRY_AUTH_TOKEN",
         "DISCORD_CHANNEL_ID",
         "AUTH_REDIRECT_PROXY_URL",
-        "POSTGRES_URL",
+        "DATABASE_URL",
         "TEMPLE_GROUP_ID",
         "TEMPLE_GROUP_NAME",
         "TEMPLE_GROUP_KEY",
