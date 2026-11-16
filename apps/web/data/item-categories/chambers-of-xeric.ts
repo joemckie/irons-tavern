@@ -87,27 +87,27 @@ export const chambersOfXeric: ItemCategory = {
     singleItem({
       name: "Xeric's guard",
       collectionLogCategory: 'chambers_of_xeric',
-      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 100)
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 100),
     }),
     singleItem({
       name: "Xeric's warrior",
       collectionLogCategory: 'chambers_of_xeric',
-      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 400)
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 400),
     }),
     singleItem({
       name: "Xeric's sentinel",
       collectionLogCategory: 'chambers_of_xeric',
-      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500),
     }),
     singleItem({
       name: "Xeric's general",
       collectionLogCategory: 'chambers_of_xeric',
-      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500),
     }),
     singleItem({
       name: "Xeric's champion",
       collectionLogCategory: 'chambers_of_xeric',
-      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500)
+      points: calculateRaidsCapePoints(totalCapesPoints, 2000, 500),
     }),
   ],
 };

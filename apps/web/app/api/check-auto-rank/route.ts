@@ -38,6 +38,7 @@ import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/
 import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
 import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
 import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+import { isRankUp } from '@/app/rank-calculator/utils/is-rank-up';
 
 export async function GET(request: NextRequest) {
   return withRequestContext(() => checkAutoRank(request));
@@ -46,15 +47,15 @@ export async function GET(request: NextRequest) {
 async function checkAutoRank(request: NextRequest) {
   try {
     const player = z
-      .string({ error: 'Player is required' })
+      .string('Player is required')
       .transform((encodedPlayer) => decodeURIComponent(encodedPlayer))
       .parse(request.nextUrl.searchParams.get('player'));
 
     const discordId = z
-      .string({ error: 'Discord ID is required' })
+      .string('Discord ID is required')
       .parse(request.nextUrl.searchParams.get('discord_id'));
 
-    const playerDetails = await fetchPlayerDetails(player, discordId);
+    const playerDetails = await fetchPlayerDetails(player, discordId, false);
 
     if (!playerDetails.success) {
       throw new Error('Failed to fetch player details');
@@ -84,6 +85,10 @@ async function checkAutoRank(request: NextRequest) {
       notableItemsBonusMultiplier,
       skillingBonusMultiplier,
     } = playerDetails.data;
+
+    if (rankStructure !== 'Standard') {
+      return NextResponse.json({ success: true });
+    }
 
     if (!hasThirdPartyData) {
       return NextResponse.json({ success: true });
@@ -162,7 +167,7 @@ async function checkAutoRank(request: NextRequest) {
       items,
     );
 
-    if (rank !== currentRank) {
+    if (isRankUp(currentRank, rank)) {
       const { em } = await initORM();
       const account = await em.findOneOrFail(OSRSAccount, {
         user: discordId,

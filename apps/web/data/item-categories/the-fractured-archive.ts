@@ -61,27 +61,27 @@ export const theFracturedArchive: ItemCategory = {
     singleItem({
       name: 'Living record (tier 1)',
       collectionLogCategory: 'the_fractured_archive',
-      points: calculateRaidsCapePoints(1500, 2000, 100)
+      points: calculateRaidsCapePoints(1500, 2000, 100),
     }),
     singleItem({
       name: 'Living record (tier 2)',
       collectionLogCategory: 'the_fractured_archive',
-      points: calculateRaidsCapePoints(1500, 2000, 400)
+      points: calculateRaidsCapePoints(1500, 2000, 400),
     }),
     singleItem({
       name: 'Living record (tier 3)',
       collectionLogCategory: 'the_fractured_archive',
-      points: calculateRaidsCapePoints(1500, 2000, 500)
+      points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
     singleItem({
       name: 'Living record (tier 4)',
       collectionLogCategory: 'the_fractured_archive',
-      points: calculateRaidsCapePoints(1500, 2000, 500)
+      points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
     singleItem({
       name: 'Living record (tier 5)',
       collectionLogCategory: 'the_fractured_archive',
-      points: calculateRaidsCapePoints(1500, 2000, 500)
+      points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
   ],
 };

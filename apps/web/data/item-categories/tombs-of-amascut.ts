@@ -94,27 +94,27 @@ export const tombsOfAmascut: ItemCategory = {
     singleItem({
       name: "Icthlarin's shroud (tier 1)",
       collectionLogCategory: 'tombs_of_amascut',
-      points: calculateRaidsCapePoints(2000, 2000, 100)
+      points: calculateRaidsCapePoints(2000, 2000, 100),
     }),
     singleItem({
       name: "Icthlarin's shroud (tier 2)",
       collectionLogCategory: 'tombs_of_amascut',
-      points: calculateRaidsCapePoints(2000, 2000, 400)
+      points: calculateRaidsCapePoints(2000, 2000, 400),
     }),
     singleItem({
       name: "Icthlarin's shroud (tier 3)",
       collectionLogCategory: 'tombs_of_amascut',
-      points: calculateRaidsCapePoints(2000, 2000, 500)
+      points: calculateRaidsCapePoints(2000, 2000, 500),
     }),
     singleItem({
       name: "Icthlarin's shroud (tier 4)",
       collectionLogCategory: 'tombs_of_amascut',
-      points: calculateRaidsCapePoints(2000, 2000, 500)
+      points: calculateRaidsCapePoints(2000, 2000, 500),
     }),
     singleItem({
       name: "Icthlarin's shroud (tier 5)",
       collectionLogCategory: 'tombs_of_amascut',
-      points: calculateRaidsCapePoints(2000, 2000, 500)
+      points: calculateRaidsCapePoints(2000, 2000, 500),
     }),
   ],
 };

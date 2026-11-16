@@ -60,27 +60,27 @@ export const theatreOfBlood: ItemCategory = {
       collectionLogCategory: 'theatre_of_blood',
     }),
     singleItem({
-      name: "Sinhaza shroud tier 1",
+      name: 'Sinhaza shroud tier 1',
       collectionLogCategory: 'theatre_of_blood',
       points: calculateRaidsCapePoints(1500, 2000, 100),
     }),
     singleItem({
-      name: "Sinhaza shroud tier 2",
+      name: 'Sinhaza shroud tier 2',
       collectionLogCategory: 'theatre_of_blood',
       points: calculateRaidsCapePoints(1500, 2000, 400),
     }),
     singleItem({
-      name: "Sinhaza shroud tier 3",
+      name: 'Sinhaza shroud tier 3',
       collectionLogCategory: 'theatre_of_blood',
       points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
     singleItem({
-      name: "Sinhaza shroud tier 4",
+      name: 'Sinhaza shroud tier 4',
       collectionLogCategory: 'theatre_of_blood',
       points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
     singleItem({
-      name: "Sinhaza shroud tier 5",
+      name: 'Sinhaza shroud tier 5',
       collectionLogCategory: 'theatre_of_blood',
       points: calculateRaidsCapePoints(1500, 2000, 500),
     }),
