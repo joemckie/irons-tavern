@@ -17,7 +17,7 @@ export const RankStructure = z.enum([
 
 export type RankStructure = z.infer<typeof RankStructure>;
 
-export const AchievementDiaryMap = z.partialRecord(DiaryLocation, DiaryTier);
+export const AchievementDiaryMap = z.record(DiaryLocation, DiaryTier);
 
 export type AchievementDiaryMap = z.infer<typeof AchievementDiaryMap>;
 
@@ -52,7 +52,12 @@ export const RankSubmissionMetadata = z.object({
 export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;
 
 export const RankSubmissionDiff = z.object({
-  achievementDiaries: AchievementDiaryMap.nullable(),
+  achievementDiaries: z
+    .partialRecord(
+      AchievementDiaryMap.def.keyType,
+      AchievementDiaryMap.def.valueType,
+    )
+    .nullable(),
   acquiredItems: z.array(z.string()).nullable(),
   combatAchievementTier: CombatAchievementTier.nullable(),
   totalLevel: z.number().nullable(),

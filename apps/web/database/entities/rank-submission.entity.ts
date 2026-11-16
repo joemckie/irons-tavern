@@ -37,7 +37,7 @@ const RankSubmissionDiffSchema = defineEntity({
   name: 'RankSubmissionDiff',
   embeddable: true,
   properties: {
-    achievementDiaries: p.json<AchievementDiaryMap>().nullable(),
+    achievementDiaries: p.json<Partial<AchievementDiaryMap>>().nullable(),
     acquiredItems: p.json<string[]>().nullable(),
     combatAchievementTier: p.enum(() => CombatAchievementTier.enum).nullable(),
     totalLevel: p.integer().nullable(),
