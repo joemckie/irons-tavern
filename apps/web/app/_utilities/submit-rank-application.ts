@@ -48,18 +48,19 @@ export async function submitRankApplication(
   osrsAccount: OSRSAccount,
   {
     userId,
-    playerName,
     rank,
     totalPoints,
     savedData,
   }: {
     userId: string;
-    playerName: string;
     rank: Rank;
     totalPoints: number;
-    savedData: RankSubmissionData;
+    savedData?: RankSubmissionData;
   },
-  {
+  rankSubmission: PlayerDetailsResponse,
+  applicationType: 'automatic' | 'manual',
+) {
+  const {
     acquiredItems,
     achievementDiaries,
     combatAchievementTier,
@@ -75,10 +76,10 @@ export async function submitRankApplication(
     hasDizanasQuiver,
     hasAchievementDiaryCape,
     hasMaxCape,
-    currentRank
-  }: PlayerDetailsResponse,
-  isAutomaticApplication: boolean,
-) {
+    currentRank,
+    rankStructure,
+  } = rankSubmission;
+
   if (!isRankUp(currentRank, rank)) {
     return;
   }
@@ -89,13 +90,18 @@ export async function submitRankApplication(
     {
       embeds: [
         {
-          title: `${isAutomaticApplication ? '[⚙️] ' : ''}${playerName} rank application}`,
+          title: `${osrsAccount.name} rank application`,
           thumbnail: { url: getRankImageUrl(rank, true) },
           fields: [
+            {
+              name: 'Application type',
+              value: applicationType === 'automatic' ? '⚙️ Automatic' : 'Manual',
+              inline: false,
+            },
             { name: 'Rank', value: getRankName(rank), inline: true },
             {
               name: 'Rank structure',
-              value: savedData.rankStructure,
+              value: rankStructure,
               inline: true,
             },
             {
@@ -127,7 +133,7 @@ export async function submitRankApplication(
 
   await discordBotClient.post(Routes.threads(channelId, discordMessageId), {
     body: {
-      name: `${playerName} - ${getRankName(rank)}`,
+      name: `${osrsAccount.name} - ${getRankName(rank)}`,
       type: ChannelType.PublicThread,
     },
   });
@@ -157,7 +163,7 @@ export async function submitRankApplication(
 
   const submissionDiff = {
     achievementDiaries:
-      hasWikiSyncData && savedData.achievementDiaries && achievementDiaries
+      hasWikiSyncData && savedData?.achievementDiaries && achievementDiaries
         ? (
             Object.entries(achievementDiaries) as [DiaryLocation, DiaryTier][]
           ).reduce<AchievementDiaryMap>((acc, [diaryLocation, diaryTier]) => {
@@ -177,7 +183,7 @@ export async function submitRankApplication(
         : null,
     acquiredItems: [
       ...new Set<string>([
-        ...(hasWikiSyncData
+        ...(hasWikiSyncData && savedData?.acquiredItems
           ? z.array(z.string()).parse(
               Object.values(
                 pickBy(Object.keys(savedData.acquiredItems), (key) => {
@@ -193,7 +199,7 @@ export async function submitRankApplication(
               ),
             )
           : []),
-        ...(hasTempleCollectionLog
+        ...(hasTempleCollectionLog && savedData?.acquiredItems
           ? z.array(z.string()).parse(
               Object.values(
                 pickBy(Object.keys(savedData.acquiredItems), (key) => {
@@ -210,43 +216,57 @@ export async function submitRankApplication(
     ],
     combatAchievementTier:
       hasWikiSyncData &&
+      savedData?.combatAchievementTier &&
       CombatAchievementTier.options.indexOf(combatAchievementTier) <
         CombatAchievementTier.options.indexOf(savedData.combatAchievementTier)
         ? combatAchievementTier
         : null,
     collectionLogCount:
-      hasTemplePlayerStats && collectionLogCount < savedData.collectionLogCount
+      hasTemplePlayerStats &&
+      savedData?.collectionLogCount &&
+      collectionLogCount < savedData.collectionLogCount
         ? collectionLogCount
         : null,
     totalLevel:
-      hasTemplePlayerStats && totalLevel < savedData.totalLevel
+      hasTemplePlayerStats &&
+      savedData?.totalLevel &&
+      totalLevel < savedData.totalLevel
         ? totalLevel
         : null,
     tzhaarCape:
-      hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape
+      hasTempleCollectionLog &&
+      savedData?.tzhaarCape !== undefined &&
+      tzhaarCape !== savedData.tzhaarCape
         ? tzhaarCape
         : null,
     hasBloodTorva:
-      hasWikiSyncData && hasBloodTorva !== savedData.hasBloodTorva
+      hasWikiSyncData &&
+      savedData?.hasBloodTorva !== undefined &&
+      hasBloodTorva !== savedData.hasBloodTorva
         ? !!hasBloodTorva
         : null,
     hasDizanasQuiver:
-      hasTempleCollectionLog && hasDizanasQuiver !== savedData.hasDizanasQuiver
+      hasTempleCollectionLog &&
+      savedData?.hasDizanasQuiver !== undefined &&
+      hasDizanasQuiver !== savedData.hasDizanasQuiver
         ? !!hasDizanasQuiver
         : null,
     hasAchievementDiaryCape:
       hasWikiSyncData &&
+      savedData?.hasAchievementDiaryCape !== undefined &&
       hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
         ? !!hasAchievementDiaryCape
         : null,
     hasMaxCape:
-      hasTemplePlayerStats && hasMaxCape !== savedData.hasMaxCape
+      hasTemplePlayerStats &&
+      savedData?.hasMaxCape !== undefined &&
+      hasMaxCape !== savedData.hasMaxCape
         ? !!hasMaxCape
         : null,
   } satisfies RankSubmissionDiff;
 
   const isAutoApprovalAvailable =
-    savedData.rankStructure === 'Standard' &&
+    rankStructure === 'Standard' &&
     hasTempleCollectionLog &&
     hasWikiSyncData &&
     hasTemplePlayerStats &&
@@ -255,7 +275,7 @@ export async function submitRankApplication(
   em.create(RankSubmission, {
     id: submissionId,
     osrsAccount,
-    data: savedData,
+    data: rankSubmission,
     metadata: {
       discordMessageId,
       status: 'Pending',

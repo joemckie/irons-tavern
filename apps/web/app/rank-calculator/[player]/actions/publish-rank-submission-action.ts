@@ -61,9 +61,9 @@ export const publishRankSubmissionAction = authActionClient
       await submitRankApplication(
         em,
         osrsAccount,
-        { userId, playerName, rank, totalPoints, savedData },
+        { userId, rank, totalPoints, savedData },
         playerDetails.data,
-        false
+        'manual',
       );
 
       return { success: true };

@@ -168,13 +168,11 @@ async function checkAutoRank(request: NextRequest) {
         account,
         {
           userId: discordId,
-          playerName: player,
           rank,
           totalPoints: totalPointsAwarded,
-          savedData: playerDetails.data,
         },
         playerDetails.data,
-        true,
+        'automatic',
       );
     }
 
