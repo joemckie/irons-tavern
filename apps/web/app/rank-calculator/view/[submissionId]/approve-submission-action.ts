@@ -8,7 +8,7 @@ import { approveSubmission } from './utils/approve-submission';
 
 export const approveSubmissionAction = authActionClient
   .metadata({ actionName: 'approve-submission' })
-  .schema(ApproveSubmissionSchema)
+  .inputSchema(ApproveSubmissionSchema)
   .action(
     async ({
       parsedInput: { submissionId, rank },

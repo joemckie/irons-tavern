@@ -46,13 +46,18 @@ export const RankSubmissionMetadata = z.object({
   hasTempleCollectionLog: z.boolean(),
   isTempleCollectionLogOutdated: z.boolean(),
   hasWikiSyncData: z.boolean(),
-  automaticApproval: z.boolean().optional(),
+  automaticApproval: z.boolean().nullable(),
 });
 
 export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;
 
 export const RankSubmissionDiff = z.object({
-  achievementDiaries: AchievementDiaryMap.nullable(),
+  achievementDiaries: z
+    .partialRecord(
+      AchievementDiaryMap.def.keyType,
+      AchievementDiaryMap.def.valueType,
+    )
+    .nullable(),
   acquiredItems: z.array(z.string()).nullable(),
   combatAchievementTier: CombatAchievementTier.nullable(),
   totalLevel: z.number().nullable(),

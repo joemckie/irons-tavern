@@ -1,19 +1,20 @@
 'use server';
 
-import { userOSRSAccountsKey, userRankSubmissionsKey } from '@/config/redis';
 import { revalidatePath } from 'next/cache';
-import { redis } from '@/redis';
 import { authActionClient } from '@/app/safe-action';
+import { initORM } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
 import { z } from 'zod';
 
 export const deletePlayerAccountAction = authActionClient
   .metadata({ actionName: 'delete-player-account' })
-  .schema(z.string())
+  .inputSchema(z.string())
   .action(async ({ parsedInput: playerName, ctx: { userId } }) => {
-    await Promise.all([
-      redis.del(userRankSubmissionsKey(userId, playerName)),
-      redis.hdel(userOSRSAccountsKey(userId), playerName.toLowerCase()),
-    ]);
+    const { em } = await initORM();
+
+    // The draft submission is deleted by cascade,
+    // and published submissions are kept but unlinked from the account
+    await em.nativeDelete(OSRSAccount, { user: userId, name: playerName });
 
     revalidatePath('/rank-calculator');
   });

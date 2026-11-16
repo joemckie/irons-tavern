@@ -1,7 +1,7 @@
 'use server';
 
-import { userOSRSAccountsKey } from '@/config/redis';
-import { redis } from '@/redis';
+import { initORM } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
 import * as Sentry from '@sentry/nextjs';
 
 export async function assertUniquePlayerRecord(
@@ -13,10 +13,11 @@ export async function assertUniquePlayerRecord(
   }
 
   try {
-    const count = await redis.hexists(
-      userOSRSAccountsKey(userId),
-      playerName.toLowerCase(),
-    );
+    const { em } = await initORM();
+    const count = await em.count(OSRSAccount, {
+      user: userId,
+      name: playerName,
+    });
 
     return count === 0;
   } catch (error) {

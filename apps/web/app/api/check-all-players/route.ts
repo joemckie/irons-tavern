@@ -1,18 +1,30 @@
-import { NextResponse } from 'next/server';
+import { connection, NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
 import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
-import { redis } from '@/redis';
-import { playerGameModesKey } from '@/config/redis';
+import { initORM, withRequestContext } from '@/database/db';
+import { PlayerGameMode } from '@/database/entities/player-game-mode.entity';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
 
 export async function GET() {
+  await connection();
+
   const response = await fetch(
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
   const players = GroupMemberInfoResponse.parse(await response.json());
-  const playerGameModes = (await redis.hgetall(playerGameModesKey)) ?? {};
+  const playerGameModes = await withRequestContext(async () => {
+    const { em } = await initORM();
+    const records = await em.findAll(PlayerGameMode);
+
+    return Object.fromEntries(
+      records.map(({ playerName, gameMode }) => [
+        playerName.toLowerCase(),
+        gameMode,
+      ]),
+    );
+  });
 
   // Filter players that have been checked within the last day.
   // This reduces the amount of requests significantly, due to

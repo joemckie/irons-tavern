@@ -1,16 +1,13 @@
 import 'core-js/actual/set/intersection';
 import 'core-js/actual/set/is-subset-of';
 import { itemList } from '@/data/item-list';
-import {
-  userDraftRankSubmissionKey,
-  userOSRSAccountsKey,
-} from '@/config/redis';
 import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import { ApiResponse } from '@/types/api';
 import * as Sentry from '@sentry/nextjs';
 import { Rank } from '@/config/enums';
-import { redis } from '@/redis';
-import { Player } from '@/app/schemas/player';
+import { initORM } from '@/database/db';
+import { OSRSAccount } from '@/database/entities/osrs-account';
+import { DraftRankSubmission } from '@/database/entities/draft-rank-submission.entity';
 import { clientConstants } from '@/config/constants.client';
 import { redirect } from 'next/navigation';
 import {
@@ -106,10 +103,11 @@ export async function fetchPlayerDetails(
     notableItemsBonusMultiplier: 0,
   } satisfies PlayerDetailsResponse;
 
-  const playerRecord = await redis.hget<Player>(
-    userOSRSAccountsKey(userId),
-    player.toLowerCase(),
-  );
+  const { em } = await initORM();
+  const playerRecord = await em.findOne(OSRSAccount, {
+    user: userId,
+    name: player,
+  });
 
   if (!playerRecord) {
     throw new Error('Unable to find player record');
@@ -125,9 +123,9 @@ export async function fetchPlayerDetails(
 
   if (!isPlayerNameValid) {
     // Flag the account as having an invalid name, and force the user to edit it
-    await redis.hset<Player>(userOSRSAccountsKey(userId), {
-      [player.toLowerCase()]: { ...playerRecord, isNameInvalid: true },
-    });
+    playerRecord.isNameInvalid = true;
+
+    await em.flush();
 
     redirect(`/rank-calculator/players/edit/${player}`);
   }
@@ -144,11 +142,10 @@ export async function fetchPlayerDetails(
 
   try {
     const savedData = mergeSavedData
-      ? await redis.json.get<RankCalculatorSchema>(
-          userDraftRankSubmissionKey(userId, player),
-        )
+      ? (await em.findOne(DraftRankSubmission, { osrsAccount: playerRecord }))
+          ?.data
       : undefined;
-    const { joinDate, rsn, rank: currentRank } = playerRecord;
+    const { joinDate, name: rsn, rank: currentRank } = playerRecord;
     const [wikiSyncData, templePlayerStats, templeCollectionLog, discordRoles] =
       await Promise.all([
         getWikiSyncData(player),
@@ -337,7 +334,7 @@ export async function fetchPlayerDetails(
         playerName: rsn,
         rankStructure: savedData?.rankStructure ?? 'Standard',
         proofLink,
-        currentRank,
+        currentRank: currentRank ?? undefined,
         tzhaarCape: mergeTzhaarCapes(tzhaarCape, savedData?.tzhaarCape),
         hasBloodTorva: (hasBloodTorva || savedData?.hasBloodTorva) ?? false,
         hasDizanasQuiver:

@@ -35,11 +35,7 @@ interface EditPlayerFormProps {
 
 export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
   const router = useRouter();
-  const boundEditPlayerAction = editPlayerAction.bind(
-    null,
-    playerRecord.rsn,
-    playerRecord.rank,
-  );
+  const boundEditPlayerAction = editPlayerAction.bind(null, playerRecord.rsn);
   const { form, handleSubmitWithAction } = useHookFormAction(
     boundEditPlayerAction,
     zodResolver(EditPlayerSchema),

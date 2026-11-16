@@ -1,18 +1,9 @@
-import {
-  rankSubmissionDiffKey,
-  rankSubmissionKey,
-  rankSubmissionMetadataKey,
-} from '@/config/redis';
 import { Flex, Heading } from '@radix-ui/themes';
-import { redis } from '@/redis';
+import { z } from 'zod';
 import { auth } from '@/auth';
-import {
-  RankSubmissionDiff,
-  RankSubmissionMetadata,
-} from '@/app/schemas/rank-calculator';
-
+import { initORM, withRequestContext } from '@/database/db';
+import { RankSubmission } from '@/database/entities/rank-submission.entity';
 import { ReadonlyFormWrapper } from './readonly-form-wrapper';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
 import { calculateDiffErrors } from './utils/calculate-diff-errors';
 import { getDiscordUsername } from './get-discord-username';
 import {
@@ -29,16 +20,32 @@ export const instant = false;
 export default async function ViewSubmissionPage({
   params,
 }: PageProps<'/rank-calculator/view/[submissionId]'>) {
+  await connection();
+
   const { submissionId } = await params;
-  const [submission, submissionMetadata, submissionDiff] = await Promise.all([
-    redis.json.get<Omit<RankCalculatorSchema, 'rank' | 'points'>>(
-      rankSubmissionKey(submissionId),
-    ),
-    redis.hgetall<RankSubmissionMetadata>(
-      rankSubmissionMetadataKey(submissionId),
-    ),
-    redis.hgetall<RankSubmissionDiff>(rankSubmissionDiffKey(submissionId)),
-  ]);
+
+  const { success: isValidSubmissionId, data: parsedSubmissionId } = z
+    .uuid()
+    .safeParse(submissionId);
+
+  if (!isValidSubmissionId) {
+    return (
+      <Flex align="center" justify="center" height="100vh">
+        <Heading>404 submission not found</Heading>
+      </Flex>
+    );
+  }
+
+  const submission = await withRequestContext(async () => {
+    const { em } = await initORM();
+    const result = await em.findOne(RankSubmission, { id: parsedSubmissionId });
+
+    if (!result) {
+      return null;
+    }
+
+    return result;
+  });
 
   if (!submission) {
     return (
@@ -48,15 +55,11 @@ export default async function ViewSubmissionPage({
     );
   }
 
-  if (!submissionMetadata) {
-    throw new Error('Unable to find submission metadata');
-  }
-
-  if (!submissionDiff) {
-    throw new Error('Unable to find submission diff');
-  }
-
-  await connection();
+  const {
+    data: formData,
+    metadata: submissionMetadata,
+    diff: submissionDiff,
+  } = submission;
 
   const user = await auth();
 
@@ -71,10 +74,10 @@ export default async function ViewSubmissionPage({
 
   return (
     <ReadonlyFormWrapper
-      formData={submission}
+      formData={formData}
       userPermissions={user?.user?.permissions}
       diffErrors={diffErrors}
-      submissionMetadata={submissionMetadata}
+      submissionMetadata={{ ...submissionMetadata }}
       actionedByUsername={actionedByUsername}
       itemList={Object.entries(notableItemList)}
     />

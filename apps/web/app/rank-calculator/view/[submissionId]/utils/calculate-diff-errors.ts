@@ -1,7 +1,7 @@
 import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
 import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
 import { DiaryLocation } from '@/app/schemas/osrs';
-import { RankSubmissionDiff } from '@/app/schemas/rank-calculator';
+import type { RankSubmissionDiff } from '@/database/entities/rank-submission.entity';
 import { FieldErrors } from 'react-hook-form';
 
 function formatCheckboxLabel(actualStatus: boolean) {

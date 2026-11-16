@@ -2,10 +2,8 @@
 
 import { ForwardRefExoticComponent, useState } from 'react';
 import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
-import {
-  RankSubmissionMetadata,
-  RankSubmissionStatus,
-} from '@/app/schemas/rank-calculator';
+import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
+import type { RankSubmissionMetadata } from '@/database/entities/rank-submission.entity';
 import { Flex, IconProps, Text, TextProps } from '@radix-ui/themes';
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
 import { RankCalculator } from '../../[player]/rank-calculator';

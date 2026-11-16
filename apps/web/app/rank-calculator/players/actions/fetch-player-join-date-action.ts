@@ -8,7 +8,7 @@ export const fetchPlayerJoinDateAction = actionClient
   .metadata({
     actionName: 'fetch-player-join-date',
   })
-  .schema(z.string())
+  .inputSchema(z.string())
   .action(
     async ({ parsedInput: playerName }) =>
       (await fetchPlayerMeta(playerName))?.joinDate ?? null,

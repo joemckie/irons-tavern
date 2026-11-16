@@ -4,9 +4,8 @@ import { authActionClient } from '@/app/safe-action';
 import { discordBotClient } from '@/discord';
 import { Routes } from 'discord-api-types/v10';
 import { serverConstants } from '@/config/constants.server';
-import { redis, redisRaw } from '@/redis';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { rankSubmissionMetadataKey } from '@/config/redis';
+import { initORM } from '@/database/db';
+import { RankSubmission } from '@/database/entities/rank-submission.entity';
 import dedent from 'dedent';
 import { ActionError } from '@/app/action-error';
 import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
@@ -15,7 +14,7 @@ import { RejectSubmissionSchema } from './moderate-submission-schema';
 
 export const rejectSubmissionAction = authActionClient
   .metadata({ actionName: 'reject-submission' })
-  .schema(RejectSubmissionSchema)
+  .inputSchema(RejectSubmissionSchema)
   .action(
     async ({ parsedInput: { submissionId }, ctx: { permissions, userId } }) => {
       if (!userCanModerateSubmission(permissions)) {
@@ -24,18 +23,18 @@ export const rejectSubmissionAction = authActionClient
         );
       }
 
-      const metadata = (await redisRaw.hmget(
-        rankSubmissionMetadataKey(submissionId),
-        'status',
-        'discordMessageId',
-        'submittedBy',
-      )) as unknown as [RankSubmissionStatus, string, string];
+      const { em } = await initORM();
+      const submission = await em.findOne(RankSubmission, { id: submissionId });
 
-      if (!metadata) {
+      if (!submission) {
         throw new ActionError('Unable to find submission metadata');
       }
 
-      const [submissionStatus, messageId, submitterId] = metadata;
+      const {
+        status: submissionStatus,
+        discordMessageId: messageId,
+        submittedBy: submitterId,
+      } = submission.metadata;
 
       if (submissionStatus !== 'Pending') {
         throw new ActionError('Submission does not need to be moderated!');
@@ -62,10 +61,9 @@ export const rejectSubmissionAction = authActionClient
         messageId,
       );
 
-      await redis.hset<RankSubmissionStatus>(
-        rankSubmissionMetadataKey(submissionId),
-        { status: 'Rejected' },
-      );
+      em.assign(submission.metadata, { status: 'Rejected' });
+
+      await em.flush();
 
       return { success: true };
     },
