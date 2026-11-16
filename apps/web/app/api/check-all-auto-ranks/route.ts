@@ -20,12 +20,13 @@ export async function GET() {
     });
 
     const groupMemberInfo = await getGroupMemberInfo();
-    const membersWithTempleClogSynced = Object.entries(groupMemberInfo.data.memberlist)
+    const membersWithTempleClogSynced = new Set(
+      Object.entries(groupMemberInfo.data.memberlist)
       .filter(([_, memberInfo]) => memberInfo.on_hiscores && memberInfo.clog_synced)
-      .map(([memberName]) => memberName.toLowerCase());
+      .map(([memberName]) => memberName.toLowerCase()));
 
     const accountsToCheck: (typeof accounts)[number][] = accounts.filter(({ name }) =>
-      membersWithTempleClogSynced.includes(name.toLowerCase()),
+      membersWithTempleClogSynced.has(name.toLowerCase()),
     );
 
     let delay = 0;
