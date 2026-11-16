@@ -22,31 +22,36 @@ export async function GET() {
     const groupMemberInfo = await getGroupMemberInfo();
     const membersWithTempleClogSynced = new Set(
       Object.entries(groupMemberInfo.data.memberlist)
-      .filter(([_, memberInfo]) => memberInfo.on_hiscores && memberInfo.clog_synced)
-      .map(([memberName]) => memberName.toLowerCase()));
+        .filter(
+          ([_, memberInfo]) => memberInfo.on_hiscores && memberInfo.clog_synced,
+        )
+        .map(([memberName]) => memberName.toLowerCase()),
+    );
 
-    const accountsToCheck: (typeof accounts)[number][] = accounts.filter(({ name }) =>
-      membersWithTempleClogSynced.has(name.toLowerCase()),
+    const accountsToCheck: (typeof accounts)[number][] = accounts.filter(
+      ({ name }) => membersWithTempleClogSynced.has(name.toLowerCase()),
     );
 
     let delay = 0;
 
-    const requests = accountsToCheck.map(({ name: player, user: { discordId } }) => {
-      const url = new URL(`${clientConstants.publicUrl}/api/check-auto-rank`);
+    const requests = accountsToCheck.map(
+      ({ name: player, user: { discordId } }) => {
+        const url = new URL(`${clientConstants.publicUrl}/api/check-auto-rank`);
 
-      url.searchParams.append('player', player);
-      url.searchParams.append('discord_id', discordId);
-      url.searchParams.append(
-        // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
-        // so we need to wait for six seconds before checking the next player
-        '_delay',
-        delay.toFixed(0),
-      );
+        url.searchParams.append('player', player);
+        url.searchParams.append('discord_id', discordId);
+        url.searchParams.append(
+          // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
+          // so we need to wait for six seconds before checking the next player
+          '_delay',
+          delay.toFixed(0),
+        );
 
-      delay += 6;
+        delay += 6;
 
-      return { url, method: 'GET' };
-    });
+        return { url, method: 'GET' };
+      },
+    );
 
     const queueResponse = await fetch(
       `${serverConstants.zeplo.url}/bulk?_token=${serverConstants.zeplo.apiKey}`,
