@@ -1,12 +1,5 @@
 import * as Sentry from '@sentry/nextjs';
 import { z } from 'zod';
-import dedent from 'dedent';
-import {
-  APIDMChannel,
-  ButtonStyle,
-  ComponentType,
-  Routes,
-} from 'discord-api-types/v10';
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchPlayerDetails } from '@/app/rank-calculator/data-sources/fetch-player-details/fetch-player-details';
 import { calculateAchievementDiaryPoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-points';
@@ -22,10 +15,6 @@ import { calculateScaling } from '@/app/rank-calculator/utils/calculators/calcul
 import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
 import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-level-points';
 import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
-import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { clientConstants } from '@/config/constants.client';
-import { discordBotClient } from '@/discord';
 import { initORM, withRequestContext } from '@/database/db';
 import { OSRSAccount } from '@/database/entities/osrs-account';
 import {
@@ -39,6 +28,7 @@ import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculato
 import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
 import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
 import { isRankUp } from '@/app/rank-calculator/utils/is-rank-up';
+import { submitRankApplication } from '@/app/_utilities/submit-rank-application';
 
 export async function GET(request: NextRequest) {
   return withRequestContext(() => checkAutoRank(request));
@@ -73,7 +63,6 @@ async function checkAutoRank(request: NextRequest) {
       combatAchievementTier,
       currentRank,
       hasThirdPartyData,
-      playerName,
       rankStructure,
       tzhaarCape,
       hasBloodTorva,
@@ -174,41 +163,19 @@ async function checkAutoRank(request: NextRequest) {
         name: player,
       });
 
-      // Send a message if the user has not been notified of this rank in the past
-      if (account.lastNotifiedRank !== rank) {
-        const { id: dmChannelId } = (await discordBotClient.post(
-          Routes.userChannels(),
-          { body: { recipient_id: discordId } },
-        )) as APIDMChannel;
-
-        await sendDiscordMessage(
-          {
-            content: dedent`
-              Congratulations, you are eligible for the ${getRankName(rank)} rank on ${playerName}!
-              
-              Click the button below to go to the rank calculator and apply.
-            `,
-            components: [
-              {
-                components: [
-                  {
-                    label: 'Apply for rank',
-                    url: `${clientConstants.publicUrl}/rank-calculator/${encodeURIComponent(player)}`,
-                    style: ButtonStyle.Link,
-                    type: ComponentType.Button,
-                  },
-                ],
-                type: ComponentType.ActionRow,
-              },
-            ],
-          },
-          dmChannelId,
-        );
-
-        account.lastNotifiedRank = rank;
-
-        await em.flush();
-      }
+      await submitRankApplication(
+        em,
+        account,
+        {
+          userId: discordId,
+          playerName: player,
+          rank,
+          totalPoints: totalPointsAwarded,
+          savedData: playerDetails.data,
+        },
+        playerDetails.data,
+        true,
+      );
     }
 
     return NextResponse.json({ success: true });
