@@ -95,7 +95,8 @@ export async function submitRankApplication(
           fields: [
             {
               name: 'Application type',
-              value: applicationType === 'automatic' ? '⚙️ Automatic' : 'Manual',
+              value:
+                applicationType === 'automatic' ? '⚙️ Automatic' : 'Manual',
               inline: false,
             },
             { name: 'Rank', value: getRankName(rank), inline: true },

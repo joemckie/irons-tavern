@@ -4,6 +4,7 @@ import { serverConstants } from '@/config/constants.server';
 import { initORM, withRequestContext } from '@/database/db';
 import { OSRSAccount } from '@/database/entities/osrs-account';
 import { connection, NextResponse } from 'next/server';
+import { getGroupMemberInfo } from '@/app/_utilities/get-group-member-info';
 
 export async function GET() {
   await connection();
@@ -18,9 +19,18 @@ export async function GET() {
       });
     });
 
+    const groupMemberInfo = await getGroupMemberInfo();
+    const membersWithTempleClogSynced = Object.entries(groupMemberInfo.data.memberlist)
+      .filter(([_, memberInfo]) => memberInfo.on_hiscores && memberInfo.clog_synced)
+      .map(([memberName]) => memberName.toLowerCase());
+
+    const accountsToCheck: (typeof accounts)[number][] = accounts.filter(({ name }) =>
+      membersWithTempleClogSynced.includes(name.toLowerCase()),
+    );
+
     let delay = 0;
 
-    const requests = accounts.map(({ name: player, user: { discordId } }) => {
+    const requests = accountsToCheck.map(({ name: player, user: { discordId } }) => {
       const url = new URL(`${clientConstants.publicUrl}/api/check-auto-rank`);
 
       url.searchParams.append('player', player);

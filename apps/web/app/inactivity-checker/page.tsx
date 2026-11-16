@@ -2,24 +2,15 @@ import { differenceInDays } from 'date-fns';
 import pluralise from 'pluralize';
 import { list } from '@vercel/blob';
 import Image from 'next/image';
-import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import * as Sentry from '@sentry/nextjs';
-import { ClanMember, ClanMemberList } from '../schemas/inactivity-checker';
+import { type ClanMember, ClanMemberList } from '../schemas/inactivity-checker';
 import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
+import { getGroupMemberInfo } from '../_utilities/get-group-member-info';
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
-
-async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
-  const response = await fetch(
-    `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
-  );
-
-  return GroupMemberInfoResponse.parse(await response.json());
-}
 
 async function getLatestMemberList() {
   const blobList = await list();
