@@ -34,8 +34,15 @@ export async function GET() {
 
     let delay = 0;
 
-    const requests = accountsToCheck.map(
-      ({ name: player, user: { discordId } }) => {
+    Sentry.captureMessage('Starting to check auto ranks for accounts', {
+      extra: {
+        accountsToCheck: accountsToCheck.map(({ name, user: { discordId } }) => [name, discordId]),
+      },
+    });
+
+    const requests = accountsToCheck
+      .slice(0, 10)
+      .map(({ name: player, user: { discordId } }) => {
         const url = new URL(`${clientConstants.publicUrl}/api/check-auto-rank`);
 
         url.searchParams.append('player', player);
@@ -50,8 +57,7 @@ export async function GET() {
         delay += 6;
 
         return { url, method: 'GET' };
-      },
-    );
+      });
 
     const queueResponse = await fetch(
       `${serverConstants.zeplo.url}/bulk?_token=${serverConstants.zeplo.apiKey}`,
