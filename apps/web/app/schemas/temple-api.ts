@@ -7,7 +7,7 @@ const MemberInfo = z.object({
   last_checked: z.string(),
   last_changed_xp: z.string(),
   last_changed_xp_unix_time: z.number(),
-  clog_synced: z.boolean(),
+  clog_synced: z.boolean().optional(),
 });
 
 type MemberInfo = z.infer<typeof MemberInfo>;
