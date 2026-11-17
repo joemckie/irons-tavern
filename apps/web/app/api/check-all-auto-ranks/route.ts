@@ -18,7 +18,12 @@ export async function GET() {
       });
     });
 
+    console.log('Fetched accounts:', accounts);
+
     const groupMemberInfo = await getGroupMemberInfo();
+
+    console.log('Fetched group member info:', groupMemberInfo);
+
     const membersWithTempleClogSynced = new Set(
       Object.entries(groupMemberInfo.data.memberlist)
         .filter(
@@ -27,9 +32,13 @@ export async function GET() {
         .map(([memberName]) => memberName.toLowerCase()),
     );
 
+    console.log('Members with Temple Clog Synced:', membersWithTempleClogSynced);
+
     const accountsToCheck = accounts.filter(
       ({ name }) => membersWithTempleClogSynced.has(name.toLowerCase()),
     );
+
+    console.log('Accounts to check:', accountsToCheck);
 
     let delay = 0;
 
