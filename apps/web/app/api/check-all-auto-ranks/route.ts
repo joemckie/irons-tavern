@@ -14,7 +14,6 @@ export async function GET() {
       const { em } = await initORM();
 
       return em.findAll(OSRSAccount, {
-        fields: ['name', 'user'],
         orderBy: { user: 'asc', name: 'asc' },
       });
     });
@@ -23,7 +22,7 @@ export async function GET() {
     const membersWithTempleClogSynced = new Set(
       Object.entries(groupMemberInfo.data.memberlist)
         .filter(
-          ([_, memberInfo]) => memberInfo.on_hiscores && memberInfo.clog_synced,
+          ([_, memberInfo]) => Boolean(memberInfo.on_hiscores && memberInfo.clog_synced),
         )
         .map(([memberName]) => memberName.toLowerCase()),
     );
