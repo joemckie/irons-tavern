@@ -28,7 +28,7 @@ export async function GET() {
         .map(([memberName]) => memberName.toLowerCase()),
     );
 
-    const accountsToCheck: (typeof accounts)[number][] = accounts.filter(
+    const accountsToCheck = accounts.filter(
       ({ name }) => membersWithTempleClogSynced.has(name.toLowerCase()),
     );
 
@@ -68,6 +68,6 @@ export async function GET() {
   } catch (error) {
     Sentry.captureException(error);
 
-    return NextResponse.json({ success: false });
+    return NextResponse.json({ success: false, error: error instanceof Error ? error.message : String(error) });
   }
 }
