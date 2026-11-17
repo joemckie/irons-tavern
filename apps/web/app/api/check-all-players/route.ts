@@ -2,18 +2,15 @@ import { connection, NextResponse } from 'next/server';
 import { differenceInDays } from 'date-fns';
 import { clientConstants } from '@/config/constants.client';
 import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
 import { initORM, withRequestContext } from '@/database/db';
 import { PlayerGameMode } from '@/database/entities/player-game-mode.entity';
 import { CheckMethod } from '@/app/schemas/inactivity-checker';
+import { getGroupMemberInfo } from '@/app/_utilities/get-group-member-info';
 
 export async function GET() {
   await connection();
 
-  const response = await fetch(
-    `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
-  );
-  const players = GroupMemberInfoResponse.parse(await response.json());
+  const groupMemberInfo = await getGroupMemberInfo();
   const playerGameModes = await withRequestContext(async () => {
     const { em } = await initORM();
     const records = await em.findAll(PlayerGameMode);
@@ -30,7 +27,7 @@ export async function GET() {
   // This reduces the amount of requests significantly, due to
   // players using the XP Updater plugin on RuneLite.
   // Also filter players not on hiscores as these cannot be checked.
-  const filteredPlayers = Object.values(players.data.memberlist).filter(
+  const filteredPlayers = Object.values(groupMemberInfo.data.memberlist).filter(
     ({ on_hiscores: onHiscores, last_checked: lastChecked }) =>
       onHiscores && differenceInDays(Date.now(), lastChecked) > 1,
   );
