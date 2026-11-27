@@ -128,21 +128,21 @@ export async function resolveAutoRankRows({
     collectGroupMembers(temple),
     wikiSyncConcurrency,
     async ({ key, rsn, memberInfo, collectionLogMember }): Promise<AutoRankRow> => {
-      const row: AutoRankRow = { rsn };
+      const matches = accountsByRsn.get(key) ?? [];
+      const [account] = matches;
+      const clanMember = clanMembersByRsn.get(key);
+      const currentRank =
+        clanMember?.rank ?? (matches.length === 1 ? (account?.rank ?? undefined) : undefined);
+      const row: AutoRankRow = { rsn, currentRank };
 
       if (!collectionLogMember) {
         return skip(row, "Missing collection log");
       }
 
-      const matches = accountsByRsn.get(key) ?? [];
-
       if (matches.length > 1) {
         return skip(row, "Ambiguous");
       }
 
-      const [account] = matches;
-      const clanMember = clanMembersByRsn.get(key);
-      const currentRank = clanMember?.rank ?? account?.rank ?? undefined;
       // A linked account is authoritative; otherwise fall back to an exact, unique nickname
       const guildMember = account
         ? guildMembersById.get(account.discordId)
