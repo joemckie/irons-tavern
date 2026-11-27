@@ -1,4 +1,3 @@
-import { z } from "zod";
 import * as Sentry from "@sentry/nextjs";
 import type { Rank } from "@/config/enums";
 import { StandardRank } from "@/config/ranks";
@@ -11,33 +10,9 @@ import { isRankUp } from "../utils/is-rank-up";
 import { mapWithConcurrency } from "../utils/map-with-concurrency";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
 import type { TempleGroupData } from "./data-sources/fetch-temple-group-data";
+import { AutoRankRow, SkipReason } from "./auto-rank-row";
 
-export const SkipReason = z.enum([
-  "Missing collection log",
-  "Missing Temple stats",
-  "Unlinked",
-  "Ambiguous",
-  "Non-standard structure",
-  "Not in Discord server",
-  "Missing WikiSync",
-  "Staff / non-standard rank",
-  "Error",
-]);
-
-export type SkipReason = z.infer<typeof SkipReason>;
-
-export interface AutoRankRow {
-  /** Temple's capitalised name if available, else the Temple RSN */
-  rsn: string;
-  discordId?: string;
-  discordName?: string;
-  currentRank?: Rank;
-  /** Only set when there is no skip reason */
-  calculatedRank?: Rank;
-  totalPoints?: number;
-  isRankUp?: boolean;
-  skipReason?: SkipReason;
-}
+export { SkipReason, type AutoRankRow } from "./auto-rank-row";
 
 export interface MatchedAccount {
   name: string;

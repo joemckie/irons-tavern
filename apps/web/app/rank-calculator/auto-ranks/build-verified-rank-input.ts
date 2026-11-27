@@ -42,6 +42,14 @@ const emptyAchievementDiaries = {
   Wilderness: "None",
 } satisfies AchievementDiaryMap;
 
+/**
+ * Group member info keys that have a `player_stats.php` equivalent (see `TempleOSRSPlayerStats`).
+ * Anything else (F2P, level 3, 1 defence) can't be verified the same way as a manual submission,
+ * where `player_stats.php` fails to parse and the member is treated as having no Temple stats.
+ */
+const verifiableEhpKeys = new Set(["Ehp", "Ehp_im", "Uim_ehp"]);
+const verifiableEhbKeys = new Set(["Ehb", "Ehb_im", "Ehb_uim"]);
+
 function buildCollectionLogItems(
   items: GroupCollectionLogMember["items"],
   itemNames: Record<string, string>,
@@ -76,8 +84,8 @@ export async function buildVerifiedRankInput({
   discordRoles,
 }: VerifiedRankInputSources): Promise<VerifiedRankInputResult> {
   const totalLevel = skills?.Overall_level;
-  const ehp = primaryEhp ? skills?.[primaryEhp] : undefined;
-  const ehb = primaryEhb ? bosses?.[primaryEhb] : undefined;
+  const ehp = primaryEhp && verifiableEhpKeys.has(primaryEhp) ? skills?.[primaryEhp] : undefined;
+  const ehb = primaryEhb && verifiableEhbKeys.has(primaryEhb) ? bosses?.[primaryEhb] : undefined;
 
   if (totalLevel === undefined || ehp === undefined || ehb === undefined || !bosses) {
     return { success: false, reason: "Missing Temple stats" };

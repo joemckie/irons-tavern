@@ -89,6 +89,25 @@ describe("buildVerifiedRankInput", () => {
     ).resolves.toEqual({ success: false, reason: "Missing Temple stats" });
   });
 
+  it.each([
+    ["F2P", { primary_ehp: "F2p_im_ehp", primary_ehb: "Ehb_im" }],
+    ["1 defence", { primary_ehp: "Ehp", primary_ehb: "Ehb_1def" }],
+  ])(
+    "returns Missing Temple stats for %s accounts, which player_stats.php can't verify",
+    async (_, primaryKeys) => {
+      const memberInfo = {
+        ...memberlist["Iron Tyson"],
+        ...primaryKeys,
+        skills: { ...memberlist["Iron Tyson"].skills, F2p_im_ehp: 861.6643 },
+      };
+
+      await expect(buildVerifiedRankInput(buildArgs({ memberInfo }))).resolves.toEqual({
+        success: false,
+        reason: "Missing Temple stats",
+      });
+    },
+  );
+
   it("returns Missing Temple stats when skills are absent", async () => {
     const { skills: _, ...memberInfo } = memberlist["Iron Tyson"];
 
