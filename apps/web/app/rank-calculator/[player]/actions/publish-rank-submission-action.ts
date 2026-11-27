@@ -1,53 +1,50 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { formatNumber } from '@/app/rank-calculator/utils/format-number';
-import { randomUUID } from 'crypto';
-import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { clientConstants } from '@/config/constants.client';
-import { serverConstants } from '@/config/constants.server';
-import { format } from 'date-fns';
-import { initORM } from '@/database/db';
-import { DraftRankSubmission } from '@/database/entities/draft-rank-submission.entity';
-import { RankSubmission } from '@/database/entities/rank-submission.entity';
-import { authActionClient } from '@/app/safe-action';
+import { z } from "zod";
+import { formatNumber } from "@/app/rank-calculator/utils/format-number";
+import { randomUUID } from "crypto";
+import { sendDiscordMessage } from "@/app/rank-calculator/utils/send-discord-message";
+import { clientConstants } from "@/config/constants.client";
+import { serverConstants } from "@/config/constants.server";
+import { format } from "date-fns";
+import { initORM } from "@/database/db";
+import { DraftRankSubmission } from "@/database/entities/draft-rank-submission.entity";
+import { RankSubmission } from "@/database/entities/rank-submission.entity";
+import { authActionClient } from "@/app/safe-action";
 import {
   AchievementDiaryMap,
   RankSubmissionDiff,
   RankSubmissionMetadata,
-} from '@/app/schemas/rank-calculator';
-import { discordBotClient } from '@/discord';
-import { ChannelType, Routes } from 'discord-api-types/v10';
-import { Rank } from '@/config/enums';
-import { PlayerName } from '@/app/schemas/player';
-import { ActionError } from '@/app/action-error';
-import { isEmpty, pickBy } from 'lodash';
-import {
-  CombatAchievementTier,
-  DiaryLocation,
-  DiaryTier,
-} from '@/app/schemas/osrs';
-import { itemList } from '@/data/item-list';
+} from "@/app/schemas/rank-calculator";
+import { discordBotClient } from "@/discord";
+import { ChannelType, Routes } from "discord-api-types/v10";
+import { Rank } from "@/config/enums";
+import { PlayerName } from "@/app/schemas/player";
+import { ActionError } from "@/app/action-error";
+import { isEmpty, pickBy } from "lodash";
+import { CombatAchievementTier, DiaryLocation, DiaryTier } from "@/app/schemas/osrs";
+import { itemList } from "@/data/item-list";
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
   isQuestItem,
   Item,
-} from '@/app/schemas/items';
-import * as Sentry from '@sentry/nextjs';
-import { calculateScaling } from '../../utils/calculators/calculate-scaling';
-import { formatPercentage } from '../../utils/format-percentage';
-import { getRankName } from '../../utils/get-rank-name';
-import { getRankImageUrl } from '../../utils/get-rank-image-url';
-import { fetchPlayerDetails } from '../../data-sources/fetch-player-details/fetch-player-details';
-import { normaliseEntityName } from '../../utils/normalise-entity-name';
-import { approveSubmission } from '../../view/[submissionId]/utils/approve-submission';
+} from "@/app/schemas/items";
+import * as Sentry from "@sentry/nextjs";
+import { calculateScaling } from "../../utils/calculators/calculate-scaling";
+import { formatPercentage } from "../../utils/format-percentage";
+import { getRankName } from "../../utils/get-rank-name";
+import { getRankImageUrl } from "../../utils/get-rank-image-url";
+import { fetchPlayerDetails } from "../../data-sources/fetch-player-details/fetch-player-details";
+import { normaliseEntityName } from "../../utils/normalise-entity-name";
+import { approveSubmission } from "../../view/[submissionId]/utils/approve-submission";
 
 export const publishRankSubmissionAction = authActionClient
-  .metadata({ actionName: 'publish-rank-submission' })
-  .bindArgsSchemas<
-    [currentRank: z.ZodOptional<typeof Rank>, playerName: typeof PlayerName]
-  >([Rank.optional(), PlayerName])
+  .metadata({ actionName: "publish-rank-submission" })
+  .bindArgsSchemas<[currentRank: z.ZodOptional<typeof Rank>, playerName: typeof PlayerName]>([
+    Rank.optional(),
+    PlayerName,
+  ])
   .inputSchema(z.object({ rank: Rank, totalPoints: z.number().nonnegative() }))
   .action(
     async ({
@@ -56,7 +53,7 @@ export const publishRankSubmissionAction = authActionClient
       parsedInput: { totalPoints, rank },
     }) => {
       if (rank === currentRank) {
-        throw new ActionError('You already have this rank!');
+        throw new ActionError("You already have this rank!");
       }
 
       const { em } = await initORM();
@@ -65,7 +62,7 @@ export const publishRankSubmissionAction = authActionClient
       });
 
       if (!draft) {
-        throw new ActionError('No saved data!');
+        throw new ActionError("No saved data!");
       }
 
       const { data: savedData, osrsAccount } = draft;
@@ -73,9 +70,7 @@ export const publishRankSubmissionAction = authActionClient
       const playerDetails = await fetchPlayerDetails(playerName, userId, false);
 
       if (!playerDetails.success) {
-        throw new Error(
-          'Failed to retrieve player details. Please try again later.',
-        );
+        throw new Error("Failed to retrieve player details. Please try again later.");
       }
 
       const {
@@ -101,7 +96,7 @@ export const publishRankSubmissionAction = authActionClient
 
       if (savedData.collectionLogTotal < collectionLogTotal) {
         throw new ActionError(
-          'The in-game collection log has been updated since your last save. Please refresh the page and try again.',
+          "The in-game collection log has been updated since your last save. Please refresh the page and try again.",
         );
       }
 
@@ -114,30 +109,30 @@ export const publishRankSubmissionAction = authActionClient
               title: `${playerName} rank application`,
               thumbnail: { url: getRankImageUrl(rank, true) },
               fields: [
-                { name: 'Rank', value: getRankName(rank), inline: true },
+                { name: "Rank", value: getRankName(rank), inline: true },
                 {
-                  name: 'Rank structure',
+                  name: "Rank structure",
                   value: savedData.rankStructure,
                   inline: true,
                 },
                 {
-                  name: 'Total points',
+                  name: "Total points",
                   value: formatNumber(totalPoints),
                   inline: true,
                 },
                 {
-                  name: 'Join date',
-                  value: format(joinDate, 'dd MMM yyyy'),
+                  name: "Join date",
+                  value: format(joinDate, "dd MMM yyyy"),
                   inline: true,
                 },
                 {
-                  name: 'Scaling',
+                  name: "Scaling",
                   value: formatPercentage(calculateScaling(joinDate)),
                   inline: true,
                 },
-                { name: 'User', value: `<@${userId}>`, inline: true },
+                { name: "User", value: `<@${userId}>`, inline: true },
                 {
-                  name: 'View link',
+                  name: "View link",
                   value: `[Click to view submission](${clientConstants.publicUrl}/rank-calculator/view/${submissionId})`,
                 },
               ],
@@ -155,16 +150,11 @@ export const publishRankSubmissionAction = authActionClient
       });
 
       try {
-        await discordBotClient.put(
-          Routes.threadMembers(discordMessageId, userId),
-        );
+        await discordBotClient.put(Routes.threadMembers(discordMessageId, userId));
       } catch (error) {
         try {
           // If the user can't be added to the thread, send a comment that mentions them instead
-          await sendDiscordMessage(
-            { content: `<@${userId}>` },
-            discordMessageId,
-          );
+          await sendDiscordMessage({ content: `<@${userId}>` }, discordMessageId);
         } catch {
           // Adding the user to the thread is not critical to the process,
           // so if both attempts fail, just capture the exception and continue.
@@ -186,27 +176,17 @@ export const publishRankSubmissionAction = authActionClient
         achievementDiaries:
           hasWikiSyncData && savedData.achievementDiaries && achievementDiaries
             ? (
-                Object.entries(achievementDiaries) as [
-                  DiaryLocation,
-                  DiaryTier,
-                ][]
-              ).reduce<AchievementDiaryMap>(
-                (acc, [diaryLocation, diaryTier]) => {
-                  if (
-                    DiaryTier.options.indexOf(
-                      achievementDiaries[diaryLocation] ?? 'None',
-                    ) <
-                    DiaryTier.options.indexOf(
-                      savedData.achievementDiaries[diaryLocation] ?? 'None',
-                    )
-                  ) {
-                    return { ...acc, [diaryLocation]: diaryTier };
-                  }
+                Object.entries(achievementDiaries) as [DiaryLocation, DiaryTier][]
+              ).reduce<AchievementDiaryMap>((acc, [diaryLocation, diaryTier]) => {
+                if (
+                  DiaryTier.options.indexOf(achievementDiaries[diaryLocation] ?? "None") <
+                  DiaryTier.options.indexOf(savedData.achievementDiaries[diaryLocation] ?? "None")
+                ) {
+                  return { ...acc, [diaryLocation]: diaryTier };
+                }
 
-                  return acc;
-                },
-                {} as AchievementDiaryMap,
-              )
+                return acc;
+              }, {} as AchievementDiaryMap)
             : null,
         acquiredItems: [
           ...new Set<string>([
@@ -214,10 +194,7 @@ export const publishRankSubmissionAction = authActionClient
               ? z.array(z.string()).parse(
                   Object.values(
                     pickBy(Object.keys(savedData.acquiredItems), (key) => {
-                      if (
-                        isQuestItem(itemMap[key]) ||
-                        isCombatAchievementItem(itemMap[key])
-                      ) {
+                      if (isQuestItem(itemMap[key]) || isCombatAchievementItem(itemMap[key])) {
                         return !acquiredItems[key];
                       }
 
@@ -244,46 +221,32 @@ export const publishRankSubmissionAction = authActionClient
         combatAchievementTier:
           hasWikiSyncData &&
           CombatAchievementTier.options.indexOf(combatAchievementTier) <
-            CombatAchievementTier.options.indexOf(
-              savedData.combatAchievementTier,
-            )
+            CombatAchievementTier.options.indexOf(savedData.combatAchievementTier)
             ? combatAchievementTier
             : null,
         collectionLogCount:
-          hasTemplePlayerStats &&
-          collectionLogCount < savedData.collectionLogCount
+          hasTemplePlayerStats && collectionLogCount < savedData.collectionLogCount
             ? collectionLogCount
             : null,
-        totalLevel:
-          hasTemplePlayerStats && totalLevel < savedData.totalLevel
-            ? totalLevel
-            : null,
+        totalLevel: hasTemplePlayerStats && totalLevel < savedData.totalLevel ? totalLevel : null,
         tzhaarCape:
-          hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape
-            ? tzhaarCape
-            : null,
+          hasTempleCollectionLog && tzhaarCape !== savedData.tzhaarCape ? tzhaarCape : null,
         hasBloodTorva:
-          hasWikiSyncData && hasBloodTorva !== savedData.hasBloodTorva
-            ? !!hasBloodTorva
-            : null,
+          hasWikiSyncData && hasBloodTorva !== savedData.hasBloodTorva ? !!hasBloodTorva : null,
         hasDizanasQuiver:
-          hasTempleCollectionLog &&
-          hasDizanasQuiver !== savedData.hasDizanasQuiver
+          hasTempleCollectionLog && hasDizanasQuiver !== savedData.hasDizanasQuiver
             ? !!hasDizanasQuiver
             : null,
         hasAchievementDiaryCape:
-          hasWikiSyncData &&
-          hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
+          hasWikiSyncData && hasAchievementDiaryCape !== savedData.hasAchievementDiaryCape
             ? !!hasAchievementDiaryCape
             : null,
         hasMaxCape:
-          hasTemplePlayerStats && hasMaxCape !== savedData.hasMaxCape
-            ? !!hasMaxCape
-            : null,
+          hasTemplePlayerStats && hasMaxCape !== savedData.hasMaxCape ? !!hasMaxCape : null,
       } satisfies RankSubmissionDiff;
 
       const isAutoApprovalAvailable =
-        savedData.rankStructure === 'Standard' &&
+        savedData.rankStructure === "Standard" &&
         hasTempleCollectionLog &&
         hasWikiSyncData &&
         hasTemplePlayerStats &&
@@ -295,7 +258,7 @@ export const publishRankSubmissionAction = authActionClient
         data: savedData,
         metadata: {
           discordMessageId,
-          status: 'Pending',
+          status: "Pending",
           submittedBy: userId,
           submittedAt: new Date(),
           actionedBy: null,
@@ -313,9 +276,7 @@ export const publishRankSubmissionAction = authActionClient
       } catch (error) {
         Sentry.captureException(error);
 
-        await discordBotClient.delete(
-          Routes.channelMessage(channelId, discordMessageId),
-        );
+        await discordBotClient.delete(Routes.channelMessage(channelId, discordMessageId));
 
         return { success: false };
       }

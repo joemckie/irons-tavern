@@ -1,5 +1,5 @@
-import { Text, TextProps, Tooltip } from '@radix-ui/themes';
-import { PropsWithChildren } from 'react';
+import { Text, TextProps, Tooltip } from "@radix-ui/themes";
+import { PropsWithChildren } from "react";
 
 type ValidationTooltipProps = {
   error: { message?: string } | undefined;

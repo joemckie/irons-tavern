@@ -1,24 +1,20 @@
-import { useState, useTransition } from 'react';
-import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
-import { useAction } from 'next-safe-action/hooks';
-import { useParams } from 'next/navigation';
-import { handleToastUpdates } from '@/app/rank-calculator/utils/handle-toast-updates';
-import { rejectSubmissionAction } from '../reject-submission-action';
+import { useState, useTransition } from "react";
+import { AlertDialog, Button, Flex, Text } from "@radix-ui/themes";
+import { useAction } from "next-safe-action/hooks";
+import { useParams } from "next/navigation";
+import { handleToastUpdates } from "@/app/rank-calculator/utils/handle-toast-updates";
+import { rejectSubmissionAction } from "../reject-submission-action";
 
 interface RejectSubmissionButtonProps {
   onRejectSuccess: () => void;
 }
 
-export function RejectSubmissionButton({
-  onRejectSuccess,
-}: RejectSubmissionButtonProps) {
+export function RejectSubmissionButton({ onRejectSuccess }: RejectSubmissionButtonProps) {
   const { submissionId } = useParams<{ submissionId: string }>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDialogTransitioning, startTransition] = useTransition();
-  const {
-    executeAsync: rejectSubmission,
-    isExecuting: isRejectSubmissionExecuting,
-  } = useAction(rejectSubmissionAction);
+  const { executeAsync: rejectSubmission, isExecuting: isRejectSubmissionExecuting } =
+    useAction(rejectSubmissionAction);
 
   return (
     <AlertDialog.Root open={isDialogOpen}>
@@ -66,7 +62,7 @@ export function RejectSubmissionButton({
                     render() {
                       onRejectSuccess();
 
-                      return 'Submission rejected!';
+                      return "Submission rejected!";
                     },
                   },
                 },
@@ -75,11 +71,7 @@ export function RejectSubmissionButton({
               setIsDialogOpen(false);
             }}
           >
-            <Button
-              loading={isRejectSubmissionExecuting}
-              variant="solid"
-              color="red"
-            >
+            <Button loading={isRejectSubmissionExecuting} variant="solid" color="red">
               Reject
             </Button>
           </AlertDialog.Action>

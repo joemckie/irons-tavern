@@ -1,7 +1,7 @@
-import { serverConstants } from '@/config/constants.server';
-import { discordBotClient } from '@/discord';
-import { APIGuildMember, Routes } from 'discord-api-types/v10';
-import * as Sentry from '@sentry/nextjs';
+import { serverConstants } from "@/config/constants.server";
+import { discordBotClient } from "@/discord";
+import { APIGuildMember, Routes } from "discord-api-types/v10";
+import * as Sentry from "@sentry/nextjs";
 
 export async function fetchUserDiscordRoles(userId: string) {
   try {

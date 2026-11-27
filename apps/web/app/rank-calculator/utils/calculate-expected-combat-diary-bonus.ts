@@ -1,4 +1,3 @@
-import { createPointsMultiplierCalculator } from './create-points-multiplier-calculator';
+import { createPointsMultiplierCalculator } from "./create-points-multiplier-calculator";
 
-export const calculateExpectedCombatDiaryBonus =
-  createPointsMultiplierCalculator(10, 'Natural');
+export const calculateExpectedCombatDiaryBonus = createPointsMultiplierCalculator(10, "Natural");

@@ -1,6 +1,6 @@
-import Decimal from 'decimal.js-light';
-import { maximumSkillLevel, maximumTotalLevel } from '@/app/schemas/osrs';
-import { pointsConfig } from '../../config/points';
+import Decimal from "decimal.js-light";
+import { maximumSkillLevel, maximumTotalLevel } from "@/app/schemas/osrs";
+import { pointsConfig } from "../../config/points";
 
 // View the function graph below
 // https://www.desmos.com/calculator/pvb3brafeg
@@ -41,10 +41,7 @@ export function calculateTotalLevelPoints(totalLevel: number, scaling: number) {
     .times(factor.dividedBy(2))
     .toDecimalPlaces(5);
 
-  const gradient = new Decimal(f0)
-    .minus(f1)
-    .times(remainder)
-    .toDecimalPlaces(5);
+  const gradient = new Decimal(f0).minus(f1).times(remainder).toDecimalPlaces(5);
 
   const points = new Decimal(gradient).plus(c0);
 

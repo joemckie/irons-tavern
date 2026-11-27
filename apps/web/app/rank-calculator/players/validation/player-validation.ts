@@ -1,9 +1,9 @@
-'use server';
+"use server";
 
-import { StatusCodes } from 'http-status-codes';
+import { StatusCodes } from "http-status-codes";
 
 export async function validatePlayerExists(playerName: string) {
-  'use server';
+  "use server";
 
   try {
     const response = await fetch(

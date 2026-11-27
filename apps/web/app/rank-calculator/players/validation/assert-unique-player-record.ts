@@ -1,13 +1,10 @@
-'use server';
+"use server";
 
-import { initORM } from '@/database/db';
-import { OSRSAccount } from '@/database/entities/osrs-account';
-import * as Sentry from '@sentry/nextjs';
+import { initORM } from "@/database/db";
+import { OSRSAccount } from "@/database/entities/osrs-account";
+import * as Sentry from "@sentry/nextjs";
 
-export async function assertUniquePlayerRecord(
-  userId: string,
-  playerName: string,
-) {
+export async function assertUniquePlayerRecord(userId: string, playerName: string) {
   if (!userId) {
     return false;
   }

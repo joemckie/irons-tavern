@@ -1,28 +1,28 @@
-import { z } from 'zod';
-import { Rank } from './enums';
+import { z } from "zod";
+import { Rank } from "./enums";
 
 export const rankNames: Partial<Record<Rank, string>> = {
-  General: 'Major',
-  Admiral: 'General',
-  Marshal: 'Field Marshal',
+  General: "Major",
+  Admiral: "General",
+  Marshal: "Field Marshal",
 };
 
 export const StandardRank = Rank.extract([
-  'Helper',
-  'Steel',
-  'Adamant',
-  'Rune',
-  'Dragon',
-  'Striker',
-  'Expert',
-  'Knight',
-  'Paladin',
-  'Legend',
-  'Natural',
-  'Sage',
-  'TzKal',
-  'Skulled',
-  'Beast',
+  "Helper",
+  "Steel",
+  "Adamant",
+  "Rune",
+  "Dragon",
+  "Striker",
+  "Expert",
+  "Knight",
+  "Paladin",
+  "Legend",
+  "Natural",
+  "Sage",
+  "TzKal",
+  "Skulled",
+  "Beast",
 ]);
 
 export type StandardRank = z.infer<typeof StandardRank>;
@@ -48,4 +48,4 @@ export const rankFactors = {
   TzKal: 0.6675,
   Skulled: 0.7775,
   Beast: 0.9125,
-} as const satisfies Record<Exclude<StandardRank, 'Helper' | 'Steel'>, number>;
+} as const satisfies Record<Exclude<StandardRank, "Helper" | "Steel">, number>;

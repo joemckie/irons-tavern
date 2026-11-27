@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js-light';
+import Decimal from "decimal.js-light";
 
 export function calculateEhbPoints(ehb: number, scaling: number) {
   const pointsPerEhb = 10;

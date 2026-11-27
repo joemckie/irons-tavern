@@ -1,5 +1,5 @@
-import { withSentryConfig } from '@sentry/nextjs/config';
-import { NextConfig } from 'next';
+import { withSentryConfig } from "@sentry/nextjs/config";
+import { NextConfig } from "next";
 
 export default withSentryConfig<NextConfig>(
   {
@@ -10,29 +10,29 @@ export default withSentryConfig<NextConfig>(
     images: {
       remotePatterns: [
         {
-          protocol: 'https',
-          hostname: 'placehold.co',
-          port: '',
-          pathname: '**',
+          protocol: "https",
+          hostname: "placehold.co",
+          port: "",
+          pathname: "**",
         },
         {
-          protocol: 'https',
-          hostname: 'oldschool.runescape.wiki',
-          port: '',
-          pathname: '/images/**',
+          protocol: "https",
+          hostname: "oldschool.runescape.wiki",
+          port: "",
+          pathname: "/images/**",
         },
       ],
     },
     typescript: {
-      tsconfigPath: 'tsconfig.app.json',
+      tsconfigPath: "tsconfig.app.json",
     },
   },
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
 
-    org: 'irons-tavern',
-    project: 'javascript-nextjs',
+    org: "irons-tavern",
+    project: "javascript-nextjs",
 
     // Only print logs for uploading source maps in CI
     silent: !process.env.CI,

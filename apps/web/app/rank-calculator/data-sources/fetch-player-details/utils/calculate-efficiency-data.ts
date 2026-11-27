@@ -1,4 +1,4 @@
-import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
+import { TempleOSRSPlayerStats } from "@/app/schemas/temple-api";
 
 interface EfficiencyData {
   ehb: number | null;
@@ -6,7 +6,7 @@ interface EfficiencyData {
 }
 
 export function calculateEfficiencyData(
-  playerStats: TempleOSRSPlayerStats['data'] | null,
+  playerStats: TempleOSRSPlayerStats["data"] | null,
 ): EfficiencyData {
   if (!playerStats) {
     return {

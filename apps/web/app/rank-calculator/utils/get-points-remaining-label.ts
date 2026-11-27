@@ -1,5 +1,5 @@
-import { formatNumber } from './format-number';
+import { formatNumber } from "./format-number";
 
 export function getPointsRemainingLabel(pointsRemaining: number) {
-  return pointsRemaining ? `(${formatNumber(pointsRemaining)})` : 'Completed';
+  return pointsRemaining ? `(${formatNumber(pointsRemaining)})` : "Completed";
 }

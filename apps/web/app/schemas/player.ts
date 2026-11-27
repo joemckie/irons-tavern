@@ -1,7 +1,7 @@
-import { Rank } from '@/config/enums';
-import { z } from 'zod';
+import { Rank } from "@/config/enums";
+import { z } from "zod";
 
-export const PlayerName = z.string().max(12, 'Player name is too long');
+export const PlayerName = z.string().max(12, "Player name is too long");
 
 export type PlayerName = z.infer<typeof PlayerName>;
 

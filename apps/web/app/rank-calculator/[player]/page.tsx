@@ -1,32 +1,32 @@
-import { auth } from '@/auth';
-import * as Sentry from '@sentry/nextjs';
-import { fetchPlayerDetails } from '../data-sources/fetch-player-details/fetch-player-details';
-import { FormWrapper } from './form-wrapper';
-import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
+import { auth } from "@/auth";
+import * as Sentry from "@sentry/nextjs";
+import { fetchPlayerDetails } from "../data-sources/fetch-player-details/fetch-player-details";
+import { FormWrapper } from "./form-wrapper";
+import { saveDraftRankSubmissionAction } from "./actions/save-draft-rank-submission-action";
 import {
   fetchItemDropRates,
   generateRequiredItemList,
-} from '../data-sources/fetch-dropped-item-info';
-import { buildNotableItemList } from '../utils/build-notable-item-list';
-import { connection } from 'next/server';
-import { withRequestContext } from '@/database/db';
+} from "../data-sources/fetch-dropped-item-info";
+import { buildNotableItemList } from "../utils/build-notable-item-list";
+import { connection } from "next/server";
+import { withRequestContext } from "@/database/db";
 
 export const instant = false;
 
 export default async function RankCalculatorPage({
   params,
-}: PageProps<'/rank-calculator/[player]'>) {
+}: PageProps<"/rank-calculator/[player]">) {
   const { player } = await params;
   const decodedPlayer = decodeURIComponent(player);
 
-  Sentry.setTag('rsn', decodedPlayer);
+  Sentry.setTag("rsn", decodedPlayer);
 
   await connection();
 
   const session = await auth();
 
   if (!session?.user?.id) {
-    throw new Error('No user session');
+    throw new Error("No user session");
   }
 
   const { id: userId } = session.user;
@@ -63,8 +63,7 @@ export default async function RankCalculatorPage({
       currentRank={currentRank}
       warnings={{
         templeCollectionLogNotFound: !isMobileOnly && !hasTempleCollectionLog,
-        templeCollectionLogOutdated:
-          !isMobileOnly && isTempleCollectionLogOutdated,
+        templeCollectionLogOutdated: !isMobileOnly && isTempleCollectionLogOutdated,
         wikiSyncNotFound: !isMobileOnly && !hasWikiSyncData,
       }}
       itemList={Object.entries(notableItemList)}

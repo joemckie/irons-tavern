@@ -1,15 +1,15 @@
-import { sub } from 'date-fns';
-import { calculateScaling } from './calculate-scaling';
+import { sub } from "date-fns";
+import { calculateScaling } from "./calculate-scaling";
 
-it('returns 0.1 if there is no join date', () => {
+it("returns 0.1 if there is no join date", () => {
   expect(calculateScaling(null)).toEqual(0.1);
 });
 
-it('returns 0.1 if the date is today', () => {
+it("returns 0.1 if the date is today", () => {
   expect(calculateScaling(new Date())).toEqual(0.1);
 });
 
-it('returns 0.4 if the date is 60 days prior', () => {
+it("returns 0.4 if the date is 60 days prior", () => {
   expect(
     calculateScaling(
       sub(new Date(), {
@@ -19,7 +19,7 @@ it('returns 0.4 if the date is 60 days prior', () => {
   ).toEqual(0.4);
 });
 
-it('returns 0.7 if the date is 120 days prior', () => {
+it("returns 0.7 if the date is 120 days prior", () => {
   expect(
     calculateScaling(
       sub(new Date(), {
@@ -29,7 +29,7 @@ it('returns 0.7 if the date is 120 days prior', () => {
   ).toEqual(0.7);
 });
 
-it('returns 1 if the date is 180 days prior', () => {
+it("returns 1 if the date is 180 days prior", () => {
   expect(
     calculateScaling(
       sub(new Date(), {

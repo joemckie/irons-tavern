@@ -1,18 +1,18 @@
-import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
-import { CombatAchievementTier, TzHaarCape } from '@/app/schemas/osrs';
-import { tavernDiaryTierNameByMultiplier } from '@/config/tavern-diaries';
-import { DataCard } from '../data-card';
-import { Select } from '../select';
-import { EditableText } from '../editable-text';
-import { useCombatPointCalculator } from '../../hooks/point-calculator/combat/use-combat-point-calculator';
-import { formatPercentage } from '../../utils/format-percentage';
-import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
-import { formatNumber } from '../../utils/format-number';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
-import { Checkbox } from '../checkbox';
-import { ValidationTooltip } from '../validation-tooltip';
+import { Flex, Progress, Separator, Text } from "@radix-ui/themes";
+import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { CombatAchievementTier, TzHaarCape } from "@/app/schemas/osrs";
+import { tavernDiaryTierNameByMultiplier } from "@/config/tavern-diaries";
+import { DataCard } from "../data-card";
+import { Select } from "../select";
+import { EditableText } from "../editable-text";
+import { useCombatPointCalculator } from "../../hooks/point-calculator/combat/use-combat-point-calculator";
+import { formatPercentage } from "../../utils/format-percentage";
+import { getPointsRemainingLabel } from "../../utils/get-points-remaining-label";
+import { formatNumber } from "../../utils/format-number";
+import { RankCalculatorSchema } from "../../[player]/submit-rank-calculator-validation";
+import { Checkbox } from "../checkbox";
+import { ValidationTooltip } from "../validation-tooltip";
 
 export function CombatCard() {
   const {
@@ -31,23 +31,14 @@ export function CombatCard() {
     formState: { defaultValues, errors },
     getValues,
   } = useFormContext<RankCalculatorSchema>();
-  const [hasBloodTorva, hasDizanasQuiver] = getValues([
-    'hasBloodTorva',
-    'hasDizanasQuiver',
-  ]);
+  const [hasBloodTorva, hasDizanasQuiver] = getValues(["hasBloodTorva", "hasDizanasQuiver"]);
 
   return (
     <DataCard.Root>
       <DataCard.Row
         left={
           <Flex gap="2" align="center">
-            <Image
-              alt="Combat icon"
-              src="/icons/combat.png"
-              height={18}
-              width={18}
-              unoptimized
-            />
+            <Image alt="Combat icon" src="/icons/combat.png" height={18} width={18} unoptimized />
             <Text role="heading" weight="medium" size="2">
               Combat
             </Text>
@@ -90,11 +81,7 @@ export function CombatCard() {
           />
         }
         right={
-          <Text
-            aria-label="Efficient hours bossed points"
-            color="gray"
-            size="2"
-          >
+          <Text aria-label="Efficient hours bossed points" color="gray" size="2">
             {formatNumber(ehbPoints)}
           </Text>
         }
@@ -114,11 +101,7 @@ export function CombatCard() {
           />
         }
         right={
-          <Text
-            aria-label="Combat achievement tier points"
-            color="gray"
-            size="2"
-          >
+          <Text aria-label="Combat achievement tier points" color="gray" size="2">
             {formatNumber(combatAchievementTierPoints)}
           </Text>
         }
@@ -145,11 +128,7 @@ export function CombatCard() {
       />
       <DataCard.Row
         left={
-          <ValidationTooltip
-            error={errors.hasDizanasQuiver}
-            color="gray"
-            size="2"
-          >
+          <ValidationTooltip error={errors.hasDizanasQuiver} color="gray" size="2">
             <Text>Dizana&apos;s quiver</Text>
           </ValidationTooltip>
         }
@@ -181,12 +160,12 @@ export function CombatCard() {
         }
         center={
           <Text aria-label="Combat diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? "None"}
           </Text>
         }
         right={
           <Text aria-label="Combat point bonus multiplier" size="2">
-            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : "-"}
           </Text>
         }
       />

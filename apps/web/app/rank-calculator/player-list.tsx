@@ -1,44 +1,31 @@
-'use client';
+"use client";
 
-import { Player } from '@/app/schemas/player';
-import { useOptimisticAction } from 'next-safe-action/hooks';
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  IconButton,
-  Text,
-  Tooltip,
-} from '@radix-ui/themes';
-import { format } from 'date-fns';
-import { ChevronRightIcon, Pencil1Icon } from '@radix-ui/react-icons';
-import { toast } from 'react-toastify';
-import Link from 'next/link';
-import { deletePlayerAccountAction } from './actions/delete-player-account-action';
-import { DeleteSubmissionButton } from './components/delete-submission-button';
+import { Player } from "@/app/schemas/player";
+import { useOptimisticAction } from "next-safe-action/hooks";
+import { Box, Button, Card, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
+import { format } from "date-fns";
+import { ChevronRightIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { toast } from "react-toastify";
+import Link from "next/link";
+import { deletePlayerAccountAction } from "./actions/delete-player-account-action";
+import { DeleteSubmissionButton } from "./components/delete-submission-button";
 
 interface PlayerListProps {
   accounts: Player[];
 }
 
 export function PlayerList({ accounts }: PlayerListProps) {
-  const { execute, optimisticState } = useOptimisticAction(
-    deletePlayerAccountAction,
-    {
-      currentState: accounts,
-      updateFn(state, playerName) {
-        return state.filter(
-          ({ rsn }) => rsn.toLowerCase() !== playerName.toLowerCase(),
-        );
-      },
-      onError({ error: { serverError } }) {
-        if (serverError) {
-          toast.error(serverError);
-        }
-      },
+  const { execute, optimisticState } = useOptimisticAction(deletePlayerAccountAction, {
+    currentState: accounts,
+    updateFn(state, playerName) {
+      return state.filter(({ rsn }) => rsn.toLowerCase() !== playerName.toLowerCase());
     },
-  );
+    onError({ error: { serverError } }) {
+      if (serverError) {
+        toast.error(serverError);
+      }
+    },
+  });
 
   return (
     <Flex direction="column" gap="4" width="330px">
@@ -50,19 +37,14 @@ export function PlayerList({ accounts }: PlayerListProps) {
                 {rsn}
               </Text>
               <Text as="p" size="2" color="gray">
-                Joined {format(joinDate, 'dd MMM yyyy')}
+                Joined {format(joinDate, "dd MMM yyyy")}
               </Text>
             </Box>
             <Flex gap="2">
-              <DeleteSubmissionButton
-                deletePlayerAccountAction={execute}
-                playerName={rsn}
-              />
+              <DeleteSubmissionButton deletePlayerAccountAction={execute} playerName={rsn} />
               <Tooltip content="Edit">
                 <IconButton asChild variant="soft" color="gray">
-                  <Link
-                    href={`/rank-calculator/players/edit/${rsn.toLowerCase()}`}
-                  >
+                  <Link href={`/rank-calculator/players/edit/${rsn.toLowerCase()}`}>
                     <Pencil1Icon />
                   </Link>
                 </IconButton>
@@ -74,7 +56,7 @@ export function PlayerList({ accounts }: PlayerListProps) {
                     style={{
                       ...(isNameInvalid
                         ? {
-                            pointerEvents: 'none',
+                            pointerEvents: "none",
                           }
                         : {}),
                     }}

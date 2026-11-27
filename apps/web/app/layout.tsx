@@ -1,25 +1,25 @@
-import '@radix-ui/themes/styles.css';
-import 'react-toastify/dist/ReactToastify.css';
-import './globals.css';
-import { Theme } from '@radix-ui/themes';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { ToastContainer } from 'react-toastify';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import Providers from './providers';
+import "@radix-ui/themes/styles.css";
+import "react-toastify/dist/ReactToastify.css";
+import "./globals.css";
+import { Theme } from "@radix-ui/themes";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import Providers from "./providers";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
 
-if (process.env.NEXT_PUBLIC_API_MOCKING === 'enabled') {
-  await import('../mocks');
+if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+  await import("../mocks");
 }
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Irons Tavern',
+  title: "Irons Tavern",
 };
 
 export default function RootLayout({

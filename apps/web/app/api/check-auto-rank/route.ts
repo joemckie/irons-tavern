@@ -1,43 +1,38 @@
-import * as Sentry from '@sentry/nextjs';
-import { z } from 'zod';
-import dedent from 'dedent';
-import {
-  APIDMChannel,
-  ButtonStyle,
-  ComponentType,
-  Routes,
-} from 'discord-api-types/v10';
-import { NextRequest, NextResponse } from 'next/server';
-import { fetchPlayerDetails } from '@/app/rank-calculator/data-sources/fetch-player-details/fetch-player-details';
-import { calculateAchievementDiaryPoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-points';
-import { calculateCollectionLogPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-points';
-import { calculateCollectionLogSlotPoints } from '@/app/rank-calculator/utils/calculators/calculate-collection-log-slot-points';
-import { calculateCombatAchievementPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-achievement-points';
-import { calculateCombatPoints } from '@/app/rank-calculator/utils/calculators/calculate-combat-points';
-import { calculateEhbPoints } from '@/app/rank-calculator/utils/calculators/calculate-ehb-points';
-import { calculateEhpPoints } from '@/app/rank-calculator/utils/calculators/calculate-ehp-points';
-import { calculateNotableItemsPoints } from '@/app/rank-calculator/utils/calculators/calculate-notable-items-points';
-import { calculateRank } from '@/app/rank-calculator/utils/calculators/calculate-rank';
-import { calculateScaling } from '@/app/rank-calculator/utils/calculators/calculate-scaling';
-import { calculateSkillingPoints } from '@/app/rank-calculator/utils/calculators/calculate-skilling-points';
-import { calculateTotalLevelPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-level-points';
-import { calculateTotalPoints } from '@/app/rank-calculator/utils/calculators/calculate-total-points';
-import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import { clientConstants } from '@/config/constants.client';
-import { discordBotClient } from '@/discord';
-import { initORM, withRequestContext } from '@/database/db';
-import { OSRSAccount } from '@/database/entities/osrs-account';
+import * as Sentry from "@sentry/nextjs";
+import { z } from "zod";
+import dedent from "dedent";
+import { APIDMChannel, ButtonStyle, ComponentType, Routes } from "discord-api-types/v10";
+import { NextRequest, NextResponse } from "next/server";
+import { fetchPlayerDetails } from "@/app/rank-calculator/data-sources/fetch-player-details/fetch-player-details";
+import { calculateAchievementDiaryPoints } from "@/app/rank-calculator/utils/calculators/calculate-achievement-diary-points";
+import { calculateCollectionLogPoints } from "@/app/rank-calculator/utils/calculators/calculate-collection-log-points";
+import { calculateCollectionLogSlotPoints } from "@/app/rank-calculator/utils/calculators/calculate-collection-log-slot-points";
+import { calculateCombatAchievementPoints } from "@/app/rank-calculator/utils/calculators/calculate-combat-achievement-points";
+import { calculateCombatPoints } from "@/app/rank-calculator/utils/calculators/calculate-combat-points";
+import { calculateEhbPoints } from "@/app/rank-calculator/utils/calculators/calculate-ehb-points";
+import { calculateEhpPoints } from "@/app/rank-calculator/utils/calculators/calculate-ehp-points";
+import { calculateNotableItemsPoints } from "@/app/rank-calculator/utils/calculators/calculate-notable-items-points";
+import { calculateRank } from "@/app/rank-calculator/utils/calculators/calculate-rank";
+import { calculateScaling } from "@/app/rank-calculator/utils/calculators/calculate-scaling";
+import { calculateSkillingPoints } from "@/app/rank-calculator/utils/calculators/calculate-skilling-points";
+import { calculateTotalLevelPoints } from "@/app/rank-calculator/utils/calculators/calculate-total-level-points";
+import { calculateTotalPoints } from "@/app/rank-calculator/utils/calculators/calculate-total-points";
+import { getRankName } from "@/app/rank-calculator/utils/get-rank-name";
+import { sendDiscordMessage } from "@/app/rank-calculator/utils/send-discord-message";
+import { clientConstants } from "@/config/constants.client";
+import { discordBotClient } from "@/discord";
+import { initORM, withRequestContext } from "@/database/db";
+import { OSRSAccount } from "@/database/entities/osrs-account";
 import {
   fetchItemDropRates,
   generateRequiredItemList,
-} from '@/app/rank-calculator/data-sources/fetch-dropped-item-info';
-import { buildNotableItemList } from '@/app/rank-calculator/utils/build-notable-item-list';
-import { calculateAchievementDiaryCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points';
-import { calculateMaxCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-max-cape-points';
-import { calculateTzhaarCapePoints } from '@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points';
-import { calculateBloodTorvaPoints } from '@/app/rank-calculator/utils/calculators/calculate-blood-torva-points';
-import { calculateDizanasQuiverPoints } from '@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points';
+} from "@/app/rank-calculator/data-sources/fetch-dropped-item-info";
+import { buildNotableItemList } from "@/app/rank-calculator/utils/build-notable-item-list";
+import { calculateAchievementDiaryCapePoints } from "@/app/rank-calculator/utils/calculators/calculate-achievement-diary-cape-points";
+import { calculateMaxCapePoints } from "@/app/rank-calculator/utils/calculators/calculate-max-cape-points";
+import { calculateTzhaarCapePoints } from "@/app/rank-calculator/utils/calculators/calculate-tzhaar-cape-points";
+import { calculateBloodTorvaPoints } from "@/app/rank-calculator/utils/calculators/calculate-blood-torva-points";
+import { calculateDizanasQuiverPoints } from "@/app/rank-calculator/utils/calculators/calculate-dizanas-quiver-points";
 
 export async function GET(request: NextRequest) {
   return withRequestContext(() => checkAutoRank(request));
@@ -46,18 +41,18 @@ export async function GET(request: NextRequest) {
 async function checkAutoRank(request: NextRequest) {
   try {
     const player = z
-      .string({ error: 'Player is required' })
+      .string({ error: "Player is required" })
       .transform((encodedPlayer) => decodeURIComponent(encodedPlayer))
-      .parse(request.nextUrl.searchParams.get('player'));
+      .parse(request.nextUrl.searchParams.get("player"));
 
     const discordId = z
-      .string({ error: 'Discord ID is required' })
-      .parse(request.nextUrl.searchParams.get('discord_id'));
+      .string({ error: "Discord ID is required" })
+      .parse(request.nextUrl.searchParams.get("discord_id"));
 
     const playerDetails = await fetchPlayerDetails(player, discordId);
 
     if (!playerDetails.success) {
-      throw new Error('Failed to fetch player details');
+      throw new Error("Failed to fetch player details");
     }
 
     const {
@@ -92,26 +87,23 @@ async function checkAutoRank(request: NextRequest) {
     const dropRates = await fetchItemDropRates([...generateRequiredItemList()]);
     const items = Object.entries(await buildNotableItemList(dropRates));
     const scaling = calculateScaling(joinDate);
-    const collectionLogSlotPoints = calculateCollectionLogSlotPoints(
-      collectionLogCount,
+    const collectionLogSlotPoints = calculateCollectionLogSlotPoints(collectionLogCount, scaling);
+    const { pointsAwarded: totalCollectionLogPoints } = calculateCollectionLogPoints(
+      collectionLogSlotPoints,
+      collectionLogTotal,
+      collectionLogBonusMultiplier,
       scaling,
     );
-    const { pointsAwarded: totalCollectionLogPoints } =
-      calculateCollectionLogPoints(
-        collectionLogSlotPoints,
-        collectionLogTotal,
-        collectionLogBonusMultiplier,
-        scaling,
-      );
-    const { pointsAwarded: totalNotableItemsPoints } =
-      calculateNotableItemsPoints(
-        items,
-        acquiredItems,
-        notableItemsBonusMultiplier,
-        scaling,
-      );
-    const { pointsAwarded: achievementDiariesPoints } =
-      calculateAchievementDiaryPoints(achievementDiaries, scaling);
+    const { pointsAwarded: totalNotableItemsPoints } = calculateNotableItemsPoints(
+      items,
+      acquiredItems,
+      notableItemsBonusMultiplier,
+      scaling,
+    );
+    const { pointsAwarded: achievementDiariesPoints } = calculateAchievementDiaryPoints(
+      achievementDiaries,
+      scaling,
+    );
     const ehpPoints = calculateEhpPoints(ehp, scaling);
     const totalLevelPoints = calculateTotalLevelPoints(totalLevel, scaling);
     const achievementDiaryCapePoints = calculateAchievementDiaryCapePoints(
@@ -135,10 +127,7 @@ async function checkAutoRank(request: NextRequest) {
     );
     const tzhaarCapePoints = calculateTzhaarCapePoints(tzhaarCape, scaling);
     const bloodTorvaPoints = calculateBloodTorvaPoints(hasBloodTorva, scaling);
-    const dizanasQuiverPoints = calculateDizanasQuiverPoints(
-      hasDizanasQuiver,
-      scaling,
-    );
+    const dizanasQuiverPoints = calculateDizanasQuiverPoints(hasDizanasQuiver, scaling);
     const { pointsAwarded: totalCombatPoints } = calculateCombatPoints(
       ehbPoints,
       combatAchievementTierPoints,
@@ -155,12 +144,7 @@ async function checkAutoRank(request: NextRequest) {
       totalCombatPoints,
     );
 
-    const { rank } = calculateRank(
-      totalPointsAwarded,
-      rankStructure,
-      collectionLogTotal,
-      items,
-    );
+    const { rank } = calculateRank(totalPointsAwarded, rankStructure, collectionLogTotal, items);
 
     if (rank !== currentRank) {
       const { em } = await initORM();
@@ -171,10 +155,9 @@ async function checkAutoRank(request: NextRequest) {
 
       // Send a message if the user has not been notified of this rank in the past
       if (account.lastNotifiedRank !== rank) {
-        const { id: dmChannelId } = (await discordBotClient.post(
-          Routes.userChannels(),
-          { body: { recipient_id: discordId } },
-        )) as APIDMChannel;
+        const { id: dmChannelId } = (await discordBotClient.post(Routes.userChannels(), {
+          body: { recipient_id: discordId },
+        })) as APIDMChannel;
 
         await sendDiscordMessage(
           {
@@ -187,7 +170,7 @@ async function checkAutoRank(request: NextRequest) {
               {
                 components: [
                   {
-                    label: 'Apply for rank',
+                    label: "Apply for rank",
                     url: `${clientConstants.publicUrl}/rank-calculator/${encodeURIComponent(player)}`,
                     style: ButtonStyle.Link,
                     type: ComponentType.Button,

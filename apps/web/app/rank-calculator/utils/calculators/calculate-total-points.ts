@@ -5,9 +5,6 @@ export function calculateTotalPoints(
   totalCombatPoints: number,
 ) {
   return (
-    totalCollectionLogPoints +
-    totalNotableItemsPoints +
-    totalSkillingPoints +
-    totalCombatPoints
+    totalCollectionLogPoints + totalNotableItemsPoints + totalSkillingPoints + totalCombatPoints
   );
 }

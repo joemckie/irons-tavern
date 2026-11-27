@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { ForwardRefExoticComponent, useState } from 'react';
-import { FieldErrors, FormProvider, useForm } from 'react-hook-form';
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import type { RankSubmissionMetadata } from '@/database/entities/rank-submission.entity';
-import { Flex, IconProps, Text, TextProps } from '@radix-ui/themes';
-import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons';
-import { RankCalculator } from '../../[player]/rank-calculator';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
-import { ViewSubmissionNavigationActions } from './components/view-submission-navigation-actions';
-import { userCanModerateSubmission } from './utils/user-can-moderate-submission';
-import { Navigation } from '../../components/navigation';
-import { ModerationProvider } from '../../contexts/moderation-context';
-import type { ItemCategory } from '@/app/schemas/items';
-import { ItemListProvider } from '../../contexts/item-list-context';
+import { ForwardRefExoticComponent, useState } from "react";
+import { FieldErrors, FormProvider, useForm } from "react-hook-form";
+import { RankSubmissionStatus } from "@/app/schemas/rank-calculator";
+import type { RankSubmissionMetadata } from "@/database/entities/rank-submission.entity";
+import { Flex, IconProps, Text, TextProps } from "@radix-ui/themes";
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons";
+import { RankCalculator } from "../../[player]/rank-calculator";
+import { RankCalculatorSchema } from "../../[player]/submit-rank-calculator-validation";
+import { ViewSubmissionNavigationActions } from "./components/view-submission-navigation-actions";
+import { userCanModerateSubmission } from "./utils/user-can-moderate-submission";
+import { Navigation } from "../../components/navigation";
+import { ModerationProvider } from "../../contexts/moderation-context";
+import type { ItemCategory } from "@/app/schemas/items";
+import { ItemListProvider } from "../../contexts/item-list-context";
 
 interface FormWrapperProps {
-  formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  formData: Omit<RankCalculatorSchema, "rank" | "points">;
   userPermissions: string | undefined;
   diffErrors: FieldErrors;
   submissionMetadata: RankSubmissionMetadata;
@@ -32,15 +32,12 @@ export function ReadonlyFormWrapper({
   actionedByUsername,
   itemList,
 }: FormWrapperProps) {
-  const [submissionStatus, setSubmissionStatus] = useState(
-    submissionMetadata.status,
-  );
+  const [submissionStatus, setSubmissionStatus] = useState(submissionMetadata.status);
 
   const isModerator = userCanModerateSubmission(userPermissions);
-  const isModeratorActionsAvailable =
-    isModerator && submissionStatus === 'Pending';
+  const isModeratorActionsAvailable = isModerator && submissionStatus === "Pending";
 
-  const methods = useForm<Omit<RankCalculatorSchema, 'rank' | 'points'>>({
+  const methods = useForm<Omit<RankCalculatorSchema, "rank" | "points">>({
     disabled: true,
     defaultValues: formData,
     errors: isModerator ? diffErrors : {},
@@ -48,19 +45,16 @@ export function ReadonlyFormWrapper({
 
   function renderNavigationActions() {
     const textColourMap = {
-      Approved: 'green',
+      Approved: "green",
       Pending: undefined,
-      Rejected: 'red',
-    } satisfies Record<RankSubmissionStatus, TextProps['color']>;
+      Rejected: "red",
+    } satisfies Record<RankSubmissionStatus, TextProps["color"]>;
 
     const iconMap = {
       Approved: CheckIcon,
       Pending: undefined,
       Rejected: Cross2Icon,
-    } satisfies Record<
-      RankSubmissionStatus,
-      ForwardRefExoticComponent<IconProps> | undefined
-    >;
+    } satisfies Record<RankSubmissionStatus, ForwardRefExoticComponent<IconProps> | undefined>;
 
     if (isModeratorActionsAvailable) {
       return (
@@ -74,12 +68,7 @@ export function ReadonlyFormWrapper({
     const IconComponent = iconMap[submissionStatus];
 
     return (
-      <Text
-        weight="medium"
-        size="2"
-        color={textColourMap[submissionStatus]}
-        asChild
-      >
+      <Text weight="medium" size="2" color={textColourMap[submissionStatus]} asChild>
         <Flex gap="1" align="center">
           {submissionStatus}
           {IconComponent && <IconComponent height={20} width={20} />}
@@ -96,17 +85,12 @@ export function ReadonlyFormWrapper({
         hasTempleCollectionLog={submissionMetadata.hasTempleCollectionLog}
         hasWikiSyncData={submissionMetadata.hasWikiSyncData}
         actionedByUsername={actionedByUsername}
-        isTempleCollectionLogOutdated={
-          submissionMetadata.isTempleCollectionLogOutdated
-        }
+        isTempleCollectionLogOutdated={submissionMetadata.isTempleCollectionLogOutdated}
       >
         <FormProvider {...methods}>
           <RankCalculator
             navigation={
-              <Navigation
-                actions={renderNavigationActions()}
-                shouldRenderBackButton={false}
-              />
+              <Navigation actions={renderNavigationActions()} shouldRenderBackButton={false} />
             }
             submitRankCalculatorAction={undefined}
           />

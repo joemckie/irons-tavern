@@ -1,12 +1,12 @@
-import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
+import { normaliseEntityName } from "@/app/rank-calculator/utils/normalise-entity-name";
 import {
   isCollectionLogItem,
   isCombatAchievementItem,
   isQuestItem,
   Item,
-} from '@/app/schemas/items';
-import { MiniQuest, Quest } from '@/app/schemas/osrs';
-import { CollectionLogAcquiredItemMap, QuestStatus } from '@/app/schemas/wiki';
+} from "@/app/schemas/items";
+import { MiniQuest, Quest } from "@/app/schemas/osrs";
+import { CollectionLogAcquiredItemMap, QuestStatus } from "@/app/schemas/wiki";
 
 interface IsItemAcquiredData {
   acquiredItems: CollectionLogAcquiredItemMap | null;
@@ -21,21 +21,16 @@ export function isItemAcquired(
 ) {
   if (acquiredItems && isCollectionLogItem(item)) {
     return item.requiredItems.every(
-      ({ amount, clogName }) =>
-        acquiredItems[normaliseEntityName(clogName)] >= amount,
+      ({ amount, clogName }) => acquiredItems[normaliseEntityName(clogName)] >= amount,
     );
   }
 
   if (combatAchievements && isCombatAchievementItem(item)) {
-    return item.requiredCombatAchievements.every((id) =>
-      Boolean(combatAchievements.includes(id)),
-    );
+    return item.requiredCombatAchievements.every((id) => Boolean(combatAchievements.includes(id)));
   }
 
   if (quests && isQuestItem(item)) {
-    return item.requiredQuests.every(
-      (quest) => quests[quest] === QuestStatus.enum.Completed,
-    );
+    return item.requiredQuests.every((quest) => quests[quest] === QuestStatus.enum.Completed);
   }
 
   return false;

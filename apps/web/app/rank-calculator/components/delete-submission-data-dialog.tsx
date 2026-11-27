@@ -1,24 +1,19 @@
-import { AlertDialog, Button, Flex, Text } from '@radix-ui/themes';
-import { useAction } from 'next-safe-action/hooks';
-import { useFormContext } from 'react-hook-form';
-import { deleteSubmissionDataAction } from '../[player]/actions/delete-submission-data-action';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { handleToastUpdates } from '../utils/handle-toast-updates';
+import { AlertDialog, Button, Flex, Text } from "@radix-ui/themes";
+import { useAction } from "next-safe-action/hooks";
+import { useFormContext } from "react-hook-form";
+import { deleteSubmissionDataAction } from "../[player]/actions/delete-submission-data-action";
+import { RankCalculatorSchema } from "../[player]/submit-rank-calculator-validation";
+import { handleToastUpdates } from "../utils/handle-toast-updates";
 
-type DeleteSubmissionDataDialogProps = Pick<
-  AlertDialog.RootProps,
-  'onOpenChange' | 'open'
->;
+type DeleteSubmissionDataDialogProps = Pick<AlertDialog.RootProps, "onOpenChange" | "open">;
 
 export function DeleteSubmissionDataDialog({
   open,
   onOpenChange,
 }: DeleteSubmissionDataDialogProps) {
   const { getValues, reset } = useFormContext<RankCalculatorSchema>();
-  const {
-    executeAsync: deleteSubmissionData,
-    isExecuting: isDeleteSubmissionDataExecuting,
-  } = useAction(deleteSubmissionDataAction);
+  const { executeAsync: deleteSubmissionData, isExecuting: isDeleteSubmissionDataExecuting } =
+    useAction(deleteSubmissionDataAction);
 
   return (
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -26,9 +21,8 @@ export function DeleteSubmissionDataDialog({
         <AlertDialog.Title>Delete submission data</AlertDialog.Title>
         <AlertDialog.Description size="2">
           <Text>
-            Are you sure you want to delete your submission data? This can be
-            useful if your data is not being merged correctly, but will require
-            you to fill out the calculator again.
+            Are you sure you want to delete your submission data? This can be useful if your data is
+            not being merged correctly, but will require you to fill out the calculator again.
           </Text>
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
@@ -44,7 +38,7 @@ export function DeleteSubmissionDataDialog({
             onClick={() => {
               void handleToastUpdates(
                 deleteSubmissionData({
-                  playerName: getValues('playerName'),
+                  playerName: getValues("playerName"),
                 }),
                 {
                   success: {
@@ -55,7 +49,7 @@ export function DeleteSubmissionDataDialog({
                         reset(freshPlayerDetails);
                       }
 
-                      return 'Submission data deleted!';
+                      return "Submission data deleted!";
                     },
                   },
                 },

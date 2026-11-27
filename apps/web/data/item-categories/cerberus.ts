@@ -1,34 +1,34 @@
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const cerberus: ItemCategory = {
-  image: formatWikiImageUrl('Hellpuppy detail', 'category'),
+  image: formatWikiImageUrl("Hellpuppy detail", "category"),
   items: [
     singleItem({
-      name: 'Primordial crystal',
-      collectionLogCategory: 'cerberus',
+      name: "Primordial crystal",
+      collectionLogCategory: "cerberus",
     }),
     singleItem({
-      name: 'Pegasian crystal',
-      collectionLogCategory: 'cerberus',
+      name: "Pegasian crystal",
+      collectionLogCategory: "cerberus",
     }),
     singleItem({
-      name: 'Eternal crystal',
-      collectionLogCategory: 'cerberus',
+      name: "Eternal crystal",
+      collectionLogCategory: "cerberus",
     }),
     singleItem({
-      name: 'Smouldering stone',
-      collectionLogCategory: 'cerberus',
-      targetDropSources: ['Cerberus'],
+      name: "Smouldering stone",
+      collectionLogCategory: "cerberus",
+      targetDropSources: ["Cerberus"],
     }),
     singleItem({
-      name: 'Jar of Souls',
-      collectionLogCategory: 'cerberus',
+      name: "Jar of Souls",
+      collectionLogCategory: "cerberus",
     }),
     singleItem({
-      name: 'Hellpuppy',
-      collectionLogCategory: 'cerberus',
+      name: "Hellpuppy",
+      collectionLogCategory: "cerberus",
     }),
   ],
 };

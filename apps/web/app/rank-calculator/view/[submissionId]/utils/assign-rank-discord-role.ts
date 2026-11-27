@@ -1,8 +1,8 @@
-import { serverConstants } from '@/config/constants.server';
-import { rankDiscordRoles } from '@/config/discord-roles';
-import { Rank } from '@/config/enums';
-import { discordBotClient } from '@/discord';
-import { APIGuildMember, Routes } from 'discord-api-types/v10';
+import { serverConstants } from "@/config/constants.server";
+import { rankDiscordRoles } from "@/config/discord-roles";
+import { Rank } from "@/config/enums";
+import { discordBotClient } from "@/discord";
+import { APIGuildMember, Routes } from "discord-api-types/v10";
 
 export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
   const { guildId } = serverConstants.discord;
@@ -20,9 +20,7 @@ export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
   // Remove all existing rank roles
   await Promise.all(
     appliedRankRoles.map(([, roleId]) =>
-      discordBotClient.delete(
-        Routes.guildMemberRole(guildId, submitterId, roleId),
-      ),
+      discordBotClient.delete(Routes.guildMemberRole(guildId, submitterId, roleId)),
     ),
   );
 
@@ -30,8 +28,6 @@ export async function assignRankDiscordRole(rank: Rank, submitterId: string) {
 
   // Apply the approved role if the user doesn't already have it
   if (!roles.includes(approvedRole)) {
-    await discordBotClient.put(
-      Routes.guildMemberRole(guildId, submitterId, approvedRole),
-    );
+    await discordBotClient.put(Routes.guildMemberRole(guildId, submitterId, approvedRole));
   }
 }

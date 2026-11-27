@@ -1,32 +1,32 @@
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const generalGraardor: ItemCategory = {
-  image: formatWikiImageUrl('Pet General Graardor detail', 'category'),
+  image: formatWikiImageUrl("Pet General Graardor detail", "category"),
   items: [
     singleItem({
-      name: 'Bandos chestplate',
-      collectionLogCategory: 'general_graardor',
-      targetDropSources: ['General Graardor'],
+      name: "Bandos chestplate",
+      collectionLogCategory: "general_graardor",
+      targetDropSources: ["General Graardor"],
     }),
     singleItem({
-      name: 'Bandos tassets',
-      collectionLogCategory: 'general_graardor',
-      targetDropSources: ['General Graardor'],
+      name: "Bandos tassets",
+      collectionLogCategory: "general_graardor",
+      targetDropSources: ["General Graardor"],
     }),
     singleItem({
-      name: 'Bandos boots',
-      collectionLogCategory: 'general_graardor',
-      targetDropSources: ['General Graardor'],
+      name: "Bandos boots",
+      collectionLogCategory: "general_graardor",
+      targetDropSources: ["General Graardor"],
     }),
     singleItem({
-      name: 'Bandos hilt',
-      collectionLogCategory: 'general_graardor',
+      name: "Bandos hilt",
+      collectionLogCategory: "general_graardor",
     }),
     singleItem({
-      name: 'Pet General Graardor',
-      collectionLogCategory: 'general_graardor',
+      name: "Pet General Graardor",
+      collectionLogCategory: "general_graardor",
     }),
   ],
 };

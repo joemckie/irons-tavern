@@ -1,6 +1,6 @@
-import { clientConstants } from '@/config/constants.client';
-import * as Sentry from '@sentry/nextjs';
-import { TempleOSRSConstants } from '@/app/schemas/temple-api';
+import { clientConstants } from "@/config/constants.client";
+import * as Sentry from "@sentry/nextjs";
+import { TempleOSRSConstants } from "@/app/schemas/temple-api";
 
 export async function fetchTempleConstants() {
   try {
@@ -10,7 +10,7 @@ export async function fetchTempleConstants() {
 
     return TempleOSRSConstants.parse(await templeConstantsResponse.json()).data;
   } catch {
-    Sentry.captureMessage('Unable to fetch TempleOSRS constants', 'info');
+    Sentry.captureMessage("Unable to fetch TempleOSRS constants", "info");
 
     return null;
   }

@@ -7,117 +7,97 @@ import {
   estimatedHoursToAcquireQuestCape,
   swiftBladeLmsPointsRequired,
   ehbRates,
-} from '@/app/rank-calculator/config/efficiency-rates';
-import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { Quest } from '@/app/schemas/osrs';
-import {
-  questItem,
-  singleItem,
-  compoundItem,
-  baseItem,
-} from '../utils/item-builders';
+} from "@/app/rank-calculator/config/efficiency-rates";
+import { calculateXpOrTimeBasedItemPoints } from "@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points";
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { Quest } from "@/app/schemas/osrs";
+import { questItem, singleItem, compoundItem, baseItem } from "../utils/item-builders";
 
 export const miscellaneous: ItemCategory = {
-  image: formatWikiImageUrl('Inventory', 'category'),
+  image: formatWikiImageUrl("Inventory", "category"),
   items: [
     questItem({
-      name: 'Barrows gloves',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToAcquireBarrowsGloves,
-      ),
-      requiredQuests: ['Recipe for Disaster'],
+      name: "Barrows gloves",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToAcquireBarrowsGloves),
+      requiredQuests: ["Recipe for Disaster"],
     }),
     questItem({
-      name: 'Book of the Dead',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToAcquireBookOfTheDead,
-      ),
-      requiredQuests: ['A Kingdom Divided'],
+      name: "Book of the Dead",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToAcquireBookOfTheDead),
+      requiredQuests: ["A Kingdom Divided"],
     }),
     singleItem({
-      name: 'Bottomless compost bucket',
-      collectionLogCategory: 'hespori',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToObtainBottomlessCompostBucket,
-      ),
+      name: "Bottomless compost bucket",
+      collectionLogCategory: "hespori",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToObtainBottomlessCompostBucket),
     }),
     singleItem({
       name: "Bryophyta's essence",
-      collectionLogCategory: 'bryophyta',
+      collectionLogCategory: "bryophyta",
       targetDropSources: ["Chest (Bryophyta's lair)#Members"],
     }),
     singleItem({
-      name: 'Dragon warhammer',
-      collectionLogCategory: 'miscellaneous',
+      name: "Dragon warhammer",
+      collectionLogCategory: "miscellaneous",
     }),
     singleItem({
-      name: 'Dragon full helm',
-      collectionLogCategory: 'miscellaneous',
-      targetDropSources: ['Chewed bones'],
+      name: "Dragon full helm",
+      collectionLogCategory: "miscellaneous",
+      targetDropSources: ["Chewed bones"],
     }),
     compoundItem({
-      name: 'Graceful set',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToAcquireGracefulSet,
-      ),
-      image: formatWikiImageUrl('Graceful hood'),
+      name: "Graceful set",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToAcquireGracefulSet),
+      image: formatWikiImageUrl("Graceful hood"),
       requiredItems: [
-        { clogName: 'Graceful hood' },
-        { clogName: 'Graceful top' },
-        { clogName: 'Graceful legs' },
-        { clogName: 'Graceful gloves' },
-        { clogName: 'Graceful boots' },
-        { clogName: 'Graceful cape' },
+        { clogName: "Graceful hood" },
+        { clogName: "Graceful top" },
+        { clogName: "Graceful legs" },
+        { clogName: "Graceful gloves" },
+        { clogName: "Graceful boots" },
+        { clogName: "Graceful cape" },
       ],
-      collectionLogCategories: ['rooftop_agility'],
+      collectionLogCategories: ["rooftop_agility"],
     }),
     baseItem({
-      name: 'Music cape',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToAcquireMusicCape,
-      ),
-      image: formatWikiImageUrl('Music cape detail'),
+      name: "Music cape",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToAcquireMusicCape),
+      image: formatWikiImageUrl("Music cape detail"),
     }),
     questItem({
-      name: 'Quest cape',
-      points: calculateXpOrTimeBasedItemPoints(
-        estimatedHoursToAcquireQuestCape,
-      ),
-      image: formatWikiImageUrl('Quest point cape detail'),
+      name: "Quest cape",
+      points: calculateXpOrTimeBasedItemPoints(estimatedHoursToAcquireQuestCape),
+      image: formatWikiImageUrl("Quest point cape detail"),
       requiredQuests: Quest.options,
     }),
     singleItem({
-      name: 'Ring of endurance',
-      clogName: 'Ring of endurance (uncharged)',
-      collectionLogCategory: 'hallowed_sepulchre',
+      name: "Ring of endurance",
+      clogName: "Ring of endurance (uncharged)",
+      collectionLogCategory: "hallowed_sepulchre",
     }),
     singleItem({
-      name: 'Swift blade',
-      points: calculateXpOrTimeBasedItemPoints(
-        swiftBladeLmsPointsRequired,
-        ehbRates['LMS Points'],
-      ),
-      collectionLogCategory: 'last_man_standing',
+      name: "Swift blade",
+      points: calculateXpOrTimeBasedItemPoints(swiftBladeLmsPointsRequired, ehbRates["LMS Points"]),
+      collectionLogCategory: "last_man_standing",
     }),
     singleItem({
-      name: 'Tome of Fire',
-      clogName: 'Tome of Fire (empty)',
-      collectionLogCategory: 'wintertodt',
+      name: "Tome of Fire",
+      clogName: "Tome of Fire (empty)",
+      collectionLogCategory: "wintertodt",
     }),
     singleItem({
-      name: 'Tome of Water',
-      clogName: 'Tome of Water (empty)',
-      collectionLogCategory: 'tempoross',
+      name: "Tome of Water",
+      clogName: "Tome of Water (empty)",
+      collectionLogCategory: "tempoross",
     }),
     singleItem({
-      name: 'Zombie axe',
-      clogName: 'Broken zombie axe',
+      name: "Zombie axe",
+      clogName: "Broken zombie axe",
       requiredLevels: {
         Smithing: 65,
       },
-      collectionLogCategory: 'miscellaneous',
+      collectionLogCategory: "miscellaneous",
       targetDropSources: ["Armoured zombie (Zemouregal's Fort)"],
     }),
   ],

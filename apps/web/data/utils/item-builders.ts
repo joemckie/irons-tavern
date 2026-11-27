@@ -1,22 +1,19 @@
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
 import {
   CollectionLogItem,
   RequiredItem,
   CombatAchievementItem,
   QuestItem,
   BaseItem,
-} from '@/app/schemas/items';
-import { CollectionLogItemName } from '@/app/schemas/osrs';
-import { TempleOSRSCollectionLogCategory } from '@/app/schemas/temple-api';
+} from "@/app/schemas/items";
+import { CollectionLogItemName } from "@/app/schemas/osrs";
+import { TempleOSRSCollectionLogCategory } from "@/app/schemas/temple-api";
 
 type SingleItemOptions = Omit<
-  OptionalKeys<CollectionLogItem, 'image' | 'points' | 'hasPointsError'>,
-  'requiredItems' | 'collectionLogCategories'
+  OptionalKeys<CollectionLogItem, "image" | "points" | "hasPointsError">,
+  "requiredItems" | "collectionLogCategories"
 > &
-  Pick<
-    RequiredItem,
-    'ignoreAmountMultiplier' | 'ignoreDropRateModifier' | 'targetDropSources'
-  > & {
+  Pick<RequiredItem, "ignoreAmountMultiplier" | "ignoreDropRateModifier" | "targetDropSources"> & {
     requiredAmount?: number;
     collectionLogCategory: TempleOSRSCollectionLogCategory;
   } & (
@@ -60,12 +57,10 @@ export function singleItem({
 }
 
 type CompoundItemOptions = Omit<
-  OptionalKeys<CollectionLogItem, 'image' | 'points' | 'hasPointsError'>,
-  'requiredItems'
+  OptionalKeys<CollectionLogItem, "image" | "points" | "hasPointsError">,
+  "requiredItems"
 > & {
-  requiredItems: NonEmptyArray<
-    Omit<RequiredItem, 'amount'> & { amount?: number }
-  >;
+  requiredItems: NonEmptyArray<Omit<RequiredItem, "amount"> & { amount?: number }>;
 };
 
 export function compoundItem({
@@ -81,12 +76,10 @@ export function compoundItem({
     name,
     points,
     hasPointsError: false,
-    requiredItems: requiredItems.map<RequiredItem>(
-      ({ amount = 1, ...item }) => ({
-        ...item,
-        amount,
-      }),
-    ),
+    requiredItems: requiredItems.map<RequiredItem>(({ amount = 1, ...item }) => ({
+      ...item,
+      amount,
+    })),
     requiredLevels,
     collectionLogCategories,
   });
@@ -97,7 +90,7 @@ export function combatAchievementItem({
   image = formatWikiImageUrl(name),
   points,
   requiredCombatAchievements,
-}: OptionalKeys<CombatAchievementItem, 'image'>) {
+}: OptionalKeys<CombatAchievementItem, "image">) {
   return CombatAchievementItem.parse({
     image,
     name,
@@ -111,7 +104,7 @@ export function questItem({
   image = formatWikiImageUrl(name),
   points,
   requiredQuests,
-}: OptionalKeys<QuestItem, 'image'>) {
+}: OptionalKeys<QuestItem, "image">) {
   return QuestItem.parse({
     image,
     name,

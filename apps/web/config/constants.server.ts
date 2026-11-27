@@ -1,5 +1,5 @@
-import 'server-only';
-import { z } from 'zod';
+import "server-only";
+import { z } from "zod";
 
 const ServerConfigSchema = z.object({
   zeplo: z.object({

@@ -1,20 +1,20 @@
-import 'server-only';
+import "server-only";
 
-import { ActionError } from '@/app/action-error';
-import { serverConstants } from '@/config/constants.server';
-import type { achievementDiscordRoles } from '@/config/discord-roles';
-import { discordBotClient } from '@/discord';
-import { initORM } from '@/database/db';
-import { RankSubmission } from '@/database/entities/rank-submission.entity';
-import { Routes } from 'discord-api-types/v10';
-import { assignRankDiscordRole } from './assign-rank-discord-role';
-import { assignAchievementDiscordRoles } from './assign-achievement-discord-roles';
-import { sendDiscordMessage } from '@/app/rank-calculator/utils/send-discord-message';
-import dedent from 'dedent';
-import { getRankName } from '@/app/rank-calculator/utils/get-rank-name';
-import type { Rank } from '@/config/enums';
-import * as Sentry from '@sentry/node';
-import type { UUID } from 'node:crypto';
+import { ActionError } from "@/app/action-error";
+import { serverConstants } from "@/config/constants.server";
+import type { achievementDiscordRoles } from "@/config/discord-roles";
+import { discordBotClient } from "@/discord";
+import { initORM } from "@/database/db";
+import { RankSubmission } from "@/database/entities/rank-submission.entity";
+import { Routes } from "discord-api-types/v10";
+import { assignRankDiscordRole } from "./assign-rank-discord-role";
+import { assignAchievementDiscordRoles } from "./assign-achievement-discord-roles";
+import { sendDiscordMessage } from "@/app/rank-calculator/utils/send-discord-message";
+import dedent from "dedent";
+import { getRankName } from "@/app/rank-calculator/utils/get-rank-name";
+import type { Rank } from "@/config/enums";
+import * as Sentry from "@sentry/node";
+import type { UUID } from "node:crypto";
 
 type ApproveSubmissionInput = {
   submissionId: UUID;
@@ -41,12 +41,12 @@ export async function approveSubmission({
     RankSubmission,
     { id: submissionId },
     {
-      populate: ['osrsAccount'],
+      populate: ["osrsAccount"],
     },
   );
 
   if (!submission) {
-    throw new ActionError('Unable to find submission');
+    throw new ActionError("Unable to find submission");
   }
 
   const {
@@ -56,16 +56,12 @@ export async function approveSubmission({
     hasWikiSyncData,
   } = submission.metadata;
 
-  if (submissionStatus !== 'Pending') {
-    throw new ActionError('Submission does not need to be moderated!');
+  if (submissionStatus !== "Pending") {
+    throw new ActionError("Submission does not need to be moderated!");
   }
 
   const {
-    data: {
-      rankStructure,
-      combatAchievementTier,
-      hasBloodTorva: isBloodTorvaChecked,
-    },
+    data: { rankStructure, combatAchievementTier, hasBloodTorva: isBloodTorvaChecked },
     diff: {
       combatAchievementTier: combatAchievementTierDiscrepancy,
       hasBloodTorva: hasBloodTorvaDiscrepancy,
@@ -75,9 +71,7 @@ export async function approveSubmission({
   // If the player has WikiSync data available and has the Grandmaster CA tier,
   // they can be assigned the Grandmaster role.
   const isVerifiedGrandmaster =
-    hasWikiSyncData &&
-    combatAchievementTier === 'Grandmaster' &&
-    !combatAchievementTierDiscrepancy;
+    hasWikiSyncData && combatAchievementTier === "Grandmaster" && !combatAchievementTierDiscrepancy;
 
   // If the player has WikiSync data available and has the Ancient blood ornament kit,
   // they can be assigned the Blood Torva role.
@@ -86,29 +80,24 @@ export async function approveSubmission({
     hasWikiSyncData && isBloodTorvaChecked && !hasBloodTorvaDiscrepancy;
 
   const applicableAchievementDiscordRoles = {
-    'Blood Torva': hasVerifiedAncientBloodOrnamentKit,
+    "Blood Torva": hasVerifiedAncientBloodOrnamentKit,
     Grandmaster: isVerifiedGrandmaster,
   } satisfies Record<keyof typeof achievementDiscordRoles, boolean>;
 
-  const requiresAchievementRoles = Object.values(
-    applicableAchievementDiscordRoles,
-  ).some(Boolean);
+  const requiresAchievementRoles = Object.values(applicableAchievementDiscordRoles).some(Boolean);
 
-  if (rankStructure === 'Standard') {
+  if (rankStructure === "Standard") {
     await discordBotClient.put(
       Routes.channelMessageOwnReaction(
         serverConstants.discord.channelId,
         messageId,
-        encodeURIComponent('☑️'),
+        encodeURIComponent("☑️"),
       ),
     );
     await assignRankDiscordRole(rank, submitterId);
 
     const newAchievementRoles = requiresAchievementRoles
-      ? await assignAchievementDiscordRoles(
-          submitterId,
-          applicableAchievementDiscordRoles,
-        )
+      ? await assignAchievementDiscordRoles(submitterId, applicableAchievementDiscordRoles)
       : [];
 
     await sendDiscordMessage(
@@ -117,14 +106,12 @@ export async function approveSubmission({
           <@${submitterId}>
 
           Your application has been ${
-            isAutomatic
-              ? 'automatically approved'
-              : `approved by <@${approverId}>`
+            isAutomatic ? "automatically approved" : `approved by <@${approverId}>`
           } and you have been assigned the following role(s) on Discord:
           
           ${[getRankName(rank), ...newAchievementRoles.filter(Boolean)]
             .map((role) => `- ${role}`)
-            .join('\n')}
+            .join("\n")}
 
           Please reach out to any member of staff to update your in-game rank!
         `,
@@ -133,10 +120,7 @@ export async function approveSubmission({
     );
   } else {
     if (requiresAchievementRoles) {
-      await assignAchievementDiscordRoles(
-        submitterId,
-        applicableAchievementDiscordRoles,
-      );
+      await assignAchievementDiscordRoles(submitterId, applicableAchievementDiscordRoles);
     }
 
     await sendDiscordMessage(
@@ -156,19 +140,19 @@ export async function approveSubmission({
   const playerRecord = submission.osrsAccount;
 
   if (!playerRecord) {
-    throw new ActionError('Unable to find player record!');
+    throw new ActionError("Unable to find player record!");
   }
 
-  const actionedBy = isAutomatic ? 'System' : approverId;
+  const actionedBy = isAutomatic ? "System" : approverId;
 
   if (!actionedBy) {
-    Sentry.captureException('Unable to determine actionedBy for approval');
+    Sentry.captureException("Unable to determine actionedBy for approval");
 
-    throw new ActionError('Something went wrong while approving submission');
+    throw new ActionError("Something went wrong while approving submission");
   }
 
   em.assign(submission.metadata, {
-    status: 'Approved',
+    status: "Approved",
     actionedBy,
     automaticApproval: isAutomatic,
   });
@@ -180,7 +164,7 @@ export async function approveSubmission({
   } catch (error) {
     Sentry.captureException(error);
 
-    throw new ActionError('Unable to persist approval to database');
+    throw new ActionError("Unable to persist approval to database");
   }
 
   return { success: true };

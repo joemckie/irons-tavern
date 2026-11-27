@@ -1,8 +1,8 @@
-import Decimal from 'decimal.js-light';
-import { ItemCategory } from '@/app/schemas/items';
-import { normaliseEntityName } from '../normalise-entity-name';
-import { calculateMaximumNotableItemsPoints } from './calculate-maximum-notable-items-points';
-import { calculateBonusPoints } from './calculate-bonus-points';
+import Decimal from "decimal.js-light";
+import { ItemCategory } from "@/app/schemas/items";
+import { normaliseEntityName } from "../normalise-entity-name";
+import { calculateMaximumNotableItemsPoints } from "./calculate-maximum-notable-items-points";
+import { calculateBonusPoints } from "./calculate-bonus-points";
 
 export function calculateNotableItemsPoints(
   notableItems: [string, ItemCategory][],
@@ -10,10 +10,7 @@ export function calculateNotableItemsPoints(
   multiplier: number,
   scaling: number,
 ) {
-  const totalPointsAvailable = calculateMaximumNotableItemsPoints(
-    notableItems,
-    scaling,
-  );
+  const totalPointsAvailable = calculateMaximumNotableItemsPoints(notableItems, scaling);
   const { totalItems, itemPoints } = notableItems.reduce<{
     totalItems: number;
     itemPoints: Record<string, number>;

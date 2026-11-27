@@ -1,7 +1,7 @@
-import { Box, Flex, ScrollArea } from '@radix-ui/themes';
-import { SkillingCard } from './cards/skilling-card';
-import { usePageHeight } from '../hooks/use-page-height';
-import { PlayerCard } from './cards/player-card';
+import { Box, Flex, ScrollArea } from "@radix-ui/themes";
+import { SkillingCard } from "./cards/skilling-card";
+import { usePageHeight } from "../hooks/use-page-height";
+import { PlayerCard } from "./cards/player-card";
 
 export function RightSidebar() {
   const mainHeightCss = usePageHeight();
@@ -11,7 +11,7 @@ export function RightSidebar() {
       asChild
       gridArea="right-sidebar"
       gridRow={{
-        md: 'span 2',
+        md: "span 2",
       }}
       height={{ md: mainHeightCss }}
     >
@@ -21,8 +21,8 @@ export function RightSidebar() {
           gap="4"
           direction="column"
           p="3"
-          pl={{ md: '0' }}
-          pb={{ initial: '0', md: '3' }}
+          pl={{ md: "0" }}
+          pb={{ initial: "0", md: "3" }}
         >
           <aside>
             <PlayerCard />

@@ -1,23 +1,23 @@
-import { petEhcRates } from '@/app/rank-calculator/config/efficiency-rates';
-import { calculateXpOrTimeBasedItemPoints } from '@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points';
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { CollectionLogItemName } from '@/app/schemas/osrs';
-import { singleItem } from '../utils/item-builders';
+import { petEhcRates } from "@/app/rank-calculator/config/efficiency-rates";
+import { calculateXpOrTimeBasedItemPoints } from "@/app/rank-calculator/utils/calculate-xp-or-time-based-item-points";
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { CollectionLogItemName } from "@/app/schemas/osrs";
+import { singleItem } from "../utils/item-builders";
 
 export const skillingPets: ItemCategory = {
-  image: formatWikiImageUrl('Phoenix_detail', 'category'),
+  image: formatWikiImageUrl("Phoenix_detail", "category"),
   items: Object.entries({
-    'Abyssal protector': {},
-    'Baby chinchompa': {
-      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Baby chinchompa']),
-      image: formatWikiImageUrl('Baby chinchompa (gold) chathead'),
+    "Abyssal protector": {},
+    "Baby chinchompa": {
+      points: calculateXpOrTimeBasedItemPoints(petEhcRates["Baby chinchompa"]),
+      image: formatWikiImageUrl("Baby chinchompa (gold) chathead"),
     },
     Beaver: {
       points: calculateXpOrTimeBasedItemPoints(petEhcRates.Beaver),
     },
-    'Giant Squirrel': {
-      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Giant Squirrel']),
+    "Giant Squirrel": {
+      points: calculateXpOrTimeBasedItemPoints(petEhcRates["Giant Squirrel"]),
     },
     Herbi: {},
     Heron: {
@@ -29,12 +29,12 @@ export const skillingPets: ItemCategory = {
     Quetzin: {
       targetDropSources: ["Hunters' loot sack (expert)"],
     },
-    'Rift guardian': {
-      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rift guardian']),
-      image: formatWikiImageUrl('Rift guardian (follower, fire)'),
+    "Rift guardian": {
+      points: calculateXpOrTimeBasedItemPoints(petEhcRates["Rift guardian"]),
+      image: formatWikiImageUrl("Rift guardian (follower, fire)"),
     },
-    'Rock golem': {
-      points: calculateXpOrTimeBasedItemPoints(petEhcRates['Rock golem']),
+    "Rock golem": {
+      points: calculateXpOrTimeBasedItemPoints(petEhcRates["Rock golem"]),
     },
     Rocky: {
       points: calculateXpOrTimeBasedItemPoints(petEhcRates.Rocky),
@@ -42,7 +42,7 @@ export const skillingPets: ItemCategory = {
     Tangleroot: {
       points: calculateXpOrTimeBasedItemPoints(petEhcRates.Tangleroot),
     },
-    'Tiny tempor': {},
+    "Tiny tempor": {},
   } satisfies Partial<
     Record<
       CollectionLogItemName,
@@ -52,14 +52,13 @@ export const skillingPets: ItemCategory = {
         targetDropSources?: NonEmptyArray<string>;
       }
     >
-  >).map(
-    ([name, { points, image = formatWikiImageUrl(name), targetDropSources }]) =>
-      singleItem({
-        name: name as CollectionLogItemName,
-        points,
-        image,
-        collectionLogCategory: 'all_pets',
-        targetDropSources,
-      }),
+  >).map(([name, { points, image = formatWikiImageUrl(name), targetDropSources }]) =>
+    singleItem({
+      name: name as CollectionLogItemName,
+      points,
+      image,
+      collectionLogCategory: "all_pets",
+      targetDropSources,
+    }),
   ),
 };

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import {
   CombatAchievementTier,
   DiaryLocation,
@@ -6,12 +6,12 @@ import {
   maximumTotalLevel,
   minimumTotalLevel,
   TzHaarCape,
-} from '@/app/schemas/osrs';
-import { PlayerName } from '@/app/schemas/player';
-import { RankStructure } from '@/app/schemas/rank-calculator';
-import { Rank } from '@/config/enums';
-import { pickBy } from 'lodash';
-import { isAchievementDiaryCapeAchieved } from '../utils/is-achievement-diary-cape-achieved';
+} from "@/app/schemas/osrs";
+import { PlayerName } from "@/app/schemas/player";
+import { RankStructure } from "@/app/schemas/rank-calculator";
+import { Rank } from "@/config/enums";
+import { pickBy } from "lodash";
+import { isAchievementDiaryCapeAchieved } from "../utils/is-achievement-diary-cape-achieved";
 
 export const RankCalculatorSchema = z.object({
   acquiredItems: z
@@ -29,7 +29,7 @@ export const RankCalculatorSchema = z.object({
   rankStructure: RankStructure,
   rank: Rank,
   points: z.coerce.number().nonnegative(),
-  proofLink: z.union([z.string().url().nullish(), z.literal('')]),
+  proofLink: z.union([z.string().url().nullish(), z.literal("")]),
   tzhaarCape: TzHaarCape,
   hasBloodTorva: z.boolean().default(false),
   hasDizanasQuiver: z.boolean().default(false),
@@ -46,29 +46,20 @@ export type RankCalculatorSchema = z.infer<typeof RankCalculatorSchema>;
 export const RankCalculatorValidator = RankCalculatorSchema.omit({
   rank: true,
   points: true,
-}).superRefine(
-  (
-    { hasMaxCape, totalLevel, achievementDiaries, hasAchievementDiaryCape },
-    ctx,
-  ) => {
-    if (
-      hasAchievementDiaryCape &&
-      !isAchievementDiaryCapeAchieved(achievementDiaries)
-    ) {
-      ctx.addIssue({
-        code: 'custom',
-        message:
-          'You must have all achievement diaries completed to have the cape.',
-        path: ['hasAchievementDiaryCape'],
-      });
-    }
+}).superRefine(({ hasMaxCape, totalLevel, achievementDiaries, hasAchievementDiaryCape }, ctx) => {
+  if (hasAchievementDiaryCape && !isAchievementDiaryCapeAchieved(achievementDiaries)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "You must have all achievement diaries completed to have the cape.",
+      path: ["hasAchievementDiaryCape"],
+    });
+  }
 
-    if (hasMaxCape && totalLevel !== maximumTotalLevel) {
-      ctx.addIssue({
-        code: 'custom',
-        message: `Total level must be ${maximumTotalLevel} if you have a max cape.`,
-        path: ['hasMaxCape'],
-      });
-    }
-  },
-);
+  if (hasMaxCape && totalLevel !== maximumTotalLevel) {
+    ctx.addIssue({
+      code: "custom",
+      message: `Total level must be ${maximumTotalLevel} if you have a max cape.`,
+      path: ["hasMaxCape"],
+    });
+  }
+});

@@ -1,8 +1,8 @@
-import { NotableItemsPointCalculatorData } from '@/app/rank-calculator/hooks/point-calculator/notable-items/use-notable-items-point-calculator';
-import { CategoryFixture } from '@/types/testing';
+import { NotableItemsPointCalculatorData } from "@/app/rank-calculator/hooks/point-calculator/notable-items/use-notable-items-point-calculator";
+import { CategoryFixture } from "@/types/testing";
 
 export const notableItemsExpectedValues: CategoryFixture<
-  Omit<NotableItemsPointCalculatorData, 'totalItems'>
+  Omit<NotableItemsPointCalculatorData, "totalItems">
 > = {
   earlyGamePlayer: {
     fullScaling: {

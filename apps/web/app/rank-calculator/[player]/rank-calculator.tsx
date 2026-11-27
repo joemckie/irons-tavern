@@ -1,19 +1,16 @@
-import { BaseSyntheticEvent, ReactNode } from 'react';
-import { Grid } from '@radix-ui/themes';
-import dedent from 'dedent';
-import { Sidebar } from '../components/sidebar';
-import { RightSidebar } from '../components/right-sidebar';
-import { ItemList } from '../components/item-list';
+import { BaseSyntheticEvent, ReactNode } from "react";
+import { Grid } from "@radix-ui/themes";
+import dedent from "dedent";
+import { Sidebar } from "../components/sidebar";
+import { RightSidebar } from "../components/right-sidebar";
+import { ItemList } from "../components/item-list";
 
 interface RankCalculatorProps {
   submitRankCalculatorAction: ((e: BaseSyntheticEvent) => void) | undefined;
   navigation: ReactNode;
 }
 
-export function RankCalculator({
-  submitRankCalculatorAction,
-  navigation,
-}: RankCalculatorProps) {
+export function RankCalculator({ submitRankCalculatorAction, navigation }: RankCalculatorProps) {
   return (
     <form onSubmit={submitRankCalculatorAction}>
       <Grid

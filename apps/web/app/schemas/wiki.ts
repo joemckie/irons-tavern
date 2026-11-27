@@ -1,9 +1,9 @@
-import { z } from 'zod';
+import { z } from "zod";
 import {
   altRarityItems,
   rarityOverrides,
   rollOverrides,
-} from '@/app/rank-calculator/config/item-point-map';
+} from "@/app/rank-calculator/config/item-point-map";
 import {
   CollectionLogItemName,
   CombatAchievementTier,
@@ -11,8 +11,8 @@ import {
   DiaryTier,
   maximumSkillLevel,
   Skill,
-} from './osrs';
-import { fractionToDecimal } from './transformers/fraction-to-decimal';
+} from "./osrs";
+import { fractionToDecimal } from "./transformers/fraction-to-decimal";
 
 export const DiaryTierData = z.object({
   complete: z.boolean(),
@@ -31,10 +31,7 @@ export type QuestStatus = z.infer<typeof QuestStatus>;
 
 export const LevelMap = z.object(
   Object.fromEntries(
-    Skill.options.map((skill) => [
-      skill,
-      z.number().min(1).max(maximumSkillLevel),
-    ]),
+    Skill.options.map((skill) => [skill, z.number().min(1).max(maximumSkillLevel)]),
   ) as {
     [Key in keyof typeof Skill.enum]: z.ZodInt;
   },
@@ -45,23 +42,23 @@ export type LevelMap = z.infer<typeof LevelMap>;
 export const HolidayTrack = z.enum([
   "Bunny's Sugar Rush",
   "Diango's Little Helpers",
-  'Dies Irae',
+  "Dies Irae",
   "Dot's Yuletide",
-  'Easter Jig',
+  "Easter Jig",
   "Eve's Epinette",
-  'A Festive Party',
-  'Funny Bunnies',
-  'Grimly Fiendish',
-  'High Spirits',
-  'Jungle Bells',
-  'Jungle Island Xmas',
-  'Land of Snow',
-  'Nox Irae',
+  "A Festive Party",
+  "Funny Bunnies",
+  "Grimly Fiendish",
+  "High Spirits",
+  "Jungle Bells",
+  "Jungle Island Xmas",
+  "Land of Snow",
+  "Nox Irae",
   "Scrubfoot's Descent",
-  'Sea Minor Shanty',
-  'Sea Shanty Xmas',
-  'Sunny Side Up',
-  'Winter Funfair',
+  "Sea Minor Shanty",
+  "Sea Shanty Xmas",
+  "Sunny Side Up",
+  "Winter Funfair",
 ]);
 
 export type HolidayTrack = z.infer<typeof HolidayTrack>;
@@ -77,16 +74,9 @@ export const WikiSyncResponse = z.object({
   achievement_diaries: z
     .record(z.string(), z.record(z.string(), DiaryTierData))
     .refine(
-      (
-        item,
-      ): item is Record<
-        DiaryLocation,
-        Record<Exclude<DiaryTier, 'None'>, DiaryTierData>
-      > =>
+      (item): item is Record<DiaryLocation, Record<Exclude<DiaryTier, "None">, DiaryTierData>> =>
         DiaryLocation.options.every((location) =>
-          DiaryTier.exclude(['None']).options.every(
-            (tier) => item[location][tier],
-          ),
+          DiaryTier.exclude(["None"]).options.every((tier) => item[location][tier]),
         ),
     ),
   levels: LevelMap.extend({
@@ -106,9 +96,7 @@ export const WikiSyncError = z.object({
 
 export type WikiSyncError = z.infer<typeof WikiSyncError>;
 
-export function isWikiSyncError(
-  wikiSyncResponse: unknown,
-): wikiSyncResponse is WikiSyncError {
+export function isWikiSyncError(wikiSyncResponse: unknown): wikiSyncResponse is WikiSyncError {
   return WikiSyncError.safeParse(wikiSyncResponse).success;
 }
 
@@ -117,14 +105,12 @@ export const CombatAchievementListResponse = z.object({
     z.object({
       id: z.number(),
       name: z.string(),
-      tier: CombatAchievementTier.exclude(['None']),
+      tier: CombatAchievementTier.exclude(["None"]),
     }),
   ),
 });
 
-export type CombatAchievementListResponse = z.infer<
-  typeof CombatAchievementListResponse
->;
+export type CombatAchievementListResponse = z.infer<typeof CombatAchievementListResponse>;
 
 const ItemRarity = z
   .string()
@@ -132,26 +118,23 @@ const ItemRarity = z
   .pipe(
     z.union([
       z.nan(),
-      z
-        .number()
-        .lt(1, 'Item rarity must be less than 1')
-        .gt(0, 'Item rarity must be more than 0'),
+      z.number().lt(1, "Item rarity must be less than 1").gt(0, "Item rarity must be more than 0"),
     ]),
   );
 
 export const DroppedItemJSON = z
   .object({
-    'Alt Rarity': ItemRarity,
+    "Alt Rarity": ItemRarity,
     Rarity: ItemRarity,
-    'Dropped from': z.string(),
-    'Dropped item': z.string(),
+    "Dropped from": z.string(),
+    "Dropped item": z.string(),
     Rolls: z.number().positive(),
   })
   .transform((data) => ({
-    altRarity: data['Alt Rarity'],
+    altRarity: data["Alt Rarity"],
     rarity: data.Rarity,
-    dropSource: data['Dropped from'],
-    itemName: data['Dropped item'],
+    dropSource: data["Dropped from"],
+    itemName: data["Dropped item"],
     rolls: data.Rolls,
   }));
 
@@ -163,29 +146,20 @@ export const DroppedItemResponse = z
       z.object({
         drop_json: z
           .string()
-          .transform((jsonString) =>
-            DroppedItemJSON.parse(JSON.parse(jsonString)),
-          ),
+          .transform((jsonString) => DroppedItemJSON.parse(JSON.parse(jsonString))),
       }),
     ),
   })
   .transform(({ bucket }) =>
     bucket.reduce<Record<string, Record<string, number>>>(
-      (
-        acc,
-        { drop_json: { altRarity, itemName, dropSource, rarity, rolls } },
-      ) => {
+      (acc, { drop_json: { altRarity, itemName, dropSource, rarity, rolls } }) => {
         acc[itemName] = acc[itemName] ?? {};
 
-        const rarityOverride =
-          rarityOverrides[itemName as CollectionLogItemName];
-        const useAltRarity =
-          !!altRarityItems[itemName as CollectionLogItemName]?.[dropSource];
+        const rarityOverride = rarityOverrides[itemName as CollectionLogItemName];
+        const useAltRarity = !!altRarityItems[itemName as CollectionLogItemName]?.[dropSource];
 
         if (useAltRarity && !altRarity) {
-          throw new Error(
-            `Could not find alt rarity for ${itemName} from ${dropSource}!`,
-          );
+          throw new Error(`Could not find alt rarity for ${itemName} from ${dropSource}!`);
         }
 
         // Certain items are rolled multiple times, e.g. Granite Hammer.
@@ -223,11 +197,6 @@ export const CollectionLogResponse = z.array(CollectionLogItemRecord);
 
 export type CollectionLogResponse = z.infer<typeof CollectionLogResponse>;
 
-export const CollectionLogAcquiredItemMap = z.record(
-  z.string(),
-  z.number().nonnegative(),
-);
+export const CollectionLogAcquiredItemMap = z.record(z.string(), z.number().nonnegative());
 
-export type CollectionLogAcquiredItemMap = z.infer<
-  typeof CollectionLogAcquiredItemMap
->;
+export type CollectionLogAcquiredItemMap = z.infer<typeof CollectionLogAcquiredItemMap>;

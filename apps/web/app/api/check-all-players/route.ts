@@ -1,11 +1,11 @@
-import { connection, NextResponse } from 'next/server';
-import { differenceInDays } from 'date-fns';
-import { clientConstants } from '@/config/constants.client';
-import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
-import { initORM, withRequestContext } from '@/database/db';
-import { PlayerGameMode } from '@/database/entities/player-game-mode.entity';
-import { CheckMethod } from '@/app/schemas/inactivity-checker';
+import { connection, NextResponse } from "next/server";
+import { differenceInDays } from "date-fns";
+import { clientConstants } from "@/config/constants.client";
+import { serverConstants } from "@/config/constants.server";
+import { GroupMemberInfoResponse } from "@/app/schemas/temple-api";
+import { initORM, withRequestContext } from "@/database/db";
+import { PlayerGameMode } from "@/database/entities/player-game-mode.entity";
+import { CheckMethod } from "@/app/schemas/inactivity-checker";
 
 export async function GET() {
   await connection();
@@ -19,10 +19,7 @@ export async function GET() {
     const records = await em.findAll(PlayerGameMode);
 
     return Object.fromEntries(
-      records.map(({ playerName, gameMode }) => [
-        playerName.toLowerCase(),
-        gameMode,
-      ]),
+      records.map(({ playerName, gameMode }) => [playerName.toLowerCase(), gameMode]),
     );
   });
 
@@ -60,40 +57,40 @@ export async function GET() {
   const datapointRequests = dataPointMembers.map((player, i) => {
     const url = new URL(`${clientConstants.publicUrl}/api/check-player`);
 
-    url.searchParams.append('player', player);
-    url.searchParams.append('check_method', CheckMethod.enum.datapoint);
+    url.searchParams.append("player", player);
+    url.searchParams.append("check_method", CheckMethod.enum.datapoint);
     url.searchParams.append(
       // Temple's API is rate limited to 10 requests per minute for datapoint endpoints,
       // so we need to wait for six seconds before checking the next player
-      '_delay',
+      "_delay",
       (i * dataPointRateLimitSeconds).toFixed(0),
     );
 
-    return { url, method: 'GET' };
+    return { url, method: "GET" };
   });
 
   const getGameModeRequests = getGameModeMembers.map((player, i) => {
     const url = new URL(`${clientConstants.publicUrl}/api/check-player`);
 
-    url.searchParams.append('player', player);
-    url.searchParams.append('check_method', CheckMethod.enum['get-game-mode']);
+    url.searchParams.append("player", player);
+    url.searchParams.append("check_method", CheckMethod.enum["get-game-mode"]);
     url.searchParams.append(
       // Temple's API is rate limited to 1 request per minute for the check game mode endpoint,
       // so we need to wait for sixty seconds before checking the next player
-      '_delay',
+      "_delay",
       (
         datapointRequests.length * dataPointRateLimitSeconds +
         i * getGameModeRateLimitSeconds
       ).toFixed(0),
     );
 
-    return { url, method: 'GET' };
+    return { url, method: "GET" };
   });
 
   const queueResponse = await fetch(
     `${serverConstants.zeplo.url}/bulk?_token=${serverConstants.zeplo.apiKey}`,
     {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify([...datapointRequests, ...getGameModeRequests]),
     },
   );

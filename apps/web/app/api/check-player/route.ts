@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { clientConstants } from '@/config/constants.client';
-import { PlayerInfoResponse } from '@/app/schemas/temple-api';
-import * as Sentry from '@sentry/nextjs';
-import { initORM, withRequestContext } from '@/database/db';
-import { PlayerGameMode } from '@/database/entities/player-game-mode.entity';
-import { CheckMethod } from '@/app/schemas/inactivity-checker';
+import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { clientConstants } from "@/config/constants.client";
+import { PlayerInfoResponse } from "@/app/schemas/temple-api";
+import * as Sentry from "@sentry/nextjs";
+import { initORM, withRequestContext } from "@/database/db";
+import { PlayerGameMode } from "@/database/entities/player-game-mode.entity";
+import { CheckMethod } from "@/app/schemas/inactivity-checker";
 
 async function getPlayerInfo(player: string) {
   const playerInfoRequest = await fetch(
@@ -16,17 +16,15 @@ async function getPlayerInfo(player: string) {
 }
 
 export async function GET(request: NextRequest) {
-  const player = request.nextUrl.searchParams.get('player');
-  const checkMethod = CheckMethod.parse(
-    request.nextUrl.searchParams.get('check_method'),
-  );
+  const player = request.nextUrl.searchParams.get("player");
+  const checkMethod = CheckMethod.parse(request.nextUrl.searchParams.get("check_method"));
 
   if (!player) {
-    throw new Error('No player provided');
+    throw new Error("No player provided");
   }
 
   const playerInfo = await getPlayerInfo(player);
-  const shouldCheckPlayer = playerInfo.data['Datapoint Cooldown'] === '-';
+  const shouldCheckPlayer = playerInfo.data["Datapoint Cooldown"] === "-";
 
   try {
     // If the player has a datapoint cool-down (i.e. a number),
@@ -37,14 +35,14 @@ export async function GET(request: NextRequest) {
       const urls = {
         [CheckMethod.enum.datapoint]:
           `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
-        [CheckMethod.enum['get-game-mode']]:
+        [CheckMethod.enum["get-game-mode"]]:
           `${clientConstants.temple.baseUrl}/player-tools/getgamemode.php?username=${player}`,
       };
 
       await fetch(urls[checkMethod]);
 
       // If the game mode required an update, attempt to get the latest version and save it
-      if (checkMethod === 'get-game-mode') {
+      if (checkMethod === "get-game-mode") {
         const updatedPlayerInfo = await getPlayerInfo(player);
 
         await withRequestContext(async () => {
@@ -52,14 +50,14 @@ export async function GET(request: NextRequest) {
 
           await em.upsert(PlayerGameMode, {
             playerName: decodeURIComponent(player),
-            gameMode: updatedPlayerInfo.data['Game mode'],
+            gameMode: updatedPlayerInfo.data["Game mode"],
           });
         });
       }
     }
 
     // Purge the cache to display the latest member data
-    revalidatePath('/');
+    revalidatePath("/");
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -1,6 +1,6 @@
-import { RankSubmissionStatus } from '@/app/schemas/rank-calculator';
-import { RejectSubmissionButton } from './reject-submission-button';
-import { ApproveSubmissionButton } from './approve-submission-button';
+import { RankSubmissionStatus } from "@/app/schemas/rank-calculator";
+import { RejectSubmissionButton } from "./reject-submission-button";
+import { ApproveSubmissionButton } from "./approve-submission-button";
 
 interface ViewSubmissionNavigationActionsProps {
   onStatusChange: (status: RankSubmissionStatus) => void;
@@ -15,12 +15,12 @@ export function ViewSubmissionNavigationActions({
     <>
       <RejectSubmissionButton
         onRejectSuccess={() => {
-          onStatusChange('Rejected');
+          onStatusChange("Rejected");
         }}
       />
       <ApproveSubmissionButton
         onApproveSuccess={() => {
-          onStatusChange('Approved');
+          onStatusChange("Approved");
         }}
         playerName={playerName}
       />

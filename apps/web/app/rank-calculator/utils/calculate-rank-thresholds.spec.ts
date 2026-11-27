@@ -1,6 +1,6 @@
-import { calculateRankThresholds } from './calculate-rank-thresholds';
+import { calculateRankThresholds } from "./calculate-rank-thresholds";
 
-it('calculates the rank thresholds correctly', () => {
+it("calculates the rank thresholds correctly", () => {
   const maximumAvailablePoints = 228530;
   const rankThresholds = calculateRankThresholds(maximumAvailablePoints);
 
@@ -24,7 +24,7 @@ it('calculates the rank thresholds correctly', () => {
     Legacy: { Legend: 0 },
     Admin: { Defiler: 0, Onyx: 137000 },
     Moderator: { Pure: 0, Zenyte: 137000 },
-    'Deputy Owner': { 'Deputy Owner': 0 },
+    "Deputy Owner": { "Deputy Owner": 0 },
     Owner: { Owner: 0 },
   });
 });

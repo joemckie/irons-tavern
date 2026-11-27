@@ -1,14 +1,14 @@
-import { memo } from 'react';
-import { Box, Card, Flex, Separator, Table, Text } from '@radix-ui/themes';
-import { FieldError, useWatch } from 'react-hook-form';
-import { Item } from '@/app/schemas/items';
-import { formatWikiImageUrl } from '../utils/format-wiki-url';
-import { MemoisedItem } from './item';
-import { normaliseEntityName } from '../utils/normalise-entity-name';
-import { EntityImage } from './entity-image';
-import { parseInitials } from '../utils/parse-initials';
-import { formatPercentage } from '../utils/format-percentage';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
+import { memo } from "react";
+import { Box, Card, Flex, Separator, Table, Text } from "@radix-ui/themes";
+import { FieldError, useWatch } from "react-hook-form";
+import { Item } from "@/app/schemas/items";
+import { formatWikiImageUrl } from "../utils/format-wiki-url";
+import { MemoisedItem } from "./item";
+import { normaliseEntityName } from "../utils/normalise-entity-name";
+import { EntityImage } from "./entity-image";
+import { parseInitials } from "../utils/parse-initials";
+import { formatPercentage } from "../utils/format-percentage";
+import { RankCalculatorSchema } from "../[player]/submit-rank-calculator-validation";
 
 interface CategoryProps {
   title: string;
@@ -18,16 +18,9 @@ interface CategoryProps {
 }
 
 export const Category = memo(
-  ({
-    title,
-    items,
-    image = formatWikiImageUrl(title, 'category'),
-    errors,
-  }: CategoryProps) => {
+  ({ title, items, image = formatWikiImageUrl(title, "category"), errors }: CategoryProps) => {
     const fields = useWatch<RankCalculatorSchema, `acquiredItems.${string}`[]>({
-      name: items.map(
-        ({ name }) => `acquiredItems.${normaliseEntityName(name)}` as const,
-      ),
+      name: items.map(({ name }) => `acquiredItems.${normaliseEntityName(name)}` as const),
     });
     const completedCount = fields.filter(Boolean).length;
     const percentComplete = formatPercentage(completedCount / items.length, 0);
@@ -59,18 +52,14 @@ export const Category = memo(
           </Flex>
           <Text
             aria-label={`${title} percentage complete`}
-            color={percentComplete === '100%' ? 'green' : undefined}
+            color={percentComplete === "100%" ? "green" : undefined}
             weight="medium"
             size="4"
           >
             {percentComplete}
           </Text>
         </Flex>
-        <Separator
-          size="4"
-          my="3"
-          style={{ backgroundColor: 'var(--accent-a4)' }}
-        />
+        <Separator size="4" my="3" style={{ backgroundColor: "var(--accent-a4)" }} />
         <Table.Root size="1">
           <Table.Header>
             <Table.Row>
@@ -78,9 +67,7 @@ export const Category = memo(
                 <Table.ColumnHeaderCell>Item name</Table.ColumnHeaderCell>
               </Text>
               <Text asChild weight="medium">
-                <Table.ColumnHeaderCell align="right">
-                  Acquired?
-                </Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell align="right">Acquired?</Table.ColumnHeaderCell>
               </Text>
               <Text asChild weight="medium">
                 <Table.ColumnHeaderCell width="100px" align="right">
@@ -91,12 +78,7 @@ export const Category = memo(
           </Table.Header>
           <Table.Body>
             {items.map((item, i) => (
-              <MemoisedItem
-                acquired={!!fields[i]}
-                key={item.name}
-                item={item}
-                error={errors[i]}
-              />
+              <MemoisedItem acquired={!!fields[i]} key={item.name} item={item} error={errors[i]} />
             ))}
           </Table.Body>
         </Table.Root>
@@ -105,4 +87,4 @@ export const Category = memo(
   },
 );
 
-Category.displayName = 'Category';
+Category.displayName = "Category";

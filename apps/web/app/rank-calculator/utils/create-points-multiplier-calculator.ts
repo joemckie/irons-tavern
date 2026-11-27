@@ -1,11 +1,7 @@
-import { standardRankIndices, type StandardRank } from '@/config/ranks';
+import { standardRankIndices, type StandardRank } from "@/config/ranks";
 
 export const createPointsMultiplierCalculator =
-  (
-    factor: number,
-    startRankName: StandardRank,
-    endRankName: StandardRank = 'Beast',
-  ) =>
+  (factor: number, startRankName: StandardRank, endRankName: StandardRank = "Beast") =>
   (rank: StandardRank) => {
     const [startRank, endRank] = [
       standardRankIndices[startRankName],

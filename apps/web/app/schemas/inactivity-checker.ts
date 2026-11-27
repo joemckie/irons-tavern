@@ -1,7 +1,7 @@
-import { Rank } from '@/config/enums';
-import { z } from 'zod';
+import { Rank } from "@/config/enums";
+import { z } from "zod";
 
-export const CheckMethod = z.enum(['datapoint', 'get-game-mode']);
+export const CheckMethod = z.enum(["datapoint", "get-game-mode"]);
 
 export const ClanMember = z.object({
   rsn: z.string(),

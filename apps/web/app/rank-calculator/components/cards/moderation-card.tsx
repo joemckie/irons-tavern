@@ -1,26 +1,20 @@
-import { Flex, Separator, Text, TextProps } from '@radix-ui/themes';
-import {
-  CheckIcon,
-  Cross2Icon,
-  ExclamationTriangleIcon,
-} from '@radix-ui/react-icons';
-import { z } from 'zod';
-import { DataCard } from '../data-card';
-import { useModeration } from '../../contexts/moderation-context';
+import { Flex, Separator, Text, TextProps } from "@radix-ui/themes";
+import { CheckIcon, Cross2Icon, ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { z } from "zod";
+import { DataCard } from "../data-card";
+import { useModeration } from "../../contexts/moderation-context";
 
-const DataStatus = z.enum(['present', 'outdated', 'missing']);
+const DataStatus = z.enum(["present", "outdated", "missing"]);
 
 const statusColors = {
-  [DataStatus.enum.present]: 'green',
-  [DataStatus.enum.outdated]: 'orange',
-  [DataStatus.enum.missing]: 'red',
-} satisfies Record<z.infer<typeof DataStatus>, TextProps['color']>;
+  [DataStatus.enum.present]: "green",
+  [DataStatus.enum.outdated]: "orange",
+  [DataStatus.enum.missing]: "red",
+} satisfies Record<z.infer<typeof DataStatus>, TextProps["color"]>;
 
 const statusIcons = {
   [DataStatus.enum.present]: <CheckIcon height={20} width={20} />,
-  [DataStatus.enum.outdated]: (
-    <ExclamationTriangleIcon height={18} width={18} />
-  ),
+  [DataStatus.enum.outdated]: <ExclamationTriangleIcon height={18} width={18} />,
   [DataStatus.enum.missing]: <Cross2Icon height={20} width={20} />,
 } as const;
 
@@ -38,27 +32,21 @@ export function ModerationCard() {
     return null;
   }
 
-  function getDataSourceStatus(
-    isDataSourcePresent: boolean,
-    isDataSourceOutdated?: boolean,
-  ) {
+  function getDataSourceStatus(isDataSourcePresent: boolean, isDataSourceOutdated?: boolean) {
     if (!isDataSourceOutdated) {
-      return DataStatus.enum[isDataSourcePresent ? 'present' : 'missing'];
+      return DataStatus.enum[isDataSourcePresent ? "present" : "missing"];
     }
 
-    return DataStatus.enum[isDataSourcePresent ? 'outdated' : 'missing'];
+    return DataStatus.enum[isDataSourcePresent ? "outdated" : "missing"];
   }
 
   const moderationData = [
-    ['TempleOSRS player stats', getDataSourceStatus(hasTemplePlayerStats)],
+    ["TempleOSRS player stats", getDataSourceStatus(hasTemplePlayerStats)],
     [
-      'TempleOSRS collection log',
-      getDataSourceStatus(
-        hasTempleCollectionLog,
-        isTempleCollectionLogOutdated,
-      ),
+      "TempleOSRS collection log",
+      getDataSourceStatus(hasTempleCollectionLog, isTempleCollectionLogOutdated),
     ],
-    ['WikiSync data', getDataSourceStatus(hasWikiSyncData)],
+    ["WikiSync data", getDataSourceStatus(hasWikiSyncData)],
   ] as const;
 
   return (
@@ -82,9 +70,7 @@ export function ModerationCard() {
               {label}
             </Text>
           }
-          right={
-            <Text color={statusColors[status]}>{statusIcons[status]}</Text>
-          }
+          right={<Text color={statusColors[status]}>{statusIcons[status]}</Text>}
         />
       ))}
       {actionedByUsername && (

@@ -1,13 +1,10 @@
-import {
-  Checkbox as BaseCheckbox,
-  CheckboxProps as BaseCheckboxProps,
-} from '@radix-ui/themes';
-import { useEffect } from 'react';
-import { FieldPath, FieldValues, useController } from 'react-hook-form';
+import { Checkbox as BaseCheckbox, CheckboxProps as BaseCheckboxProps } from "@radix-ui/themes";
+import { useEffect } from "react";
+import { FieldPath, FieldValues, useController } from "react-hook-form";
 
 interface CheckboxProps<T extends FieldValues = FieldValues> extends Omit<
   BaseCheckboxProps,
-  'ref' | 'color'
+  "ref" | "color"
 > {
   name: FieldPath<T>;
 }

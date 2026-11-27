@@ -1,8 +1,8 @@
-'use server';
+"use server";
 
-import { clientConstants } from '@/config/constants.client';
-import { TempleOSRSPlayerStats } from '@/app/schemas/temple-api';
-import * as Sentry from '@sentry/nextjs';
+import { clientConstants } from "@/config/constants.client";
+import { TempleOSRSPlayerStats } from "@/app/schemas/temple-api";
+import * as Sentry from "@sentry/nextjs";
 
 export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
   try {
@@ -16,7 +16,7 @@ export async function fetchTemplePlayerStats(player: string, bosses: boolean) {
 
     return TempleOSRSPlayerStats.parse(await playerStatsResponse.json()).data;
   } catch {
-    Sentry.captureMessage('TempleOSRS player stats not found', 'info');
+    Sentry.captureMessage("TempleOSRS player stats not found", "info");
 
     return null;
   }

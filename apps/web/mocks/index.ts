@@ -1,11 +1,11 @@
 async function initMocks() {
-  if (typeof window === 'undefined') {
-    const { server } = await import('./server');
+  if (typeof window === "undefined") {
+    const { server } = await import("./server");
     server.listen({
-      onUnhandledRequest: 'error',
+      onUnhandledRequest: "error",
     });
   } else {
-    const { worker } = await import('./browser');
+    const { worker } = await import("./browser");
 
     void worker.start();
   }
