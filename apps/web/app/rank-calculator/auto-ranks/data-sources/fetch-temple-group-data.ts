@@ -1,10 +1,13 @@
-import type { z } from "zod";
+import { z } from "zod";
+import * as Sentry from "@sentry/nextjs";
 import { clientConstants } from "@/config/constants.client";
 import { serverConstants } from "@/config/constants.server";
 import {
   CollectionLogItemNamesResponse,
+  GroupCollectionLogMember,
   GroupCollectionLogResponse,
   GroupMemberInfoResponse,
+  MemberInfo,
 } from "@/app/schemas/temple-api";
 import { generateCollectionLogCategoryList } from "../../data-sources/fetch-player-details/fetch-temple-collection-log";
 
@@ -32,6 +35,44 @@ async function fetchTemple<T extends z.ZodType>(
 }
 
 /**
+ * Group responses are parsed member by member, so one malformed record drops only that member
+ * (who is then reported as missing Temple stats or a collection log) instead of the whole group.
+ */
+const LooseGroupMemberInfoResponse = z.object({
+  data: z.object({
+    memberlist: z.record(z.string(), z.unknown()),
+  }),
+});
+
+const LooseGroupCollectionLogResponse = z.looseObject({
+  data: z.looseObject({
+    total_collections_available: z.number().nonnegative(),
+    members: z.array(z.unknown()),
+  }),
+});
+
+function parseMembers<T extends z.ZodType>(
+  entries: [string, unknown][],
+  schema: T,
+  source: string,
+) {
+  return entries.flatMap(([key, value]): [string, z.infer<T>][] => {
+    const result = schema.safeParse(value);
+
+    if (!result.success) {
+      Sentry.captureMessage(`Malformed TempleOSRS ${source} member skipped`, {
+        level: "warning",
+        extra: { key, issues: result.error.issues },
+      });
+
+      return [];
+    }
+
+    return [[key, result.data]];
+  });
+}
+
+/**
  * Fetches the whole TempleOSRS group in three requests.
  * Any failure throws, as nothing in the auto-rank report can be calculated without them.
  */
@@ -42,7 +83,7 @@ export async function fetchTempleGroupData(): Promise<TempleGroupData> {
     fetchTemple(
       "/api/group_member_info.php",
       { id: groupId, details: "1", skills: "1", bosses: "1" },
-      GroupMemberInfoResponse,
+      LooseGroupMemberInfoResponse,
     ),
     fetchTemple(
       "/api/collection-log/group_collection_log.php",
@@ -51,14 +92,29 @@ export async function fetchTempleGroupData(): Promise<TempleGroupData> {
         includecount: "1",
         categories: [...generateCollectionLogCategoryList()].join(","),
       },
-      GroupCollectionLogResponse,
+      LooseGroupCollectionLogResponse,
     ),
     fetchTemple("/api/collection-log/items.php", {}, CollectionLogItemNamesResponse),
   ]);
 
+  const members = Object.fromEntries(
+    parseMembers(
+      // Temple includes an entry keyed by an empty string
+      Object.entries(memberInfo.data.memberlist).filter(([rsn]) => rsn !== ""),
+      MemberInfo,
+      "member info",
+    ),
+  );
+
+  const collectionLogMembers = parseMembers(
+    collectionLog.data.members.map((member, index) => [String(index), member]),
+    GroupCollectionLogMember,
+    "collection log",
+  ).map(([, member]) => member);
+
   return {
-    members: memberInfo.data.memberlist,
-    collectionLog: collectionLog.data,
+    members,
+    collectionLog: { ...collectionLog.data, members: collectionLogMembers },
     itemNames: itemNames.items,
   };
 }

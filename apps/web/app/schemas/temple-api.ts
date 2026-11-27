@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MemberInfo = z.object({
+export const MemberInfo = z.object({
   player: z.string(),
   game_mode: z.number(),
   on_hiscores: z.union([z.literal(1), z.literal(0)]),

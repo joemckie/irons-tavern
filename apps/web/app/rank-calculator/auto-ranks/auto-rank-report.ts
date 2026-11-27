@@ -75,6 +75,23 @@ function groupAccountsByRsn(accounts: MatchedAccount[]) {
   }, new Map<string, MatchedAccount[]>());
 }
 
+/**
+ * Notable items with a points error (e.g. missing drop rates) make every rank threshold NaN,
+ * which collapses every member's rank. Fail the whole report instead.
+ */
+export function assertNotableItemPoints(notableItems: [string, ItemCategory][]) {
+  const invalidItems = notableItems
+    .flatMap(([, { items }]) => items)
+    .filter(
+      (item) => ("hasPointsError" in item && item.hasPointsError) || !Number.isFinite(item.points),
+    )
+    .map(({ name }) => name);
+
+  if (invalidItems.length > 0) {
+    throw new Error(`Unable to calculate notable item points for ${invalidItems.join(", ")}`);
+  }
+}
+
 function skip(row: AutoRankRow, skipReason: SkipReason): AutoRankRow {
   return { ...row, skipReason };
 }
@@ -85,13 +102,18 @@ export async function resolveAutoRankRows({
   discordRoles,
   fetchWikiSync,
   notableItems,
+  knownCombatAchievementIds,
 }: {
   temple: TempleGroupData;
   accounts: MatchedAccount[];
   discordRoles: Map<string, Set<string>>;
   fetchWikiSync: (rsn: string) => Promise<WikiSyncResponse | null>;
   notableItems: [string, ItemCategory][];
+  /** Every combat achievement ID the wiki knows about */
+  knownCombatAchievementIds: Set<number>;
 }): Promise<AutoRankRow[]> {
+  assertNotableItemPoints(notableItems);
+
   const accountsByRsn = groupAccountsByRsn(accounts);
 
   return mapWithConcurrency(
@@ -141,6 +163,17 @@ export async function resolveAutoRankRows({
 
         if (!wikiSyncData) {
           return skip(linkedRow, "Missing WikiSync");
+        }
+
+        const unknownCombatAchievementIds = wikiSyncData.combat_achievements.filter(
+          (id) => !knownCombatAchievementIds.has(id),
+        );
+
+        // An unknown ID makes the combat achievement tier incalculable, which would otherwise become "None"
+        if (unknownCombatAchievementIds.length > 0) {
+          throw new Error(
+            `Unknown combat achievement IDs: ${unknownCombatAchievementIds.join(", ")}`,
+          );
         }
 
         if (!memberInfo) {

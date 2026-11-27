@@ -18,6 +18,7 @@ import { isRankUp } from "../utils/is-rank-up";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
 import { TempleGroupData } from "./data-sources/fetch-temple-group-data";
 import {
+  assertNotableItemPoints,
   AutoRankRow,
   MatchedAccount,
   normaliseRsn,
@@ -73,6 +74,7 @@ function resolve(overrides: Partial<Parameters<typeof resolveAutoRankRows>[0]> =
     discordRoles: rolesFor(accounts),
     fetchWikiSync: () => Promise.resolve(wikiSyncData),
     notableItems,
+    knownCombatAchievementIds: new Set(wikiSyncData.combat_achievements),
     ...overrides,
   });
 }
@@ -278,5 +280,37 @@ describe("resolveAutoRankRows", () => {
 
     expect(row.currentRank).toBeUndefined();
     expect(row.isRankUp).toBe(true);
+  });
+
+  it("marks a member as Error when WikiSync has a combat achievement the wiki doesn't know", async () => {
+    const knownCombatAchievementIds = new Set(wikiSyncData.combat_achievements.slice(1));
+    const rows = await resolve({ knownCombatAchievementIds });
+
+    expectSkipped(findRow(rows, "Iron Tyson"), "Error");
+    expectSkipped(findRow(rows, "Uim Fixture"), "Error");
+  });
+
+  it("rejects when notable item points can't be calculated, as every rank threshold would be wrong", async () => {
+    const brokenItems = [
+      ["Zulrah", { items: [{ image: "", name: "Toxic blowpipe", hasPointsError: true }] }],
+    ] as unknown as [string, ItemCategory][];
+
+    await expect(resolve({ notableItems: brokenItems })).rejects.toThrow("Toxic blowpipe");
+  });
+});
+
+describe("assertNotableItemPoints", () => {
+  it("accepts items that all have finite points", () => {
+    expect(() => assertNotableItemPoints(notableItems)).not.toThrow();
+  });
+
+  it.each([
+    ["a points error", { image: "", name: "Toxic blowpipe", hasPointsError: true, points: 5 }],
+    ["missing points", { image: "", name: "Toxic blowpipe" }],
+    ["NaN points", { image: "", name: "Toxic blowpipe", points: Number.NaN }],
+  ])("throws for an item with %s", (_, item) => {
+    const items = [["Zulrah", { items: [item] }]] as unknown as [string, ItemCategory][];
+
+    expect(() => assertNotableItemPoints(items)).toThrow("Toxic blowpipe");
   });
 });

@@ -113,6 +113,42 @@ describe("fetchTempleGroupData", () => {
     expect(collectionLog.members[0].items).toEqual({});
   });
 
+  it("drops a malformed member instead of failing the whole group", async () => {
+    useDefaultHandlers();
+    server.use(
+      http.get(memberInfoUrl, () =>
+        HttpResponse.json({
+          data: {
+            memberlist: {
+              ...groupMemberInfoFixture.data.memberlist,
+              "No Clog": { ...groupMemberInfoFixture.data.memberlist["No Clog"], skills: null },
+            },
+          },
+        }),
+      ),
+      http.get(collectionLogUrl, () =>
+        HttpResponse.json({
+          data: {
+            ...groupCollectionLogFixture.data,
+            members: [
+              ...groupCollectionLogFixture.data.members,
+              { player: "Broken", items: { "6570": "lots" } },
+            ],
+          },
+        }),
+      ),
+    );
+
+    const result = await fetchTempleGroupData();
+
+    expect(Object.keys(result.members)).toEqual(["Iron Tyson", "Uim Fixture", "Lvl Three"]);
+    expect(result.collectionLog.members.map(({ player }) => player)).toEqual([
+      "Iron Tyson",
+      "Uim Fixture",
+      "Lvl Three",
+    ]);
+  });
+
   it.each([memberInfoUrl, collectionLogUrl, itemNamesUrl])(
     "throws when a request fails (%s)",
     async (url) => {

@@ -36,7 +36,7 @@ async function fetchMatchedAccounts(): Promise<MatchedAccount[]> {
  * The combat achievement lookups return null on failure, which would otherwise be
  * indistinguishable from a member below the Easy tier. Fail the whole report instead.
  */
-async function assertCombatAchievementDataAvailable() {
+async function fetchKnownCombatAchievementIds() {
   const [caIdMap, tierThresholds] = await Promise.all([
     getCaIdMap(),
     getCombatAchievementTierThresholds(),
@@ -45,18 +45,21 @@ async function assertCombatAchievementDataAvailable() {
   if (!caIdMap || Object.keys(caIdMap).length === 0 || !tierThresholds) {
     throw new Error("Unable to load combat achievement data from the wiki");
   }
+
+  return new Set(Object.keys(caIdMap).map(Number));
 }
 
 export async function buildAutoRankReport(): Promise<AutoRankRow[]> {
-  const [temple, discordRoles, accounts, notableItems] = await Promise.all([
-    fetchTempleGroupData(),
-    fetchGuildMemberRoles(),
-    fetchMatchedAccounts(),
-    fetchItemDropRates([...generateRequiredItemList()]).then(async (dropRates) =>
-      Object.entries(await buildNotableItemList(dropRates)),
-    ),
-    assertCombatAchievementDataAvailable(),
-  ]);
+  const [temple, discordRoles, accounts, notableItems, knownCombatAchievementIds] =
+    await Promise.all([
+      fetchTempleGroupData(),
+      fetchGuildMemberRoles(),
+      fetchMatchedAccounts(),
+      fetchItemDropRates([...generateRequiredItemList()]).then(async (dropRates) =>
+        Object.entries(await buildNotableItemList(dropRates)),
+      ),
+      fetchKnownCombatAchievementIds(),
+    ]);
 
   return resolveAutoRankRows({
     temple,
@@ -64,5 +67,6 @@ export async function buildAutoRankReport(): Promise<AutoRankRow[]> {
     discordRoles,
     fetchWikiSync: getWikiSyncData,
     notableItems,
+    knownCombatAchievementIds,
   });
 }
