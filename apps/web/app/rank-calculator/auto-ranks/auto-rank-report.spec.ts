@@ -138,6 +138,13 @@ describe("resolveAutoRankRows", () => {
     expectSkipped(findRow(await resolve({ accounts }), "No Clog"), "Missing collection log");
   });
 
+  it("keeps the current rank on members missing from the group collection log", async () => {
+    const accounts = [...linkedAccounts, account("No Clog", { rank: "Gold" })];
+    const row = findRow(await resolve({ accounts }), "No Clog");
+
+    expect(row.currentRank).toBe("Gold");
+  });
+
   it("ranks members with no linked account, without Discord roles", async () => {
     const row = findRow(await resolve({ accounts: [] }), "Iron Tyson");
 
@@ -164,6 +171,13 @@ describe("resolveAutoRankRows", () => {
     const accounts = [account("Iron Tyson"), account("iron_tyson", { discordId: "someone-else" })];
 
     expectSkipped(findRow(await resolve({ accounts }), "Iron Tyson"), "Ambiguous");
+  });
+
+  it("keeps the clan export rank on ambiguous members", async () => {
+    const accounts = [account("Iron Tyson"), account("iron_tyson", { discordId: "someone-else" })];
+    const row = findRow(await resolve({ accounts }), "Iron Tyson");
+
+    expect(row.currentRank).toBe("Rune");
   });
 
   it("skips members whose draft uses a non-standard structure", async () => {
