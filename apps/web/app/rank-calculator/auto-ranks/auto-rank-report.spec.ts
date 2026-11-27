@@ -19,15 +19,14 @@ import { isRankUp } from "../utils/is-rank-up";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
 import { TempleGroupData } from "./data-sources/fetch-temple-group-data";
 import {
-  assertNotableItemPoints,
   AutoRankRow,
   ClanListMember,
   GuildMember,
   MatchedAccount,
-  normaliseRsn,
   resolveAutoRankRows,
-  SkipReason,
 } from "./auto-rank-report";
+import { SkipReason } from "./auto-rank-row";
+import { normaliseRsn } from "./normalise-rsn";
 
 const wikiSyncData = WikiSyncResponse.parse(midGamePlayerFixture);
 
@@ -109,17 +108,6 @@ function expectSkipped(row: AutoRankRow, reason: SkipReason) {
   expect(row.totalPoints).toBeUndefined();
   expect(row.isRankUp).toBeUndefined();
 }
-
-describe("normaliseRsn", () => {
-  it.each([
-    ["Iron Tyson", "iron tyson"],
-    ["iron_tyson", "iron tyson"],
-    ["Iron-Tyson", "iron tyson"],
-    ["  IRON   tyson ", "iron tyson"],
-  ])("normalises %j to %j", (input, expected) => {
-    expect(normaliseRsn(input)).toBe(expected);
-  });
-});
 
 describe("resolveAutoRankRows", () => {
   beforeEach(() => {
@@ -471,21 +459,5 @@ describe("resolveAutoRankRows", () => {
     ] as unknown as [string, ItemCategory][];
 
     await expect(resolve({ notableItems: brokenItems })).rejects.toThrow("Toxic blowpipe");
-  });
-});
-
-describe("assertNotableItemPoints", () => {
-  it("accepts items that all have finite points", () => {
-    expect(() => assertNotableItemPoints(notableItems)).not.toThrow();
-  });
-
-  it.each([
-    ["a points error", { image: "", name: "Toxic blowpipe", hasPointsError: true, points: 5 }],
-    ["missing points", { image: "", name: "Toxic blowpipe" }],
-    ["NaN points", { image: "", name: "Toxic blowpipe", points: Number.NaN }],
-  ])("throws for an item with %s", (_, item) => {
-    const items = [["Zulrah", { items: [item] }]] as unknown as [string, ItemCategory][];
-
-    expect(() => assertNotableItemPoints(items)).toThrow("Toxic blowpipe");
   });
 });

@@ -8,16 +8,13 @@ import type { WikiSyncResponse } from "@/app/schemas/wiki";
 import { calculatePlayerRank } from "../utils/calculators/calculate-player-rank";
 import { isRankUp } from "../utils/is-rank-up";
 import { mapWithConcurrency } from "../utils/map-with-concurrency";
+import { assertNotableItemPoints } from "./assert-notable-item-points";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
 import type { TempleGroupData } from "./data-sources/fetch-temple-group-data";
 import { AutoRankRow, ClanListMember, GuildMember, SkipReason } from "./auto-rank-row";
+import { normaliseRsn } from "./normalise-rsn";
 
-export {
-  SkipReason,
-  type AutoRankRow,
-  type ClanListMember,
-  type GuildMember,
-} from "./auto-rank-row";
+export { type AutoRankRow, type ClanListMember, type GuildMember } from "./auto-rank-row";
 
 export interface MatchedAccount {
   name: string;
@@ -30,14 +27,6 @@ export interface MatchedAccount {
 
 // WikiSync rate limits bursts (429s seen at 10 concurrent requests)
 const wikiSyncConcurrency = 5;
-
-/**
- * Normalises an RSN for matching across sources.
- * OSRS treats case, spaces, underscores and hyphens as equivalent.
- */
-export function normaliseRsn(rsn: string): string {
-  return rsn.toLowerCase().replace(/[_-]/g, " ").replace(/\s+/g, " ").trim();
-}
 
 interface GroupMember {
   key: string;
@@ -102,23 +91,6 @@ function groupAccountsByRsn(accounts: MatchedAccount[]) {
 
     return acc;
   }, new Map<string, MatchedAccount[]>());
-}
-
-/**
- * Notable items with a points error (e.g. missing drop rates) make every rank threshold NaN,
- * which collapses every member's rank. Fail the whole report instead.
- */
-export function assertNotableItemPoints(notableItems: [string, ItemCategory][]) {
-  const invalidItems = notableItems
-    .flatMap(([, { items }]) => items)
-    .filter(
-      (item) => ("hasPointsError" in item && item.hasPointsError) || !Number.isFinite(item.points),
-    )
-    .map(({ name }) => name);
-
-  if (invalidItems.length > 0) {
-    throw new Error(`Unable to calculate notable item points for ${invalidItems.join(", ")}`);
-  }
 }
 
 function skip(row: AutoRankRow, skipReason: SkipReason): AutoRankRow {
