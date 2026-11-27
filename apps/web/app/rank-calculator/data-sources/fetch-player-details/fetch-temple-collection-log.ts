@@ -7,7 +7,7 @@ import {
 import { itemList } from "@/data/item-list";
 import { isCollectionLogItem } from "@/app/schemas/items";
 
-function generateCollectionLogCategoryList() {
+export function generateCollectionLogCategoryList() {
   return Object.values(itemList)
     .flatMap(({ items }) => items)
     .filter(isCollectionLogItem)

@@ -1,22 +1,18 @@
 import "core-js/actual/set/intersection";
-import "core-js/actual/set/is-subset-of";
 import { itemList } from "@/data/item-list";
 import { normaliseEntityName } from "@/app/rank-calculator/utils/normalise-entity-name";
 import { ApiResponse } from "@/types/api";
 import * as Sentry from "@sentry/nextjs";
 import { Rank } from "@/config/enums";
-import { initORM } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import { DraftRankSubmission } from "@/database/entities/draft-rank-submission.entity";
 import { clientConstants } from "@/config/constants.client";
 import { redirect } from "next/navigation";
-import { CollectionLogAcquiredItemMap, isHolidayTrack } from "@/app/schemas/wiki";
-import { maximumTotalLevel, TzHaarCape } from "@/app/schemas/osrs";
-import { isItemAcquired } from "./utils/is-item-acquired";
+import { CollectionLogAcquiredItemMap } from "@/app/schemas/wiki";
+import { maximumTotalLevel } from "@/app/schemas/osrs";
 import { getWikiSyncData } from "./get-wikisync-data";
 import { fetchTemplePlayerStats } from "../fetch-temple-player-stats";
-import { calculateCombatAchievementTier } from "./utils/calculate-combat-achievement-tier";
-import { parseAchievementDiaries } from "./utils/parse-achievement-diaries";
+import { deriveVerifiedAchievements } from "./utils/derive-verified-achievements";
 import { mergeCombatAchievementTier } from "./utils/merge-combat-achievement-tier";
 import { mergeAchievementDiaries } from "./utils/merge-achievement-diaries";
 import { calculateEfficiencyData } from "./utils/calculate-efficiency-data";
@@ -25,9 +21,9 @@ import { validatePlayerExists } from "../../players/validation/player-validation
 import { fetchTemplePlayerCollectionLog } from "./fetch-temple-collection-log";
 import { fetchTempleConstants } from "./fetch-temple-constants";
 import { mergeTzhaarCapes } from "./utils/merge-tzhaar-capes";
-import { isAchievementDiaryCapeAchieved } from "../../utils/is-achievement-diary-cape-achieved";
 import { fetchUserDiscordRoles } from "../fetch-user-discord-roles";
 import { calculateTavernDiaryTierMultipliers } from "../../utils/calculators/calculate-tavern-diary-tier-multipliers";
+import type { EntityManager } from "@mikro-orm/core";
 
 export interface PlayerDetailsResponse extends Omit<RankCalculatorSchema, "rank" | "points"> {
   currentRank?: Rank;
@@ -40,6 +36,7 @@ export interface PlayerDetailsResponse extends Omit<RankCalculatorSchema, "rank"
 }
 
 export async function fetchPlayerDetails(
+  em: EntityManager,
   player: string,
   userId: string,
   mergeSavedData = true,
@@ -97,7 +94,6 @@ export async function fetchPlayerDetails(
     notableItemsBonusMultiplier: 0,
   } satisfies PlayerDetailsResponse;
 
-  const { em } = await initORM();
   const playerRecord = await em.findOne(OSRSAccount, {
     user: userId,
     name: player,
@@ -166,10 +162,6 @@ export async function fetchPlayerDetails(
       throw new Error("Unable to determine max collection log slots");
     }
 
-    const combatAchievementTier = wikiSyncData
-      ? await calculateCombatAchievementTier(wikiSyncData.combat_achievements)
-      : null;
-
     const {
       Overall_level: totalLevel = null,
       Collections: hiscoresCollectionLogCount = null,
@@ -185,20 +177,6 @@ export async function fetchPlayerDetails(
         ? templeCollectionLogCount < hiscoresCollectionLogCount
         : false;
 
-    const {
-      achievementDiaries = null,
-      quests = null,
-      musicTracks = null,
-      combatAchievements = null,
-    } = wikiSyncData
-      ? {
-          achievementDiaries: parseAchievementDiaries(wikiSyncData.achievement_diaries),
-          quests: wikiSyncData.quests,
-          musicTracks: wikiSyncData.music_tracks,
-          combatAchievements: wikiSyncData.combat_achievements,
-        }
-      : {};
-
     const collectionLogItems =
       templeCollectionLog?.items.reduce(
         (acc, { name, count }) => ({
@@ -208,29 +186,24 @@ export async function fetchPlayerDetails(
         CollectionLogAcquiredItemMap.parse({}),
       ) ?? null;
 
-    const acquiredItems =
-      wikiSyncData || templeCollectionLog
-        ? Object.values(itemList)
-            .flatMap(({ items }) => items)
-            .filter((item) =>
-              isItemAcquired(item, {
-                acquiredItems: collectionLogItems,
-                quests,
-                combatAchievements,
-              }),
-            )
-            .map(({ name }) => normaliseEntityName(name))
-        : [];
+    const {
+      acquiredItems,
+      hasMusicCape,
+      achievementDiaries,
+      combatAchievementTier,
+      tzhaarCape,
+      hasBloodTorva,
+      hasDizanasQuiver,
+      hasAchievementDiaryCape,
+    } = await deriveVerifiedAchievements({
+      wikiSyncData,
+      collectionLogItems,
+      zukKillCount,
+    });
 
     const previouslyAcquiredItems = savedData
       ? Object.keys(savedData.acquiredItems).filter((key) => savedData.acquiredItems[key])
       : [];
-
-    const hasMusicCape = musicTracks
-      ? Object.entries(musicTracks)
-          .filter(([track]) => !isHolidayTrack(track))
-          .every(([, unlocked]) => unlocked)
-      : false;
 
     const acquiredItemsMap = [
       ...new Set(acquiredItems.concat(previouslyAcquiredItems)).intersection(
@@ -249,33 +222,6 @@ export async function fetchPlayerDetails(
       (templeCollectionLog
         ? `${clientConstants.temple.baseUrl}/player/collection-log.php?player=${player}`
         : null);
-
-    const hasInfernalCape = zukKillCount ? zukKillCount > 0 : false;
-    const hasFireCape =
-      wikiSyncData?.combat_achievements.includes(
-        147, // https://oldschool.runescape.wiki/w/Fight_Caves_Veteran
-      ) ?? false;
-
-    const tzhaarCape =
-      (hasInfernalCape && TzHaarCape.enum["Infernal cape"]) ||
-      (hasFireCape && TzHaarCape.enum["Fire cape"]) ||
-      TzHaarCape.enum.None;
-
-    const hasBloodTorva = new Set([
-      490, // https://oldschool.runescape.wiki/w/Vardorvis_Sleeper
-      499, // https://oldschool.runescape.wiki/w/Whispered
-      508, // https://oldschool.runescape.wiki/w/Leviathan_Sleeper
-      517, // https://oldschool.runescape.wiki/w/Duke_Sucellus_Sleeper
-    ]).isSubsetOf(new Set(wikiSyncData?.combat_achievements));
-
-    const hasDizanasQuiver =
-      wikiSyncData?.combat_achievements.includes(
-        538, // https://oldschool.runescape.wiki/w/Sportsmanship
-      ) ?? false;
-
-    const hasAchievementDiaryCape = achievementDiaries
-      ? isAchievementDiaryCapeAchieved(achievementDiaries)
-      : false;
 
     const hasMaxCape = totalLevel === maximumTotalLevel;
 

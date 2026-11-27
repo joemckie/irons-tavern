@@ -3,7 +3,7 @@ import { differenceInDays } from "date-fns";
 import { clientConstants } from "@/config/constants.client";
 import { serverConstants } from "@/config/constants.server";
 import { GroupMemberInfoResponse } from "@/app/schemas/temple-api";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { PlayerGameMode } from "@/database/entities/player-game-mode.entity";
 import { CheckMethod } from "@/app/schemas/inactivity-checker";
 
@@ -14,8 +14,7 @@ export async function GET() {
     `${clientConstants.temple.baseUrl}/api/group_member_info.php?id=${serverConstants.temple.groupId}`,
   );
   const players = GroupMemberInfoResponse.parse(await response.json());
-  const playerGameModes = await withRequestContext(async () => {
-    const { em } = await initORM();
+  const playerGameModes = await withRequestContext(async (em) => {
     const records = await em.findAll(PlayerGameMode);
 
     return Object.fromEntries(

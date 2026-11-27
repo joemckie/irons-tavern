@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { clientConstants } from "@/config/constants.client";
 import { PlayerInfoResponse } from "@/app/schemas/temple-api";
 import * as Sentry from "@sentry/nextjs";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { PlayerGameMode } from "@/database/entities/player-game-mode.entity";
 import { CheckMethod } from "@/app/schemas/inactivity-checker";
 
@@ -45,9 +45,7 @@ export async function GET(request: NextRequest) {
       if (checkMethod === "get-game-mode") {
         const updatedPlayerInfo = await getPlayerInfo(player);
 
-        await withRequestContext(async () => {
-          const { em } = await initORM();
-
+        await withRequestContext(async (em) => {
           await em.upsert(PlayerGameMode, {
             playerName: decodeURIComponent(player),
             gameMode: updatedPlayerInfo.data["Game mode"],

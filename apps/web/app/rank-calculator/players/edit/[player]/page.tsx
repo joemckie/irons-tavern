@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { list } from "@vercel/blob";
 import { ClanMemberList } from "@/app/schemas/inactivity-checker";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
@@ -41,9 +41,7 @@ export default async function RankCalculatorEditPlayerPage({
 
   const { player } = await params;
   const userId = session.user.id;
-  const account = await withRequestContext(async () => {
-    const { em } = await initORM();
-
+  const account = await withRequestContext(async (em) => {
     return em.findOne(OSRSAccount, {
       user: userId,
       name: decodeURIComponent(player),

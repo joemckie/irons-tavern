@@ -15,7 +15,8 @@ import {
 import { fractionToDecimal } from "./transformers/fraction-to-decimal";
 
 export const DiaryTierData = z.object({
-  complete: z.boolean(),
+  // WikiSync sometimes returns null; parseAchievementDiaries falls back to the task list
+  complete: z.boolean().nullable(),
   tasks: z.array(z.boolean()).nonempty(),
 });
 

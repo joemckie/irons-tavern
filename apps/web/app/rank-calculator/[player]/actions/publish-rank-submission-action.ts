@@ -67,7 +67,7 @@ export const publishRankSubmissionAction = authActionClient
 
       const { data: savedData, osrsAccount } = draft;
 
-      const playerDetails = await fetchPlayerDetails(playerName, userId, false);
+      const playerDetails = await fetchPlayerDetails(em, playerName, userId, false);
 
       if (!playerDetails.success) {
         throw new Error("Failed to retrieve player details. Please try again later.");
