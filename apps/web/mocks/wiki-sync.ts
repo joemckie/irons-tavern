@@ -1,9 +1,4 @@
-import { WikiSyncError, WikiSyncResponse } from "@/app/schemas/wiki";
-
-export const emptyResponseFixture = {
-  code: "NO_USER_DATA",
-  error: "No user data found.",
-} satisfies WikiSyncError;
+import { WikiSyncResponse } from "@/app/schemas/wiki";
 
 export const earlyGamePlayerFixture = {
   username: "riftletics",

@@ -1,7 +1,7 @@
 import { server } from "@/mocks/server";
 import { http, HttpResponse } from "msw";
 import { clientConstants } from "@/config/constants.client";
-import { DroppedItemJSON, DroppedItemResponse } from "@/app/schemas/wiki";
+import { type DroppedItemJSON, DroppedItemResponse } from "@/app/schemas/wiki";
 import { z } from "zod";
 import { CollectionLogItemName } from "@/app/schemas/osrs";
 import { RequiredItem } from "@/app/schemas/items";

@@ -29,15 +29,13 @@ export const QuestStatus = z.nativeEnum({
 
 export type QuestStatus = z.infer<typeof QuestStatus>;
 
-export const LevelMap = z.object(
+const LevelMap = z.object(
   Object.fromEntries(
     Skill.options.map((skill) => [skill, z.number().min(1).max(maximumSkillLevel)]),
   ) as {
     [Key in keyof typeof Skill.enum]: z.ZodInt;
   },
 );
-
-export type LevelMap = z.infer<typeof LevelMap>;
 
 export const HolidayTrack = z.enum([
   "Bunny's Sugar Rush",
@@ -89,17 +87,6 @@ export const WikiSyncResponse = z.object({
 
 export type WikiSyncResponse = z.infer<typeof WikiSyncResponse>;
 
-export const WikiSyncError = z.object({
-  code: z.string(),
-  error: z.string(),
-});
-
-export type WikiSyncError = z.infer<typeof WikiSyncError>;
-
-export function isWikiSyncError(wikiSyncResponse: unknown): wikiSyncResponse is WikiSyncError {
-  return WikiSyncError.safeParse(wikiSyncResponse).success;
-}
-
 export const CombatAchievementListResponse = z.object({
   bucket: z.array(
     z.object({
@@ -122,6 +109,7 @@ const ItemRarity = z
     ]),
   );
 
+/** @internal */
 export const DroppedItemJSON = z
   .object({
     "Alt Rarity": ItemRarity,
@@ -138,6 +126,7 @@ export const DroppedItemJSON = z
     rolls: data.Rolls,
   }));
 
+/** @internal */
 export type DroppedItemJSON = z.infer<typeof DroppedItemJSON>;
 
 export const DroppedItemResponse = z
@@ -182,20 +171,6 @@ export const CombatAchievementTierThresholdResponse = z.object({
     wikitext: z.string(),
   }),
 });
-
-export const CollectionLogItemRecord = z.object({
-  id: z.number().nonnegative(),
-  name: z.string(),
-});
-
-export const CollectionLogItemMap = z.record(
-  z.number(),
-  CollectionLogItemRecord.omit({ name: true }),
-);
-
-export const CollectionLogResponse = z.array(CollectionLogItemRecord);
-
-export type CollectionLogResponse = z.infer<typeof CollectionLogResponse>;
 
 export const CollectionLogAcquiredItemMap = z.record(z.string(), z.number().nonnegative());
 

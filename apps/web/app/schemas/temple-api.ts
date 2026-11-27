@@ -77,13 +77,6 @@ export const TempleOSRSPlayerStats = z.object({
 
 export type TempleOSRSPlayerStats = z.infer<typeof TempleOSRSPlayerStats>;
 
-export interface PlayerStatsError {
-  error: {
-    Code: number;
-    Message: string;
-  };
-}
-
 const TempleOSRSCollectionLogItem = z.object({
   count: z.number().nonnegative(),
   id: z.number().nonnegative(),

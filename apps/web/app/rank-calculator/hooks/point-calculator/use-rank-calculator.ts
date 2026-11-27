@@ -11,6 +11,7 @@ import { RankData } from "../../utils/calculators/calculate-rank";
 import { calculateTotalPoints } from "../../utils/calculators/calculate-total-points";
 import { useItemList } from "../../contexts/item-list-context";
 
+/** @internal */
 export type RankCalculatorData = CommonPointCalculatorData & RankData;
 
 export function useRankCalculator() {

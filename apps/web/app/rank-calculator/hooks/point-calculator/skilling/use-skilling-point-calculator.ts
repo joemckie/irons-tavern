@@ -10,6 +10,7 @@ import { useCalculatorScaling } from "../use-calculator-scaling";
 import { useAchievementDiaryCapePoints } from "./use-achievement-diary-cape-points";
 import { useMaxCapePoints } from "./use-max-cape-points";
 
+/** @internal */
 export interface SkillingPointCalculatorData
   extends CommonPointCalculatorData, BonusPointCalculatorData {
   ehpPoints: number;

@@ -1,10 +1,10 @@
-export interface ApiSuccess<T extends object | void> {
+interface ApiSuccess<T extends object | void> {
   error: null;
   success: true;
   data: T extends void ? null : T;
 }
 
-export interface ApiError {
+interface ApiError {
   error: unknown;
   success: false;
 }

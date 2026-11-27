@@ -1,0 +1,25 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": ["turbo", "ts-node"],
+  "workspaces": {
+    "apps/web": {
+      "project": [
+        "**/*.{ts,tsx,mjs,css}!",
+        "!{__mocks__,fixtures,mocks,scripts,test-utils}/**!",
+        "!types/testing.d.ts!"
+      ],
+      "jest": {
+        "config": [],
+        "entry": ["**/*.spec.{ts,tsx}", "jest.{config,polyfills,setup}.ts", "__mocks__/*.ts"]
+      },
+      "ignoreDependencies": [
+        "@spotlightjs/spotlight",
+        "jest-environment-jsdom",
+        "jest-fixed-jsdom"
+      ],
+      "ignoreIssues": {
+        "database/migrations/**": ["exports"]
+      }
+    }
+  }
+}

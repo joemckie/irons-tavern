@@ -5,6 +5,7 @@ import { RankCalculatorSchema } from "@/app/rank-calculator/[player]/submit-rank
 import { useCollectionLogSlotPoints } from "./use-collection-log-slot-points";
 import { useCalculatorScaling } from "../use-calculator-scaling";
 
+/** @internal */
 export interface CollectionLogPointCalculatorData
   extends CommonPointCalculatorData, BonusPointCalculatorData {
   collectionLogSlotPoints: number;

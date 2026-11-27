@@ -9,6 +9,7 @@ import { useTzhaarCapePoints } from "./use-tzhaar-cape-points";
 import { useBloodTorvaPoints } from "./use-blood-torva-points";
 import { useDizanasQuiverPoints } from "./use-dizanas-quiver-points";
 
+/** @internal */
 export interface CombatPointCalculatorData
   extends CommonPointCalculatorData, BonusPointCalculatorData {
   combatAchievementTierPoints: number;
