@@ -47,7 +47,8 @@ Ranking currently happens manually: members open the rank calculator, submit, an
 
 1. **Gather Temple data (3 requests, in parallel)**
    - `GET {temple}/api/group_member_info.php?id={groupId}&details=1&skills=1&bosses=1`
-   - `GET {temple}/api/collection-log/group_collection_log.php?group={groupId}&includecount=1&categories=all`
+   - `GET {temple}/api/collection-log/group_collection_log.php?group={groupId}&includecount=1&categories={categories}`
+     where `{categories}` is the same filtered list the per-player call uses: `generateCollectionLogCategoryList()` from `fetch-temple-collection-log.ts` (export it), which covers the item-list categories plus `the_inferno` and `the_fight_caves`. Filtering only limits the `items` returned. `total_collections_available` and `total_collections_finished` are still the overall figures (checked 2026-11-27: 1738 and 917 with a two-category filter, the same as `all`).
      Source of truth for collection logs: only members present here have a verified log.
    - `GET {temple}/api/collection-log/items.php` — item ID → item name map (the group log returns IDs only; our item list matches on names via `normaliseEntityName`).
      New Zod schemas go in `app/schemas/temple-api.ts`. The existing `MemberInfo` schema needs `clog_synced`, `primary_ehp`, `primary_ehb`, `skills` and `bosses` as optional fields.
@@ -97,6 +98,5 @@ Each member yields one row: `{ rsn, discordUser?, currentRank?, calculatedRank?,
 ## Left to the builder
 
 - **EHP/EHB key naming.** Group member info uses different keys from `player_stats.php`. `primary_ehp` values seen: `Ehp`, `Ehp_im`, `Uim_ehp`, `lvl3_ehp`, `F2p_im_ehp`. `primary_ehb` values seen: `Ehb`, `Ehb_im`, `Ehb_uim`, `Ehb_1def`. EHP keys live under `skills`, EHB keys under `bosses`. `player_stats.php` uses `Ehp` / `Im_ehp` / `Uim_ehp`. Index by the `primary_*` value directly. Spot-check a few members against `player_stats.php` to confirm the numbers match. Treat a missing key as `missing Temple stats`.
-- The group collection log uses `categories=all`, while the per-player call requests specific categories. Confirm that totals and item counts are unaffected.
 - Module layout and naming, the concurrency helper (a small internal one or an existing dependency), and page component structure.
 - Tests: unit tests for `calculatePlayerRank` (parity with the old inline chain), the bulk-data → calculator-input mapping (fixture-based), the skip-reason logic, and `isRankUp`.
