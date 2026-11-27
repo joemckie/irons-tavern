@@ -12,7 +12,7 @@ interface ModerationProps extends Pick<
   actionedByUsername: string | null;
 }
 
-export const ModerationContext = createContext<ModerationProps>({
+const ModerationContext = createContext<ModerationProps>({
   actionedByUsername: "",
   hasTemplePlayerStats: false,
   hasTempleCollectionLog: false,

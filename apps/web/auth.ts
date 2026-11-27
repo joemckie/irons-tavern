@@ -25,7 +25,7 @@ declare module "next-auth/jwt" {
   }
 }
 
-export const config = {
+const config = {
   debug: /\*|nextauth/.test(process.env.DEBUG ?? ""),
   callbacks: {
     async signIn({ account, profile }) {
@@ -115,5 +115,5 @@ export const config = {
 
 const nextAuth: NextAuthResult = NextAuth(config);
 
-export const { handlers, signIn, signOut } = nextAuth;
+export const { handlers, signIn } = nextAuth;
 export const auth: NextAuthResult["auth"] = nextAuth.auth;

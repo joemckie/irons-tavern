@@ -13,7 +13,7 @@ import { sendDiscordMessage } from "@/app/rank-calculator/utils/send-discord-mes
 import dedent from "dedent";
 import { getRankName } from "@/app/rank-calculator/utils/get-rank-name";
 import type { Rank } from "@/config/enums";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@sentry/nextjs";
 import type { UUID } from "node:crypto";
 
 type ApproveSubmissionInput = {

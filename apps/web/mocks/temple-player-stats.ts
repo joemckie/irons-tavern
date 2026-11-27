@@ -1,11 +1,4 @@
-import { PlayerStatsError, TempleOSRSPlayerStats } from "@/app/schemas/temple-api";
-
-export const emptyResponseFixture = {
-  error: {
-    Code: 402,
-    Message: "User not found in database",
-  },
-} satisfies PlayerStatsError;
+import { TempleOSRSPlayerStats } from "@/app/schemas/temple-api";
 
 export const earlyGamePlayerFixture = {
   data: {

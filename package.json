@@ -9,6 +9,7 @@
   "scripts": {
     "format": "oxfmt --write",
     "format:check": "oxfmt --check",
+    "knip": "knip",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "postinstall": "husky"
@@ -16,11 +17,11 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "husky": "^9.1.7",
+    "knip": "^6.48.0",
     "lint-staged": "^17.6.2",
     "oxfmt": "^0.80.0",
     "oxlint": "^1.95.0",
     "oxlint-tsgolint": "^7.0.2009",
-    "prettier": "^3.9.6",
     "ts-node": "^10.9.2",
     "turbo": "^2.10.12",
     "typescript": "^7.0.2"

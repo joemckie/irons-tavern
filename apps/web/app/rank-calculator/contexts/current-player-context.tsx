@@ -6,7 +6,7 @@ interface CurrentPlayerContextProps {
   playerName: string;
 }
 
-export const CurrentPlayerContext = createContext<CurrentPlayerContextProps>({
+const CurrentPlayerContext = createContext<CurrentPlayerContextProps>({
   playerName: "",
   rank: undefined,
 });

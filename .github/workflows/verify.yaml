@@ -43,3 +43,9 @@ jobs:
 
       - name: Lint
         run: yarn lint
+
+      - name: Knip
+        run: yarn knip
+
+      - name: Knip (strict)
+        run: yarn knip --strict
