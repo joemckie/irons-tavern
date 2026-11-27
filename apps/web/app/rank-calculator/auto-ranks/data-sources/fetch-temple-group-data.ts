@@ -38,14 +38,14 @@ async function fetchTemple<T extends z.ZodType>(
  * Group responses are parsed member by member, so one malformed record drops only that member
  * (who is then reported as missing Temple stats or a collection log) instead of the whole group.
  */
-const LooseGroupMemberInfoResponse = z.object({
+const UnvalidatedGroupMemberInfoResponse = z.object({
   data: z.object({
     memberlist: z.record(z.string(), z.unknown()),
   }),
 });
 
-const LooseGroupCollectionLogResponse = z.looseObject({
-  data: z.looseObject({
+const UnvalidatedGroupCollectionLogResponse = z.object({
+  data: z.object({
     total_collections_available: z.number().nonnegative(),
     members: z.array(z.unknown()),
   }),
@@ -83,7 +83,7 @@ export async function fetchTempleGroupData(): Promise<TempleGroupData> {
     fetchTemple(
       "/api/group_member_info.php",
       { id: groupId, details: "1", skills: "1", bosses: "1" },
-      LooseGroupMemberInfoResponse,
+      UnvalidatedGroupMemberInfoResponse,
     ),
     fetchTemple(
       "/api/collection-log/group_collection_log.php",
@@ -92,7 +92,7 @@ export async function fetchTempleGroupData(): Promise<TempleGroupData> {
         includecount: "1",
         categories: [...generateCollectionLogCategoryList()].join(","),
       },
-      LooseGroupCollectionLogResponse,
+      UnvalidatedGroupCollectionLogResponse,
     ),
     fetchTemple("/api/collection-log/items.php", {}, CollectionLogItemNamesResponse),
   ]);
