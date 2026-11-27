@@ -10,7 +10,6 @@
     "dev": "NODE_OPTIONS='--inspect' next dev --experimental-https",
     "e2e": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress open --e2e\"",
     "e2e:headless": "NODE_ENV=test start-test dev http://localhost:3000/api/heartbeat \"cypress run --e2e\"",
-    "lint": "eslint . --fix",
     "migration:create": "node --env-file=.env.local ../../node_modules/.bin/mikro-orm migration:create",
     "start": "next start",
     "test": "jest"

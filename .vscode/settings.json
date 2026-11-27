@@ -1,5 +1,4 @@
 {
-  "prettier.configPath": ".prettierrc.json",
   "cSpell.words": [
     "Ahrim's",
     "akkha",
@@ -275,5 +274,9 @@
     "Zogre",
     "Zulrah"
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "oxc.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.oxc": "always"
+  }
 }

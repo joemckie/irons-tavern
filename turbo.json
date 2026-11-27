@@ -25,7 +25,10 @@
     },
     "check-types": { "dependsOn": ["^check-types"] },
     "dev": { "persistent": true, "cache": false },
-    "lint": {},
+    "//#lint": {},
+    "//#lint:fix": {
+      "cache": false
+    },
     "test": {}
   }
 }
