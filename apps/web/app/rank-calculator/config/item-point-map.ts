@@ -1,5 +1,5 @@
-import { CollectionLogItemName } from '@/app/schemas/osrs';
-import { ehbRates } from './efficiency-rates';
+import { CollectionLogItemName } from "@/app/schemas/osrs";
+import { ehbRates } from "./efficiency-rates";
 
 /**
  * Some bosses provide their loot through rewards instead of drops (e.g. Unsired)
@@ -7,51 +7,51 @@ import { ehbRates } from './efficiency-rates';
  * This maps the item name to the boss to calculate the EHB rate.
  */
 export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
-  Unsired: 'Abyssal Sire',
-  'Ancient chest': 'Chambers of Xeric Challenge Mode',
-  'Ancient chest#Challenge Mode': 'Chambers of Xeric Challenge Mode',
-  'Chest (The Fractured Archive)#Standard': 'The Fractured Archive',
-  'Chest (The Fractured Archive)#Unique': 'The Fractured Archive',
-  'Chest (Tombs of Amascut)': 'Tombs of Amascut (Expert)',
-  'Monumental chest': 'Theatre of Blood Hard Mode',
-  'Monumental chest#Normal Mode': 'Theatre of Blood',
-  'Monumental chest#Hard Mode': 'Theatre of Blood Hard Mode',
-  'Reward Chest (The Gauntlet)#Corrupted': 'The Corrupted Gauntlet',
-  'Rewards Chest (Fortis Colosseum)#Wave 1': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 2': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 3': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 4': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 5': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 6': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 7': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 8': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 9': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 10': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 11': 'Sol Heredit',
-  'Rewards Chest (Fortis Colosseum)#Wave 12': 'Sol Heredit',
-  'Vorkath#Post-quest': 'Vorkath',
-  'Amoxliatl#Post-quest': 'Amoxliatl',
-  "Chest (Bryophyta's lair)#Free-to-play": 'Bryophyta',
-  "Chest (Bryophyta's lair)#Members": 'Bryophyta',
-  'Branda the Fire Queen': 'The Royal Titans',
-  'Eldric the Ice King': 'The Royal Titans',
-  'Lunar Chest': 'Lunar Chests',
-  'Scurrius#MVP': 'Scurrius',
-  'Reward casket (easy)#Standard': 'Easy Clue',
-  'Reward casket (medium)#Standard': 'Medium Clue',
-  'Reward casket (master)': 'Master Clue',
-  'Thermonuclear smoke devil': 'Thermonuclear Smoke Devil',
-  'Cave kraken': 'Kraken',
-  'Crazy archaeologist': 'Crazy Archaeologist',
-  'Reward Cart': 'Wintertodt',
-  'Spoils of War': 'Soul Wars Zeal',
-  "Hunters' loot sack (expert)": 'Expert Hunter Contracts',
-  'Reward pool': 'Tempoross',
-  'Rewards Guardian': 'Guardians of the Rift',
-  'Barbarian Assault/Gambles#High': 'Barbarian Assault',
-  'Grand Hallowed Coffin': 'Hallowed Sepulchre',
-  "Zombie Pirate's Locker": 'Zombie Pirate Key',
-  'Chewed bones': 'Mithril dragon',
+  Unsired: "Abyssal Sire",
+  "Ancient chest": "Chambers of Xeric Challenge Mode",
+  "Ancient chest#Challenge Mode": "Chambers of Xeric Challenge Mode",
+  "Chest (The Fractured Archive)#Standard": "The Fractured Archive",
+  "Chest (The Fractured Archive)#Unique": "The Fractured Archive",
+  "Chest (Tombs of Amascut)": "Tombs of Amascut (Expert)",
+  "Monumental chest": "Theatre of Blood Hard Mode",
+  "Monumental chest#Normal Mode": "Theatre of Blood",
+  "Monumental chest#Hard Mode": "Theatre of Blood Hard Mode",
+  "Reward Chest (The Gauntlet)#Corrupted": "The Corrupted Gauntlet",
+  "Rewards Chest (Fortis Colosseum)#Wave 1": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 2": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 3": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 4": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 5": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 6": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 7": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 8": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 9": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 10": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 11": "Sol Heredit",
+  "Rewards Chest (Fortis Colosseum)#Wave 12": "Sol Heredit",
+  "Vorkath#Post-quest": "Vorkath",
+  "Amoxliatl#Post-quest": "Amoxliatl",
+  "Chest (Bryophyta's lair)#Free-to-play": "Bryophyta",
+  "Chest (Bryophyta's lair)#Members": "Bryophyta",
+  "Branda the Fire Queen": "The Royal Titans",
+  "Eldric the Ice King": "The Royal Titans",
+  "Lunar Chest": "Lunar Chests",
+  "Scurrius#MVP": "Scurrius",
+  "Reward casket (easy)#Standard": "Easy Clue",
+  "Reward casket (medium)#Standard": "Medium Clue",
+  "Reward casket (master)": "Master Clue",
+  "Thermonuclear smoke devil": "Thermonuclear Smoke Devil",
+  "Cave kraken": "Kraken",
+  "Crazy archaeologist": "Crazy Archaeologist",
+  "Reward Cart": "Wintertodt",
+  "Spoils of War": "Soul Wars Zeal",
+  "Hunters' loot sack (expert)": "Expert Hunter Contracts",
+  "Reward pool": "Tempoross",
+  "Rewards Guardian": "Guardians of the Rift",
+  "Barbarian Assault/Gambles#High": "Barbarian Assault",
+  "Grand Hallowed Coffin": "Hallowed Sepulchre",
+  "Zombie Pirate's Locker": "Zombie Pirate Key",
+  "Chewed bones": "Mithril dragon",
 };
 
 /**
@@ -64,7 +64,7 @@ export const rewardItemBossNameMap: Record<string, keyof typeof ehbRates> = {
 export const collectionLogItemBossNameMap: Partial<
   Record<CollectionLogItemName, keyof typeof ehbRates>
 > = {
-  "Lil' Zik": 'Theatre of Blood',
+  "Lil' Zik": "Theatre of Blood",
 };
 
 /**
@@ -74,10 +74,8 @@ export const collectionLogItemBossNameMap: Partial<
  *
  * This allows for some slight variance in the naming between the collection log and the wiki.
  */
-export const collectionLogItemWikiOverrideMap: Partial<
-  Record<CollectionLogItemName, string>
-> = {
-  Gull: 'Gull (pet)',
+export const collectionLogItemWikiOverrideMap: Partial<Record<CollectionLogItemName, string>> = {
+  Gull: "Gull (pet)",
 };
 
 /**
@@ -91,10 +89,10 @@ export const collectionLogItemWikiOverrideMap: Partial<
  */
 export const dropRateModifiers: Record<string, number> = {
   Unsired: 1 / 100,
-  'Ancient chest': 1 / 7.23,
-  'Ancient chest#Challenge Mode': 1 / 7.23,
-  'Chest (The Fractured Archive)#Unique': 1 / 14,
-  'Chewed bones': 1 / 42.67,
+  "Ancient chest": 1 / 7.23,
+  "Ancient chest#Challenge Mode": 1 / 7.23,
+  "Chest (The Fractured Archive)#Unique": 1 / 14,
+  "Chewed bones": 1 / 42.67,
 };
 
 /**
@@ -102,8 +100,8 @@ export const dropRateModifiers: Record<string, number> = {
  * meaning the player will only receive a fraction of the loot.
  */
 export const groupSizes: Partial<Record<keyof typeof ehbRates, number>> = {
-  'The Fractured Archive': 2,
-  'Chambers of Xeric Challenge Mode': 3,
+  "The Fractured Archive": 2,
+  "Chambers of Xeric Challenge Mode": 3,
   Nex: 4,
   Zalcano: 4,
   Yama: 2,
@@ -121,17 +119,16 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
   "Hydra's fang": 1 / 3,
   "Hydra's heart": 1 / 3,
   "Lil' Creator": 30, // Obtained from Spoils of War which costs 30 Soul Wars Zeal to purchase
-  'Twisted ancestral colour kit':
-    1 / groupSizes['Chambers of Xeric Challenge Mode']!,
-  'Metamorphic dust': 1 / groupSizes['Chambers of Xeric Challenge Mode']!,
-  'Oathplate chest': 0.625, // Oathplate armour can be created by the player using Oathplate shards
-  'Oathplate helm': 0.625, // Oathplate armour can be created by the player using Oathplate shards
-  'Oathplate legs': 0.625, // Oathplate armour can be created by the player using Oathplate shards
-  Orion: 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
-  'Fragment of burning fire': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
-  'Fragment of deep water': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
-  'Fragment of living earth': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
-  'Fragment of whispering wind': 1 / groupSizes['The Fractured Archive']!, // Standard TFA chests are rolled per team member, not per team
+  "Twisted ancestral colour kit": 1 / groupSizes["Chambers of Xeric Challenge Mode"]!,
+  "Metamorphic dust": 1 / groupSizes["Chambers of Xeric Challenge Mode"]!,
+  "Oathplate chest": 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  "Oathplate helm": 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  "Oathplate legs": 0.625, // Oathplate armour can be created by the player using Oathplate shards
+  Orion: 1 / groupSizes["The Fractured Archive"]!, // Standard TFA chests are rolled per team member, not per team
+  "Fragment of burning fire": 1 / groupSizes["The Fractured Archive"]!, // Standard TFA chests are rolled per team member, not per team
+  "Fragment of deep water": 1 / groupSizes["The Fractured Archive"]!, // Standard TFA chests are rolled per team member, not per team
+  "Fragment of living earth": 1 / groupSizes["The Fractured Archive"]!, // Standard TFA chests are rolled per team member, not per team
+  "Fragment of whispering wind": 1 / groupSizes["The Fractured Archive"]!, // Standard TFA chests are rolled per team member, not per team
 };
 
 /**
@@ -143,8 +140,8 @@ export const pointModifiers: Partial<Record<CollectionLogItemName, number>> = {
  * This map is used to overrides the rolls provided by OSRSWiki to get the correct drop rate.
  */
 export const rollOverrides: Record<string, number> = {
-  'Reward casket (easy)#Standard': 3,
-  'Reward casket (medium)#Standard': 4,
+  "Reward casket (easy)#Standard": 3,
+  "Reward casket (medium)#Standard": 4,
 };
 
 /**
@@ -156,79 +153,79 @@ export const rollOverrides: Record<string, number> = {
  * This map is used to override the item rarity provided by OSRSWiki to get the correct item drop rate.
  */
 export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
-  'Avernic defender hilt': 1 / 64,
-  'Ghrazi rapier': 1 / 259,
-  'Sanguinesti staff (uncharged)': 1 / 259,
-  'Justiciar chestguard': 1 / 259,
-  'Justiciar faceguard': 1 / 259,
-  'Justiciar legguards': 1 / 259,
-  'Scythe of Vitur (uncharged)': 1 / 519,
-  'Jal-Nib-Rek': 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
-  'TzRek-Jad': 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
-  'Smol Heredit': 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
+  "Avernic defender hilt": 1 / 64,
+  "Ghrazi rapier": 1 / 259,
+  "Sanguinesti staff (uncharged)": 1 / 259,
+  "Justiciar chestguard": 1 / 259,
+  "Justiciar faceguard": 1 / 259,
+  "Justiciar legguards": 1 / 259,
+  "Scythe of Vitur (uncharged)": 1 / 519,
+  "Jal-Nib-Rek": 1 / 43, // Assuming the player kills Zuk on-task for a 1/75 roll and exchanges an Infernal Cape for a 1/100 roll
+  "TzRek-Jad": 1 / 67, // Assuming the player kills TzTok-Jad on-task for a 1/100 roll and exchanges a Fire Cape for a 1/200 roll
+  "Smol Heredit": 1 / 100.25, // Assuming the player exchanges a Dizana's Quiver for an additional 1/200 roll
   Phoenix: 1 / 2500, // Assuming the player achieves 500 points per game, equivalent to 2 rolls
   "Tumeken's shadow (uncharged)": 1 / 289.8, // Assuming a duo 400 invocation level raid with Walk the Path enabled
-  'Masori mask': 1 / 144.9,
-  'Masori body': 1 / 144.9,
-  'Masori chaps': 1 / 144.9,
+  "Masori mask": 1 / 144.9,
+  "Masori body": 1 / 144.9,
+  "Masori chaps": 1 / 144.9,
   "Elidinis' ward": 1 / 96.6,
   "Tumeken's guardian": 1 / 338.1,
-  'Jewel of the Sun': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Breach of the Scarab': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Eye of the Corruptor': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Jewel of Amascut': 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
-  'Fragment of burning fire': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
-  'Fragment of deep water': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
-  'Fragment of living earth': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
-  'Fragment of whispering wind': 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  "Jewel of the Sun": 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  "Breach of the Scarab": 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  "Eye of the Corruptor": 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  "Jewel of Amascut": 3 / 50, // The drop rate of any gem increases to 3 / 50 at 75 kc
+  "Fragment of burning fire": 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  "Fragment of deep water": 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  "Fragment of living earth": 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
+  "Fragment of whispering wind": 1 / 20, // The rate of obtaining an elemental fragment is 1/20, with a duplicate-avoidance system which gives the player a fragment that they do not yet own. Once all four fragments have been obtained, they will no longer drop.
   get "Osmumten's fang"() {
     return 1 / 41.4;
   },
   get Lightbearer() {
     return this["Osmumten's fang"];
   },
-  get 'Masori crafting kit'() {
+  get "Masori crafting kit"() {
     return this["Osmumten's fang"];
   },
-  get 'Menaphite ornament kit'() {
+  get "Menaphite ornament kit"() {
     return this["Osmumten's fang"]! / 1.5;
   },
-  get 'Cursed phalanx'() {
+  get "Cursed phalanx"() {
     return this["Osmumten's fang"]! / 2.25;
   },
-  get 'Remnant of Akkha'() {
+  get "Remnant of Akkha"() {
     return this["Osmumten's fang"]! / 2.2;
   },
-  get 'Remnant of Ba-Ba'() {
+  get "Remnant of Ba-Ba"() {
     return this["Osmumten's fang"]! / 1.9;
   },
-  get 'Remnant of Kephri'() {
+  get "Remnant of Kephri"() {
     return this["Osmumten's fang"]! / 2.1;
   },
-  get 'Remnant of Zebak'() {
+  get "Remnant of Zebak"() {
     return this["Osmumten's fang"]! / 1.9;
   },
-  get 'Ancient remnant'() {
+  get "Ancient remnant"() {
     return this["Osmumten's fang"]! / 1.9;
   },
-  'Coagulated venom': 1 / 66,
-  'Eclipse atlatl': 1 / (25 / 3),
-  'Eclipse Moon chestplate': 1 / (25 / 3),
-  'Eclipse Moon tassets': 1 / (25 / 3),
-  'Eclipse Moon helm': 1 / (25 / 3),
-  'Dual macuahuitl': 1 / (25 / 3),
-  'Blood Moon chestplate': 1 / (25 / 3),
-  'Blood Moon tassets': 1 / (25 / 3),
-  'Blood Moon helm': 1 / (25 / 3),
-  'Blue Moon spear': 1 / (25 / 3),
-  'Blue Moon chestplate': 1 / (25 / 3),
-  'Blue Moon tassets': 1 / (25 / 3),
-  'Blue Moon helm': 1 / (25 / 3),
-  'Echo crystal': 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
+  "Coagulated venom": 1 / 66,
+  "Eclipse atlatl": 1 / (25 / 3),
+  "Eclipse Moon chestplate": 1 / (25 / 3),
+  "Eclipse Moon tassets": 1 / (25 / 3),
+  "Eclipse Moon helm": 1 / (25 / 3),
+  "Dual macuahuitl": 1 / (25 / 3),
+  "Blood Moon chestplate": 1 / (25 / 3),
+  "Blood Moon tassets": 1 / (25 / 3),
+  "Blood Moon helm": 1 / (25 / 3),
+  "Blue Moon spear": 1 / (25 / 3),
+  "Blue Moon chestplate": 1 / (25 / 3),
+  "Blue Moon tassets": 1 / (25 / 3),
+  "Blue Moon helm": 1 / (25 / 3),
+  "Echo crystal": 1 / 10.44, // https://oldschool.runescape.wiki/w/Echo_crystal
   Dom: 1 / 559, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
-  'Eye of Ayak (uncharged)': 1 / 739, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
-  'Mokhaiotl cloth': 1 / 716, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
-  'Avernic treads': 1 / 770, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  "Eye of Ayak (uncharged)": 1 / 739, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  "Mokhaiotl cloth": 1 / 716, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
+  "Avernic treads": 1 / 770, // https://docs.google.com/spreadsheets/d/1FGl6Olhbustu7ltIDhCE47_9oGOvx8ULFE1YfnyscGQ/edit?usp=sharing
 };
 
 /**
@@ -238,29 +235,27 @@ export const rarityOverrides: Partial<Record<CollectionLogItemName, number>> = {
  *
  * This map is used to switch to the alternate rarity provided by OSRSWiki.
  */
-export const altRarityItems: Partial<
-  Record<CollectionLogItemName, Record<string, true>>
-> = {
-  'Amulet of avarice': {
-    'Revenant ork#On-task': true,
+export const altRarityItems: Partial<Record<CollectionLogItemName, Record<string, true>>> = {
+  "Amulet of avarice": {
+    "Revenant ork#On-task": true,
   },
   "Craw's bow (u)": {
-    'Revenant ork#On-task': true,
+    "Revenant ork#On-task": true,
   },
   "Thammaron's sceptre (u)": {
-    'Revenant ork#On-task': true,
+    "Revenant ork#On-task": true,
   },
   "Viggora's chainmace (u)": {
-    'Revenant ork#On-task': true,
+    "Revenant ork#On-task": true,
   },
-  'Ancient crystal': {
-    'Revenant ork': true,
+  "Ancient crystal": {
+    "Revenant ork": true,
   },
-  'Basilisk jaw': {
-    'Basilisk Knight': true,
+  "Basilisk jaw": {
+    "Basilisk Knight": true,
   },
-  'Thread of Elidinis': {
-    'Chest (Tombs of Amascut)': true,
+  "Thread of Elidinis": {
+    "Chest (Tombs of Amascut)": true,
   },
   "Drake's claw": {
     Drake: true,
@@ -268,16 +263,16 @@ export const altRarityItems: Partial<
   "Drake's tooth": {
     Drake: true,
   },
-  'Avernic treads': {
-    'Doom of Mokhaiotl': true,
+  "Avernic treads": {
+    "Doom of Mokhaiotl": true,
   },
-  'Mokhaiotl cloth': {
-    'Doom of Mokhaiotl': true,
+  "Mokhaiotl cloth": {
+    "Doom of Mokhaiotl": true,
   },
-  'Eye of Ayak (uncharged)': {
-    'Doom of Mokhaiotl': true,
+  "Eye of Ayak (uncharged)": {
+    "Doom of Mokhaiotl": true,
   },
   Dom: {
-    'Doom of Mokhaiotl': true,
+    "Doom of Mokhaiotl": true,
   },
 };

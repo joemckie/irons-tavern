@@ -1,5 +1,5 @@
-import { CombatAchievementTier } from '@/app/schemas/osrs';
-import { pointsConfig } from '../../config/points';
+import { CombatAchievementTier } from "@/app/schemas/osrs";
+import { pointsConfig } from "../../config/points";
 
 export function calculateCombatAchievementPoints(
   combatAchievementTier: CombatAchievementTier,

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 const MemberInfo = z.object({
   player: z.string(),
@@ -12,8 +12,8 @@ const MemberInfo = z.object({
 type MemberInfo = z.infer<typeof MemberInfo>;
 
 interface PlayerInfo {
-  'Game mode': 0 | 1 | 2 | 3;
-  'Datapoint Cooldown': '-' | number;
+  "Game mode": 0 | 1 | 2 | 3;
+  "Datapoint Cooldown": "-" | number;
 }
 
 export interface PlayerInfoResponse {
@@ -24,12 +24,8 @@ export const GroupMemberInfoResponse = z.object({
   data: z.object({
     memberlist: z.preprocess(
       (memberList) => {
-        if (
-          typeof memberList === 'object' &&
-          memberList !== null &&
-          '' in memberList
-        ) {
-          delete memberList[''];
+        if (typeof memberList === "object" && memberList !== null && "" in memberList) {
+          delete memberList[""];
         }
 
         return memberList;
@@ -42,9 +38,9 @@ export const GroupMemberInfoResponse = z.object({
 export type GroupMemberInfoResponse = z.infer<typeof GroupMemberInfoResponse>;
 
 export interface GroupUpdateRequest {
-  clan: '3';
-  'clan-checkbox': 'on';
-  'private-group-checkbox'?: 'on';
+  clan: "3";
+  "clan-checkbox": "on";
+  "private-group-checkbox"?: "on";
   name: string;
   members: string;
   leaders: string;
@@ -63,9 +59,9 @@ export const TempleOSRSPlayerStats = z.object({
   data: z.object({
     info: z.object({
       Username: z.string(),
-      'Game mode': z.nativeEnum(GameMode),
-      Primary_ehb: z.enum(['Ehb', 'Im_ehb', 'Uim_ehb']),
-      Primary_ehp: z.enum(['Ehp', 'Im_ehp', 'Uim_ehp']),
+      "Game mode": z.nativeEnum(GameMode),
+      Primary_ehb: z.enum(["Ehb", "Im_ehb", "Uim_ehb"]),
+      Primary_ehp: z.enum(["Ehp", "Im_ehp", "Uim_ehp"]),
     }),
     Overall_level: z.number().nonnegative(),
     Ehb: z.number().nonnegative(),
@@ -75,7 +71,7 @@ export const TempleOSRSPlayerStats = z.object({
     Uim_ehb: z.number().nonnegative(),
     Uim_ehp: z.number().nonnegative(),
     Collections: z.number().nonnegative(),
-    'TzKal-Zuk': z.number().nonnegative(),
+    "TzKal-Zuk": z.number().nonnegative(),
   }),
 });
 
@@ -102,9 +98,7 @@ export const TempleOSRSPlayerCollectionLog = z.object({
   }),
 });
 
-export type TempleOSRSPlayerCollectionLog = z.infer<
-  typeof TempleOSRSPlayerCollectionLog
->;
+export type TempleOSRSPlayerCollectionLog = z.infer<typeof TempleOSRSPlayerCollectionLog>;
 
 /**
  * Categories available from the TempleOSRS API.
@@ -112,142 +106,140 @@ export type TempleOSRSPlayerCollectionLog = z.infer<
  * https://templeosrs.com/api/collection-log/category_parameters.php
  */
 export const TempleOSRSCollectionLogCategory = z.enum([
-  'all',
-  'bosses',
-  'raids',
-  'clues',
-  'minigames',
-  'other',
-  'abyssal_sire',
-  'alchemical_hydra',
-  'amoxliatl',
-  'araxxor',
-  'barrows_chests',
-  'brutus',
-  'bryophyta',
-  'callisto_and_artio',
-  'cerberus',
-  'chaos_elemental',
-  'chaos_fanatic',
-  'commander_zilyana',
-  'corporeal_beast',
-  'crazy_archaeologist',
-  'dagannoth_kings',
-  'deranged_archaeologist',
-  'doom_of_mokhaiotl',
-  'duke_sucellus',
-  'the_fight_caves',
-  'fortis_colosseum',
-  'the_gauntlet',
-  'general_graardor',
-  'giant_mole',
-  'grotesque_guardians',
-  'hespori',
-  'hueycoatl',
-  'the_inferno',
-  'kalphite_queen',
-  'king_black_dragon',
-  'kraken',
-  'kree_arra',
-  'kril_tsutsaroth',
-  'the_leviathan',
-  'the_mad_angel',
-  'maggot_king',
-  'moons_of_peril',
-  'nex',
-  'the_nightmare',
-  'obor',
-  'phantom_muspah',
-  'royal_titans',
-  'sarachnis',
-  'scorpia',
-  'scurrius',
-  'shellbane_gryphon',
-  'skotizo',
-  'tempoross',
-  'thermonuclear_smoke_devil',
-  'vardorvis',
-  'venenatis_and_spindel',
-  'vetion_and_calvarion',
-  'vorkath',
-  'the_whisperer',
-  'wintertodt',
-  'yama',
-  'zalcano',
-  'zulrah',
-  'chambers_of_xeric',
-  'theatre_of_blood',
-  'tombs_of_amascut',
-  'the_fractured_archive',
-  'beginner_treasure_trails',
-  'easy_treasure_trails',
-  'medium_treasure_trails',
-  'hard_treasure_trails',
-  'elite_treasure_trails',
-  'master_treasure_trails',
-  'gilded',
-  'third_age',
-  'mimic',
-  'shared_treasure_trail_rewards',
-  'scroll_cases',
-  'barbarian_assault',
-  'barracuda_trials',
-  'brimhaven_agility_arena',
-  'castle_wars',
-  'fishing_trawler',
-  'giants_foundry',
-  'gnome_restaurant',
-  'guardians_of_the_rift',
-  'hallowed_sepulchre',
-  'last_man_standing',
-  'magic_training_arena',
-  'mahogany_homes',
-  'pest_control',
-  'mastering_mixology',
-  'rogues_den',
-  'shades_of_mortton',
-  'soul_wars',
-  'temple_trekking',
-  'tithe_farm',
-  'trouble_brewing',
-  'vale_totems',
-  'volcanic_mine',
-  'aerial_fishing',
-  'all_pets',
-  'boat_paints',
-  'camdozaal',
-  'champions_challenge',
-  'chaos_druids',
-  'chompy_bird_hunting',
-  'colossal_wyrm_agility',
-  'creature_creation',
-  'cyclopes',
-  'forestry',
-  'fossil_island_notes',
-  'gloughs_experiments',
-  'hunter_guild',
-  'lost_schematics',
-  'monkey_backpacks',
-  'motherlode_mine',
-  'my_notes',
-  'ocean_encounters',
-  'random_events',
-  'revenants',
-  'rooftop_agility',
-  'sailing_miscellaneous',
-  'sea_treasures',
-  'shayzien_armour',
-  'shooting_stars',
-  'skilling_pets',
-  'slayer',
-  'tormented_demons',
-  'tzhaar',
-  'miscellaneous',
+  "all",
+  "bosses",
+  "raids",
+  "clues",
+  "minigames",
+  "other",
+  "abyssal_sire",
+  "alchemical_hydra",
+  "amoxliatl",
+  "araxxor",
+  "barrows_chests",
+  "brutus",
+  "bryophyta",
+  "callisto_and_artio",
+  "cerberus",
+  "chaos_elemental",
+  "chaos_fanatic",
+  "commander_zilyana",
+  "corporeal_beast",
+  "crazy_archaeologist",
+  "dagannoth_kings",
+  "deranged_archaeologist",
+  "doom_of_mokhaiotl",
+  "duke_sucellus",
+  "the_fight_caves",
+  "fortis_colosseum",
+  "the_gauntlet",
+  "general_graardor",
+  "giant_mole",
+  "grotesque_guardians",
+  "hespori",
+  "hueycoatl",
+  "the_inferno",
+  "kalphite_queen",
+  "king_black_dragon",
+  "kraken",
+  "kree_arra",
+  "kril_tsutsaroth",
+  "the_leviathan",
+  "the_mad_angel",
+  "maggot_king",
+  "moons_of_peril",
+  "nex",
+  "the_nightmare",
+  "obor",
+  "phantom_muspah",
+  "royal_titans",
+  "sarachnis",
+  "scorpia",
+  "scurrius",
+  "shellbane_gryphon",
+  "skotizo",
+  "tempoross",
+  "thermonuclear_smoke_devil",
+  "vardorvis",
+  "venenatis_and_spindel",
+  "vetion_and_calvarion",
+  "vorkath",
+  "the_whisperer",
+  "wintertodt",
+  "yama",
+  "zalcano",
+  "zulrah",
+  "chambers_of_xeric",
+  "theatre_of_blood",
+  "tombs_of_amascut",
+  "the_fractured_archive",
+  "beginner_treasure_trails",
+  "easy_treasure_trails",
+  "medium_treasure_trails",
+  "hard_treasure_trails",
+  "elite_treasure_trails",
+  "master_treasure_trails",
+  "gilded",
+  "third_age",
+  "mimic",
+  "shared_treasure_trail_rewards",
+  "scroll_cases",
+  "barbarian_assault",
+  "barracuda_trials",
+  "brimhaven_agility_arena",
+  "castle_wars",
+  "fishing_trawler",
+  "giants_foundry",
+  "gnome_restaurant",
+  "guardians_of_the_rift",
+  "hallowed_sepulchre",
+  "last_man_standing",
+  "magic_training_arena",
+  "mahogany_homes",
+  "pest_control",
+  "mastering_mixology",
+  "rogues_den",
+  "shades_of_mortton",
+  "soul_wars",
+  "temple_trekking",
+  "tithe_farm",
+  "trouble_brewing",
+  "vale_totems",
+  "volcanic_mine",
+  "aerial_fishing",
+  "all_pets",
+  "boat_paints",
+  "camdozaal",
+  "champions_challenge",
+  "chaos_druids",
+  "chompy_bird_hunting",
+  "colossal_wyrm_agility",
+  "creature_creation",
+  "cyclopes",
+  "forestry",
+  "fossil_island_notes",
+  "gloughs_experiments",
+  "hunter_guild",
+  "lost_schematics",
+  "monkey_backpacks",
+  "motherlode_mine",
+  "my_notes",
+  "ocean_encounters",
+  "random_events",
+  "revenants",
+  "rooftop_agility",
+  "sailing_miscellaneous",
+  "sea_treasures",
+  "shayzien_armour",
+  "shooting_stars",
+  "skilling_pets",
+  "slayer",
+  "tormented_demons",
+  "tzhaar",
+  "miscellaneous",
 ]);
 
-export type TempleOSRSCollectionLogCategory = z.infer<
-  typeof TempleOSRSCollectionLogCategory
->;
+export type TempleOSRSCollectionLogCategory = z.infer<typeof TempleOSRSCollectionLogCategory>;
 
 export const TempleOSRSConstants = z.object({
   data: z.object({

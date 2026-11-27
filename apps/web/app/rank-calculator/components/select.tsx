@@ -1,17 +1,10 @@
-import {
-  Select as BaseSelect,
-  Box,
-  Button,
-  Text,
-  ThickCheckIcon,
-} from '@radix-ui/themes';
-import * as Ariakit from '@ariakit/react';
-import { FieldPath, FieldValues, useController } from 'react-hook-form';
-import { AriaAttributes, startTransition } from 'react';
-import { ValidationTooltip } from './validation-tooltip';
+import { Select as BaseSelect, Box, Button, Text, ThickCheckIcon } from "@radix-ui/themes";
+import * as Ariakit from "@ariakit/react";
+import { FieldPath, FieldValues, useController } from "react-hook-form";
+import { AriaAttributes, startTransition } from "react";
+import { ValidationTooltip } from "./validation-tooltip";
 
-interface SelectProps<T extends FieldValues>
-  extends BaseSelect.RootProps, AriaAttributes {
+interface SelectProps<T extends FieldValues> extends BaseSelect.RootProps, AriaAttributes {
   name: FieldPath<T>;
   placeholder?: string;
   options: readonly string[];
@@ -36,9 +29,7 @@ export function Select<T extends FieldValues>({
   });
 
   const portalElement =
-    typeof document !== 'undefined'
-      ? document.getElementById('theme-root')
-      : null;
+    typeof document !== "undefined" ? document.getElementById("theme-root") : null;
 
   return (
     <Ariakit.SelectProvider
@@ -48,7 +39,7 @@ export function Select<T extends FieldValues>({
           onValueChange?.(value);
         });
       }}
-      value={field.value ?? ''}
+      value={field.value ?? ""}
     >
       <Ariakit.Select
         {...field}
@@ -62,16 +53,8 @@ export function Select<T extends FieldValues>({
           }
 
           return (
-            <Button
-              {...buttonProps}
-              {...props}
-              variant="ghost"
-              className="rt-SelectTrigger"
-            >
-              <Text
-                color={error ? 'red' : undefined}
-                weight={error ? 'medium' : undefined}
-              >
+            <Button {...buttonProps} {...props} variant="ghost" className="rt-SelectTrigger">
+              <Text color={error ? "red" : undefined} weight={error ? "medium" : undefined}>
                 {field.value}
               </Text>
               <Ariakit.SelectArrow />
@@ -91,19 +74,11 @@ export function Select<T extends FieldValues>({
           </Ariakit.SelectItem>
         )}
         {options.map((option) => (
-          <Ariakit.SelectItem
-            key={option}
-            className="rt-SelectItem"
-            value={option}
-          >
+          <Ariakit.SelectItem key={option} className="rt-SelectItem" value={option}>
             <Ariakit.SelectItemCheck
               render={({ style, ...selectItemCheckProps }) =>
                 field.value === option && (
-                  <Box
-                    {...selectItemCheckProps}
-                    as="span"
-                    className="rt-SelectItemIndicator"
-                  >
+                  <Box {...selectItemCheckProps} as="span" className="rt-SelectItemIndicator">
                     <ThickCheckIcon className="rt-SelectItemIndicatorIcon" />
                   </Box>
                 )

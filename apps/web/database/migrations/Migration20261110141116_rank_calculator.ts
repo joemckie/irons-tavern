@@ -1,7 +1,7 @@
-import { Migration } from '@mikro-orm/migrations';
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20261110141116_rank_calculator extends Migration {
-  override name = 'Migration20261110141116_rank_calculator';
+  override name = "Migration20261110141116_rank_calculator";
 
   override up(): void | Promise<void> {
     this.addSql(`create extension if not exists citext;`);
@@ -29,9 +29,7 @@ export class Migration20261110141116_rank_calculator extends Migration {
     );
 
     this.addSql(`alter table "rank_submission" add "data" jsonb not null;`);
-    this.addSql(
-      `alter table "rank_submission" alter column "osrs_account_id" drop not null;`,
-    );
+    this.addSql(`alter table "rank_submission" alter column "osrs_account_id" drop not null;`);
     this.addSql(
       `alter table "rank_submission" add constraint "rank_submission_osrs_account_id_foreign" foreign key ("osrs_account_id") references "osrs_account" ("id") on delete set null;`,
     );
@@ -60,9 +58,7 @@ export class Migration20261110141116_rank_calculator extends Migration {
     );
 
     this.addSql(`alter table "rank_submission" drop column "data";`);
-    this.addSql(
-      `alter table "rank_submission" alter column "osrs_account_id" set not null;`,
-    );
+    this.addSql(`alter table "rank_submission" alter column "osrs_account_id" set not null;`);
     this.addSql(
       `alter table "rank_submission" add constraint "rank_submission_osrs_account_id_foreign" foreign key ("osrs_account_id") references "osrs_account" ("id");`,
     );

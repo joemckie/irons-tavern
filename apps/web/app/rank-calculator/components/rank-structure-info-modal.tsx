@@ -1,32 +1,26 @@
-import { useState, useTransition } from 'react';
-import { Button, Dialog, Flex, Inset, Table } from '@radix-ui/themes';
-import { useItemList } from '../contexts/item-list-context';
-import { useWatch } from 'react-hook-form';
-import { calculateRankThresholds } from '@/app/rank-calculator/utils/calculate-rank-thresholds';
-import { Rank } from '@/config/enums';
-import Image from 'next/image';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { getRankName } from '../utils/get-rank-name';
-import { formatNumber } from '../utils/format-number';
-import { getRankImageUrl } from '../utils/get-rank-image-url';
+import { useState, useTransition } from "react";
+import { Button, Dialog, Flex, Inset, Table } from "@radix-ui/themes";
+import { useItemList } from "../contexts/item-list-context";
+import { useWatch } from "react-hook-form";
+import { calculateRankThresholds } from "@/app/rank-calculator/utils/calculate-rank-thresholds";
+import { Rank } from "@/config/enums";
+import Image from "next/image";
+import { RankCalculatorSchema } from "../[player]/submit-rank-calculator-validation";
+import { getRankName } from "../utils/get-rank-name";
+import { formatNumber } from "../utils/format-number";
+import { getRankImageUrl } from "../utils/get-rank-image-url";
 
 export function RankStructureInfoModal() {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const rankStructure = useWatch<RankCalculatorSchema, 'rankStructure'>({
-    name: 'rankStructure',
+  const rankStructure = useWatch<RankCalculatorSchema, "rankStructure">({
+    name: "rankStructure",
   });
-  const totalCollectionLogSlots = useWatch<
-    RankCalculatorSchema,
-    'collectionLogTotal'
-  >({
-    name: 'collectionLogTotal',
+  const totalCollectionLogSlots = useWatch<RankCalculatorSchema, "collectionLogTotal">({
+    name: "collectionLogTotal",
   });
   const notableItems = useItemList();
-  const rankThresholds = calculateRankThresholds(
-    totalCollectionLogSlots,
-    notableItems,
-  );
+  const rankThresholds = calculateRankThresholds(totalCollectionLogSlots, notableItems);
 
   return (
     <Dialog.Root
@@ -48,13 +42,9 @@ export function RankStructureInfoModal() {
           <Table.Root size="1">
             <Table.Header>
               <Table.Row>
-                <Table.ColumnHeaderCell width="22px">
-                  Icon
-                </Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell width="22px">Icon</Table.ColumnHeaderCell>
                 <Table.ColumnHeaderCell>Rank</Table.ColumnHeaderCell>
-                <Table.ColumnHeaderCell align="right">
-                  Points
-                </Table.ColumnHeaderCell>
+                <Table.ColumnHeaderCell align="right">Points</Table.ColumnHeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -72,9 +62,7 @@ export function RankStructureInfoModal() {
                       />
                     </Table.Cell>
                     <Table.Cell>{getRankName(rank as Rank)}</Table.Cell>
-                    <Table.Cell align="right">
-                      {formatNumber(points)}
-                    </Table.Cell>
+                    <Table.Cell align="right">{formatNumber(points)}</Table.Cell>
                   </Table.Row>
                 ))}
             </Table.Body>

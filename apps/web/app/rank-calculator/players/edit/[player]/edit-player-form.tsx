@@ -1,32 +1,24 @@
-'use client';
+"use client";
 
-import {
-  Box,
-  Button,
-  Callout,
-  Flex,
-  Heading,
-  Spinner,
-  Text,
-} from '@radix-ui/themes';
-import { FormProvider } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import { ErrorMessage } from '@hookform/error-message';
-import { CalendarIcon, CircleBackslashIcon } from '@radix-ui/react-icons';
-import { toast } from 'react-toastify';
-import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { debounce } from 'lodash';
-import { useAction } from 'next-safe-action/hooks';
-import { Player } from '@/app/schemas/player';
-import { Input } from '../../../components/input';
-import { Label } from '../../../components/label';
-import { DatePicker } from '../../../components/date-picker';
-import { PlayerNameInput } from './components/player-name-input';
-import { editPlayerAction } from './actions/edit-player-action';
-import { fetchPlayerJoinDateAction } from '../../actions/fetch-player-join-date-action';
-import { EditPlayerSchema } from './actions/edit-player-schema';
-import { Checkbox } from '../../../components/checkbox';
+import { Box, Button, Callout, Flex, Heading, Spinner, Text } from "@radix-ui/themes";
+import { FormProvider } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { ErrorMessage } from "@hookform/error-message";
+import { CalendarIcon, CircleBackslashIcon } from "@radix-ui/react-icons";
+import { toast } from "react-toastify";
+import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { debounce } from "lodash";
+import { useAction } from "next-safe-action/hooks";
+import { Player } from "@/app/schemas/player";
+import { Input } from "../../../components/input";
+import { Label } from "../../../components/label";
+import { DatePicker } from "../../../components/date-picker";
+import { PlayerNameInput } from "./components/player-name-input";
+import { editPlayerAction } from "./actions/edit-player-action";
+import { fetchPlayerJoinDateAction } from "../../actions/fetch-player-join-date-action";
+import { EditPlayerSchema } from "./actions/edit-player-schema";
+import { Checkbox } from "../../../components/checkbox";
 
 interface EditPlayerFormProps {
   members: string[];
@@ -43,7 +35,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
       actionProps: {
         onError({ error }) {
           if (error.serverError) {
-            toast.error('Failed to edit player!');
+            toast.error("Failed to edit player!");
           }
         },
         onSuccess() {
@@ -53,8 +45,8 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
         },
       },
       formProps: {
-        mode: 'onSubmit',
-        criteriaMode: 'all',
+        mode: "onSubmit",
+        criteriaMode: "all",
         defaultValues: {
           joinDate: new Date(playerRecord.joinDate),
           playerName: playerRecord.rsn,
@@ -65,23 +57,18 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
   );
   const { isDirty, errors, isSubmitting } = form.formState;
 
-  const {
-    execute: executeFetchPlayerJoinDate,
-    isExecuting: isFetchPlayerJoinDateExecuting,
-  } = useAction(fetchPlayerJoinDateAction, {
-    onSettled({ result }) {
-      if (result.data) {
-        form.setValue('joinDate', result.data, {
-          shouldDirty: true,
-        });
-      }
-    },
-  });
+  const { execute: executeFetchPlayerJoinDate, isExecuting: isFetchPlayerJoinDateExecuting } =
+    useAction(fetchPlayerJoinDateAction, {
+      onSettled({ result }) {
+        if (result.data) {
+          form.setValue("joinDate", result.data, {
+            shouldDirty: true,
+          });
+        }
+      },
+    });
 
-  const debouncedExecuteFetchPlayerJoinDate = debounce(
-    executeFetchPlayerJoinDate,
-    600,
-  );
+  const debouncedExecuteFetchPlayerJoinDate = debounce(executeFetchPlayerJoinDate, 600);
 
   return (
     <FormProvider {...form}>
@@ -102,21 +89,15 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                 <CircleBackslashIcon />
               </Callout.Icon>
               <Callout.Text>
-                Your player name has become invalid (this is usually due to a
-                name change).
+                Your player name has become invalid (this is usually due to a name change).
               </Callout.Text>
-              <Callout.Text>
-                Please update it to regain access to the calculator.
-              </Callout.Text>
+              <Callout.Text>Please update it to regain access to the calculator.</Callout.Text>
             </Callout.Root>
           )}
           <Heading size="5">Editing {playerRecord.rsn}</Heading>
           <Flex direction="column" gap="3" width="330px">
             <Flex direction="column" gap="2">
-              <PlayerNameInput
-                members={members}
-                onChange={debouncedExecuteFetchPlayerJoinDate}
-              />
+              <PlayerNameInput members={members} onChange={debouncedExecuteFetchPlayerJoinDate} />
             </Flex>
             <Flex direction="column" gap="2">
               <Label weight="bold">
@@ -135,11 +116,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                         size="3"
                         hasError={!!errors.joinDate}
                         leftIcon={<CalendarIcon />}
-                        rightIcon={
-                          isFetchPlayerJoinDateExecuting ? (
-                            <Spinner />
-                          ) : undefined
-                        }
+                        rightIcon={isFetchPlayerJoinDateExecuting ? <Spinner /> : undefined}
                       />
                     }
                   />
@@ -157,10 +134,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
             </Flex>
             <Flex direction="row" gap="2" align="center" asChild>
               <Label weight="bold">
-                <Checkbox
-                  checked={form.watch('isMobileOnly')}
-                  name="isMobileOnly"
-                />
+                <Checkbox checked={form.watch("isMobileOnly")} name="isMobileOnly" />
                 <Text as="span">Mobile only player</Text>
               </Label>
             </Flex>
@@ -172,7 +146,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
                     color="gray"
                     size="3"
                     onClick={() => {
-                      router.push('/rank-calculator');
+                      router.push("/rank-calculator");
                     }}
                     variant="soft"
                   >
@@ -182,11 +156,7 @@ export function EditPlayerForm({ members, playerRecord }: EditPlayerFormProps) {
               </Flex>
               <Flex flexGrow="1">
                 <Box asChild width="100%">
-                  <Button
-                    disabled={!isDirty || isSubmitting}
-                    loading={isSubmitting}
-                    size="3"
-                  >
+                  <Button disabled={!isDirty || isSubmitting} loading={isSubmitting} size="3">
                     Save
                   </Button>
                 </Box>

@@ -1,64 +1,64 @@
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const theNightmare: ItemCategory = {
-  image: formatWikiImageUrl('Little Nightmare chathead', 'category'),
+  image: formatWikiImageUrl("Little Nightmare chathead", "category"),
   items: [
     singleItem({
-      name: 'Nightmare staff',
-      collectionLogCategory: 'the_nightmare',
+      name: "Nightmare staff",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
       name: "Inquisitor's great helm",
-      collectionLogCategory: 'the_nightmare',
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
       name: "Inquisitor's hauberk",
-      collectionLogCategory: 'the_nightmare',
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
       name: "Inquisitor's plateskirt",
-      collectionLogCategory: 'the_nightmare',
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
       name: "Inquisitor's mace",
-      collectionLogCategory: 'the_nightmare',
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Eldritch orb',
-      collectionLogCategory: 'the_nightmare',
+      name: "Eldritch orb",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Harmonised orb',
-      collectionLogCategory: 'the_nightmare',
+      name: "Harmonised orb",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Volatile orb',
-      collectionLogCategory: 'the_nightmare',
+      name: "Volatile orb",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Parasitic egg',
-      collectionLogCategory: 'the_nightmare',
+      name: "Parasitic egg",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Jar of Dreams',
-      collectionLogCategory: 'the_nightmare',
+      name: "Jar of Dreams",
+      collectionLogCategory: "the_nightmare",
       targetDropSources: ["Phosani's Nightmare"],
     }),
     singleItem({
-      name: 'Little Nightmare',
+      name: "Little Nightmare",
       targetDropSources: ["Phosani's Nightmare"],
-      collectionLogCategory: 'the_nightmare',
+      collectionLogCategory: "the_nightmare",
     }),
   ],
 };

@@ -1,5 +1,5 @@
-import { TavernDiaryTier } from '@/app/schemas/tavern-diaries';
-import { invert } from 'lodash';
+import { TavernDiaryTier } from "@/app/schemas/tavern-diaries";
+import { invert } from "lodash";
 
 export const tavernDiaryTierMultipliers = {
   Drunkard: 0.05,
@@ -9,6 +9,4 @@ export const tavernDiaryTierMultipliers = {
   Duke: 0.4,
 } as const satisfies Record<TavernDiaryTier, number>;
 
-export const tavernDiaryTierNameByMultiplier = invert(
-  tavernDiaryTierMultipliers,
-);
+export const tavernDiaryTierNameByMultiplier = invert(tavernDiaryTierMultipliers);

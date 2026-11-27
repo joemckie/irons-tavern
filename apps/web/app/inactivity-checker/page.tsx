@@ -1,13 +1,13 @@
-import { differenceInDays } from 'date-fns';
-import pluralise from 'pluralize';
-import { list } from '@vercel/blob';
-import Image from 'next/image';
-import { clientConstants } from '@/config/constants.client';
-import { serverConstants } from '@/config/constants.server';
-import { GroupMemberInfoResponse } from '@/app/schemas/temple-api';
-import * as Sentry from '@sentry/nextjs';
-import { ClanMember, ClanMemberList } from '../schemas/inactivity-checker';
-import { getRankImageUrl } from '../rank-calculator/utils/get-rank-image-url';
+import { differenceInDays } from "date-fns";
+import pluralise from "pluralize";
+import { list } from "@vercel/blob";
+import Image from "next/image";
+import { clientConstants } from "@/config/constants.client";
+import { serverConstants } from "@/config/constants.server";
+import { GroupMemberInfoResponse } from "@/app/schemas/temple-api";
+import * as Sentry from "@sentry/nextjs";
+import { ClanMember, ClanMemberList } from "../schemas/inactivity-checker";
+import { getRankImageUrl } from "../rank-calculator/utils/get-rank-image-url";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
@@ -23,9 +23,7 @@ async function getGroupMemberInfo(): Promise<GroupMemberInfoResponse> {
 
 async function getLatestMemberList() {
   const blobList = await list();
-  const [{ url }] = blobList.blobs.sort(
-    (a, b) => +b.uploadedAt - +a.uploadedAt,
-  );
+  const [{ url }] = blobList.blobs.sort((a, b) => +b.uploadedAt - +a.uploadedAt);
 
   try {
     const response = await fetch(url);
@@ -68,10 +66,7 @@ export default async function InactivityCheckerPage() {
         <tbody>
           {Object.entries(groupMemberInfo.data.memberlist)
             .sort(
-              (
-                [, { last_changed_xp_unix_time: a }],
-                [, { last_changed_xp_unix_time: b }],
-              ) => a - b,
+              ([, { last_changed_xp_unix_time: a }], [, { last_changed_xp_unix_time: b }]) => a - b,
             )
             .map(
               ([
@@ -82,17 +77,13 @@ export default async function InactivityCheckerPage() {
                   last_checked: lastChecked,
                 },
               ]) => {
-                const estimatedDaysInactive = differenceInDays(
-                  Date.now(),
-                  lastChangedXp,
-                );
+                const estimatedDaysInactive = differenceInDays(Date.now(), lastChangedXp);
 
                 if (!rsn) {
                   return null;
                 }
 
-                const { rank, joinedDate } =
-                  memberList[rsn.toLowerCase()] ?? {};
+                const { rank, joinedDate } = memberList[rsn.toLowerCase()] ?? {};
 
                 return (
                   <tr key={rsn}>
@@ -118,21 +109,15 @@ export default async function InactivityCheckerPage() {
                       )}
                     </td>
                     <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {joinedDate ?? 'Unknown'}
+                      {joinedDate ?? "Unknown"}
                     </td>
-                    <td className="border-b border-slate-700 p-4 text-slate-500">
-                      {lastChecked}
-                    </td>
+                    <td className="border-b border-slate-700 p-4 text-slate-500">{lastChecked}</td>
                     <td className="border-b border-slate-700 p-4 text-slate-500 ">
-                      {pluralise('day', estimatedDaysInactive, true)}
+                      {pluralise("day", estimatedDaysInactive, true)}
                     </td>
                     <td className="border-b border-slate-700 p-4">
-                      <span
-                        className={
-                          onHiscores ? 'text-green-400' : 'text-red-400'
-                        }
-                      >
-                        {onHiscores ? 'Yes' : 'No'}
+                      <span className={onHiscores ? "text-green-400" : "text-red-400"}>
+                        {onHiscores ? "Yes" : "No"}
                       </span>
                     </td>
                   </tr>

@@ -2,10 +2,10 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs';
+import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: 'https://77f5ba1f2b4e815c44752e252807996a@o4508227878191104.ingest.de.sentry.io/4508227880026192',
+  dsn: "https://77f5ba1f2b4e815c44752e252807996a@o4508227878191104.ingest.de.sentry.io/4508227880026192",
 
   // Adds request headers and IP for users
   sendDefaultPii: true,
@@ -35,7 +35,7 @@ Sentry.init({
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
   debug: false,
 
-  spotlight: process.env.NODE_ENV === 'development',
+  spotlight: process.env.NODE_ENV === "development",
 });
 
 // This export will instrument router navigations

@@ -1,6 +1,6 @@
-import { Button, Flex, Heading } from '@radix-ui/themes';
-import { signIn } from '@/auth';
-import { DiscordLogoIcon } from '@radix-ui/react-icons';
+import { Button, Flex, Heading } from "@radix-ui/themes";
+import { signIn } from "@/auth";
+import { DiscordLogoIcon } from "@radix-ui/react-icons";
 
 // TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
@@ -9,20 +9,14 @@ export const instant = false;
 // eslint-disable-next-line @typescript-eslint/require-await
 export default async function LoginPage() {
   const handleSubmit = async () => {
-    'use server';
+    "use server";
 
-    await signIn('discord', { redirectTo: '/rank-calculator' });
+    await signIn("discord", { redirectTo: "/rank-calculator" });
   };
 
   return (
     <form action={handleSubmit}>
-      <Flex
-        height="100vh"
-        align="center"
-        justify="center"
-        gap="6"
-        direction="column"
-      >
+      <Flex height="100vh" align="center" justify="center" gap="6" direction="column">
         <Heading size="5">Irons Tavern</Heading>
         <Button size="3" type="submit">
           <DiscordLogoIcon />

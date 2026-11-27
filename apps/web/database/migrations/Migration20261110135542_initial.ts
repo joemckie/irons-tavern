@@ -1,7 +1,7 @@
-import { Migration } from '@mikro-orm/migrations';
+import { Migration } from "@mikro-orm/migrations";
 
 export class Migration20261110135542_initial extends Migration {
-  override name = 'Migration20261110135542_initial';
+  override name = "Migration20261110135542_initial";
 
   override up(): void | Promise<void> {
     this.addSql(

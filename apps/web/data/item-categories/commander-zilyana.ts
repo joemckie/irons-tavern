@@ -1,28 +1,28 @@
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const commanderZilyana: ItemCategory = {
   items: [
     singleItem({
-      name: 'Saradomin sword',
-      collectionLogCategory: 'commander_zilyana',
-      targetDropSources: ['Commander Zilyana'],
+      name: "Saradomin sword",
+      collectionLogCategory: "commander_zilyana",
+      targetDropSources: ["Commander Zilyana"],
     }),
     singleItem({
       name: "Saradomin's light",
-      collectionLogCategory: 'commander_zilyana',
+      collectionLogCategory: "commander_zilyana",
     }),
     singleItem({
-      name: 'Armadyl crossbow',
-      collectionLogCategory: 'commander_zilyana',
+      name: "Armadyl crossbow",
+      collectionLogCategory: "commander_zilyana",
     }),
     singleItem({
-      name: 'Saradomin hilt',
-      collectionLogCategory: 'commander_zilyana',
+      name: "Saradomin hilt",
+      collectionLogCategory: "commander_zilyana",
     }),
     singleItem({
-      name: 'Pet Zilyana',
-      collectionLogCategory: 'commander_zilyana',
+      name: "Pet Zilyana",
+      collectionLogCategory: "commander_zilyana",
     }),
   ],
 };

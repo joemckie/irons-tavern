@@ -1,24 +1,19 @@
-import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import {
-  DiaryLocation,
-  DiaryTier,
-  maximumTotalLevel,
-  minimumTotalLevel,
-} from '@/app/schemas/osrs';
-import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
-import { tavernDiaryTierNameByMultiplier } from '@/config/tavern-diaries';
-import { DataCard } from '../data-card';
-import { Select } from '../select';
-import { EditableText } from '../editable-text';
-import { useSkillingPointCalculator } from '../../hooks/point-calculator/skilling/use-skilling-point-calculator';
-import { formatPercentage } from '../../utils/format-percentage';
-import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
-import { formatNumber } from '../../utils/format-number';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
-import { ValidationTooltip } from '../validation-tooltip';
-import { Checkbox } from '../checkbox';
-import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
+import { Flex, Progress, Separator, Text } from "@radix-ui/themes";
+import { DiaryLocation, DiaryTier, maximumTotalLevel, minimumTotalLevel } from "@/app/schemas/osrs";
+import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { tavernDiaryTierNameByMultiplier } from "@/config/tavern-diaries";
+import { DataCard } from "../data-card";
+import { Select } from "../select";
+import { EditableText } from "../editable-text";
+import { useSkillingPointCalculator } from "../../hooks/point-calculator/skilling/use-skilling-point-calculator";
+import { formatPercentage } from "../../utils/format-percentage";
+import { getPointsRemainingLabel } from "../../utils/get-points-remaining-label";
+import { formatNumber } from "../../utils/format-number";
+import { RankCalculatorSchema } from "../../[player]/submit-rank-calculator-validation";
+import { ValidationTooltip } from "../validation-tooltip";
+import { Checkbox } from "../checkbox";
+import { isAchievementDiaryCapeAchieved } from "../../utils/is-achievement-diary-cape-achieved";
 
 export function SkillingCard() {
   const {
@@ -39,8 +34,8 @@ export function SkillingCard() {
     setValue,
   } = useFormContext<RankCalculatorSchema>();
   const [hasMaxCape, hasAchievementDiaryCape] = getValues([
-    'hasMaxCape',
-    'hasAchievementDiaryCape',
+    "hasMaxCape",
+    "hasAchievementDiaryCape",
   ]);
 
   return (
@@ -54,7 +49,7 @@ export function SkillingCard() {
               height={22}
               width={24}
               unoptimized
-              style={{ width: '18px', height: 'auto' }}
+              style={{ width: "18px", height: "auto" }}
             />
             <Text role="heading" weight="medium" size="2">
               Skilling
@@ -98,11 +93,7 @@ export function SkillingCard() {
           />
         }
         right={
-          <Text
-            aria-label="Efficient hours played points"
-            color="gray"
-            size="2"
-          >
+          <Text aria-label="Efficient hours played points" color="gray" size="2">
             {formatNumber(ehpPoints)}
           </Text>
         }
@@ -146,10 +137,10 @@ export function SkillingCard() {
               placeholder="Choose a tier"
               options={DiaryTier.options}
               onValueChange={() => {
-                const achievementDiaries = getValues('achievementDiaries');
+                const achievementDiaries = getValues("achievementDiaries");
 
                 setValue(
-                  'hasAchievementDiaryCape',
+                  "hasAchievementDiaryCape",
                   isAchievementDiaryCapeAchieved(achievementDiaries),
                 );
               }}
@@ -164,27 +155,15 @@ export function SkillingCard() {
       ))}
       <DataCard.Row
         left={
-          <ValidationTooltip
-            error={errors.hasAchievementDiaryCape}
-            color="gray"
-            size="2"
-          >
+          <ValidationTooltip error={errors.hasAchievementDiaryCape} color="gray" size="2">
             <Text>Diary cape</Text>
           </ValidationTooltip>
         }
         center={
-          <Checkbox
-            name="hasAchievementDiaryCape"
-            checked={hasAchievementDiaryCape}
-            disabled
-          />
+          <Checkbox name="hasAchievementDiaryCape" checked={hasAchievementDiaryCape} disabled />
         }
         right={
-          <Text
-            aria-label="Achievement diary cape points"
-            color="gray"
-            size="2"
-          >
+          <Text aria-label="Achievement diary cape points" color="gray" size="2">
             {formatNumber(achievementDiaryCapePoints)}
           </Text>
         }
@@ -210,12 +189,12 @@ export function SkillingCard() {
         }
         center={
           <Text aria-label="Skilling diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? "None"}
           </Text>
         }
         right={
           <Text aria-label="Skilling point bonus multiplier" size="2">
-            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : "-"}
           </Text>
         }
       />

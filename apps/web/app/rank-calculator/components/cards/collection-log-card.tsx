@@ -1,14 +1,14 @@
-import { Flex, Progress, Separator, Text } from '@radix-ui/themes';
-import Image from 'next/image';
-import { useFormContext } from 'react-hook-form';
-import { tavernDiaryTierNameByMultiplier } from '@/config/tavern-diaries';
-import { DataCard } from '../data-card';
-import { EditableText } from '../editable-text';
-import { useCollectionLogPointCalculator } from '../../hooks/point-calculator/collection-log/use-collection-log-point-calculator';
-import { formatPercentage } from '../../utils/format-percentage';
-import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
-import { formatNumber } from '../../utils/format-number';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
+import { Flex, Progress, Separator, Text } from "@radix-ui/themes";
+import Image from "next/image";
+import { useFormContext } from "react-hook-form";
+import { tavernDiaryTierNameByMultiplier } from "@/config/tavern-diaries";
+import { DataCard } from "../data-card";
+import { EditableText } from "../editable-text";
+import { useCollectionLogPointCalculator } from "../../hooks/point-calculator/collection-log/use-collection-log-point-calculator";
+import { formatPercentage } from "../../utils/format-percentage";
+import { getPointsRemainingLabel } from "../../utils/get-points-remaining-label";
+import { formatNumber } from "../../utils/format-number";
+import { RankCalculatorSchema } from "../../[player]/submit-rank-calculator-validation";
 
 export function CollectionLogCard() {
   const {
@@ -23,7 +23,7 @@ export function CollectionLogCard() {
     getValues,
     formState: { defaultValues },
   } = useFormContext<RankCalculatorSchema>();
-  const collectionLogTotal = getValues('collectionLogTotal');
+  const collectionLogTotal = getValues("collectionLogTotal");
 
   return (
     <DataCard.Root>
@@ -36,7 +36,7 @@ export function CollectionLogCard() {
               height={27}
               width={29}
               unoptimized
-              style={{ width: '18px', height: 'auto' }}
+              style={{ width: "18px", height: "auto" }}
             />
             <Text role="heading" weight="medium" size="2">
               Collection Log
@@ -44,11 +44,7 @@ export function CollectionLogCard() {
           </Flex>
         }
         right={
-          <Text
-            aria-label="Total collection log points"
-            weight="medium"
-            size="2"
-          >
+          <Text aria-label="Total collection log points" weight="medium" size="2">
             {formatNumber(pointsAwarded)}
           </Text>
         }
@@ -98,12 +94,12 @@ export function CollectionLogCard() {
         }
         center={
           <Text aria-label="Collection log diary tier" size="2">
-            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? 'None'}
+            {tavernDiaryTierNameByMultiplier[bonusMultiplier] ?? "None"}
           </Text>
         }
         right={
           <Text aria-label="Collection log point bonus multiplier" size="2">
-            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : '-'}
+            {bonusMultiplier ? `+${formatNumber(bonusPointsAwarded)}` : "-"}
           </Text>
         }
       />
@@ -114,19 +110,12 @@ export function CollectionLogCard() {
           </Text>
         }
         center={
-          <Text
-            aria-label="Collection log point completion percentage"
-            size="2"
-          >
+          <Text aria-label="Collection log point completion percentage" size="2">
             {formatPercentage(pointsAwardedPercentage)}
           </Text>
         }
         right={
-          <Text
-            aria-label="Collection log points remaining"
-            color="gray"
-            size="2"
-          >
+          <Text aria-label="Collection log points remaining" color="gray" size="2">
             {getPointsRemainingLabel(pointsRemaining)}
           </Text>
         }

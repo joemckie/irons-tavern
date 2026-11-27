@@ -1,26 +1,23 @@
-'use client';
+"use client";
 
-import { FormProvider } from 'react-hook-form';
-import { useHookFormAction } from '@next-safe-action/adapter-react-hook-form/hooks';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Rank } from '@/config/enums';
-import { toast } from 'react-toastify';
-import { useEffect } from 'react';
-import { RankCalculator } from './rank-calculator';
-import {
-  RankCalculatorSchema,
-  RankCalculatorValidator,
-} from './submit-rank-calculator-validation';
-import { RankCalculatorNavigationActions } from '../components/rank-calculator-navigation-actions';
-import { Navigation } from '../components/navigation';
-import { saveDraftRankSubmissionAction } from './actions/save-draft-rank-submission-action';
-import { handleToastUpdates } from '../utils/handle-toast-updates';
-import { CurrentPlayerProvider } from '../contexts/current-player-context';
-import { ItemListProvider } from '../contexts/item-list-context';
-import type { ItemCategory } from '@/app/schemas/items';
+import { FormProvider } from "react-hook-form";
+import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Rank } from "@/config/enums";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { RankCalculator } from "./rank-calculator";
+import { RankCalculatorSchema, RankCalculatorValidator } from "./submit-rank-calculator-validation";
+import { RankCalculatorNavigationActions } from "../components/rank-calculator-navigation-actions";
+import { Navigation } from "../components/navigation";
+import { saveDraftRankSubmissionAction } from "./actions/save-draft-rank-submission-action";
+import { handleToastUpdates } from "../utils/handle-toast-updates";
+import { CurrentPlayerProvider } from "../contexts/current-player-context";
+import { ItemListProvider } from "../contexts/item-list-context";
+import type { ItemCategory } from "@/app/schemas/items";
 
 interface FormWrapperProps {
-  formData: Omit<RankCalculatorSchema, 'rank' | 'points'>;
+  formData: Omit<RankCalculatorSchema, "rank" | "points">;
   currentRank?: Rank;
   warnings: {
     templeCollectionLogNotFound: boolean;
@@ -30,30 +27,17 @@ interface FormWrapperProps {
   itemList: [string, ItemCategory][];
 }
 
-export function FormWrapper({
-  formData,
-  currentRank,
-  warnings,
-  itemList,
-}: FormWrapperProps) {
+export function FormWrapper({ formData, currentRank, warnings, itemList }: FormWrapperProps) {
   const {
     form,
-    action: {
-      executeAsync: saveDraftRankSubmission,
-      isExecuting,
-      isTransitioning,
+    action: { executeAsync: saveDraftRankSubmission, isExecuting, isTransitioning },
+  } = useHookFormAction(saveDraftRankSubmissionAction, zodResolver(RankCalculatorValidator), {
+    formProps: {
+      defaultValues: formData,
+      criteriaMode: "all",
+      mode: "onBlur",
     },
-  } = useHookFormAction(
-    saveDraftRankSubmissionAction,
-    zodResolver(RankCalculatorValidator),
-    {
-      formProps: {
-        defaultValues: formData,
-        criteriaMode: 'all',
-        mode: 'onBlur',
-      },
-    },
-  );
+  });
 
   const { formState, reset, getValues } = form;
 
@@ -65,10 +49,10 @@ export function FormWrapper({
 
   const submitRankCalculator = form.handleSubmit(async (data) =>
     handleToastUpdates(saveDraftRankSubmission(data), {
-      pending: 'Saving draft...',
+      pending: "Saving draft...",
       success: {
         render() {
-          return 'Draft saved!';
+          return "Draft saved!";
         },
       },
     }),
@@ -76,22 +60,21 @@ export function FormWrapper({
 
   useEffect(() => {
     if (warnings.templeCollectionLogOutdated) {
-      toast.warning(
-        'Please sync your collection log via the TempleOSRS RuneLite plugin!',
-        { autoClose: false },
-      );
+      toast.warning("Please sync your collection log via the TempleOSRS RuneLite plugin!", {
+        autoClose: false,
+      });
     }
 
     if (warnings.templeCollectionLogNotFound) {
       toast.warning(
-        'Please install the TempleOSRS RuneLite plugin to enable automatic notable item tracking!',
+        "Please install the TempleOSRS RuneLite plugin to enable automatic notable item tracking!",
         { autoClose: false },
       );
     }
 
     if (warnings.wikiSyncNotFound) {
       toast.warning(
-        'Please install the WikiSync RuneLite plugin to enable automatic tracking of CAs and diaries!',
+        "Please install the WikiSync RuneLite plugin to enable automatic tracking of CAs and diaries!",
         { autoClose: false },
       );
     }
@@ -103,10 +86,7 @@ export function FormWrapper({
 
   return (
     <ItemListProvider itemList={itemList}>
-      <CurrentPlayerProvider
-        rank={currentRank}
-        playerName={formData.playerName}
-      >
+      <CurrentPlayerProvider rank={currentRank} playerName={formData.playerName}>
         <FormProvider {...form}>
           <RankCalculator
             submitRankCalculatorAction={submitRankCalculator}

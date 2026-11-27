@@ -1,10 +1,5 @@
-import {
-  MikroORM,
-  RequestContext,
-  type EntityManager,
-  type Options,
-} from '@mikro-orm/postgresql';
-import config from '../mikro-orm.config';
+import { MikroORM, RequestContext, type EntityManager, type Options } from "@mikro-orm/postgresql";
+import config from "../mikro-orm.config";
 
 export interface Services {
   orm: MikroORM;
@@ -36,9 +31,7 @@ export async function initORM(options?: Partial<Options>): Promise<Services> {
   return (cache = { orm, em: orm.em });
 }
 
-export async function withRequestContext<T>(
-  callback: () => Promise<T>,
-): Promise<T> {
+export async function withRequestContext<T>(callback: () => Promise<T>): Promise<T> {
   const { orm } = await initORM();
 
   return RequestContext.create(orm.em, callback);

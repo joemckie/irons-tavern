@@ -1,11 +1,11 @@
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const giantMole: ItemCategory = {
   items: [
     singleItem({
-      name: 'Baby Mole',
-      collectionLogCategory: 'giant_mole',
+      name: "Baby Mole",
+      collectionLogCategory: "giant_mole",
     }),
   ],
 };

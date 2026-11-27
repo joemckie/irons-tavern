@@ -1,18 +1,18 @@
-import { clientConstants } from '@/config/constants.client';
-import { combatAchievementTierPoints } from '@/app/schemas/osrs';
-import { CombatAchievementListResponse } from '@/app/schemas/wiki';
-import * as Sentry from '@sentry/nextjs';
-import { cacheLife } from 'next/cache';
+import { clientConstants } from "@/config/constants.client";
+import { combatAchievementTierPoints } from "@/app/schemas/osrs";
+import { CombatAchievementListResponse } from "@/app/schemas/wiki";
+import * as Sentry from "@sentry/nextjs";
+import { cacheLife } from "next/cache";
 
 const fetchCombatAchievements = async (
   offset = 0,
-): Promise<CombatAchievementListResponse['bucket']> => {
+): Promise<CombatAchievementListResponse["bucket"]> => {
   const { queryLimit } = clientConstants.wiki;
 
   const query = `bucket("combat_achievement").select("id", "name", "tier").limit(${queryLimit}).offset(${offset}).run()`;
   const params = new URLSearchParams({
-    action: 'bucket',
-    format: 'json',
+    action: "bucket",
+    format: "json",
     query,
   });
 
@@ -20,7 +20,7 @@ const fetchCombatAchievements = async (
     `${clientConstants.wiki.baseUrl}/api.php?${params}`,
     {
       headers: {
-        'User-Agent': clientConstants.wiki.userAgent,
+        "User-Agent": clientConstants.wiki.userAgent,
       },
     },
   );
@@ -38,9 +38,9 @@ const fetchCombatAchievements = async (
 };
 
 export const getCaIdMap = async () => {
-  'use cache: remote';
+  "use cache: remote";
 
-  cacheLife('weeks');
+  cacheLife("weeks");
 
   try {
     const allCombatAchievements = await fetchCombatAchievements();

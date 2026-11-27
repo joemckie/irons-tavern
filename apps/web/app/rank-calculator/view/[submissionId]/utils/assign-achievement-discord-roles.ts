@@ -1,7 +1,7 @@
-import { serverConstants } from '@/config/constants.server';
-import { achievementDiscordRoles } from '@/config/discord-roles';
-import { discordBotClient } from '@/discord';
-import { APIGuildMember, Routes } from 'discord-api-types/v10';
+import { serverConstants } from "@/config/constants.server";
+import { achievementDiscordRoles } from "@/config/discord-roles";
+import { discordBotClient } from "@/discord";
+import { APIGuildMember, Routes } from "discord-api-types/v10";
 
 export async function assignAchievementDiscordRoles(
   submitterId: string,
@@ -14,18 +14,13 @@ export async function assignAchievementDiscordRoles(
 
   return Promise.all(
     Object.entries(achievementRoles).map(async ([roleName, shouldApply]) => {
-      const role =
-        achievementDiscordRoles[
-          roleName as keyof typeof achievementDiscordRoles
-        ];
+      const role = achievementDiscordRoles[roleName as keyof typeof achievementDiscordRoles];
 
       if (!shouldApply || roles.includes(role)) {
         return false;
       }
 
-      await discordBotClient.put(
-        Routes.guildMemberRole(guildId, submitterId, role),
-      );
+      await discordBotClient.put(Routes.guildMemberRole(guildId, submitterId, role));
 
       return roleName;
     }),

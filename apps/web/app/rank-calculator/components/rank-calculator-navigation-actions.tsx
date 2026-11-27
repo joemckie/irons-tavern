@@ -1,23 +1,17 @@
-'use client';
+"use client";
 
-import {
-  Button,
-  ChevronDownIcon,
-  DropdownMenu,
-  Flex,
-  IconButton,
-} from '@radix-ui/themes';
-import { useState, useTransition } from 'react';
-import { useFormContext, useFormState } from 'react-hook-form';
-import { useAction } from 'next-safe-action/hooks';
-import Link from 'next/link';
-import { toast } from 'react-toastify';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { publishRankSubmissionAction } from '../[player]/actions/publish-rank-submission-action';
-import { useRankCalculator } from '../hooks/point-calculator/use-rank-calculator';
-import { DeleteSubmissionDataDialog } from './delete-submission-data-dialog';
-import { handleToastUpdates } from '../utils/handle-toast-updates';
-import { useCurrentPlayer } from '../contexts/current-player-context';
+import { Button, ChevronDownIcon, DropdownMenu, Flex, IconButton } from "@radix-ui/themes";
+import { useState, useTransition } from "react";
+import { useFormContext, useFormState } from "react-hook-form";
+import { useAction } from "next-safe-action/hooks";
+import Link from "next/link";
+import { toast } from "react-toastify";
+import { RankCalculatorSchema } from "../[player]/submit-rank-calculator-validation";
+import { publishRankSubmissionAction } from "../[player]/actions/publish-rank-submission-action";
+import { useRankCalculator } from "../hooks/point-calculator/use-rank-calculator";
+import { DeleteSubmissionDataDialog } from "./delete-submission-data-dialog";
+import { handleToastUpdates } from "../utils/handle-toast-updates";
+import { useCurrentPlayer } from "../contexts/current-player-context";
 
 interface RankCalculatorNavigationActionsProps {
   isActionActive: boolean;
@@ -27,16 +21,12 @@ export function RankCalculatorNavigationActions({
   isActionActive,
 }: RankCalculatorNavigationActionsProps) {
   const { reset } = useFormContext<RankCalculatorSchema>();
-  const { isValid, isDirty, isSubmitting } =
-    useFormState<RankCalculatorSchema>();
+  const { isValid, isDirty, isSubmitting } = useFormState<RankCalculatorSchema>();
   const [, startResetTransition] = useTransition();
   const [, startDeleteDialogTransition] = useTransition();
   const { pointsAwarded: totalPoints, rank } = useRankCalculator();
   const { playerName, rank: currentRank } = useCurrentPlayer();
-  const [
-    isDeleteSubmissionDataDialogOpen,
-    setIsDeleteSubmissionDataDialogOpen,
-  ] = useState(false);
+  const [isDeleteSubmissionDataDialogOpen, setIsDeleteSubmissionDataDialogOpen] = useState(false);
   const { executeAsync: publishRankSubmission } = useAction(
     publishRankSubmissionAction.bind(null, currentRank, playerName),
   );
@@ -78,7 +68,7 @@ export function RankCalculatorNavigationActions({
             <DropdownMenu.Item
               onClick={() => {
                 if (isDirty) {
-                  toast.error('Please save your data first!');
+                  toast.error("Please save your data first!");
 
                   return;
                 }
@@ -88,7 +78,7 @@ export function RankCalculatorNavigationActions({
                     totalPoints,
                     rank,
                   }),
-                  { success: 'Rank application submitted!' },
+                  { success: "Rank application submitted!" },
                 );
               }}
             >
@@ -105,9 +95,7 @@ export function RankCalculatorNavigationActions({
               Reset form defaults
             </DropdownMenu.Item>
             <DropdownMenu.Item asChild>
-              <Link
-                href={`/rank-calculator/players/edit/${playerName.toLowerCase()}`}
-              >
+              <Link href={`/rank-calculator/players/edit/${playerName.toLowerCase()}`}>
                 Edit player
               </Link>
             </DropdownMenu.Item>

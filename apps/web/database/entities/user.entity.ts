@@ -1,13 +1,13 @@
-import { OSRSAccount } from './osrs-account';
-import { defineEntity, p } from '@mikro-orm/core';
+import { OSRSAccount } from "./osrs-account";
+import { defineEntity, p } from "@mikro-orm/core";
 
 const UserSchema = defineEntity({
-  name: 'User',
-  tableName: 'user',
+  name: "User",
+  tableName: "user",
   properties: {
     discordId: p.string().primary(),
     name: p.string(),
-    osrsAccounts: () => p.oneToMany(OSRSAccount).mappedBy('user'),
+    osrsAccounts: () => p.oneToMany(OSRSAccount).mappedBy("user"),
   },
 });
 

@@ -22,10 +22,7 @@
     "target": "ES2017",
     "noEmit": true
   },
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.spec.json" }
-  ],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.spec.json" }],
   "include": [],
   "exclude": []
 }

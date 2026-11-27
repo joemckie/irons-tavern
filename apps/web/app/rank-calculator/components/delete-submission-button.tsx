@@ -1,14 +1,7 @@
-'use client';
+"use client";
 
-import { TrashIcon } from '@radix-ui/react-icons';
-import {
-  AlertDialog,
-  Button,
-  Flex,
-  IconButton,
-  Text,
-  Tooltip,
-} from '@radix-ui/themes';
+import { TrashIcon } from "@radix-ui/react-icons";
+import { AlertDialog, Button, Flex, IconButton, Text, Tooltip } from "@radix-ui/themes";
 
 interface DeleteSubmissionButtonProps {
   playerName: string;
@@ -31,10 +24,7 @@ export function DeleteSubmissionButton({
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>Remove account</AlertDialog.Title>
         <AlertDialog.Description size="2">
-          <Text>
-            Are you sure? {playerName} and any associated submissions will be
-            deleted.
-          </Text>
+          <Text>Are you sure? {playerName} and any associated submissions will be deleted.</Text>
         </AlertDialog.Description>
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>

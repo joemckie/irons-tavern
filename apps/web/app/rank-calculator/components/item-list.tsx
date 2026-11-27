@@ -1,10 +1,10 @@
-import { Box, Flex, ScrollArea } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
-import { usePageHeight } from '../hooks/use-page-height';
-import { Category } from './category';
-import { RankCalculatorSchema } from '../[player]/submit-rank-calculator-validation';
-import { normaliseEntityName } from '../utils/normalise-entity-name';
-import { useItemList } from '../contexts/item-list-context';
+import { Box, Flex, ScrollArea } from "@radix-ui/themes";
+import { useFormContext } from "react-hook-form";
+import { usePageHeight } from "../hooks/use-page-height";
+import { Category } from "./category";
+import { RankCalculatorSchema } from "../[player]/submit-rank-calculator-validation";
+import { normaliseEntityName } from "../utils/normalise-entity-name";
+import { useItemList } from "../contexts/item-list-context";
 
 export function ItemList() {
   const categories = useItemList();
@@ -16,12 +16,11 @@ export function ItemList() {
       <ScrollArea>
         {categories.map(([title, category]) => {
           const fieldErrors = category.items.map(
-            ({ name }) =>
-              getFieldState(`acquiredItems.${normaliseEntityName(name)}`).error,
+            ({ name }) => getFieldState(`acquiredItems.${normaliseEntityName(name)}`).error,
           );
 
           return (
-            <Box key={title} px={{ initial: '3', md: '0' }}>
+            <Box key={title} px={{ initial: "3", md: "0" }}>
               <Category
                 items={category.items}
                 title={title}

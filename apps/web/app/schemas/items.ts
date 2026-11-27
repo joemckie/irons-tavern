@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { CollectionLogItemName, MiniQuest, Quest, Skill } from './osrs';
-import { TempleOSRSCollectionLogCategory } from './temple-api';
+import { z } from "zod";
+import { CollectionLogItemName, MiniQuest, Quest, Skill } from "./osrs";
+import { TempleOSRSCollectionLogCategory } from "./temple-api";
 
 export const BaseItem = z.object({
   image: z.string(),
@@ -42,12 +42,7 @@ export const QuestItem = BaseItem.extend({
 
 export type QuestItem = z.infer<typeof QuestItem>;
 
-export const Item = z.union([
-  BaseItem,
-  CollectionLogItem,
-  CombatAchievementItem,
-  QuestItem,
-]);
+export const Item = z.union([BaseItem, CollectionLogItem, CombatAchievementItem, QuestItem]);
 
 export type Item = z.infer<typeof Item>;
 
@@ -62,9 +57,7 @@ export function isCollectionLogItem(item: unknown): item is CollectionLogItem {
   return CollectionLogItem.safeParse(item).success;
 }
 
-export function isCombatAchievementItem(
-  item: unknown,
-): item is CombatAchievementItem {
+export function isCombatAchievementItem(item: unknown): item is CombatAchievementItem {
   return CombatAchievementItem.safeParse(item).success;
 }
 

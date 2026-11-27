@@ -1,7 +1,7 @@
-import { Rank } from '@/config/enums';
-import { calculateRankThresholds } from '@/app/rank-calculator/utils/calculate-rank-thresholds';
-import { RankStructure } from '@/app/schemas/rank-calculator';
-import type { ItemCategory } from '@/app/schemas/items';
+import { Rank } from "@/config/enums";
+import { calculateRankThresholds } from "@/app/rank-calculator/utils/calculate-rank-thresholds";
+import { RankStructure } from "@/app/schemas/rank-calculator";
+import type { ItemCategory } from "@/app/schemas/items";
 
 export interface RankData {
   rank: Rank;
@@ -14,14 +14,8 @@ export function calculateRank(
   totalCollectionLogSlots: number,
   notableItems: [string, ItemCategory][],
 ): RankData {
-  const rankThresholds = calculateRankThresholds(
-    totalCollectionLogSlots,
-    notableItems,
-  );
-  const rankData = Object.entries(rankThresholds[rankStructure]) as [
-    Rank,
-    number,
-  ][];
+  const rankThresholds = calculateRankThresholds(totalCollectionLogSlots, notableItems);
+  const rankData = Object.entries(rankThresholds[rankStructure]) as [Rank, number][];
 
   const [[initialRank]] = rankData;
 

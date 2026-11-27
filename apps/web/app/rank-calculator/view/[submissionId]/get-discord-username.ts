@@ -1,6 +1,6 @@
-import { serverConstants } from '@/config/constants.server';
-import { discordBotClient } from '@/discord';
-import { APIGuildMember, Routes } from 'discord-api-types/v10';
+import { serverConstants } from "@/config/constants.server";
+import { discordBotClient } from "@/discord";
+import { APIGuildMember, Routes } from "discord-api-types/v10";
 
 export async function getDiscordUsername(userId: string | null | undefined) {
   if (!userId) {
@@ -8,7 +8,7 @@ export async function getDiscordUsername(userId: string | null | undefined) {
   }
 
   if (isNaN(Number(userId))) {
-    return 'System';
+    return "System";
   }
 
   const data = (await discordBotClient.get(

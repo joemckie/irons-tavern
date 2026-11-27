@@ -1,13 +1,13 @@
-import { Label } from '@/app/rank-calculator/components/label';
-import { Box, ScrollArea, Text } from '@radix-ui/themes';
-import * as Ariakit from '@ariakit/react';
-import { startTransition, useMemo } from 'react';
-import { useFormContext, useFormState, useWatch } from 'react-hook-form';
-import { Input } from '@/app/rank-calculator/components/input';
-import { PersonIcon } from '@radix-ui/react-icons';
-import { search } from 'fast-fuzzy';
-import { ErrorMessage } from '@hookform/error-message';
-import { EditPlayerSchema } from '../actions/edit-player-schema';
+import { Label } from "@/app/rank-calculator/components/label";
+import { Box, ScrollArea, Text } from "@radix-ui/themes";
+import * as Ariakit from "@ariakit/react";
+import { startTransition, useMemo } from "react";
+import { useFormContext, useFormState, useWatch } from "react-hook-form";
+import { Input } from "@/app/rank-calculator/components/input";
+import { PersonIcon } from "@radix-ui/react-icons";
+import { search } from "fast-fuzzy";
+import { ErrorMessage } from "@hookform/error-message";
+import { EditPlayerSchema } from "../actions/edit-player-schema";
 
 interface PlayerNameInputProps {
   members: string[];
@@ -18,7 +18,7 @@ export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
   const { setValue, register, formState } = useFormContext<EditPlayerSchema>();
   const { errors } = useFormState();
   const playerNameValue = useWatch<{ playerName: string }>({
-    name: 'playerName',
+    name: "playerName",
   });
 
   const matches = useMemo(
@@ -32,7 +32,7 @@ export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
         defaultValue={formState.defaultValues?.playerName}
         setValue={(value) => {
           startTransition(() => {
-            setValue('playerName', value, {
+            setValue("playerName", value, {
               shouldDirty: true,
             });
             onChange(value);
@@ -54,20 +54,16 @@ export function PlayerNameInput({ members, onChange }: PlayerNameInputProps) {
                 required
                 id="playerName"
                 leftIcon={<PersonIcon />}
-                {...register('playerName')}
+                {...register("playerName")}
                 {...props}
               />
             )}
           />
           <Ariakit.ComboboxPopover
-            getAnchorRect={(anchor) =>
-              anchor?.parentElement?.getBoundingClientRect() ?? null
-            }
+            getAnchorRect={(anchor) => anchor?.parentElement?.getBoundingClientRect() ?? null}
             portal
             portalElement={
-              typeof document !== 'undefined'
-                ? document.getElementById('theme-root')
-                : null
+              typeof document !== "undefined" ? document.getElementById("theme-root") : null
             }
             gutter={8}
             sameWidth

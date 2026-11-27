@@ -1,25 +1,21 @@
-import { sub } from 'date-fns';
-import { CommonPointCalculatorData } from '@/app/schemas/rank-calculator';
-import { RankCalculatorSchema } from '@/app/rank-calculator/[player]/submit-rank-calculator-validation';
+import { sub } from "date-fns";
+import { CommonPointCalculatorData } from "@/app/schemas/rank-calculator";
+import { RankCalculatorSchema } from "@/app/rank-calculator/[player]/submit-rank-calculator-validation";
 
 type ScalingFixtureMap<T extends CommonPointCalculatorData> = Record<
-  | 'fullScaling'
-  | 'fourMonthScaling'
-  | 'twoMonthScaling'
-  | 'threeWeekScaling'
-  | 'noScaling',
+  "fullScaling" | "fourMonthScaling" | "twoMonthScaling" | "threeWeekScaling" | "noScaling",
   T
 >;
 
 export const generateScalingTests = <T extends CommonPointCalculatorData>(
-  formData: Omit<RankCalculatorSchema, 'rank' | 'points'>,
+  formData: Omit<RankCalculatorSchema, "rank" | "points">,
   scalingFixtures: ScalingFixtureMap<T>,
   testRunner: (
-    formFixture: Omit<RankCalculatorSchema, 'rank' | 'points'>,
+    formFixture: Omit<RankCalculatorSchema, "rank" | "points">,
     resultFixture: T,
   ) => void,
 ) => {
-  describe('Full scaling (100%)', () => {
+  describe("Full scaling (100%)", () => {
     testRunner(
       {
         ...formData,
@@ -31,7 +27,7 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
     );
   });
 
-  describe('Four month scaling (70%)', () => {
+  describe("Four month scaling (70%)", () => {
     testRunner(
       {
         ...formData,
@@ -43,7 +39,7 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
     );
   });
 
-  describe('Two month scaling (40%)', () => {
+  describe("Two month scaling (40%)", () => {
     testRunner(
       {
         ...formData,
@@ -55,7 +51,7 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
     );
   });
 
-  describe('Three week scaling (17.50%)', () => {
+  describe("Three week scaling (17.50%)", () => {
     testRunner(
       {
         ...formData,
@@ -67,7 +63,7 @@ export const generateScalingTests = <T extends CommonPointCalculatorData>(
     );
   });
 
-  describe('No scaling (10%)', () => {
+  describe("No scaling (10%)", () => {
     testRunner(
       {
         ...formData,

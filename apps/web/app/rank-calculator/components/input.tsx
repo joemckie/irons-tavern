@@ -1,6 +1,6 @@
-import { TextField } from '@radix-ui/themes';
-import { forwardRef, ReactElement } from 'react';
-import { disableEnterSubmission } from '../utils/disable-enter-submission';
+import { TextField } from "@radix-ui/themes";
+import { forwardRef, ReactElement } from "react";
+import { disableEnterSubmission } from "../utils/disable-enter-submission";
 
 interface InputProps extends TextField.RootProps {
   hasError: boolean;
@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }}
       ref={forwardedRef}
       role="textbox"
-      color={hasError ? 'red' : undefined}
+      color={hasError ? "red" : undefined}
     >
       {leftIcon && <TextField.Slot side="left">{leftIcon}</TextField.Slot>}
       {rightIcon && <TextField.Slot side="right">{rightIcon}</TextField.Slot>}
@@ -26,4 +26,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ),
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";

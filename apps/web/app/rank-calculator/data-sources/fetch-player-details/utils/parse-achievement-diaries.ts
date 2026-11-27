@@ -1,17 +1,15 @@
-import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
-import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
-import { DiaryTierData, WikiSyncResponse } from '@/app/schemas/wiki';
+import { DiaryLocation, DiaryTier } from "@/app/schemas/osrs";
+import { AchievementDiaryMap } from "@/app/schemas/rank-calculator";
+import { DiaryTierData, WikiSyncResponse } from "@/app/schemas/wiki";
 
-export function parseAchievementDiaries(
-  diaries: WikiSyncResponse['achievement_diaries'],
-) {
+export function parseAchievementDiaries(diaries: WikiSyncResponse["achievement_diaries"]) {
   return Object.entries(diaries).reduce<AchievementDiaryMap>(
     (acc, [diaryLocation, diaryTiers]) => {
       const orderedTiers = [
-        ['Easy', diaryTiers.Easy],
-        ['Medium', diaryTiers.Medium],
-        ['Hard', diaryTiers.Hard],
-        ['Elite', diaryTiers.Elite],
+        ["Easy", diaryTiers.Easy],
+        ["Medium", diaryTiers.Medium],
+        ["Hard", diaryTiers.Hard],
+        ["Elite", diaryTiers.Elite],
       ] satisfies [DiaryTier, DiaryTierData][];
 
       orderedTiers.forEach(([tierName, tierData]) => {
@@ -25,18 +23,18 @@ export function parseAchievementDiaries(
       return acc;
     },
     {
-      Ardougne: 'None',
-      Desert: 'None',
-      Falador: 'None',
-      Fremennik: 'None',
-      Kandarin: 'None',
-      Karamja: 'None',
-      'Kourend & Kebos': 'None',
-      'Lumbridge & Draynor': 'None',
-      Morytania: 'None',
-      Varrock: 'None',
-      'Western Provinces': 'None',
-      Wilderness: 'None',
+      Ardougne: "None",
+      Desert: "None",
+      Falador: "None",
+      Fremennik: "None",
+      Kandarin: "None",
+      Karamja: "None",
+      "Kourend & Kebos": "None",
+      "Lumbridge & Draynor": "None",
+      Morytania: "None",
+      Varrock: "None",
+      "Western Provinces": "None",
+      Wilderness: "None",
     } satisfies AchievementDiaryMap,
   );
 }

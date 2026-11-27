@@ -1,4 +1,4 @@
-import { pointsConfig } from '../../config/points';
+import { pointsConfig } from "../../config/points";
 
 export function calculateMaximumSkillingPoints(scaling: number) {
   const {

@@ -1,4 +1,4 @@
-import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
+import { DiaryLocation, DiaryTier } from "@/app/schemas/osrs";
 
 export const achievementDiaryTierPoints = {
   get None() {
@@ -23,8 +23,7 @@ export const pointsConfig = {
   maxCapePoints: 7000,
   achievementDiaryCapePoints: 1000,
   maximumTotalLevelPoints: 50000,
-  maximumAchievementDiaryPoints:
-    DiaryLocation.options.length * achievementDiaryTierPoints.Elite,
+  maximumAchievementDiaryPoints: DiaryLocation.options.length * achievementDiaryTierPoints.Elite,
   maximumCombatAchievementPoints: 50000,
   bloodTorvaPoints: 6500,
   dizanasQuiverPoints: 6500,

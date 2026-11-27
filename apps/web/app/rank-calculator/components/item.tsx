@@ -1,12 +1,12 @@
-import { memo } from 'react';
-import { FieldError } from 'react-hook-form';
-import { Flex, Table, Text } from '@radix-ui/themes';
-import { isCollectionLogItem, Item } from '@/app/schemas/items';
-import { Checkbox } from './checkbox';
-import { normaliseEntityName } from '../utils/normalise-entity-name';
-import { EntityImage } from './entity-image';
-import { useCalculatorScaling } from '../hooks/point-calculator/use-calculator-scaling';
-import { ValidationTooltip } from './validation-tooltip';
+import { memo } from "react";
+import { FieldError } from "react-hook-form";
+import { Flex, Table, Text } from "@radix-ui/themes";
+import { isCollectionLogItem, Item } from "@/app/schemas/items";
+import { Checkbox } from "./checkbox";
+import { normaliseEntityName } from "../utils/normalise-entity-name";
+import { EntityImage } from "./entity-image";
+import { useCalculatorScaling } from "../hooks/point-calculator/use-calculator-scaling";
+import { ValidationTooltip } from "./validation-tooltip";
 
 interface ItemProps {
   acquired: boolean;
@@ -16,14 +16,14 @@ interface ItemProps {
 
 export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   const scaling = useCalculatorScaling();
-  const scaledItemPoints = Intl.NumberFormat('en-gb').format(
+  const scaledItemPoints = Intl.NumberFormat("en-gb").format(
     Math.max(1, Math.floor(item.points * scaling)),
   );
   const pointsError =
     isCollectionLogItem(item) && item.hasPointsError
       ? ({
-          type: 'value',
-          message: 'Could not determine item points',
+          type: "value",
+          message: "Could not determine item points",
         } satisfies FieldError)
       : undefined;
 
@@ -31,11 +31,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
     <Table.Row key={item.name} align="center">
       <Table.Cell>
         <Flex align="center" gap="2">
-          <EntityImage
-            alt={`${item.name} icon`}
-            src={item.image}
-            fallback="?"
-          />
+          <EntityImage alt={`${item.name} icon`} src={item.image} fallback="?" />
           <ValidationTooltip error={pointsError ?? error}>
             <Text>{item.name}</Text>
           </ValidationTooltip>
@@ -48,11 +44,7 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
           name={`acquiredItems.${normaliseEntityName(item.name)}` as const}
         />
       </Table.Cell>
-      <Table.Cell
-        aria-label={`${item.name} points`}
-        align="right"
-        width="100px"
-      >
+      <Table.Cell aria-label={`${item.name} points`} align="right" width="100px">
         {pointsError ? (
           <Text color="red" weight="medium">
             -
@@ -65,4 +57,4 @@ export const MemoisedItem = memo(({ item, acquired, error }: ItemProps) => {
   );
 });
 
-MemoisedItem.displayName = 'MemoisedItem';
+MemoisedItem.displayName = "MemoisedItem";

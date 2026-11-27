@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import clipboardy from 'clipboardy';
+import { z } from "zod";
+import clipboardy from "clipboardy";
 
 const response = await fetch(
-  'https://oldschool.runescape.wiki/?title=Module:Collection_log/data.json&action=raw&ctype=application%2Fjson',
+  "https://oldschool.runescape.wiki/?title=Module:Collection_log/data.json&action=raw&ctype=application%2Fjson",
 );
 
 const data = z
@@ -15,6 +15,4 @@ const data = z
 
 const collectionLogItemNames = new Set<string>(data.map((item) => item.name));
 
-await clipboardy.write(
-  [...collectionLogItemNames].map((name) => `'${name}'`).join(',\n'),
-);
+await clipboardy.write([...collectionLogItemNames].map((name) => `'${name}'`).join(",\n"));

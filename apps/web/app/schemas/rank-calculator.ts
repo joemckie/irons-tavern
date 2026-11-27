@@ -1,18 +1,13 @@
-import { z } from 'zod';
-import {
-  CombatAchievementTier,
-  DiaryLocation,
-  DiaryTier,
-  TzHaarCape,
-} from './osrs';
+import { z } from "zod";
+import { CombatAchievementTier, DiaryLocation, DiaryTier, TzHaarCape } from "./osrs";
 
 export const RankStructure = z.enum([
-  'Standard',
-  'Legacy',
-  'Admin',
-  'Moderator',
-  'Deputy Owner',
-  'Owner',
+  "Standard",
+  "Legacy",
+  "Admin",
+  "Moderator",
+  "Deputy Owner",
+  "Owner",
 ]);
 
 export type RankStructure = z.infer<typeof RankStructure>;
@@ -32,7 +27,7 @@ export interface BonusPointCalculatorData {
   bonusMultiplier: number;
 }
 
-export const RankSubmissionStatus = z.enum(['Pending', 'Approved', 'Rejected']);
+export const RankSubmissionStatus = z.enum(["Pending", "Approved", "Rejected"]);
 
 export type RankSubmissionStatus = z.infer<typeof RankSubmissionStatus>;
 
@@ -53,10 +48,7 @@ export type RankSubmissionMetadata = z.infer<typeof RankSubmissionMetadata>;
 
 export const RankSubmissionDiff = z.object({
   achievementDiaries: z
-    .partialRecord(
-      AchievementDiaryMap.def.keyType,
-      AchievementDiaryMap.def.valueType,
-    )
+    .partialRecord(AchievementDiaryMap.def.keyType, AchievementDiaryMap.def.valueType)
     .nullable(),
   acquiredItems: z.array(z.string()).nullable(),
   combatAchievementTier: CombatAchievementTier.nullable(),

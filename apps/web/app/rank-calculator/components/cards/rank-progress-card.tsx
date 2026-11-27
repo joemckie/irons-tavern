@@ -1,42 +1,27 @@
-import { useState } from 'react';
-import {
-  Button,
-  Card,
-  Dialog,
-  Flex,
-  Progress,
-  Separator,
-  Text,
-} from '@radix-ui/themes';
-import { RankStructure } from '@/app/schemas/rank-calculator';
-import { useAction } from 'next-safe-action/hooks';
-import Image from 'next/image';
-import { DataCard } from '../data-card';
-import { Select } from '../select';
-import { useRankCalculator } from '../../hooks/point-calculator/use-rank-calculator';
-import { getRankName } from '../../utils/get-rank-name';
-import { getPointsRemainingLabel } from '../../utils/get-points-remaining-label';
-import { formatNumber } from '../../utils/format-number';
-import { RankStructureInfoModal } from '../rank-structure-info-modal';
-import { getRankImageUrl } from '../../utils/get-rank-image-url';
-import { useCurrentPlayer } from '../../contexts/current-player-context';
-import { handleToastUpdates } from '../../utils/handle-toast-updates';
-import { publishRankSubmissionAction } from '../../[player]/actions/publish-rank-submission-action';
+import { useState } from "react";
+import { Button, Card, Dialog, Flex, Progress, Separator, Text } from "@radix-ui/themes";
+import { RankStructure } from "@/app/schemas/rank-calculator";
+import { useAction } from "next-safe-action/hooks";
+import Image from "next/image";
+import { DataCard } from "../data-card";
+import { Select } from "../select";
+import { useRankCalculator } from "../../hooks/point-calculator/use-rank-calculator";
+import { getRankName } from "../../utils/get-rank-name";
+import { getPointsRemainingLabel } from "../../utils/get-points-remaining-label";
+import { formatNumber } from "../../utils/format-number";
+import { RankStructureInfoModal } from "../rank-structure-info-modal";
+import { getRankImageUrl } from "../../utils/get-rank-image-url";
+import { useCurrentPlayer } from "../../contexts/current-player-context";
+import { handleToastUpdates } from "../../utils/handle-toast-updates";
+import { publishRankSubmissionAction } from "../../[player]/actions/publish-rank-submission-action";
 
 export function RankProgressCard() {
-  const {
-    pointsAwarded,
-    pointsAwardedPercentage,
-    pointsRemaining,
-    nextRank,
-    rank,
-  } = useRankCalculator();
+  const { pointsAwarded, pointsAwardedPercentage, pointsRemaining, nextRank, rank } =
+    useRankCalculator();
   const { playerName, rank: currentRank } = useCurrentPlayer();
-  const [showRankUpDialog, setShowRankUpDialog] = useState(
-    currentRank && currentRank !== rank,
-  );
+  const [showRankUpDialog, setShowRankUpDialog] = useState(currentRank && currentRank !== rank);
   const rankName = getRankName(rank);
-  const nextRankName = nextRank ? getRankName(nextRank) : 'Max rank';
+  const nextRankName = nextRank ? getRankName(nextRank) : "Max rank";
   const { executeAsync: publishRankSubmission } = useAction(
     publishRankSubmissionAction.bind(null, currentRank, playerName),
   );
@@ -51,11 +36,7 @@ export function RankProgressCard() {
                 <Text size="2" color="gray" id="total-points-label">
                   Total points
                 </Text>
-                <Text
-                  aria-labelledby="total-points-label"
-                  size="3"
-                  weight="medium"
-                >
+                <Text aria-labelledby="total-points-label" size="3" weight="medium">
                   {formatNumber(pointsAwarded)}
                 </Text>
               </Flex>
@@ -65,11 +46,7 @@ export function RankProgressCard() {
                 <Text size="2" color="gray" id="points-to-next-rank-label">
                   Points to next rank
                 </Text>
-                <Text
-                  aria-labelledby="points-to-next-rank-label"
-                  size="3"
-                  weight="medium"
-                >
+                <Text aria-labelledby="points-to-next-rank-label" size="3" weight="medium">
                   {getPointsRemainingLabel(pointsRemaining)}
                 </Text>
               </Flex>
@@ -131,8 +108,7 @@ export function RankProgressCard() {
         <Dialog.Content maxWidth="450px">
           <Dialog.Title>Rank up</Dialog.Title>
           <Dialog.Description size="2" mb="2">
-            Congratulations, you have achieved the <strong>{rankName}</strong>{' '}
-            rank!
+            Congratulations, you have achieved the <strong>{rankName}</strong> rank!
           </Dialog.Description>
           <Flex gap="3" mt="4" justify="end">
             <Dialog.Close>
@@ -147,7 +123,7 @@ export function RankProgressCard() {
                     totalPoints: pointsAwarded,
                     rank,
                   }),
-                  { success: 'Rank application submitted!' },
+                  { success: "Rank application submitted!" },
                 );
               }}
             >

@@ -2,9 +2,9 @@ import {
   DEFAULT_SERVER_ERROR_MESSAGE,
   SafeActionResult,
   type ValidationErrors,
-} from 'next-safe-action';
-import { toast, ToastPromiseParams, UpdateOptions } from 'react-toastify';
-import { Schema } from 'zod';
+} from "next-safe-action";
+import { toast, ToastPromiseParams, UpdateOptions } from "react-toastify";
+import { Schema } from "zod";
 
 export async function handleToastUpdates<
   ServerError extends string,
@@ -14,11 +14,11 @@ export async function handleToastUpdates<
 >(
   actionFn: Promise<SafeActionResult<ServerError, S, CVE, Data> | undefined>,
   params: {
-    success: ToastPromiseParams<Data>['success'];
+    success: ToastPromiseParams<Data>["success"];
     pending?: string;
   },
 ) {
-  const toastId = toast.loading(params.pending ?? 'Please wait...');
+  const toastId = toast.loading(params.pending ?? "Please wait...");
   const defaultToastProps = {
     isLoading: false,
     autoClose: null,
@@ -29,32 +29,30 @@ export async function handleToastUpdates<
     const result = await actionFn;
 
     if (!result) {
-      throw new Error('Nothing returned from action');
+      throw new Error("Nothing returned from action");
     }
 
     if (result?.serverError) {
       toast.update(toastId, {
         render: result.serverError,
-        type: 'error',
+        type: "error",
         ...defaultToastProps,
       });
     }
 
     if (result?.validationErrors) {
       toast.update(toastId, {
-        render: 'Validation error',
-        type: 'error',
+        render: "Validation error",
+        type: "error",
         ...defaultToastProps,
       });
     }
 
     if (result?.data) {
       toast.update(toastId, {
-        ...(typeof params.success === 'object' ? params.success : {}),
-        ...(typeof params.success === 'string'
-          ? { render: params.success }
-          : {}),
-        type: 'success',
+        ...(typeof params.success === "object" ? params.success : {}),
+        ...(typeof params.success === "string" ? { render: params.success } : {}),
+        type: "success",
         ...defaultToastProps,
         data: result.data,
       });
@@ -64,7 +62,7 @@ export async function handleToastUpdates<
   } catch {
     toast.update(toastId, {
       render: DEFAULT_SERVER_ERROR_MESSAGE,
-      type: 'error',
+      type: "error",
       ...defaultToastProps,
     });
 

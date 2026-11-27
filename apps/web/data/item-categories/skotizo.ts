@@ -1,17 +1,17 @@
-import { formatWikiImageUrl } from '@/app/rank-calculator/utils/format-wiki-url';
-import { ItemCategory } from '@/app/schemas/items';
-import { singleItem } from '../utils/item-builders';
+import { formatWikiImageUrl } from "@/app/rank-calculator/utils/format-wiki-url";
+import { ItemCategory } from "@/app/schemas/items";
+import { singleItem } from "../utils/item-builders";
 
 export const skotizo: ItemCategory = {
-  image: formatWikiImageUrl('Skotos_detail', 'category'),
+  image: formatWikiImageUrl("Skotos_detail", "category"),
   items: [
     singleItem({
-      name: 'Jar of Darkness',
-      collectionLogCategory: 'skotizo',
+      name: "Jar of Darkness",
+      collectionLogCategory: "skotizo",
     }),
     singleItem({
-      name: 'Skotos',
-      collectionLogCategory: 'skotizo',
+      name: "Skotos",
+      collectionLogCategory: "skotizo",
     }),
   ],
 };

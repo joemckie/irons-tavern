@@ -1,22 +1,22 @@
-import { DiaryLocation, DiaryTier } from '@/app/schemas/osrs';
-import { AchievementDiaryMap } from '@/app/schemas/rank-calculator';
-import { achievementDiaryTierPoints } from '../../config/points';
+import { DiaryLocation, DiaryTier } from "@/app/schemas/osrs";
+import { AchievementDiaryMap } from "@/app/schemas/rank-calculator";
+import { achievementDiaryTierPoints } from "../../config/points";
 
 export function calculateAchievementDiaryPoints(
   achievementDiaries: AchievementDiaryMap,
   scaling: number,
 ) {
-  const pointMap = (
-    Object.entries(achievementDiaries) as [DiaryLocation, DiaryTier][]
-  ).reduce<Record<DiaryLocation, number>>(
+  const pointMap = (Object.entries(achievementDiaries) as [DiaryLocation, DiaryTier][]).reduce<
+    Record<DiaryLocation, number>
+  >(
     (acc, [location, tier]) => ({
       ...acc,
       [location]: Math.floor(achievementDiaryTierPoints[tier] * scaling),
     }),
     {
-      'Kourend & Kebos': 0,
-      'Lumbridge & Draynor': 0,
-      'Western Provinces': 0,
+      "Kourend & Kebos": 0,
+      "Lumbridge & Draynor": 0,
+      "Western Provinces": 0,
       Ardougne: 0,
       Desert: 0,
       Falador: 0,
@@ -29,10 +29,7 @@ export function calculateAchievementDiaryPoints(
     } satisfies Record<DiaryLocation, number>,
   );
 
-  const pointsAwarded = Object.values(pointMap).reduce(
-    (acc, val) => acc + val,
-    0,
-  );
+  const pointsAwarded = Object.values(pointMap).reduce((acc, val) => acc + val, 0);
 
   return {
     pointMap,

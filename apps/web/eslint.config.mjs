@@ -1,7 +1,7 @@
 // @ts-check
 
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   js.configs.recommended,
@@ -9,15 +9,15 @@ export default tseslint.config(
   tseslint.configs.stylisticTypeChecked,
   {
     rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      "@typescript-eslint/no-unused-vars": [
+        "error",
         {
-          argsIgnorePattern: '^_',
+          argsIgnorePattern: "^_",
           ignoreRestSiblings: true,
         },
       ],
-      '@typescript-eslint/no-misused-promises': [
-        'error',
+      "@typescript-eslint/no-misused-promises": [
+        "error",
         {
           checksVoidReturn: {
             // Prevent async server actions from throwing errors
@@ -32,22 +32,22 @@ export default tseslint.config(
       parser: tseslint.parser,
       parserOptions: {
         projectService: {
-          allowDefaultProject: ['eslint.config.mjs', 'postcss.config.mjs'],
+          allowDefaultProject: ["eslint.config.mjs", "postcss.config.mjs"],
         },
       },
     },
   },
   {
     ignores: [
-      'node_modules',
-      'dist',
-      'build',
-      'coverage',
-      'public',
-      'out',
-      '.next',
-      '.turbo',
-      'next-env.d.ts',
+      "node_modules",
+      "dist",
+      "build",
+      "coverage",
+      "public",
+      "out",
+      ".next",
+      ".turbo",
+      "next-env.d.ts",
     ],
   },
 );

@@ -1,20 +1,20 @@
-import { ehbRates } from '@/app/rank-calculator/config/efficiency-rates';
+import { ehbRates } from "@/app/rank-calculator/config/efficiency-rates";
 import {
   dropRateModifiers,
   rewardItemBossNameMap,
   pointModifiers,
   collectionLogItemBossNameMap,
   groupSizes,
-} from '@/app/rank-calculator/config/item-point-map';
-import { RequiredItem } from '@/app/schemas/items';
-import Decimal from 'decimal.js-light';
-import { DroppedItemResponse } from '@/app/schemas/wiki';
-import { z } from 'zod';
-import { CollectionLogItemName } from '@/app/schemas/osrs';
-import chalk from 'chalk';
-import dedent from 'dedent';
-import { clientConstants } from '@/config/constants.client';
-import { pointsConfig } from '../config/points';
+} from "@/app/rank-calculator/config/item-point-map";
+import { RequiredItem } from "@/app/schemas/items";
+import Decimal from "decimal.js-light";
+import { DroppedItemResponse } from "@/app/schemas/wiki";
+import { z } from "zod";
+import { CollectionLogItemName } from "@/app/schemas/osrs";
+import chalk from "chalk";
+import dedent from "dedent";
+import { clientConstants } from "@/config/constants.client";
+import { pointsConfig } from "../config/points";
 
 interface CalculatePointsForSingleDropSourceOptions {
   ignoreDropRateModifier?: boolean;
@@ -32,13 +32,9 @@ function calculatePointsForSingleDropSource(
   }: CalculatePointsForSingleDropSourceOptions,
 ) {
   const bossName =
-    collectionLogItemBossNameMap[itemName] ??
-    rewardItemBossNameMap[dropSource] ??
-    dropSource;
+    collectionLogItemBossNameMap[itemName] ?? rewardItemBossNameMap[dropSource] ?? dropSource;
   const bossEhb = ehbRates[bossName];
-  const dropRateModifier = ignoreDropRateModifier
-    ? 1
-    : (dropRateModifiers[dropSource] ?? 1);
+  const dropRateModifier = ignoreDropRateModifier ? 1 : (dropRateModifiers[dropSource] ?? 1);
   const pointModifier = pointModifiers[itemName] ?? 1;
   const groupSize = groupSizes[bossName] ?? 1;
 
@@ -79,29 +75,26 @@ export function calculateItemPoints(
         ignorePoints,
       },
     ) => {
-      const totalPointsForDropSources = targetDropSources.reduce(
-        (sum, dropSource) => {
-          if (ignorePoints) {
-            return sum;
-          }
+      const totalPointsForDropSources = targetDropSources.reduce((sum, dropSource) => {
+        if (ignorePoints) {
+          return sum;
+        }
 
-          return (
-            sum +
-            calculatePointsForSingleDropSource(
-              clogName,
-              dropSource,
-              amount,
-              z
-                .number({
-                  error: `Could not find item drop rate for ${clogName}:${dropSource}`,
-                })
-                .parse(dropRateInfo[clogName][dropSource]),
-              { ignoreDropRateModifier, ignoreAmountMultiplier },
-            )
-          );
-        },
-        0,
-      );
+        return (
+          sum +
+          calculatePointsForSingleDropSource(
+            clogName,
+            dropSource,
+            amount,
+            z
+              .number({
+                error: `Could not find item drop rate for ${clogName}:${dropSource}`,
+              })
+              .parse(dropRateInfo[clogName][dropSource]),
+            { ignoreDropRateModifier, ignoreAmountMultiplier },
+          )
+        );
+      }, 0);
 
       // Find the mean points for all drop sources
       return acc + totalPointsForDropSources / targetDropSources.length;

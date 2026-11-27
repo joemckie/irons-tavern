@@ -1,27 +1,22 @@
-import 'next-auth/jwt';
-import NextAuth, { NextAuthConfig, NextAuthResult } from 'next-auth';
-import Discord, { DiscordProfile } from 'next-auth/providers/discord';
-import * as Sentry from '@sentry/nextjs';
-import {
-  APIGuild,
-  OAuth2Scopes,
-  Routes,
-  RESTJSONErrorCodes,
-} from 'discord-api-types/v10';
-import { DiscordAPIError } from '@discordjs/rest';
-import { discordBotClient, discordUserClient } from './discord';
-import { serverConstants } from './config/constants.server';
+import "next-auth/jwt";
+import NextAuth, { NextAuthConfig, NextAuthResult } from "next-auth";
+import Discord, { DiscordProfile } from "next-auth/providers/discord";
+import * as Sentry from "@sentry/nextjs";
+import { APIGuild, OAuth2Scopes, Routes, RESTJSONErrorCodes } from "discord-api-types/v10";
+import { DiscordAPIError } from "@discordjs/rest";
+import { discordBotClient, discordUserClient } from "./discord";
+import { serverConstants } from "./config/constants.server";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  interface Profile extends Omit<DiscordProfile, 'id'> {}
+  interface Profile extends Omit<DiscordProfile, "id"> {}
 
   interface User {
     permissions: string;
   }
 }
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
   /** Returned by the `jwt` callback and `auth`, when using JWT sessions */
 
   interface JWT {
@@ -31,17 +26,17 @@ declare module 'next-auth/jwt' {
 }
 
 export const config = {
-  debug: /\*|nextauth/.test(process.env.DEBUG ?? ''),
+  debug: /\*|nextauth/.test(process.env.DEBUG ?? ""),
   callbacks: {
     async signIn({ account, profile }) {
       if (!profile?.id) {
-        throw new Error('Discord user not found');
+        throw new Error("Discord user not found");
       }
 
-      Sentry.setUser({ id: profile.id, username: profile?.name ?? 'Unknown' });
+      Sentry.setUser({ id: profile.id, username: profile?.name ?? "Unknown" });
 
       if (!account?.access_token) {
-        throw new Error('Access token not found');
+        throw new Error("Access token not found");
       }
 
       const { guildId } = serverConstants.discord;
@@ -49,15 +44,12 @@ export const config = {
       try {
         await discordBotClient.get(Routes.guildMember(guildId, profile.id));
       } catch (error) {
-        if (
-          error instanceof DiscordAPIError &&
-          error.code === RESTJSONErrorCodes.UnknownMember
-        ) {
+        if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMember) {
           Sentry.addBreadcrumb({
             data: { id: profile.id, username: profile.username },
-            category: 'Auth',
+            category: "Auth",
             message: `User attempted to log in but was not found in the Discord server`,
-            level: 'error',
+            level: "error",
           });
         }
 
@@ -75,15 +67,15 @@ export const config = {
 
       if (account?.access_token) {
         try {
-          const userGuildsResponse = (await discordUserClient(
-            account.access_token,
-          ).get(Routes.userGuilds(), { authPrefix: 'Bearer' })) as APIGuild[];
+          const userGuildsResponse = (await discordUserClient(account.access_token).get(
+            Routes.userGuilds(),
+            { authPrefix: "Bearer" },
+          )) as APIGuild[];
 
-          const { permissions } =
-            userGuildsResponse.find(({ id }) => id === guildId) ?? {};
+          const { permissions } = userGuildsResponse.find(({ id }) => id === guildId) ?? {};
 
           if (!permissions) {
-            throw new Error('No permissions found for user');
+            throw new Error("No permissions found for user");
           }
 
           token.permissions = permissions;
@@ -116,7 +108,7 @@ export const config = {
     Discord<DiscordProfile>({
       authorization:
         `https://discord.com/api${Routes.oauth2Authorization()}?scope=${OAuth2Scopes.Identify}+${OAuth2Scopes.Guilds}+${OAuth2Scopes.GuildsMembersRead}` as const,
-      issuer: 'https://discord.com',
+      issuer: "https://discord.com",
     }),
   ],
 } satisfies NextAuthConfig;
@@ -124,4 +116,4 @@ export const config = {
 const nextAuth: NextAuthResult = NextAuth(config);
 
 export const { handlers, signIn, signOut } = nextAuth;
-export const auth: NextAuthResult['auth'] = nextAuth.auth;
+export const auth: NextAuthResult["auth"] = nextAuth.auth;

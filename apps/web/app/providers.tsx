@@ -1,11 +1,7 @@
-'use client';
+"use client";
 
-import {
-  environmentManager,
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query';
-import { PropsWithChildren } from 'react';
+import { environmentManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { PropsWithChildren } from "react";
 
 function makeQueryClient() {
   return new QueryClient({
@@ -41,7 +37,5 @@ function getQueryClient() {
 export default function Providers({ children }: PropsWithChildren) {
   const queryClient = getQueryClient();
 
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

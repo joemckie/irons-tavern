@@ -1,13 +1,10 @@
-import {
-  createSafeActionClient,
-  DEFAULT_SERVER_ERROR_MESSAGE,
-} from 'next-safe-action';
-import * as Sentry from '@sentry/nextjs';
-import { z } from 'zod';
-import { auth } from '@/auth';
-import { ActionError } from './action-error';
-import { connection } from 'next/server';
-import { withRequestContext } from '@/database/db';
+import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from "next-safe-action";
+import * as Sentry from "@sentry/nextjs";
+import { z } from "zod";
+import { auth } from "@/auth";
+import { ActionError } from "./action-error";
+import { connection } from "next/server";
+import { withRequestContext } from "@/database/db";
 
 export const actionClient = createSafeActionClient({
   handleServerError(error) {
@@ -28,11 +25,7 @@ export const actionClient = createSafeActionClient({
   // Give every action its own forked entity manager
   .use(async ({ next }) => withRequestContext(() => next()))
   .use(async ({ next, metadata }) =>
-    Sentry.withServerActionInstrumentation(
-      metadata.actionName,
-      { recordResponse: true },
-      next,
-    ),
+    Sentry.withServerActionInstrumentation(metadata.actionName, { recordResponse: true }, next),
   );
 
 export const authActionClient = actionClient.use(async ({ next }) => {
@@ -41,7 +34,7 @@ export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await auth();
 
   if (!session?.user?.id) {
-    throw new Error('Session not found!');
+    throw new Error("Session not found!");
   }
 
   return next({

@@ -1,41 +1,35 @@
-import 'core-js/actual/set/intersection';
-import 'core-js/actual/set/is-subset-of';
-import { itemList } from '@/data/item-list';
-import { normaliseEntityName } from '@/app/rank-calculator/utils/normalise-entity-name';
-import { ApiResponse } from '@/types/api';
-import * as Sentry from '@sentry/nextjs';
-import { Rank } from '@/config/enums';
-import { initORM } from '@/database/db';
-import { OSRSAccount } from '@/database/entities/osrs-account';
-import { DraftRankSubmission } from '@/database/entities/draft-rank-submission.entity';
-import { clientConstants } from '@/config/constants.client';
-import { redirect } from 'next/navigation';
-import {
-  CollectionLogAcquiredItemMap,
-  isHolidayTrack,
-} from '@/app/schemas/wiki';
-import { maximumTotalLevel, TzHaarCape } from '@/app/schemas/osrs';
-import { isItemAcquired } from './utils/is-item-acquired';
-import { getWikiSyncData } from './get-wikisync-data';
-import { fetchTemplePlayerStats } from '../fetch-temple-player-stats';
-import { calculateCombatAchievementTier } from './utils/calculate-combat-achievement-tier';
-import { parseAchievementDiaries } from './utils/parse-achievement-diaries';
-import { mergeCombatAchievementTier } from './utils/merge-combat-achievement-tier';
-import { mergeAchievementDiaries } from './utils/merge-achievement-diaries';
-import { calculateEfficiencyData } from './utils/calculate-efficiency-data';
-import { RankCalculatorSchema } from '../../[player]/submit-rank-calculator-validation';
-import { validatePlayerExists } from '../../players/validation/player-validation';
-import { fetchTemplePlayerCollectionLog } from './fetch-temple-collection-log';
-import { fetchTempleConstants } from './fetch-temple-constants';
-import { mergeTzhaarCapes } from './utils/merge-tzhaar-capes';
-import { isAchievementDiaryCapeAchieved } from '../../utils/is-achievement-diary-cape-achieved';
-import { fetchUserDiscordRoles } from '../fetch-user-discord-roles';
-import { calculateTavernDiaryTierMultipliers } from '../../utils/calculators/calculate-tavern-diary-tier-multipliers';
+import "core-js/actual/set/intersection";
+import "core-js/actual/set/is-subset-of";
+import { itemList } from "@/data/item-list";
+import { normaliseEntityName } from "@/app/rank-calculator/utils/normalise-entity-name";
+import { ApiResponse } from "@/types/api";
+import * as Sentry from "@sentry/nextjs";
+import { Rank } from "@/config/enums";
+import { initORM } from "@/database/db";
+import { OSRSAccount } from "@/database/entities/osrs-account";
+import { DraftRankSubmission } from "@/database/entities/draft-rank-submission.entity";
+import { clientConstants } from "@/config/constants.client";
+import { redirect } from "next/navigation";
+import { CollectionLogAcquiredItemMap, isHolidayTrack } from "@/app/schemas/wiki";
+import { maximumTotalLevel, TzHaarCape } from "@/app/schemas/osrs";
+import { isItemAcquired } from "./utils/is-item-acquired";
+import { getWikiSyncData } from "./get-wikisync-data";
+import { fetchTemplePlayerStats } from "../fetch-temple-player-stats";
+import { calculateCombatAchievementTier } from "./utils/calculate-combat-achievement-tier";
+import { parseAchievementDiaries } from "./utils/parse-achievement-diaries";
+import { mergeCombatAchievementTier } from "./utils/merge-combat-achievement-tier";
+import { mergeAchievementDiaries } from "./utils/merge-achievement-diaries";
+import { calculateEfficiencyData } from "./utils/calculate-efficiency-data";
+import { RankCalculatorSchema } from "../../[player]/submit-rank-calculator-validation";
+import { validatePlayerExists } from "../../players/validation/player-validation";
+import { fetchTemplePlayerCollectionLog } from "./fetch-temple-collection-log";
+import { fetchTempleConstants } from "./fetch-temple-constants";
+import { mergeTzhaarCapes } from "./utils/merge-tzhaar-capes";
+import { isAchievementDiaryCapeAchieved } from "../../utils/is-achievement-diary-cape-achieved";
+import { fetchUserDiscordRoles } from "../fetch-user-discord-roles";
+import { calculateTavernDiaryTierMultipliers } from "../../utils/calculators/calculate-tavern-diary-tier-multipliers";
 
-export interface PlayerDetailsResponse extends Omit<
-  RankCalculatorSchema,
-  'rank' | 'points'
-> {
+export interface PlayerDetailsResponse extends Omit<RankCalculatorSchema, "rank" | "points"> {
   currentRank?: Rank;
   hasTemplePlayerStats: boolean;
   hasTempleCollectionLog: boolean;
@@ -58,18 +52,18 @@ export async function fetchPlayerDetails(
 
   const emptyResponse = {
     achievementDiaries: {
-      'Kourend & Kebos': 'None',
-      'Lumbridge & Draynor': 'None',
-      'Western Provinces': 'None',
-      Ardougne: 'None',
-      Desert: 'None',
-      Falador: 'None',
-      Fremennik: 'None',
-      Kandarin: 'None',
-      Karamja: 'None',
-      Morytania: 'None',
-      Varrock: 'None',
-      Wilderness: 'None',
+      "Kourend & Kebos": "None",
+      "Lumbridge & Draynor": "None",
+      "Western Provinces": "None",
+      Ardougne: "None",
+      Desert: "None",
+      Falador: "None",
+      Fremennik: "None",
+      Kandarin: "None",
+      Karamja: "None",
+      Morytania: "None",
+      Varrock: "None",
+      Wilderness: "None",
     },
     acquiredItems: Object.fromEntries(
       allCurrentNotableItemNames.values().map((name) => [name, false]),
@@ -79,12 +73,12 @@ export async function fetchPlayerDetails(
     },
     collectionLogCount: 0,
     collectionLogTotal: 0,
-    combatAchievementTier: 'None',
+    combatAchievementTier: "None",
     ehb: 0,
     ehp: 0,
     totalLevel: 0,
-    playerName: '',
-    rankStructure: 'Standard',
+    playerName: "",
+    rankStructure: "Standard",
     proofLink: null,
     hasTemplePlayerStats: false,
     hasTempleCollectionLog: false,
@@ -92,7 +86,7 @@ export async function fetchPlayerDetails(
     hasThirdPartyData: false,
     isTempleCollectionLogOutdated: false,
     isMobileOnly: false,
-    tzhaarCape: 'None',
+    tzhaarCape: "None",
     hasBloodTorva: false,
     hasDizanasQuiver: false,
     hasAchievementDiaryCape: false,
@@ -110,10 +104,10 @@ export async function fetchPlayerDetails(
   });
 
   if (!playerRecord) {
-    throw new Error('Unable to find player record');
+    throw new Error("Unable to find player record");
   }
 
-  Sentry.setTag('has-player-record', true);
+  Sentry.setTag("has-player-record", true);
 
   if (playerRecord.isNameInvalid) {
     redirect(`/rank-calculator/players/edit/${player}`);
@@ -133,37 +127,31 @@ export async function fetchPlayerDetails(
   // Update Temple to get the most up-to-date info
   // Ignore any errors as this isn't required to succeed
   try {
-    await fetch(
-      `${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`,
-    );
+    await fetch(`${clientConstants.temple.baseUrl}/php/add_datapoint.php?player=${player}`);
   } catch (error) {
     Sentry.captureException(error);
   }
 
   try {
     const savedData = mergeSavedData
-      ? (await em.findOne(DraftRankSubmission, { osrsAccount: playerRecord }))
-          ?.data
+      ? (await em.findOne(DraftRankSubmission, { osrsAccount: playerRecord }))?.data
       : undefined;
     const { joinDate, name: rsn, rank: currentRank } = playerRecord;
-    const [wikiSyncData, templePlayerStats, templeCollectionLog, discordRoles] =
-      await Promise.all([
-        getWikiSyncData(player),
-        fetchTemplePlayerStats(player, true),
-        fetchTemplePlayerCollectionLog(player),
-        fetchUserDiscordRoles(userId),
-      ]);
+    const [wikiSyncData, templePlayerStats, templeCollectionLog, discordRoles] = await Promise.all([
+      getWikiSyncData(player),
+      fetchTemplePlayerStats(player, true),
+      fetchTemplePlayerCollectionLog(player),
+      fetchUserDiscordRoles(userId),
+    ]);
 
-    const hasThirdPartyData = Boolean(
-      wikiSyncData ?? templePlayerStats ?? templeCollectionLog,
-    );
+    const hasThirdPartyData = Boolean(wikiSyncData ?? templePlayerStats ?? templeCollectionLog);
 
     Sentry.setTags({
-      'has-wikisync-data': !!wikiSyncData,
-      'has-temple-data': !!templePlayerStats,
-      'has-temple-collection-log-data': !!templeCollectionLog,
-      'has-saved-data': !!savedData,
-      'has-third-party-data': hasThirdPartyData,
+      "has-wikisync-data": !!wikiSyncData,
+      "has-temple-data": !!templePlayerStats,
+      "has-temple-collection-log-data": !!templeCollectionLog,
+      "has-saved-data": !!savedData,
+      "has-third-party-data": hasThirdPartyData,
     });
 
     if (!hasThirdPartyData && !savedData) {
@@ -175,7 +163,7 @@ export async function fetchPlayerDetails(
       (await fetchTempleConstants())?.MAX_COLLECTION_LOGS;
 
     if (!collectionLogTotal) {
-      throw new Error('Unable to determine max collection log slots');
+      throw new Error("Unable to determine max collection log slots");
     }
 
     const combatAchievementTier = wikiSyncData
@@ -185,7 +173,7 @@ export async function fetchPlayerDetails(
     const {
       Overall_level: totalLevel = null,
       Collections: hiscoresCollectionLogCount = null,
-      'TzKal-Zuk': zukKillCount = null,
+      "TzKal-Zuk": zukKillCount = null,
     } = templePlayerStats ?? {};
     const { ehb, ehp } = calculateEfficiencyData(templePlayerStats);
 
@@ -204,9 +192,7 @@ export async function fetchPlayerDetails(
       combatAchievements = null,
     } = wikiSyncData
       ? {
-          achievementDiaries: parseAchievementDiaries(
-            wikiSyncData.achievement_diaries,
-          ),
+          achievementDiaries: parseAchievementDiaries(wikiSyncData.achievement_diaries),
           quests: wikiSyncData.quests,
           musicTracks: wikiSyncData.music_tracks,
           combatAchievements: wikiSyncData.combat_achievements,
@@ -237,9 +223,7 @@ export async function fetchPlayerDetails(
         : [];
 
     const previouslyAcquiredItems = savedData
-      ? Object.keys(savedData.acquiredItems).filter(
-          (key) => savedData.acquiredItems[key],
-        )
+      ? Object.keys(savedData.acquiredItems).filter((key) => savedData.acquiredItems[key])
       : [];
 
     const hasMusicCape = musicTracks
@@ -257,7 +241,7 @@ export async function fetchPlayerDetails(
         ...acc,
         [normaliseEntityName(val)]: true,
       }),
-      { ...(hasMusicCape && { [normaliseEntityName('Music cape')]: true }) },
+      { ...(hasMusicCape && { [normaliseEntityName("Music cape")]: true }) },
     );
 
     const proofLink =
@@ -273,8 +257,8 @@ export async function fetchPlayerDetails(
       ) ?? false;
 
     const tzhaarCape =
-      (hasInfernalCape && TzHaarCape.enum['Infernal cape']) ||
-      (hasFireCape && TzHaarCape.enum['Fire cape']) ||
+      (hasInfernalCape && TzHaarCape.enum["Infernal cape"]) ||
+      (hasFireCape && TzHaarCape.enum["Fire cape"]) ||
       TzHaarCape.enum.None;
 
     const hasBloodTorva = new Set([
@@ -295,21 +279,16 @@ export async function fetchPlayerDetails(
 
     const hasMaxCape = totalLevel === maximumTotalLevel;
 
-    const {
-      collectionLogBonusMultiplier,
-      combatBonusMultiplier,
-      skillingBonusMultiplier,
-    } = calculateTavernDiaryTierMultipliers(discordRoles);
+    const { collectionLogBonusMultiplier, combatBonusMultiplier, skillingBonusMultiplier } =
+      calculateTavernDiaryTierMultipliers(discordRoles);
 
     return {
       success: true,
       error: null,
       data: {
         achievementDiaries:
-          mergeAchievementDiaries(
-            achievementDiaries,
-            savedData?.achievementDiaries ?? null,
-          ) ?? emptyResponse.achievementDiaries,
+          mergeAchievementDiaries(achievementDiaries, savedData?.achievementDiaries ?? null) ??
+          emptyResponse.achievementDiaries,
         acquiredItems: {
           // Extend the empty response (which sets all items to false) with the actual acquired items from the player,
           // to prevent the form from being marked as dirty due to the database not persisting missing items.
@@ -320,7 +299,7 @@ export async function fetchPlayerDetails(
           mergeCombatAchievementTier(
             combatAchievementTier,
             savedData?.combatAchievementTier ?? null,
-          ) ?? 'None',
+          ) ?? "None",
         collectionLogCount: Math.max(
           templeCollectionLogCount ?? 0,
           hiscoresCollectionLogCount ?? 0,
@@ -332,16 +311,14 @@ export async function fetchPlayerDetails(
         collectionLogTotal,
         joinDate,
         playerName: rsn,
-        rankStructure: savedData?.rankStructure ?? 'Standard',
+        rankStructure: savedData?.rankStructure ?? "Standard",
         proofLink,
         currentRank: currentRank ?? undefined,
         tzhaarCape: mergeTzhaarCapes(tzhaarCape, savedData?.tzhaarCape),
         hasBloodTorva: (hasBloodTorva || savedData?.hasBloodTorva) ?? false,
-        hasDizanasQuiver:
-          (hasDizanasQuiver || savedData?.hasDizanasQuiver) ?? false,
+        hasDizanasQuiver: (hasDizanasQuiver || savedData?.hasDizanasQuiver) ?? false,
         hasAchievementDiaryCape:
-          (hasAchievementDiaryCape || savedData?.hasAchievementDiaryCape) ??
-          false,
+          (hasAchievementDiaryCape || savedData?.hasAchievementDiaryCape) ?? false,
         hasMaxCape: (hasMaxCape || savedData?.hasMaxCape) ?? false,
         hasTemplePlayerStats: !!templePlayerStats,
         hasTempleCollectionLog: !!templeCollectionLog,
@@ -358,6 +335,6 @@ export async function fetchPlayerDetails(
   } catch (error) {
     Sentry.captureException(error);
 
-    return { error: 'Something went wrong', success: false };
+    return { error: "Something went wrong", success: false };
   }
 }

@@ -1,4 +1,4 @@
-import { TzHaarCape } from '@/app/schemas/osrs';
+import { TzHaarCape } from "@/app/schemas/osrs";
 
 export function mergeTzhaarCapes(
   currentTzhaarCape: TzHaarCape,
@@ -6,8 +6,7 @@ export function mergeTzhaarCapes(
 ) {
   if (
     !savedTzhaarCape ||
-    TzHaarCape.options.indexOf(currentTzhaarCape) >
-      TzHaarCape.options.indexOf(savedTzhaarCape)
+    TzHaarCape.options.indexOf(currentTzhaarCape) > TzHaarCape.options.indexOf(savedTzhaarCape)
   ) {
     return currentTzhaarCape;
   }

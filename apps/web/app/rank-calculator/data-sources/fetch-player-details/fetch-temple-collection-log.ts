@@ -1,11 +1,11 @@
-import * as Sentry from '@sentry/nextjs';
-import { clientConstants } from '@/config/constants.client';
+import * as Sentry from "@sentry/nextjs";
+import { clientConstants } from "@/config/constants.client";
 import {
   TempleOSRSCollectionLogCategory,
   TempleOSRSPlayerCollectionLog,
-} from '@/app/schemas/temple-api';
-import { itemList } from '@/data/item-list';
-import { isCollectionLogItem } from '@/app/schemas/items';
+} from "@/app/schemas/temple-api";
+import { itemList } from "@/data/item-list";
+import { isCollectionLogItem } from "@/app/schemas/items";
 
 function generateCollectionLogCategoryList() {
   return Object.values(itemList)
@@ -22,8 +22,8 @@ function generateCollectionLogCategoryList() {
          * the_inferno and the_fight_caves are added manually as they are not included
          * in the item list, and are required to determine the TzHaar capes completion
          */
-        'the_inferno',
-        'the_fight_caves',
+        "the_inferno",
+        "the_fight_caves",
       ]),
     );
 }
@@ -34,20 +34,18 @@ export async function fetchTemplePlayerCollectionLog(player: string) {
   try {
     const collectionLogQueryParams = new URLSearchParams({
       player,
-      onlyitems: '1',
-      includenames: '1',
-      categories: [...categories].join(','),
+      onlyitems: "1",
+      includenames: "1",
+      categories: [...categories].join(","),
     });
 
     const collectionLogResponse = await fetch(
       `${clientConstants.temple.baseUrl}/api/collection-log/player_collection_log.php?${collectionLogQueryParams}`,
     );
 
-    return TempleOSRSPlayerCollectionLog.parse(
-      await collectionLogResponse.json(),
-    ).data;
+    return TempleOSRSPlayerCollectionLog.parse(await collectionLogResponse.json()).data;
   } catch {
-    Sentry.captureMessage('TempleOSRS collection log not found', 'info');
+    Sentry.captureMessage("TempleOSRS collection log not found", "info");
 
     return null;
   }
