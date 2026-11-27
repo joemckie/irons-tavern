@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
     // Save the member list to the Vercel blob store to use later
     put("members.json", JSON.stringify(body.clanMemberMaps), {
       access: "public",
+      addRandomSuffix: true,
     }),
     ...(updateTemple
       ? [
