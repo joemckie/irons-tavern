@@ -35,6 +35,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      - name: Generate Next.js types
+        run: yarn workspace @repo/web next typegen
+
       - name: Check formatting
         run: yarn format:check
 
