@@ -7,11 +7,15 @@
     "packages/*"
   ],
   "scripts": {
-    "format": "oxfmt --write"
+    "format": "oxfmt --write",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
     "oxfmt": "^0.80.0",
+    "oxlint": "^1.95.0",
+    "oxlint-tsgolint": "^7.0.2009",
     "prettier": "^3.9.6",
     "ts-node": "^10.9.2",
     "turbo": "^2.10.12",
