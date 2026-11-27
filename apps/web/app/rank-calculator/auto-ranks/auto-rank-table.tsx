@@ -36,7 +36,7 @@ export function AutoRankTable({ rows }: { rows: AutoRankRow[] }) {
           <Table.ColumnHeaderCell>Calculated rank</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell align="right">Total points</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Rank up</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Reason</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Notes</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -52,7 +52,20 @@ export function AutoRankTable({ rows }: { rows: AutoRankRow[] }) {
                 {row.rsn}
               </a>
             </Table.RowHeaderCell>
-            <Table.Cell>{row.discordName ?? <Text color="gray">-</Text>}</Table.Cell>
+            <Table.Cell>
+              {row.discordName ? (
+                <Flex align="center" gap="2">
+                  <Text>{row.discordName}</Text>
+                  {row.discordMatchedBy === "Nickname" && (
+                    <Badge color="gray" variant="outline">
+                      Nickname
+                    </Badge>
+                  )}
+                </Flex>
+              ) : (
+                <Text color="gray">-</Text>
+              )}
+            </Table.Cell>
             <Table.Cell>
               <RankCell rank={row.currentRank} />
             </Table.Cell>
@@ -70,6 +83,9 @@ export function AutoRankTable({ rows }: { rows: AutoRankRow[] }) {
             <Table.Cell>
               {row.skipReason && (
                 <Badge color={row.skipReason === "Error" ? "red" : "gray"}>{row.skipReason}</Badge>
+              )}
+              {row.hasDiscordRoles === false && (
+                <Badge color="amber">No Discord roles, so no Tavern Diary bonus</Badge>
               )}
             </Table.Cell>
           </Table.Row>

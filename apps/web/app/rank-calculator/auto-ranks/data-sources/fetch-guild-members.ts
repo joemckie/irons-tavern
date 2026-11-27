@@ -1,17 +1,16 @@
 import { APIGuildMember, Routes } from "discord-api-types/v10";
 import { serverConstants } from "@/config/constants.server";
 import { discordBotClient } from "@/discord";
+import type { GuildMember } from "../auto-rank-row";
 
 const pageSize = 1000;
 
 /**
  * Lists every guild member (requires the Server Members privileged intent).
- *
- * @returns Discord user ID → role IDs
  */
-export async function fetchGuildMemberRoles(): Promise<Map<string, Set<string>>> {
+export async function fetchGuildMembers(): Promise<GuildMember[]> {
   const { guildId } = serverConstants.discord;
-  const roles = new Map<string, Set<string>>();
+  const members: GuildMember[] = [];
   let after: string | undefined;
 
   while (true) {
@@ -19,12 +18,17 @@ export async function fetchGuildMemberRoles(): Promise<Map<string, Set<string>>>
       query: new URLSearchParams({ limit: String(pageSize), ...(after && { after }) }),
     })) as APIGuildMember[];
 
-    for (const member of page) {
-      roles.set(member.user.id, new Set(member.roles));
+    for (const { user, nick, roles, joined_at: joinedAt } of page) {
+      members.push({
+        id: user.id,
+        nick: nick ?? null,
+        roles: new Set(roles),
+        joinedAt: joinedAt ? new Date(joinedAt) : null,
+      });
     }
 
     if (page.length < pageSize) {
-      return roles;
+      return members;
     }
 
     after = page.at(-1)?.user.id;

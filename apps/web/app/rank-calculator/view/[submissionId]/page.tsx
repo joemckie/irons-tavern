@@ -1,7 +1,7 @@
 import { Flex, Heading } from "@radix-ui/themes";
 import { z } from "zod";
 import { auth } from "@/auth";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { RankSubmission } from "@/database/entities/rank-submission.entity";
 import { ReadonlyFormWrapper } from "./readonly-form-wrapper";
 import { calculateDiffErrors } from "./utils/calculate-diff-errors";
@@ -36,8 +36,7 @@ export default async function ViewSubmissionPage({
     );
   }
 
-  const submission = await withRequestContext(async () => {
-    const { em } = await initORM();
+  const submission = await withRequestContext(async (em) => {
     const result = await em.findOne(RankSubmission, { id: parsedSubmissionId });
 
     if (!result) {

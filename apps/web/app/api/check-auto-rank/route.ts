@@ -8,7 +8,7 @@ import { getRankName } from "@/app/rank-calculator/utils/get-rank-name";
 import { sendDiscordMessage } from "@/app/rank-calculator/utils/send-discord-message";
 import { clientConstants } from "@/config/constants.client";
 import { discordBotClient } from "@/discord";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import {
   fetchItemDropRates,
@@ -16,12 +16,13 @@ import {
 } from "@/app/rank-calculator/data-sources/fetch-dropped-item-info";
 import { buildNotableItemList } from "@/app/rank-calculator/utils/build-notable-item-list";
 import { calculatePlayerRank } from "@/app/rank-calculator/utils/calculators/calculate-player-rank";
+import type { EntityManager } from "@mikro-orm/core";
 
 export async function GET(request: NextRequest) {
-  return withRequestContext(() => checkAutoRank(request));
+  return withRequestContext((em) => checkAutoRank(em, request));
 }
 
-async function checkAutoRank(request: NextRequest) {
+async function checkAutoRank(em: EntityManager, request: NextRequest) {
   try {
     const player = z
       .string({ error: "Player is required" })
@@ -32,7 +33,7 @@ async function checkAutoRank(request: NextRequest) {
       .string({ error: "Discord ID is required" })
       .parse(request.nextUrl.searchParams.get("discord_id"));
 
-    const playerDetails = await fetchPlayerDetails(player, discordId);
+    const playerDetails = await fetchPlayerDetails(em, player, discordId);
 
     if (!playerDetails.success) {
       throw new Error("Failed to fetch player details");
@@ -49,7 +50,6 @@ async function checkAutoRank(request: NextRequest) {
     const { rank } = calculatePlayerRank(playerDetails.data, items);
 
     if (rank !== currentRank) {
-      const { em } = await initORM();
       const account = await em.findOneOrFail(OSRSAccount, {
         user: discordId,
         name: player,

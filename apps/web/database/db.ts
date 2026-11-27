@@ -31,8 +31,10 @@ export async function initORM(options?: Partial<Options>): Promise<Services> {
   return (cache = { orm, em: orm.em });
 }
 
-export async function withRequestContext<T>(callback: () => Promise<T>): Promise<T> {
-  const { orm } = await initORM();
+export async function withRequestContext<T>(
+  callback: (em: EntityManager) => Promise<T>,
+): Promise<T> {
+  const { em } = await initORM();
 
-  return RequestContext.create(orm.em, callback);
+  return RequestContext.create(em, () => callback(em));
 }

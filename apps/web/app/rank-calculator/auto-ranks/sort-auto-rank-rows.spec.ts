@@ -2,9 +2,9 @@ import { AutoRankRow } from "./auto-rank-row";
 import { sortAutoRankRows, summariseAutoRankRows } from "./sort-auto-rank-rows";
 
 const rows: AutoRankRow[] = [
-  { rsn: "Zed", skipReason: "Unlinked" },
+  { rsn: "Zed", skipReason: "Ambiguous" },
   { rsn: "Ranked Low", calculatedRank: "Dragon", totalPoints: 100, isRankUp: false },
-  { rsn: "Alpha", skipReason: "Unlinked" },
+  { rsn: "Alpha", skipReason: "Ambiguous" },
   { rsn: "Up Low", calculatedRank: "Rune", totalPoints: 50, isRankUp: true },
   { rsn: "No Log", skipReason: "Missing collection log" },
   { rsn: "Broken", skipReason: "Error" },
@@ -42,10 +42,9 @@ describe("summariseAutoRankRows", () => {
       Ranked: 2,
       "Missing collection log": 1,
       "Missing Temple stats": 0,
-      Unlinked: 2,
-      Ambiguous: 0,
+      "Missing join date": 0,
+      Ambiguous: 2,
       "Non-standard structure": 0,
-      "Not in Discord server": 0,
       "Missing WikiSync": 0,
       "Staff / non-standard rank": 0,
       Error: 1,

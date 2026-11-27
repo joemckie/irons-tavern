@@ -1,24 +1,24 @@
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import {
   fetchItemDropRates,
   generateRequiredItemList,
 } from "../data-sources/fetch-dropped-item-info";
-import { getWikiSyncData } from "../data-sources/fetch-player-details/get-wikisync-data";
 import { getCaIdMap } from "../data-sources/fetch-player-details/get-combat-achievement-id-map";
 import { getCombatAchievementTierThresholds } from "../data-sources/fetch-player-details/get-combat-achievement-tier-thresholds";
 import { buildNotableItemList } from "../utils/build-notable-item-list";
 import { AutoRankRow, MatchedAccount, resolveAutoRankRows } from "./auto-rank-report";
 import { fetchTempleGroupData } from "./data-sources/fetch-temple-group-data";
-import { fetchGuildMemberRoles } from "./data-sources/fetch-guild-member-roles";
+import { fetchGuildMembers } from "./data-sources/fetch-guild-members";
+import { fetchClanMemberList } from "./data-sources/fetch-clan-member-list";
+import { fetchWikiSyncData } from "./data-sources/fetch-wikisync-data";
 
 /**
  * Loads every linked account. RSNs are matched in memory with `normaliseRsn`,
  * as the database only matches case-insensitively, not across spaces, underscores and hyphens.
  */
 async function fetchMatchedAccounts(): Promise<MatchedAccount[]> {
-  return withRequestContext(async () => {
-    const { em } = await initORM();
+  return withRequestContext(async (em) => {
     const accounts = await em.find(OSRSAccount, {}, { populate: ["user", "draftRankSubmission"] });
 
     return accounts.map(({ name, joinDate, rank, user, draftRankSubmission }) => ({
@@ -50,10 +50,11 @@ async function fetchKnownCombatAchievementIds() {
 }
 
 export async function buildAutoRankReport(): Promise<AutoRankRow[]> {
-  const [temple, discordRoles, accounts, notableItems, knownCombatAchievementIds] =
+  const [temple, clanMembers, guildMembers, accounts, notableItems, knownCombatAchievementIds] =
     await Promise.all([
       fetchTempleGroupData(),
-      fetchGuildMemberRoles(),
+      fetchClanMemberList(),
+      fetchGuildMembers(),
       fetchMatchedAccounts(),
       fetchItemDropRates([...generateRequiredItemList()]).then(async (dropRates) =>
         Object.entries(await buildNotableItemList(dropRates)),
@@ -64,8 +65,9 @@ export async function buildAutoRankReport(): Promise<AutoRankRow[]> {
   return resolveAutoRankRows({
     temple,
     accounts,
-    discordRoles,
-    fetchWikiSync: getWikiSyncData,
+    clanMembers,
+    guildMembers,
+    fetchWikiSync: (rsn) => fetchWikiSyncData(rsn),
     notableItems,
     knownCombatAchievementIds,
   });

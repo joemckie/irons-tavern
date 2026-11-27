@@ -10,9 +10,14 @@ import { isRankUp } from "../utils/is-rank-up";
 import { mapWithConcurrency } from "../utils/map-with-concurrency";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
 import type { TempleGroupData } from "./data-sources/fetch-temple-group-data";
-import { AutoRankRow, SkipReason } from "./auto-rank-row";
+import { AutoRankRow, ClanListMember, GuildMember, SkipReason } from "./auto-rank-row";
 
-export { SkipReason, type AutoRankRow } from "./auto-rank-row";
+export {
+  SkipReason,
+  type AutoRankRow,
+  type ClanListMember,
+  type GuildMember,
+} from "./auto-rank-row";
 
 export interface MatchedAccount {
   name: string;
@@ -23,7 +28,8 @@ export interface MatchedAccount {
   draftRankStructure: RankStructure | null;
 }
 
-const wikiSyncConcurrency = 10;
+// WikiSync rate limits bursts (429s seen at 10 concurrent requests)
+const wikiSyncConcurrency = 5;
 
 /**
  * Normalises an RSN for matching across sources.
@@ -65,6 +71,29 @@ function collectGroupMembers({ members, collectionLog }: TempleGroupData) {
   return [...groupMembers.values()];
 }
 
+function indexClanMembers(clanMembers: ClanListMember[]) {
+  return new Map(clanMembers.map((member) => [normaliseRsn(member.rsn), member]));
+}
+
+/**
+ * Indexes guild members by nickname, leaving out any nickname shared by more than one member.
+ */
+function indexGuildMembersByNickname(guildMembers: GuildMember[]) {
+  const byNickname = new Map<string, GuildMember | null>();
+
+  for (const member of guildMembers) {
+    if (!member.nick) {
+      continue;
+    }
+
+    const key = normaliseRsn(member.nick);
+
+    byNickname.set(key, byNickname.has(key) ? null : member);
+  }
+
+  return byNickname;
+}
+
 function groupAccountsByRsn(accounts: MatchedAccount[]) {
   return accounts.reduce((acc, account) => {
     const key = normaliseRsn(account.name);
@@ -99,14 +128,18 @@ function skip(row: AutoRankRow, skipReason: SkipReason): AutoRankRow {
 export async function resolveAutoRankRows({
   temple,
   accounts,
-  discordRoles,
+  clanMembers,
+  guildMembers,
   fetchWikiSync,
   notableItems,
   knownCombatAchievementIds,
 }: {
   temple: TempleGroupData;
   accounts: MatchedAccount[];
-  discordRoles: Map<string, Set<string>>;
+  /** The in-game clan export, the preferred source of current rank and join date */
+  clanMembers: ClanListMember[];
+  /** Only used for Tavern Diary roles and, as a last resort, join dates */
+  guildMembers: GuildMember[];
   fetchWikiSync: (rsn: string) => Promise<WikiSyncResponse | null>;
   notableItems: [string, ItemCategory][];
   /** Every combat achievement ID the wiki knows about */
@@ -115,6 +148,9 @@ export async function resolveAutoRankRows({
   assertNotableItemPoints(notableItems);
 
   const accountsByRsn = groupAccountsByRsn(accounts);
+  const clanMembersByRsn = indexClanMembers(clanMembers);
+  const guildMembersById = new Map(guildMembers.map((member) => [member.id, member]));
+  const guildMembersByNickname = indexGuildMembersByNickname(guildMembers);
 
   return mapWithConcurrency(
     collectGroupMembers(temple),
@@ -128,41 +164,52 @@ export async function resolveAutoRankRows({
 
       const matches = accountsByRsn.get(key) ?? [];
 
-      if (matches.length === 0) {
-        return skip(row, "Unlinked");
-      }
-
       if (matches.length > 1) {
         return skip(row, "Ambiguous");
       }
 
       const [account] = matches;
-      const linkedRow: AutoRankRow = {
-        ...row,
-        discordId: account.discordId,
-        discordName: account.discordName,
-        currentRank: account.rank ?? undefined,
-      };
+      const clanMember = clanMembersByRsn.get(key);
+      const currentRank = clanMember?.rank ?? account?.rank ?? undefined;
+      // A linked account is authoritative; otherwise fall back to an exact, unique nickname
+      const guildMember = account
+        ? guildMembersById.get(account.discordId)
+        : (guildMembersByNickname.get(key) ?? undefined);
+      const discordUser: Pick<AutoRankRow, "discordId" | "discordName" | "discordMatchedBy"> =
+        account
+          ? {
+              discordId: account.discordId,
+              discordName: account.discordName,
+              discordMatchedBy: "Account",
+            }
+          : guildMember
+            ? {
+                discordId: guildMember.id,
+                discordName: guildMember.nick ?? undefined,
+                discordMatchedBy: "Nickname",
+              }
+            : {};
+      const knownRow: AutoRankRow = { ...row, ...discordUser, currentRank };
 
-      if (account.draftRankStructure && account.draftRankStructure !== "Standard") {
-        return skip(linkedRow, "Non-standard structure");
+      if (account?.draftRankStructure && account.draftRankStructure !== "Standard") {
+        return skip(knownRow, "Non-standard structure");
       }
 
-      if (account.rank && !StandardRank.safeParse(account.rank).success) {
-        return skip(linkedRow, "Staff / non-standard rank");
+      if (currentRank && !StandardRank.safeParse(currentRank).success) {
+        return skip(knownRow, "Staff / non-standard rank");
       }
 
-      const roles = discordRoles.get(account.discordId);
+      const joinDate = clanMember?.joinDate ?? account?.joinDate ?? guildMember?.joinedAt;
 
-      if (!roles) {
-        return skip(linkedRow, "Not in Discord server");
+      if (!joinDate) {
+        return skip(knownRow, "Missing join date");
       }
 
       try {
-        const wikiSyncData = await fetchWikiSync(account.name);
+        const wikiSyncData = await fetchWikiSync(account?.name ?? clanMember?.rsn ?? rsn);
 
         if (!wikiSyncData) {
-          return skip(linkedRow, "Missing WikiSync");
+          return skip(knownRow, "Missing WikiSync");
         }
 
         const unknownCombatAchievementIds = wikiSyncData.combat_achievements.filter(
@@ -177,7 +224,7 @@ export async function resolveAutoRankRows({
         }
 
         if (!memberInfo) {
-          return skip(linkedRow, "Missing Temple stats");
+          return skip(knownRow, "Missing Temple stats");
         }
 
         const verified = await buildVerifiedRankInput({
@@ -186,26 +233,28 @@ export async function resolveAutoRankRows({
           collectionLogTotal: temple.collectionLog.total_collections_available,
           itemNames: temple.itemNames,
           wikiSyncData,
-          joinDate: account.joinDate,
-          discordRoles: roles,
+          joinDate,
+          // Discord is optional: without roles, no Tavern Diary bonus is applied
+          discordRoles: guildMember?.roles ?? new Set(),
         });
 
         if (!verified.success) {
-          return skip(linkedRow, verified.reason);
+          return skip(knownRow, verified.reason);
         }
 
         const { rank, totalPoints } = calculatePlayerRank(verified.input, notableItems);
 
         return {
-          ...linkedRow,
+          ...knownRow,
           calculatedRank: rank,
           totalPoints,
-          isRankUp: isRankUp(linkedRow.currentRank, rank),
+          isRankUp: isRankUp(currentRank, rank),
+          hasDiscordRoles: Boolean(guildMember),
         };
       } catch (error) {
-        Sentry.captureException(error, { tags: { rsn: account.name } });
+        Sentry.captureException(error, { tags: { rsn } });
 
-        return skip(linkedRow, "Error");
+        return skip(knownRow, "Error");
       }
     },
   );

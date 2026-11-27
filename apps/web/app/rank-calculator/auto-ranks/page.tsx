@@ -42,7 +42,8 @@ export default async function AutoRanksPage() {
       <Text size="2" color="gray">
         Ranks are only calculated for members with a verified TempleOSRS collection log, TempleOSRS
         stats and WikiSync data, using the Standard rank structure. Draft submissions are never
-        used.
+        used. Join dates and current ranks come from the in-game clan export. Tavern Diary bonuses
+        come from Discord roles, found through a linked account or an exact server nickname.
       </Text>
       <Suspense
         fallback={

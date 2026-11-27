@@ -4,7 +4,6 @@ import { normaliseEntityName } from "@/app/rank-calculator/utils/normalise-entit
 import { ApiResponse } from "@/types/api";
 import * as Sentry from "@sentry/nextjs";
 import { Rank } from "@/config/enums";
-import { initORM } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import { DraftRankSubmission } from "@/database/entities/draft-rank-submission.entity";
 import { clientConstants } from "@/config/constants.client";
@@ -24,6 +23,7 @@ import { fetchTempleConstants } from "./fetch-temple-constants";
 import { mergeTzhaarCapes } from "./utils/merge-tzhaar-capes";
 import { fetchUserDiscordRoles } from "../fetch-user-discord-roles";
 import { calculateTavernDiaryTierMultipliers } from "../../utils/calculators/calculate-tavern-diary-tier-multipliers";
+import type { EntityManager } from "@mikro-orm/core";
 
 export interface PlayerDetailsResponse extends Omit<RankCalculatorSchema, "rank" | "points"> {
   currentRank?: Rank;
@@ -36,6 +36,7 @@ export interface PlayerDetailsResponse extends Omit<RankCalculatorSchema, "rank"
 }
 
 export async function fetchPlayerDetails(
+  em: EntityManager,
   player: string,
   userId: string,
   mergeSavedData = true,
@@ -93,7 +94,6 @@ export async function fetchPlayerDetails(
     notableItemsBonusMultiplier: 0,
   } satisfies PlayerDetailsResponse;
 
-  const { em } = await initORM();
   const playerRecord = await em.findOne(OSRSAccount, {
     user: userId,
     name: player,

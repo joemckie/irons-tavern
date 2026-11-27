@@ -1,7 +1,7 @@
 import * as Sentry from "@sentry/nextjs";
 import { clientConstants } from "@/config/constants.client";
 import { serverConstants } from "@/config/constants.server";
-import { initORM, withRequestContext } from "@/database/db";
+import { withRequestContext } from "@/database/db";
 import { OSRSAccount } from "@/database/entities/osrs-account";
 import { connection, NextResponse } from "next/server";
 
@@ -9,9 +9,7 @@ export async function GET() {
   await connection();
 
   try {
-    const accounts = await withRequestContext(async () => {
-      const { em } = await initORM();
-
+    const accounts = await withRequestContext(async (em) => {
       return em.findAll(OSRSAccount, {
         fields: ["name", "user"],
         orderBy: { user: "asc", name: "asc" },

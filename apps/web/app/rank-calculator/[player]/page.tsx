@@ -32,7 +32,7 @@ export default async function RankCalculatorPage({
   const { id: userId } = session.user;
 
   const [playerDetails, dropRates] = await Promise.all([
-    withRequestContext(() => fetchPlayerDetails(decodedPlayer, userId)),
+    withRequestContext((em) => fetchPlayerDetails(em, decodedPlayer, userId)),
     fetchItemDropRates([...generateRequiredItemList()]),
   ]);
 

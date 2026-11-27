@@ -13,6 +13,7 @@ import {
 } from "@/mocks/temple-group";
 import { server } from "@/mocks/server";
 import { combatAchievementHandler } from "@/test-utils/combat-achievement-handlers";
+import { tavernDiaryDiscordRoles } from "@/config/discord-roles";
 import { calculatePlayerRank } from "../utils/calculators/calculate-player-rank";
 import { isRankUp } from "../utils/is-rank-up";
 import { buildVerifiedRankInput } from "./build-verified-rank-input";
@@ -20,6 +21,8 @@ import { TempleGroupData } from "./data-sources/fetch-temple-group-data";
 import {
   assertNotableItemPoints,
   AutoRankRow,
+  ClanListMember,
+  GuildMember,
   MatchedAccount,
   normaliseRsn,
   resolveAutoRankRows,
@@ -61,8 +64,18 @@ function account(name: string, overrides: Partial<MatchedAccount> = {}): Matched
 
 const linkedAccounts = [account("Iron Tyson"), account("Uim Fixture"), account("Lvl Three")];
 
-function rolesFor(accounts: MatchedAccount[]) {
-  return new Map(accounts.map(({ discordId }) => [discordId, new Set<string>()]));
+function clanMember(rsn: string, overrides: Partial<ClanListMember> = {}): ClanListMember {
+  return { rsn, rank: "Rune", joinDate: new Date("2022-06-01"), ...overrides };
+}
+
+const clanMembers = [clanMember("Iron Tyson"), clanMember("Uim Fixture"), clanMember("Lvl Three")];
+
+function guildMember(id: string, overrides: Partial<GuildMember> = {}): GuildMember {
+  return { id, nick: null, roles: new Set(), joinedAt: new Date("2020-01-01"), ...overrides };
+}
+
+function guildFor(accounts: MatchedAccount[]) {
+  return accounts.map(({ discordId }) => guildMember(discordId));
 }
 
 function resolve(overrides: Partial<Parameters<typeof resolveAutoRankRows>[0]> = {}) {
@@ -71,7 +84,8 @@ function resolve(overrides: Partial<Parameters<typeof resolveAutoRankRows>[0]> =
   return resolveAutoRankRows({
     temple,
     accounts,
-    discordRoles: rolesFor(accounts),
+    clanMembers,
+    guildMembers: guildFor(accounts),
     fetchWikiSync: () => Promise.resolve(wikiSyncData),
     notableItems,
     knownCombatAchievementIds: new Set(wikiSyncData.combat_achievements),
@@ -136,8 +150,26 @@ describe("resolveAutoRankRows", () => {
     expectSkipped(findRow(await resolve({ accounts }), "No Clog"), "Missing collection log");
   });
 
-  it("skips members with no linked account", async () => {
-    expectSkipped(findRow(await resolve({ accounts: [] }), "Iron Tyson"), "Unlinked");
+  it("ranks members with no linked account, without Discord roles", async () => {
+    const row = findRow(await resolve({ accounts: [] }), "Iron Tyson");
+
+    expect(row.skipReason).toBeUndefined();
+    expect(row.calculatedRank).toBeDefined();
+    expect(row.discordId).toBeUndefined();
+    expect(row.currentRank).toBe("Rune");
+    expect(row.hasDiscordRoles).toBe(false);
+  });
+
+  it("fetches WikiSync for unlinked members using their clan RSN", async () => {
+    const fetchWikiSync = jest.fn((_rsn: string) => Promise.resolve(wikiSyncData));
+
+    await resolve({
+      accounts: [],
+      clanMembers: [clanMember("iron_tyson")],
+      fetchWikiSync,
+    });
+
+    expect(fetchWikiSync).toHaveBeenCalledWith("iron_tyson");
   });
 
   it("skips members claimed by more than one account", async () => {
@@ -153,15 +185,153 @@ describe("resolveAutoRankRows", () => {
   });
 
   it("skips members with a staff or non-standard rank", async () => {
-    const accounts = [account("Iron Tyson", { rank: "Deputy Owner" })];
+    const rows = await resolve({
+      clanMembers: [clanMember("Iron Tyson", { rank: "Moderator" })],
+    });
 
-    expectSkipped(findRow(await resolve({ accounts }), "Iron Tyson"), "Staff / non-standard rank");
+    expectSkipped(findRow(rows, "Iron Tyson"), "Staff / non-standard rank");
   });
 
-  it("skips members who aren't in the Discord server", async () => {
-    const rows = await resolve({ discordRoles: new Map() });
+  it("takes the current rank from the clan export over the account", async () => {
+    const rows = await resolve({
+      accounts: [account("Iron Tyson", { rank: "Deputy Owner" })],
+      clanMembers: [clanMember("Iron Tyson", { rank: "Helper" })],
+    });
 
-    expectSkipped(findRow(rows, "Iron Tyson"), "Not in Discord server");
+    expect(findRow(rows, "Iron Tyson").currentRank).toBe("Helper");
+  });
+
+  it("falls back to the account's rank when the member isn't in the clan export", async () => {
+    const rows = await resolve({
+      accounts: [account("Iron Tyson", { rank: "Deputy Owner" })],
+      clanMembers: [],
+    });
+
+    expectSkipped(findRow(rows, "Iron Tyson"), "Staff / non-standard rank");
+  });
+
+  it("takes the join date from the clan export over the account", async () => {
+    const fromExport = findRow(
+      await resolve({
+        accounts: [account("Iron Tyson", { joinDate: new Date("2025-11-01") })],
+        clanMembers: [clanMember("Iron Tyson", { joinDate: new Date("2021-05-26") })],
+      }),
+      "Iron Tyson",
+    );
+    const fromAccount = findRow(
+      await resolve({
+        accounts: [account("Iron Tyson", { joinDate: new Date("2021-05-26") })],
+        clanMembers: [],
+      }),
+      "Iron Tyson",
+    );
+
+    expect(fromExport.totalPoints).toBe(fromAccount.totalPoints);
+  });
+
+  it("skips unlinked members missing from the clan export", async () => {
+    const rows = await resolve({ accounts: [], clanMembers: [] });
+
+    expectSkipped(findRow(rows, "Iron Tyson"), "Missing join date");
+  });
+
+  it("matches unlinked members to Discord by their exact nickname", async () => {
+    const combatRoles = new Set([...tavernDiaryDiscordRoles.Combat.values()]);
+    const row = findRow(
+      await resolve({
+        accounts: [],
+        guildMembers: [guildMember("tyson-id", { nick: "Iron Tyson", roles: combatRoles })],
+      }),
+      "Iron Tyson",
+    );
+    const unmatched = findRow(await resolve({ accounts: [], guildMembers: [] }), "Iron Tyson");
+
+    expect(row).toMatchObject({
+      discordId: "tyson-id",
+      discordName: "Iron Tyson",
+      discordMatchedBy: "Nickname",
+      hasDiscordRoles: true,
+    });
+    expect(row.totalPoints).toBeGreaterThan(unmatched.totalPoints ?? Infinity);
+  });
+
+  it("treats OSRS-equivalent spellings of a nickname as exact", async () => {
+    const row = findRow(
+      await resolve({
+        accounts: [],
+        guildMembers: [guildMember("tyson-id", { nick: "iron_tyson" })],
+      }),
+      "Iron Tyson",
+    );
+
+    expect(row.discordId).toBe("tyson-id");
+  });
+
+  it.each([
+    ["a partial nickname", [guildMember("a", { nick: "Iron Tyson | Main" })]],
+    [
+      "a nickname shared by two members",
+      [guildMember("a", { nick: "Iron Tyson" }), guildMember("b", { nick: "Iron Tyson" })],
+    ],
+  ])("doesn't match %s", async (_, guildMembers) => {
+    const row = findRow(await resolve({ accounts: [], guildMembers }), "Iron Tyson");
+
+    expect(row.discordId).toBeUndefined();
+    expect(row.hasDiscordRoles).toBe(false);
+  });
+
+  it("uses the linked account's Discord user over a nickname match", async () => {
+    const row = findRow(
+      await resolve({
+        accounts: [account("Iron Tyson", { discordId: "owner" })],
+        guildMembers: [guildMember("owner"), guildMember("impostor", { nick: "Iron Tyson" })],
+      }),
+      "Iron Tyson",
+    );
+
+    expect(row).toMatchObject({ discordId: "owner", discordMatchedBy: "Account" });
+  });
+
+  it("falls back to the Discord join date for nickname matches missing from the clan export", async () => {
+    const joinedAt = new Date("2021-05-26");
+    const fromDiscord = findRow(
+      await resolve({
+        accounts: [],
+        clanMembers: [],
+        guildMembers: [guildMember("tyson-id", { nick: "Iron Tyson", joinedAt })],
+      }),
+      "Iron Tyson",
+    );
+    const fromExport = findRow(
+      await resolve({
+        accounts: [],
+        clanMembers: [clanMember("Iron Tyson", { joinDate: joinedAt })],
+      }),
+      "Iron Tyson",
+    );
+
+    expect(fromDiscord.skipReason).toBeUndefined();
+    expect(fromDiscord.totalPoints).toBe(fromExport.totalPoints);
+  });
+
+  it("ranks linked members who aren't in the Discord server, without Discord roles", async () => {
+    const row = findRow(await resolve({ guildMembers: [] }), "Iron Tyson");
+
+    expect(row.skipReason).toBeUndefined();
+    expect(row.hasDiscordRoles).toBe(false);
+  });
+
+  it("applies the diary bonus from Discord roles", async () => {
+    const combatRoles = new Set([...tavernDiaryDiscordRoles.Combat.values()]);
+    const withRoles = findRow(
+      await resolve({ guildMembers: [guildMember("discord-iron tyson", { roles: combatRoles })] }),
+      "Iron Tyson",
+    );
+    const withoutRoles = findRow(await resolve(), "Iron Tyson");
+
+    expect(withRoles.hasDiscordRoles).toBe(true);
+    expect(withoutRoles.hasDiscordRoles).toBe(true);
+    expect(withRoles.totalPoints).toBeGreaterThan(withoutRoles.totalPoints ?? Infinity);
   });
 
   it("skips members without WikiSync data", async () => {
@@ -201,14 +371,17 @@ describe("resolveAutoRankRows", () => {
 
   it("only fetches WikiSync for members that reach that check", async () => {
     const fetchWikiSync = jest.fn((_rsn: string) => Promise.resolve(wikiSyncData));
-    const accounts = [
-      account("Iron Tyson"),
-      account("Uim Fixture", { rank: "Deputy Owner" }),
-      account("Lvl Three"),
-      account("No Clog"),
-    ];
+    const accounts = [account("Iron Tyson"), account("Lvl Three"), account("No Clog")];
 
-    await resolve({ accounts, fetchWikiSync });
+    await resolve({
+      accounts,
+      clanMembers: [
+        clanMember("Iron Tyson"),
+        clanMember("Uim Fixture", { rank: "Deputy Owner" }),
+        clanMember("Lvl Three"),
+      ],
+      fetchWikiSync,
+    });
 
     expect(fetchWikiSync.mock.calls.map(([rsn]) => rsn).sort()).toEqual([
       "Iron Tyson",
@@ -237,12 +410,12 @@ describe("resolveAutoRankRows", () => {
   });
 
   it("calculates rank and isRankUp for an eligible member", async () => {
-    const tyson = account("Iron Tyson", {
-      rank: "Helper",
-      discordId: "tyson",
-      discordName: "Tyson",
+    const tyson = account("Iron Tyson", { discordId: "tyson", discordName: "Tyson" });
+    const joinDate = new Date("2021-05-26");
+    const rows = await resolve({
+      accounts: [tyson],
+      clanMembers: [clanMember("Iron Tyson", { rank: "Helper", joinDate })],
     });
-    const rows = await resolve({ accounts: [tyson] });
     const row = findRow(rows, "Iron Tyson");
 
     const verified = await buildVerifiedRankInput({
@@ -251,7 +424,7 @@ describe("resolveAutoRankRows", () => {
       collectionLogTotal: temple.collectionLog.total_collections_available,
       itemNames: temple.itemNames,
       wikiSyncData,
-      joinDate: tyson.joinDate,
+      joinDate,
       discordRoles: new Set(),
     });
 
@@ -269,12 +442,14 @@ describe("resolveAutoRankRows", () => {
       calculatedRank: expected.rank,
       totalPoints: expected.totalPoints,
       isRankUp: isRankUp("Helper", expected.rank),
+      hasDiscordRoles: true,
+      discordMatchedBy: "Account",
     });
   });
 
   it("treats a member with no current rank as a rank up", async () => {
     const row = findRow(
-      await resolve({ accounts: [account("Iron Tyson", { rank: null })] }),
+      await resolve({ accounts: [account("Iron Tyson", { rank: null })], clanMembers: [] }),
       "Iron Tyson",
     );
 
