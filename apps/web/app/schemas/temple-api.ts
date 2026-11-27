@@ -7,9 +7,14 @@ const MemberInfo = z.object({
   last_checked: z.string(),
   last_changed_xp: z.string(),
   last_changed_xp_unix_time: z.number(),
+  clog_synced: z.boolean().optional(),
+  primary_ehp: z.string().optional(),
+  primary_ehb: z.string().optional(),
+  skills: z.record(z.string(), z.number()).optional(),
+  bosses: z.record(z.string(), z.number()).optional(),
 });
 
-type MemberInfo = z.infer<typeof MemberInfo>;
+export type MemberInfo = z.infer<typeof MemberInfo>;
 
 interface PlayerInfo {
   "Game mode": 0 | 1 | 2 | 3;
@@ -92,6 +97,35 @@ export const TempleOSRSPlayerCollectionLog = z.object({
 });
 
 export type TempleOSRSPlayerCollectionLog = z.infer<typeof TempleOSRSPlayerCollectionLog>;
+
+export const GroupCollectionLogMember = z.looseObject({
+  player: z.string(),
+  player_name_with_capitalization: z.string().nullable(),
+  total_collections_finished: z.number().nonnegative(),
+  /** Item ID → count. Temple returns an empty array when the member has no items. */
+  items: z.preprocess(
+    (items) => (Array.isArray(items) && items.length === 0 ? {} : items),
+    z.record(z.string(), z.number().nonnegative()),
+  ),
+});
+
+export type GroupCollectionLogMember = z.infer<typeof GroupCollectionLogMember>;
+
+export const GroupCollectionLogResponse = z.looseObject({
+  data: z.looseObject({
+    total_collections_available: z.number().nonnegative(),
+    members: z.array(GroupCollectionLogMember),
+  }),
+});
+
+export type GroupCollectionLogResponse = z.infer<typeof GroupCollectionLogResponse>;
+
+export const CollectionLogItemNamesResponse = z.object({
+  /** Item ID → collection log item name */
+  items: z.record(z.string(), z.string()),
+});
+
+export type CollectionLogItemNamesResponse = z.infer<typeof CollectionLogItemNamesResponse>;
 
 /**
  * Categories available from the TempleOSRS API.
