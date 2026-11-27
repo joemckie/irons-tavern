@@ -52,6 +52,18 @@ describe("fetchWikiSyncData", () => {
     expect(calls).toHaveLength(3);
   });
 
+  it("caps how long a Retry-After header can delay the report", async () => {
+    const calls = respondWith(
+      () => new HttpResponse(null, { status: 429, headers: { "Retry-After": "3600" } }),
+      () => HttpResponse.json(midGamePlayerFixture),
+    );
+
+    await expect(
+      fetchWikiSyncData("Iron Tyson", { ...noDelays, maxRetryAfterMs: 0 }),
+    ).resolves.not.toBeNull();
+    expect(calls).toHaveLength(2);
+  }, 1000);
+
   it("throws when still rate limited after every retry", async () => {
     const calls = respondWith(() => new HttpResponse(null, { status: 429 }));
 

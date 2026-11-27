@@ -12,6 +12,9 @@ import { AutoRankTable } from "./auto-rank-table";
 // See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
 export const instant = false;
 
+// The report makes a WikiSync request per member, so it outlasts the 15s default
+export const maxDuration = 300;
+
 async function AutoRankReport() {
   const rows = sortAutoRankRows(await buildAutoRankReport());
   const summary = Object.entries(summariseAutoRankRows(rows)).filter(([, count]) => count > 0);

@@ -2,6 +2,8 @@ import { clientConstants } from "@/config/constants.client";
 import { WikiSyncResponse } from "@/app/schemas/wiki";
 
 const defaultRetryDelaysMs = [2000, 5000, 10000];
+// Keeps one rate-limited member from holding up the whole report
+const defaultMaxRetryAfterMs = 10000;
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -16,7 +18,10 @@ function wait(ms: number) {
  */
 export async function fetchWikiSyncData(
   rsn: string,
-  { retryDelaysMs = defaultRetryDelaysMs }: { retryDelaysMs?: number[] } = {},
+  {
+    retryDelaysMs = defaultRetryDelaysMs,
+    maxRetryAfterMs = defaultMaxRetryAfterMs,
+  }: { retryDelaysMs?: number[]; maxRetryAfterMs?: number } = {},
 ): Promise<WikiSyncResponse | null> {
   for (let attempt = 0; ; attempt++) {
     const response = await fetch(
@@ -36,7 +41,7 @@ export async function fetchWikiSyncData(
 
       await wait(
         Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
-          ? retryAfterSeconds * 1000
+          ? Math.min(retryAfterSeconds * 1000, maxRetryAfterMs)
           : retryDelaysMs[attempt],
       );
 
